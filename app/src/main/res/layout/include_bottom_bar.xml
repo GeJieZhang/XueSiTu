@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="bottom"
+    android:orientation="vertical">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/kit_line"></View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/lin_youxuan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/iv_youxuan"
+                        style="@style/image_style0"
+                        android:src="@mipmap/icon_preferably_default" />
+
+                    <TextView
+                        android:id="@+id/tv_youxuan"
+                        style="@style/text_style1"
+                        android:text="@string/youxuan" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lin_sixue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/iv_sixue"
+                        style="@style/image_style0"
+                        android:src="@mipmap/icon_study_default" />
+
+                    <TextView
+                        android:id="@+id/tv_sixue"
+                        style="@style/text_style1"
+                        android:text="私学" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lin_jianke"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/iv_jianke"
+                        style="@style/image_style0"
+                        android:src="@mipmap/icon_course_default" />
+
+                    <TextView
+                        android:id="@+id/tv_jianke"
+                        style="@style/text_style1"
+                        android:text="尖课" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lin_fengxiang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/iv_fengxiang"
+                        style="@style/image_style0"
+                        android:src="@mipmap/icon_fenshare_default" />
+
+                    <TextView
+                        android:id="@+id/tv_fengxiang"
+                        style="@style/text_style1"
+                        android:text="纷享" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:layout_gravity="top"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_center"
+                    android:layout_width="58dp"
+                    android:layout_height="58dp"
+                    android:src="@mipmap/look_default" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+
+</LinearLayout>

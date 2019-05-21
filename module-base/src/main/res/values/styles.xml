@@ -1,0 +1,93 @@
+<resources>
+    //==============================================================================================
+    //=================================================================================系统==========
+    //==============================================================================================
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <!--<item name="colorAccent">@color/colorAccent</item>-->
+    </style>
+    //==============================================================================================
+    //=============================================================================按钮样式=========
+    //==============================================================================================
+
+    //==============================================================================================
+    //=============================================================================图片=========
+    //==============================================================================================
+    <style name="image_style0">
+        <item name="android:layout_width">25dp</item>
+        <item name="android:layout_height">25dp</item>
+    </style>
+    //==============================================================================================
+    //=============================================================================文字样式=========
+    //==============================================================================================
+
+    <style name="text_style0">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/kit_textColor_gray</item>
+    </style>
+
+
+    <!--底部导航栏字体-->
+    <style name="text_style1">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">10sp</item>
+
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/base_gray</item>
+    </style>
+
+    <!--优选中标题样式-->
+    <style name="text_style2">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/base_title</item>
+    </style>
+
+    <!--优选小标题-->
+    <style name="text_style3">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/base_title</item>
+    </style>
+    <!--优选小标题文字-->
+    <style name="text_style4">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/base_text1</item>
+    </style>
+
+
+    <!--价格-->
+    <style name="text_style5">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/base_money</item>
+    </style>
+    //==============================================================================================
+    //=============================================================================人员结构树=======
+    //==============================================================================================
+
+</resources>
