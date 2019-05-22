@@ -3,6 +3,7 @@ package com.user.activity.user_info;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -41,8 +42,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 import butterknife.OnClick;
-import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -55,7 +56,7 @@ public class UserInfoActivity extends BaseAppActivity {
 
     String[] a = {"相册", "相机"};
     @BindView(R2.id.iv_head)
-    CircleImageView ivHead;
+    ImageView ivHead;
     @BindView(R2.id.lin_tx)
     LinearLayout linTx;
     @BindView(R2.id.tv_sjh)

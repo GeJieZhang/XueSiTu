@@ -50,7 +50,7 @@
     <style name="text_style2">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
@@ -87,7 +87,15 @@
         <item name="android:textColor">@color/base_money</item>
     </style>
     //==============================================================================================
-    //=============================================================================人员结构树=======
+    //=============================================================================线条=======
     //==============================================================================================
 
+    <!--虚线-->
+    <style name="line_dotted">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:background">@drawable/line_dotted</item>
+    </style>
 </resources>

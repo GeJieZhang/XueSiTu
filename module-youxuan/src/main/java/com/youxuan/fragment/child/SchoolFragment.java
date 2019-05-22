@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.lib.app.ARouterPathUtils;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
+import com.lib.fastkit.views.recyclerview.tool.MyLinearLayoutManager;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.ui.fragment.BaseAppFragment;
 import com.youxuan.R;
@@ -42,7 +43,8 @@ public class SchoolFragment extends BaseAppFragment {
         carList.add("");
         carList.add("");
         homeAdapter = new HomeAdapter();
-        rvSchool.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvSchool.setLayoutManager(new MyLinearLayoutManager(getActivity()));
+        rvSchool.setNestedScrollingEnabled(false);
         rvSchool.setAdapter(homeAdapter);
     }
 

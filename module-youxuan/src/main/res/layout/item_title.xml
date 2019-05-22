@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tv_title"
-    style="@style/text_style3"
-    android:layout_marginLeft="16dp"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="高中"
-     />
+
+    android:layout_marginLeft="16dp">
+
+    <View
+        android:id="@+id/v_circle"
+        android:layout_width="20dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:background="@drawable/bg_circle_yellow"
+        android:layout_height="20dp"></View>
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/text_style3"
+        android:layout_height="wrap_content"
+        android:text="高中"
+        android:textSize="16sp" />
+
+</FrameLayout>
