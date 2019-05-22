@@ -28,7 +28,7 @@ public class LoginInterceptor implements IInterceptor {
              * 判断如果没有登录跳转到登录界面
              *
              */
-            ARouter.getInstance().build(ARouterPathUtils.User_RegisterActivity).navigation();
+            //ARouter.getInstance().build(ARouterPathUtils.User_RegisterActivity).navigation();
 
         } else {
             /**

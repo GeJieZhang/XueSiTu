@@ -62,9 +62,9 @@ dependencies {
     /**
      * 网络请求 Retrofit
      */
-    api "com.squareup.retrofit2:retrofit:$var.retrofit"
-    api "com.squareup.retrofit2:converter-gson:$var.converter_gson"
-    api "com.squareup.retrofit2:adapter-rxjava2:$var.adapter_rxjava2"
+//    api "com.squareup.retrofit2:retrofit:$var.retrofit"
+//    api "com.squareup.retrofit2:converter-gson:$var.converter_gson"
+//    api "com.squareup.retrofit2:adapter-rxjava2:$var.adapter_rxjava2"
     /**
      * RxJava
      */

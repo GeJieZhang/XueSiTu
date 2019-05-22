@@ -17,19 +17,7 @@ public class ARouterPathUtils {
     public static final String App_TestActivity = "/app/TestActivity";
     public static final String App_MainActivity = "/app/MainActivity";
 
-    //==============================================================================================
-    //======================================================================================User====
-    //==============================================================================================
-    public static final String User_LoginActivity = "/user/LoginActivity";
-    public static final String User_TestActivity = "/user/TestActivity";
-    public static final String User_RegisterActivity = "/user/RegisterActivity";
-    public static final String User_FindPasswordActivity = "/user/FindPasswordActivity";
-    public static final String User_ChangePasswordActivity = "/user/ChangePasswordActivity";
 
-    public static final String User_UserInfoActivity = "/user/UserInfoActivity";
-
-    public static final String User_RealNameActivity = "/user/RealNameActivity";
-    public static final String User_LeakCanaryActivity = "/user/LeakCanaryActivity";
     //==============================================================================================
     //======================================================================================优选====
     //==============================================================================================

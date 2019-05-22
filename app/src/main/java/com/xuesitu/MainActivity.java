@@ -87,7 +87,7 @@ public class MainActivity extends BaseAppActivity {
     private void initView() {
 
         //mViewPager=findViewById(R.id.mViewPager);
-        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setOffscreenPageLimit(4);
         mDemandAdapter = new DemandAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mDemandAdapter);
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {

@@ -232,7 +232,7 @@ public class YouXuanFragment extends BaseAppFragment {
 
         initBottomTitle();
         initIndicator2();
-        contentViewPager.setOffscreenPageLimit(3);
+        contentViewPager.setOffscreenPageLimit(2);
         mDemandAdapter = new DemandAdapter(getActivity().getSupportFragmentManager());
         contentViewPager.setAdapter(mDemandAdapter);
         contentViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -287,14 +287,6 @@ public class YouXuanFragment extends BaseAppFragment {
                 @Override
                 public void onClick(View v) {
 
-
-//                    switch (finalI){
-//
-//                        case 0:{
-//                            break;
-//                        }
-//
-//                    }
 
 
                     initTitle(finalI);

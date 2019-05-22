@@ -13,23 +13,14 @@
         android:roundIcon="@mipmap/ic_new_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.login.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <!--<activity android:name=".activity.login.LoginActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
 
-        </activity>
-        <activity android:name=".activity.register.RegisterActivity"></activity>
-        <activity android:name=".activity.find.FindPasswordActivity"></activity>
-        <!--修改密码-->
-        <activity android:name=".activity.change.ChangePasswordActivity"></activity>
-        <!--用户信息-->
-        <activity android:name=".activity.user_info.UserInfoActivity"></activity>
-        <!--实名认证-->
-        <activity android:name=".activity.real_name.RealNameActivity"></activity>
+        <!--</activity>-->
 
-        <activity android:name=".activity.login.TestActivity"></activity>
     </application>
 </manifest>

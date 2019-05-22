@@ -79,7 +79,7 @@ dependencies {
     /**
      * 阿里热修复
      */
-    api "com.aliyun.ams:alicloud-android-hotfix:$var.hotfix"
+    //api "com.aliyun.ams:alicloud-android-hotfix:$var.hotfix"
 
     /**
      * 二维码

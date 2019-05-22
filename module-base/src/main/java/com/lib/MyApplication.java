@@ -16,9 +16,7 @@ import com.lib.fastkit.http.ok.OkHttpEngine;
 
 import com.lib.fastkit.utils.log.LogUtil;
 import com.squareup.leakcanary.LeakCanary;
-import com.taobao.sophix.PatchStatus;
-import com.taobao.sophix.SophixManager;
-import com.taobao.sophix.listener.PatchLoadStatusListener;
+
 import com.tencent.smtt.sdk.QbSdk;
 
 import butterknife.ButterKnife;
@@ -116,7 +114,7 @@ public class MyApplication extends Application {
      * 查询HotFix补丁
      */
     private void queryHotFix() {
-        SophixManager.getInstance().queryAndLoadNewPatch();
+        //SophixManager.getInstance().queryAndLoadNewPatch();
     }
 
     /**
@@ -174,48 +172,48 @@ public class MyApplication extends Application {
     /**
      * 阿里热修复初始化
      */
-    private void initHotFix() {
-        String appVersion = "1.0.0";
-        try {
-            appVersion = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            appVersion = "1.0.0";
-        }
-
-
-        Timber.d("版本号=" + appVersion);
-        SophixManager.getInstance().setContext(this)
-                .setAppVersion(appVersion)
-                .setAesKey(null)
-                .setEnableDebug(true)
-                .setPatchLoadStatusStub(new PatchLoadStatusListener() {
-                    @Override
-                    public void onLoad(final int mode, final int code, final String info, final int handlePatchVersion) {
-                        // 补丁加载回调通知
-                        if (code == PatchStatus.CODE_LOAD_SUCCESS) {
-                            // 表明补丁加载成功
-                            // Toast.makeText(getApplicationContext(), "补丁加载成功,以为您修复Bug", Toast.LENGTH_SHORT).show();
-
-                            Timber.d("补丁加载成功" + "Code=" + code);
-
-                        } else if (code == PatchStatus.CODE_LOAD_RELAUNCH) {
-                            //Toast.makeText(getApplicationContext(), "补丁生效需要重启", Toast.LENGTH_SHORT).show();
-                            // 表明新补丁生效需要重启. 开发者可提示用户或者强制重启;
-                            // 建议: 用户可以监听进入后台事件, 然后调用killProcessSafely自杀，以此加快应用补丁，详见1.3.2.3
-
-                        } else if (code == PatchStatus.CODE_DOWNLOAD_SUCCESS) {
-                            Timber.d("补丁加载成功" + "Code=" + code);
-                        } else {
-
-                            Timber.d("补丁加载成功" + "Code=" + code);
-                        }
-
-                    }
-
-
-                }).initialize();
-
-    }
+//    private void initHotFix() {
+//        String appVersion = "1.0.0";
+//        try {
+//            appVersion = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
+//        } catch (PackageManager.NameNotFoundException e) {
+//            appVersion = "1.0.0";
+//        }
+//
+//
+//        Timber.d("版本号=" + appVersion);
+//        SophixManager.getInstance().setContext(this)
+//                .setAppVersion(appVersion)
+//                .setAesKey(null)
+//                .setEnableDebug(true)
+//                .setPatchLoadStatusStub(new PatchLoadStatusListener() {
+//                    @Override
+//                    public void onLoad(final int mode, final int code, final String info, final int handlePatchVersion) {
+//                        // 补丁加载回调通知
+//                        if (code == PatchStatus.CODE_LOAD_SUCCESS) {
+//                            // 表明补丁加载成功
+//                            // Toast.makeText(getApplicationContext(), "补丁加载成功,以为您修复Bug", Toast.LENGTH_SHORT).show();
+//
+//                            Timber.d("补丁加载成功" + "Code=" + code);
+//
+//                        } else if (code == PatchStatus.CODE_LOAD_RELAUNCH) {
+//                            //Toast.makeText(getApplicationContext(), "补丁生效需要重启", Toast.LENGTH_SHORT).show();
+//                            // 表明新补丁生效需要重启. 开发者可提示用户或者强制重启;
+//                            // 建议: 用户可以监听进入后台事件, 然后调用killProcessSafely自杀，以此加快应用补丁，详见1.3.2.3
+//
+//                        } else if (code == PatchStatus.CODE_DOWNLOAD_SUCCESS) {
+//                            Timber.d("补丁加载成功" + "Code=" + code);
+//                        } else {
+//
+//                            Timber.d("补丁加载成功" + "Code=" + code);
+//                        }
+//
+//                    }
+//
+//
+//                }).initialize();
+//
+//    }
 
     /**
      * 阿里热修复提示框
