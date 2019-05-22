@@ -7,8 +7,6 @@ import android.content.pm.PackageManager;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.lib.utls.application_deal.UIUtils;
 import com.lib.fastkit.http.ok.HttpUtils;
@@ -218,31 +216,31 @@ public class MyApplication extends Application {
     /**
      * 阿里热修复提示框
      */
-    private void showFixDialog() {
-        new MaterialDialog.Builder(applicationInstance)
-                .title("补丁修复")
-                .content("请重新启动应用")
-                .positiveText("确定")
-                .negativeText("取消")
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(MaterialDialog dialog, DialogAction which) {
-                        // TODO
-                        restartApp();
-
-                    }
-                })
-
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(MaterialDialog dialog, DialogAction which) {
-                        // TODO
-
-                    }
-                })
-                .build()
-                .show();
-    }
+//    private void showFixDialog() {
+//        new MaterialDialog.Builder(applicationInstance)
+//                .title("补丁修复")
+//                .content("请重新启动应用")
+//                .positiveText("确定")
+//                .negativeText("取消")
+//                .onPositive(new MaterialDialog.SingleButtonCallback() {
+//                    @Override
+//                    public void onClick(MaterialDialog dialog, DialogAction which) {
+//                        // TODO
+//                        restartApp();
+//
+//                    }
+//                })
+//
+//                .onNegative(new MaterialDialog.SingleButtonCallback() {
+//                    @Override
+//                    public void onClick(MaterialDialog dialog, DialogAction which) {
+//                        // TODO
+//
+//                    }
+//                })
+//                .build()
+//                .show();
+//    }
 
     /**
      * 重启应用

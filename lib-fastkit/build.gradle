@@ -57,7 +57,7 @@ dependencies {
      */
     api "com.squareup.okhttp3:okhttp:$var.okhttp"
     api "com.squareup.okhttp3:logging-interceptor:$var.logging_interceptor"
-    api "com.orhanobut:logger:$var.logger"
+    //api "com.orhanobut:logger:$var.logger"
     api "com.google.code.gson:gson:$var.gson"
     /**
      * 网络请求 Retrofit
@@ -87,7 +87,7 @@ dependencies {
     /**
      * Dialog
      */
-    api "com.afollestad.material-dialogs:commons:$var.material_dialogs"
+    //api "com.afollestad.material-dialogs:commons:$var.material_dialogs"
 
     /**
      * 日志处理

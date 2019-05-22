@@ -19,7 +19,7 @@ import android.content.Context;
 import android.net.ParseException;
 import android.widget.Toast;
 
-import com.lib.fastkit.utils.log.LogUtil;
+
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonParseException;
 

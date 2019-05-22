@@ -1,7 +1,6 @@
 package com.lib.fastkit.utils.log;
 
-import com.orhanobut.logger.LogLevel;
-import com.orhanobut.logger.Logger;
+
 
 /**
  * Created by XiaoJianjun on 2017/1/16.
@@ -13,37 +12,37 @@ public class LogUtil {
      *
      * @param isLogEnable 是否打印log
      */
-    public static void init(boolean isLogEnable) {
-        Logger.init("LogHttpInfo")
-                .logLevel(isLogEnable ? LogLevel.FULL : LogLevel.NONE)
-                .methodCount(3)
-                .methodOffset(2);
-    }
-
-    public static void d(String message) {
-        Logger.d(message);
-    }
-
-    public static void i(String message) {
-        Logger.i(message);
-    }
-
-    public static void w(String message, Throwable e) {
-        String info = e != null ? e.toString() : "null";
-        Logger.w(message + "：" + info);
-    }
-
-    public static void e(String message, Throwable e) {
-        Logger.e(e, message);
-    }
-
-    public static void e(String message) {
-        Logger.e(message);
-    }
-
-    public static void json(String json) {
-        Logger.json(json);
-    }
+//    public static void init(boolean isLogEnable) {
+//        Logger.init("日志信息======")
+//                .logLevel(isLogEnable ? LogLevel.FULL : LogLevel.NONE)
+//                .methodCount(3)
+//                .methodOffset(2);
+//    }
+//
+//    public static void d(String message) {
+//        Logger.d(message);
+//    }
+//
+//    public static void i(String message) {
+//        Logger.i(message);
+//    }
+//
+//    public static void w(String message, Throwable e) {
+//        String info = e != null ? e.toString() : "null";
+//        Logger.w(message + "：" + info);
+//    }
+//
+//    public static void e(String message, Throwable e) {
+//        Logger.e(e, message);
+//    }
+//
+//    public static void e(String message) {
+//        Logger.e(message);
+//    }
+//
+//    public static void json(String json) {
+//        Logger.json(json);
+//    }
 
 
 }

@@ -1,13 +1,11 @@
 package com.youxuan.fragment;
 
-import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,14 +28,13 @@ import com.ms.banner.Transformer;
 import com.ms.banner.listener.OnBannerClickListener;
 import com.youxuan.R;
 import com.youxuan.R2;
-import com.youxuan.fragment.banner.CustomData;
+import com.youxuan.bean.CustomData;
 import com.youxuan.fragment.banner.CustomViewHolder2;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 @Route(path = ARouterPathUtils.YouXuan_YouXuanFragment)
 public class YouXuanFragment extends BaseAppFragment {

@@ -1,4 +1,4 @@
-package com.youxuan.fragment.banner;
+package com.youxuan.bean;
 
 /**
  * Created by songwenchao

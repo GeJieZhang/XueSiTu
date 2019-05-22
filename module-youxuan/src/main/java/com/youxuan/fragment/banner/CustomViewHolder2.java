@@ -4,11 +4,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.lib.fastkit.utils.log.LogUtil;
 import com.ms.banner.holder.BannerViewHolder;
 
 import com.youxuan.R;
+import com.youxuan.bean.CustomData;
 
 /**
  * Created by songwenchao
@@ -35,5 +36,8 @@ public class CustomViewHolder2 implements BannerViewHolder<CustomData> {
     @Override
     public void onBind(Context context, int position, CustomData data) {
         image1.setImageResource(R.mipmap.banner_1);
+
+
+       // LogUtil.e(data.getName());
     }
 }
