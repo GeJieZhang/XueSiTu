@@ -1,48 +1,22 @@
 package com.lib.fastkit.utils.log;
 
 
+import android.util.Log;
 
 /**
  * Created by XiaoJianjun on 2017/1/16.
  * Log日志工具，封装logger
  */
 public class LogUtil {
-    /**
-     * 初始化log工具，在app入口处调用
-     *
-     * @param isLogEnable 是否打印log
-     */
-//    public static void init(boolean isLogEnable) {
-//        Logger.init("日志信息======")
-//                .logLevel(isLogEnable ? LogLevel.FULL : LogLevel.NONE)
-//                .methodCount(3)
-//                .methodOffset(2);
-//    }
-//
-//    public static void d(String message) {
-//        Logger.d(message);
-//    }
-//
-//    public static void i(String message) {
-//        Logger.i(message);
-//    }
-//
-//    public static void w(String message, Throwable e) {
-//        String info = e != null ? e.toString() : "null";
-//        Logger.w(message + "：" + info);
-//    }
-//
-//    public static void e(String message, Throwable e) {
-//        Logger.e(e, message);
-//    }
-//
-//    public static void e(String message) {
-//        Logger.e(message);
-//    }
-//
-//    public static void json(String json) {
-//        Logger.json(json);
-//    }
+    //用于在开发模式与上线模式的切换
+    private static final boolean DEBUG = true;
+    private static final String TAG = "调试日志======";
+
+    public static void e(String content) {
+        if (DEBUG) {
+            Log.e(TAG, content);
+        }
+    }
 
 
 }
