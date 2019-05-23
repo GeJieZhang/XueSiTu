@@ -115,6 +115,5 @@ dependencies {
     api "org.simple:androideventbus:$var.android_eventbus"
 
 
-    api 'com.qmuiteam:qmui:1.2.0'
-    api 'com.qmuiteam:arch:0.3.1'
+
 }

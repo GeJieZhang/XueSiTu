@@ -5,10 +5,10 @@ ext {
             //
             app_name           : "学思兔_v",
             //编译
-            compileSdkVersion  : 27,
+            compileSdkVersion  : 28,
             minSdkVersion      : 15,
-            targetSdkVersion   : 27,
-            buildToolsVersion  : "27.0.3",
+            targetSdkVersion   : 28,
+            buildToolsVersion  : "28.0.3",
             versionCode        : 20,
             versionName        : "1.8.0",
 
@@ -18,7 +18,7 @@ ext {
             runner             : "1.0.2",
 
             //Support
-            support_version    : "27.1.1",
+            support_version    : "27.0.0",
 
             //ButterKnife
             butter_knife       : "8.8.1",

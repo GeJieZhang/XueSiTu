@@ -22,7 +22,8 @@ import android.widget.Toast;
 
 import com.lib.fastkit.R;
 import com.lib.fastkit.ui.base.control.ActivityCollector;
-import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
+import com.lib.fastkit.utils.status_bar.QMUI.QMUIStatusBarHelper;
+
 
 /**
  * Created by Eagle510 on 2017/8/10.
@@ -43,7 +44,6 @@ import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private Toast mToast;
-
 
 
     @Override
