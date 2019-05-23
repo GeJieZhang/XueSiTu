@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:scrollbars="none">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/text_style6"
+            android:layout_marginTop="88dp"
+            android:text="年级"
+            android:textSize="20sp"
+            android:textStyle="normal" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_grade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:minHeight="150dp">
+
+
+        </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            style="@style/text_style6"
+            android:layout_marginTop="30dp"
+            android:text="学科"
+            android:textSize="20sp"
+            android:textStyle="normal" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_discipline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:minHeight="150dp">
+
+
+        </android.support.v7.widget.RecyclerView>
+
+        <Button
+            style="@style/button3"
+            android:layout_height="44dp"
+            android:layout_marginTop="40dp"
+            android:text="确定"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+
+</ScrollView>

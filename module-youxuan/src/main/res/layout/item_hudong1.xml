@@ -64,7 +64,7 @@
             android:layout_width="100dp"
             android:layout_height="35dp"
             android:layout_marginRight="16dp"
-            android:background="@drawable/circle_button"
+            android:background="@drawable/circle_button_r15"
             android:text="学情分析"
             android:textColor="@color/white"
             android:textSize="12sp" />

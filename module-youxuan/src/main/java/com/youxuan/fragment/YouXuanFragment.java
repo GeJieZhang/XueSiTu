@@ -173,7 +173,7 @@ public class YouXuanFragment extends BaseAppFragment {
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             ViewHolder holder;
             if (viewType == VIEW_TYPE) {
-                holder = ViewHolder.createViewHolder(getActivity(), parent, R.layout.item_hudong1);
+                holder = ViewHolder.createViewHolder(getActivity(), parent, R.layout.base_empty);
             } else {
                 holder = ViewHolder.createViewHolder(getActivity(), parent, R.layout.item_hudong1);
             }

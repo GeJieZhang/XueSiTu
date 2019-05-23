@@ -12,9 +12,9 @@ public class ARouterPathUtils {
     public static final String YouXuan_SiXueFragment = "/youxuan/SiXueFragment";
     public static final String YouXuan_YouXuanFragment = "/youxuan/YouXuanFragment";
     //==============================================================================================
-    //======================================================================================App====
+    //======================================================================================APP====
     //==============================================================================================
-    public static final String App_TestActivity = "/app/TestActivity";
+
     public static final String App_MainActivity = "/app/MainActivity";
 
 
@@ -22,4 +22,14 @@ public class ARouterPathUtils {
     //======================================================================================优选====
     //==============================================================================================
     public static final String YouXuan_SchoolFragment = "/youxuan/SchoolFragment";
+
+
+    //==============================================================================================
+    //======================================================================================User====
+    //==============================================================================================
+
+    public static final String User_LoginActivity = "/user/LoginActivity";
+    public static final String User_BookChooseActivity = "/user/BookChooseActivity";
+    public static final String User_StartActivity = "/user/StartActivity";
+
 }

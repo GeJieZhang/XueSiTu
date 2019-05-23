@@ -5,13 +5,10 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@mipmap/iv_empty5" />
 
     <TextView
-        style="@style/text_style0"
-        android:text=".......无数据......." />
+        style="@style/text_style4"
+        android:text="加载失败"
+        android:textSize="16sp" />
 
 </LinearLayout>

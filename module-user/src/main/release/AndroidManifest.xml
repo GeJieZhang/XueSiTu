@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application>
-
+        <!--登录-->
+        <activity android:name=".activity.LoginActivity"></activity>
+        <activity android:name=".activity.StartActivity"></activity>
+        <activity android:name=".activity.BookChooseActivity"></activity>
     </application>
 </manifest>

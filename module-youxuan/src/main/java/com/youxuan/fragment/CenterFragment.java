@@ -5,9 +5,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.lib.app.ARouterPathUtils;
 import com.lib.ui.fragment.BaseAppFragment;
 import com.youxuan.R;
+
 @Route(path = ARouterPathUtils.YouXuan_CenterFragment)
 public class CenterFragment extends BaseAppFragment {
 
@@ -17,10 +19,17 @@ public class CenterFragment extends BaseAppFragment {
 
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
-
         tv = view.findViewById(R.id.tv);
 
-        tv.setText(this.getClass().getName());
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                ARouter.getInstance().build(ARouterPathUtils.User_StartActivity).navigation();
+
+            }
+        });
     }
 
     @Override
