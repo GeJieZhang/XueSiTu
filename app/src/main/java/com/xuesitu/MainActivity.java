@@ -1,5 +1,6 @@
 package com.xuesitu;
 
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -24,6 +25,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,6 +67,7 @@ public class MainActivity extends BaseAppActivity {
     private DemandAdapter mDemandAdapter;
     private List<Fragment> fragments = new ArrayList<>();
 
+
     @Override
     protected void onCreateView() {
 
@@ -72,9 +75,6 @@ public class MainActivity extends BaseAppActivity {
         ButterKnife.bind(this);
         initData();
         initView();
-
-
-
 
 
         PermissionUtil.getInstance(this).externalStorage(new PermissionUtil.RequestPermission() {
@@ -88,7 +88,6 @@ public class MainActivity extends BaseAppActivity {
 
             }
         });
-
 
 
     }
@@ -181,8 +180,14 @@ public class MainActivity extends BaseAppActivity {
             }
 
             case 2: {
-                ivCenter.setImageResource(R.mipmap.look_selected);
+                ivCenter.setImageResource(R.mipmap.look_selected1);
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
 
+                        ivCenter.setImageResource(R.mipmap.look_selected2);
+
+                    }
+                }, 200);
                 break;
             }
 
