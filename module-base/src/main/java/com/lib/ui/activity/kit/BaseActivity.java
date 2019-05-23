@@ -24,9 +24,6 @@ import com.lib.fastkit.R;
 import com.lib.fastkit.ui.base.control.ActivityCollector;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
 /**
  * Created by Eagle510 on 2017/8/10.
  * 功能：

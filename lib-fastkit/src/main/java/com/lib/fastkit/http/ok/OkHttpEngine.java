@@ -7,9 +7,11 @@ import android.util.Log;
 
 
 import com.lib.fastkit.http.ok.err.HttpException;
+import com.lib.fastkit.http.ok.interceptor.CacheInterceptor;
 import com.lib.fastkit.http.ok.interceptor.RequestInterceptor;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.FileNameMap;
 import java.net.URLConnection;
@@ -18,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Cache;
+import okhttp3.CacheControl;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -37,34 +41,41 @@ import okhttp3.Response;
 public class OkHttpEngine implements IHttpEngine {
     private static OkHttpClient mOkHttpClient;
     private static List<Call> callList = new ArrayList<>();
-    private static RequestInterceptor customInterceptor;
     private static final int TIME_OUT = 15;
+
+    private static final int CACHE_TIME_OUT = 3;
     private static final String TAG = "======网络请求路径======";
     private Handler mDelivery;
 
+    private CacheControl cacheControl;
 
-    public OkHttpEngine() {
+    public OkHttpEngine(Context context) {
 
         mDelivery = new Handler(Looper.getMainLooper());
-        customInterceptor = new RequestInterceptor(RequestInterceptor.Level.ALL);
+
+
         mOkHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
-                .addInterceptor(customInterceptor)
+                .addInterceptor(new RequestInterceptor(RequestInterceptor.Level.ALL))
                 .build();
 
     }
 
     @Override
-    public void post(final Context context, String url, Map<String, Object> params, final EngineCallBack callBack) {
+    public void post( final Context context, String url, Map<String, Object> params, final EngineCallBack callBack) {
 
         final String jointUrl = HttpUtils.jointParams(url, params);  //打印
         Log.e(TAG, jointUrl);
+
+
         RequestBody requestBody = appendBody(params);
         final Request request = new Request.Builder()
                 .url(url)
                 .tag(context)
                 .post(requestBody)
                 .build();
+
+
         Call call = mOkHttpClient.newCall(request);
         callList.add(call);
         call.enqueue(
@@ -167,12 +178,15 @@ public class OkHttpEngine implements IHttpEngine {
     }
 
     @Override
-    public void get(final Context context, String url, Map<String, Object> params, final EngineCallBack callBack) {
+    public void get( final Context context, String url, Map<String, Object> params, final EngineCallBack callBack) {
         url = HttpUtils.jointParams(url, params);
 
         Log.e(TAG, url);
 
-        Request.Builder requestBuilder = new Request.Builder().url(url).tag(context);
+        Request.Builder requestBuilder = new Request.Builder()
+                .url(url)
+                .tag(context);
+
         //可以省略，默认是GET请求
         Request request = requestBuilder.build();
         Call call = mOkHttpClient.newCall(request);

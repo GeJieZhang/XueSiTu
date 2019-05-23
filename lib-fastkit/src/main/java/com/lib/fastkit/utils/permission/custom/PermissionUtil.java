@@ -17,6 +17,7 @@ package com.lib.fastkit.utils.permission.custom;
 
 import android.Manifest;
 import android.app.Activity;
+import android.widget.Toast;
 
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -47,12 +48,15 @@ public class PermissionUtil {
 
     public static PermissionUtil permissionUtil;
 
+    private static Activity mactivity;
 
     public static PermissionUtil getInstance(Activity activity) {
 
-        if (rxPermissions == null) {
+        if (permissionUtil == null) {
             rxPermissions = new RxPermissions(activity);
             permissionUtil = new PermissionUtil();
+
+            mactivity = activity;
 
         }
 
@@ -69,20 +73,20 @@ public class PermissionUtil {
         /**
          * 用户拒绝了权限请求, 权限请求失败, 但还可以继续请求该权限
          *
-         * @param permissions 请求失败的权限名
+         * @param
          */
-        void onRequestPermissionFailure(List<String> permissions);
-
-        /**
-         * 用户拒绝了权限请求并且用户选择了以后不再询问, 权限请求失败, 这时将不能继续请求该权限, 需要提示用户进入设置页面打开该权限
-         *
-         * @param permissions 请求失败的权限名
-         */
-        void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions);
+        void onRequestPermissionFailure();
+//
+//        /**
+//         * 用户拒绝了权限请求并且用户选择了以后不再询问, 权限请求失败, 这时将不能继续请求该权限, 需要提示用户进入设置页面打开该权限
+//         *
+//         * @param permissions 请求失败的权限名
+//         */
+//        void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions);
     }
 
 
-    public static void requestPermission(final RequestPermission requestPermission, String... permissions) {
+    public static void requestPermission(RxPermissions rxPermissions, final RequestPermission requestPermission, String... permissions) {
         if (permissions == null || permissions.length == 0) return;
 
         List<String> needRequest = new ArrayList<>();
@@ -105,11 +109,16 @@ public class PermissionUtil {
                                 if (!p.granted) {
                                     if (p.shouldShowRequestPermissionRationale) {
                                         Timber.tag(TAG).d("Request permissions failure");
-                                        requestPermission.onRequestPermissionFailure(Arrays.asList(p.name));
+
+
+                                        requestPermission.onRequestPermissionFailure();
+                                        onRequestPermissionFailure(Arrays.asList(p.name));
                                         return;
                                     } else {
                                         Timber.tag(TAG).d("Request permissions failure with ask never again");
-                                        requestPermission.onRequestPermissionFailureWithAskNeverAgain(Arrays.asList(p.name));
+
+                                        requestPermission.onRequestPermissionFailure();
+                                        onRequestPermissionFailure(Arrays.asList(p.name));
                                         return;
                                     }
                                 }
@@ -117,6 +126,8 @@ public class PermissionUtil {
                             Timber.tag(TAG).d("Request permissions success");
                             requestPermission.onRequestPermissionSuccess();
                         }
+
+
                     });
         }
 
@@ -124,43 +135,35 @@ public class PermissionUtil {
 
 
     /**
-     * 请求摄像头权限
-     */
-    public static void launchCamera(RequestPermission requestPermission) {
-        requestPermission(requestPermission, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA);
-    }
-
-
-    /**
      * 请求外部存储的权限
      */
     public static void externalStorage(RequestPermission requestPermission) {
-        requestPermission(requestPermission, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        requestPermission(rxPermissions, requestPermission, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
     }
 
 
-    /**
-     * 请求发送短信权限
-     */
-    public static void sendSms(RequestPermission requestPermission) {
-        requestPermission(requestPermission, Manifest.permission.SEND_SMS);
+    private static void onRequestPermissionFailure(List<String> strings) {
+
+
+        for (String str : strings) {
+
+
+            switch (str) {
+                case "android.permission.WRITE_EXTERNAL_STORAGE": {
+
+
+                    Toast.makeText(mactivity, "禁止访问存储权限，部分功能将无法使用！", Toast.LENGTH_SHORT).show();
+
+
+                    break;
+                }
+            }
+
+        }
+
+
     }
 
-
-    /**
-     * 请求打电话权限
-     */
-    public static void callPhone(RequestPermission requestPermission) {
-        requestPermission(requestPermission, Manifest.permission.CALL_PHONE);
-    }
-
-
-    /**
-     * 请求获取手机状态的权限
-     */
-    public static void readPhonestate(RequestPermission requestPermission) {
-        requestPermission(requestPermission, Manifest.permission.READ_PHONE_STATE);
-    }
 
 }
 

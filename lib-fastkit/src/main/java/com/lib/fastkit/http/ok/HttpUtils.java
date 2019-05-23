@@ -17,7 +17,6 @@ public class HttpUtils {
 
     // 直接带参数 ，链式调用
     private String mUrl;
-
     // 请求方式
     private int mType = POST_TYPE;
     private static final int POST_TYPE = 0x0011;
@@ -27,7 +26,9 @@ public class HttpUtils {
     private Map<String, Object> mParams;
 
     // 上下文
-    private Context mContext;
+    private static Context mContext;
+    // 默认OkHttpEngine
+    private static IHttpEngine mHttpEngine;
 
     private HttpUtils(Context context) {
         mContext = context;
@@ -93,13 +94,12 @@ public class HttpUtils {
         execute(null);
     }
 
-    // 默认OkHttpEngine
-    private static IHttpEngine mHttpEngine = new OkHttpEngine();
 
     // 在Application初始化引擎
     public static void init(IHttpEngine httpEngine) {
         mHttpEngine = httpEngine;
     }
+
 
     /**
      * 每次可以自带引擎

@@ -23,8 +23,6 @@
 
     <color name="base_money">#ff4a5a</color>
 
-    <color name="tab_panel_bg">#68c4ff</color>
-    <color name="tab_panel_divider">#68c4ff</color>
     //虚线
     <color name="line_dotted">#cecece</color>
 </resources>

@@ -51,8 +51,6 @@ public class ResponseErrorListenerImpl implements ResponseErrorListener {
 
             return;
         }
-        //ArmsUtils.snackbarText(msg);
-
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 

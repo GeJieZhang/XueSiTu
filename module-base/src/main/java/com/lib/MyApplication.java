@@ -13,9 +13,13 @@ import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.http.ok.OkHttpEngine;
 
 import com.lib.fastkit.utils.log.LogUtil;
+
 import com.squareup.leakcanary.LeakCanary;
 
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tencent.smtt.sdk.QbSdk;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 import timber.log.Timber;
@@ -128,7 +132,13 @@ public class MyApplication extends Application {
      * 初始化网络请求
      */
     private void initHttp() {
-        HttpUtils.init(new OkHttpEngine());
+
+
+
+
+        HttpUtils.init(new OkHttpEngine(applicationInstance));
+
+
     }
 
 

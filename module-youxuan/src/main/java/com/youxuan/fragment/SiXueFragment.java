@@ -6,6 +6,8 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.lib.app.ARouterPathUtils;
+import com.lib.fastkit.http.ok.HttpUtils;
+import com.lib.fastkit.http.ok.extension.HttpNormalCallBack;
 import com.lib.ui.fragment.BaseAppFragment;
 import com.youxuan.R;
 
@@ -21,7 +23,30 @@ public class SiXueFragment extends BaseAppFragment {
 
         tv = view.findViewById(R.id.tv);
 
-        tv.setText(this.getClass().getName());
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                HttpUtils.with(getContext())
+                        .url("http://www.ifeng.com")
+                        .get()
+                        .execute(new HttpNormalCallBack<String>() {
+                            @Override
+                            public void onSuccess(String result) {
+
+
+                            }
+
+                            @Override
+                            public void onError(String e) {
+
+                                showToast(e);
+
+                            }
+                        });
+
+            }
+        });
     }
 
     @Override

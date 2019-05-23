@@ -9,13 +9,18 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.FragmentUtils;
 import com.lib.fastkit.ui.base.control.ActivityCollector;
+import com.lib.fastkit.utils.log.LogUtil;
+import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.fastkit.views.viewpager.my.MyViewPager;
 import com.lib.ui.activity.BaseAppActivity;
+
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +74,23 @@ public class MainActivity extends BaseAppActivity {
         initView();
 
 
+
+
+
+        PermissionUtil.getInstance(this).externalStorage(new PermissionUtil.RequestPermission() {
+            @Override
+            public void onRequestPermissionSuccess() {
+
+            }
+
+            @Override
+            public void onRequestPermissionFailure() {
+
+            }
+        });
+
+
+
     }
 
     private void initData() {
@@ -86,7 +108,7 @@ public class MainActivity extends BaseAppActivity {
 
     private void initView() {
 
-        //mViewPager=findViewById(R.id.mViewPager);
+
         mViewPager.setOffscreenPageLimit(4);
         mDemandAdapter = new DemandAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mDemandAdapter);
@@ -193,25 +215,6 @@ public class MainActivity extends BaseAppActivity {
 
 
     }
-
-
-//    private void setItem() {
-//        /**
-//         * 一定要在设置适配器之后设置Icon
-//         */
-//        for (int i = 0; i < mToolbarTab.getTabCount(); i++) {
-//            mToolbarTab.getTabAt(i).setCustomView(getTabView(i));
-//        }
-//    }
-//
-//    public View getTabView(int position) {
-//        View view = LayoutInflater.from(this).inflate(R.layout.item_tab, null);
-//        ImageView tab_image = view.findViewById(R.id.tab_image);
-//        TextView tab_text = view.findViewById(R.id.tab_text);
-//        tab_image.setImageResource(tabIconsDefault[position]);
-//        tab_text.setText(tab_array[position]);
-//        return view;
-//    }
 
 
     /**
