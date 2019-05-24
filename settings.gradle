@@ -1,1 +1,1 @@
-include ':app', ':lib-fastkit', ':module-base', ':module-user', ':module-youxuan'
+include ':app', ':lib-fastkit', ':lib-base', ':module-user', ':module-youxuan', ':module-live'

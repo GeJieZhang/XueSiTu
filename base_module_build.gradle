@@ -109,5 +109,5 @@ dependencies {
     annotationProcessor "com.alibaba:arouter-compiler:$var.arouter_compiler"
     annotationProcessor "com.jakewharton:butterknife-compiler:$var.butter_knife"
 
-    api project(':module-base')
+    api project(':lib-base')
 }

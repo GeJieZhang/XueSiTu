@@ -9,8 +9,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/lib-base" />
             <option value="$PROJECT_DIR$/lib-fastkit" />
-            <option value="$PROJECT_DIR$/module-base" />
+            <option value="$PROJECT_DIR$/module-live" />
             <option value="$PROJECT_DIR$/module-user" />
             <option value="$PROJECT_DIR$/module-youxuan" />
           </set>

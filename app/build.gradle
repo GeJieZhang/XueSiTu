@@ -104,6 +104,8 @@ dependencies {
         api project(':module-user')
 
         api project(':module-youxuan')
+
+        api project(':module-live')
     }
 
 
