@@ -1,0 +1,27 @@
+    //==============================================================================================
+    //================================================================================半圆进度条====
+    //==============================================================================================
+
+
+      1.来源
+      https://www.jianshu.com/p/3f26784e2320
+
+      <com.littlejie.circleprogress.CircleProgress
+            android:id="@+id/circle_progress_bar2"
+            android:layout_width="100dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            app:antiAlias="true"
+            app:arcWidth="@dimen/small"
+            app:bgArcColor="@color/colorAccent"
+            app:bgArcWidth="@dimen/small"
+            app:hint="百分比"
+            app:hintSize="@dimen/text_size_15"
+            app:maxValue="100"
+            app:startAngle="135"
+            app:sweepAngle="270"
+            app:textOffsetPercentInRadius="0.5"
+            app:unit="%"
+            app:unitSize="@dimen/text_size_15"
+            app:value="75"
+            app:valueSize="@dimen/text_size_20" />
