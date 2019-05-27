@@ -6,32 +6,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
 
-        <TextView
-            style="@style/text_style2"
-            android:layout_marginLeft="16dp"
-            android:text="学思兔"
-
-            />
-
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"></View>
-
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="16dp"
-            android:src="@mipmap/icon_personal" />
-
-    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"

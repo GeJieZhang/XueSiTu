@@ -54,8 +54,8 @@ public class BookChooseActivity extends BaseAppActivity {
     @Override
     protected void onCreateView() {
 
-        setContentView(R.layout.activity_book_choose);
-        ButterKnife.bind(this);
+//        setContentView(R.layout.activity_book_choose);
+//        ButterKnife.bind(this);
 
 
         initData();
@@ -64,6 +64,11 @@ public class BookChooseActivity extends BaseAppActivity {
         initView();
 
 
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_book_choose;
     }
 
     private void initView() {

@@ -24,6 +24,11 @@ import com.lib.fastkit.R;
 import com.lib.fastkit.ui.base.control.ActivityCollector;
 import com.lib.fastkit.utils.status_bar.QMUI.QMUIStatusBarHelper;
 
+import org.simple.eventbus.EventBus;
+
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 
 /**
  * Created by Eagle510 on 2017/8/10.
@@ -44,20 +49,25 @@ import com.lib.fastkit.utils.status_bar.QMUI.QMUIStatusBarHelper;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private Toast mToast;
-
+    private Unbinder unbinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         initSystemBarTint();
         addActivity();
+
+        setContentView(getLayoutId());
+        unbinder = ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         onCreateView();
 
 
     }
 
+    //获取布局id
+    protected abstract int getLayoutId();
 
     //==============================================================================================
     //====================================================================Activity的固定方法流程====
@@ -328,7 +338,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        EventBus.getDefault().unregister(this);
+        unbinder.unbind();
         ActivityCollector.removeActivity(this);
     }
 }

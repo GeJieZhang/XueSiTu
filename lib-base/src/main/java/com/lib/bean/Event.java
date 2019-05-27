@@ -6,6 +6,10 @@ public class Event<T> {
 
     private T data;
 
+
+    public Event() {
+    }
+
     public Event(int eventCode) {
         this.eventCode = eventCode;
     }

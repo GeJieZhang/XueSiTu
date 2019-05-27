@@ -26,10 +26,15 @@ public class LoginActivity extends BaseAppActivity {
     @Override
     protected void onCreateView() {
 
-        setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
+//        setContentView(R.layout.activity_login);
+//        ButterKnife.bind(this);
 
 
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_login;
     }
 
     CountDownTimer timer = new CountDownTimer(60000, 1000) {

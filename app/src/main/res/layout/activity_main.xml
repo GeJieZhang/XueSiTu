@@ -1,20 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/kit_bg"
-
-    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <com.lib.fastkit.views.viewpager.my.MyViewPager
-        android:id="@+id/mViewPager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="-10dp"
-        android:layout_weight="1" />
 
-    <include layout="@layout/include_bottom_bar" />
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/kit_bg"
+        android:orientation="vertical">
+
+        <com.lib.view.navigationbar.xuesitu.HomeNavigationBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.lib.fastkit.views.viewpager.my.MyViewPager
+            android:id="@+id/mViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-10dp"
+            android:layout_weight="1" />
+
+        <include layout="@layout/include_bottom_bar" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_personal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/alpha_black60"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <fragment
+            android:id="@+id/f_personal"
+            android:name="com.user.fragment.PersonalFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </fragment>
+    </LinearLayout>
+
+
+</FrameLayout>

@@ -1,5 +1,6 @@
 package com.xuesitu;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,25 +8,29 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import java.lang.annotation.Annotation;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.lib.app.ARouterPathUtils;
+import com.lib.app.EventBusTagUtils;
 import com.lib.app.FragmentUtils;
+import com.lib.bean.Event;
 import com.lib.fastkit.ui.base.control.ActivityCollector;
-import com.lib.fastkit.utils.log.LogUtil;
+import com.lib.fastkit.utils.animation_deal.AnimationUtil;
 import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.fastkit.views.viewpager.my.MyViewPager;
 import com.lib.ui.activity.BaseAppActivity;
 
-import com.tbruyelle.rxpermissions2.RxPermissions;
+import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,8 +67,10 @@ public class MainActivity extends BaseAppActivity {
     LinearLayout linFengxiang;
     @BindView(R.id.iv_center)
     ImageView ivCenter;
+    @BindView(R.id.lin_personal)
+    LinearLayout linPersonal;
 
-
+    private boolean PersonalFragmentIsShow = false;
     private DemandAdapter mDemandAdapter;
     private List<Fragment> fragments = new ArrayList<>();
 
@@ -71,8 +78,7 @@ public class MainActivity extends BaseAppActivity {
     @Override
     protected void onCreateView() {
 
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+
         initData();
         initView();
 
@@ -90,6 +96,11 @@ public class MainActivity extends BaseAppActivity {
         });
 
 
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_main;
     }
 
     private void initData() {
@@ -221,6 +232,13 @@ public class MainActivity extends BaseAppActivity {
 
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
 
     /**
      * 适配器
@@ -266,6 +284,108 @@ public class MainActivity extends BaseAppActivity {
             return true;
         }
         return true;
+    }
+
+
+    @Subscriber(tag = EventBusTagUtils.PersonalFragment)
+    public void fromPersonalFragment(Event event) {
+
+        switch (event.getEventCode()) {
+
+            case 1: {
+
+
+                setMenu();
+
+
+                break;
+            }
+
+        }
+
+
+    }
+
+
+    @Subscriber(tag = EventBusTagUtils.HomeNavigationBar)
+    public void fromHomeNavigationBar(Event event) {
+
+        switch (event.getEventCode()) {
+
+            case 1: {
+
+
+                setMenu();
+
+
+                break;
+            }
+
+        }
+
+
+    }
+
+    private void setMenu() {
+        switch (linPersonal.getVisibility()) {
+            case View.VISIBLE: {
+                linPersonal.setVisibility(View.GONE);
+
+
+                AnimationSet animationSet = new AnimationSet(true);
+                animationSet.addAnimation(AnimationUtil.leftToView());
+                animationSet.addAnimation(AnimationUtil.Alpha1To0());
+                linPersonal.startAnimation(animationSet);
+
+                animationSet.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        linPersonal.setBackgroundResource(R.color.alpha_black100);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                break;
+            }
+
+
+            case View.GONE: {
+                linPersonal.setVisibility(View.VISIBLE);
+
+
+                AnimationSet animationSet = new AnimationSet(true);
+                animationSet.addAnimation(AnimationUtil.rightToView());
+                animationSet.addAnimation(AnimationUtil.Alpha0To1());
+                linPersonal.startAnimation(animationSet);
+                animationSet.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+
+                        linPersonal.setBackgroundResource(R.color.alpha_black60);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+
+            }
+        }
     }
 
 }

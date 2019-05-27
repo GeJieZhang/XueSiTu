@@ -7,4 +7,9 @@ public class YouXuanMainActivity extends BaseAppActivity {
     protected void onCreateView() {
 
     }
+
+    @Override
+    protected int getLayoutId() {
+        return 0;
+    }
 }

@@ -183,8 +183,13 @@
 #--------------------------------------------------------------------------------------------------
 # ARouter
 -keep public class com.alibaba.android.arouter.routes.**{*;}
+-keep public class com.alibaba.android.arouter.facade.**{*;}
 -keep class * implements com.alibaba.android.arouter.facade.template.ISyringe{*;}
+
+# 如果使用了 byType 的方式获取 Service，需添加下面规则，保护接口
 -keep interface * implements com.alibaba.android.arouter.facade.template.IProvider
+
+
 
 #--------------------------------------------------------------------------------------------------
 #banner混淆
@@ -543,10 +548,25 @@ rx.internal.util.atomic.LinkedQueueNode consumerNode;
 	public *;
 }
 
+
+#--------------------------------------------------------------------------------------------------
+#pinyin4j
+-dontwarn demo.**
+-keep class demo.**{*;}
+
+-dontwarn net.sourceforge.pinyin4j.**
+-keep class net.sourceforge.pinyin4j.**{*;}
+-keep class net.sourceforge.pinyin4j.format.**{*;}
+-keep class net.sourceforge.pinyin4j.format.exception.**{*;}
+
+#--------------------------------------------------------------------------------------------------
+#javax
+-keep public class javax.lang.model.element.Element { *; }
+-keep public class * extends javax.lang.model.element.Element { *; }
 #--------------------------------------------------------------------------------------------------
 #bean
 -keep public class com.youxuan.bean.**{*;}
-
+-keep public class com.lib.bean.**{*;}
 
 
 

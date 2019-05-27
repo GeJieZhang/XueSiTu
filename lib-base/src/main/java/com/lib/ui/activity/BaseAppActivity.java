@@ -18,6 +18,7 @@ public abstract class BaseAppActivity extends BaseActivity {
 
     protected abstract void onCreateView();
 
+    protected abstract int getLayoutId();
 
     @Override
     protected void onDestroy() {

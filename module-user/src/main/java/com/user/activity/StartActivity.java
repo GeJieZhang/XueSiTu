@@ -13,9 +13,14 @@ public class StartActivity extends BaseAppActivity {
     @Override
     protected void onCreateView() {
 
-        setContentView(R.layout.activity_start);
-        ButterKnife.bind(this);
+//        setContentView(R.layout.activity_start);
+//        ButterKnife.bind(this);
 
 
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_start;
     }
 }

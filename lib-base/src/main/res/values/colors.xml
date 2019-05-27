@@ -25,7 +25,10 @@
 
     //虚线
     <color name="line_dotted">#cecece</color>
-
+    //百分之60透明
+    <color name="alpha_black60">#60000000</color>
+    //百分之100透明
+    <color name="alpha_black100">#00000000</color>
 
     
 

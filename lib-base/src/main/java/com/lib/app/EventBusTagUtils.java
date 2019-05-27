@@ -5,14 +5,15 @@ package com.lib.app;
  */
 
 public class EventBusTagUtils {
-    //更新HomeFragment
-    public static final int UPDATE_HOME_FRAGMENT = 1;
-    //更新MeFragment
-    public static final int UPDATE_ME_FRAGMENT = 2;
 
     /**
-     * 注册成功后再登录界面显示用户名密码
+     * 个人中心的消息
      */
-    public static final int UPDATE_LOGIN = 3;
+    public static final String PersonalFragment = "PersonalFragment";
+    /**
+     * 主页标题栏的消息
+     */
+    public static final String HomeNavigationBar = "HomeNavigationBar";
+
 
 }

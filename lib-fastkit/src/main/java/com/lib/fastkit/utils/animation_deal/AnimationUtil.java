@@ -1,5 +1,6 @@
 package com.lib.fastkit.utils.animation_deal;
 
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 
@@ -48,4 +49,19 @@ public class AnimationUtil {
         mHiddenAction.setDuration(500);
         return mHiddenAction;
     }
+
+
+    public static AlphaAnimation Alpha1To0() {
+        AlphaAnimation alphaAnimation = new AlphaAnimation(1.0f, 0.0f);
+        alphaAnimation.setDuration(500);
+        return alphaAnimation;
+    }
+
+    public static AlphaAnimation Alpha0To1() {
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0.0f, 1.0f);
+        alphaAnimation.setDuration(500);
+        return alphaAnimation;
+    }
+
+
 }

@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/scrollView">
+
+    <LinearLayout
+        android:id="@+id/lin_transparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+
+            android:layout_width="74dp"
+            android:layout_height="match_parent"
+
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="32dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/text_style2"
+                    android:layout_marginLeft="16dp"
+                    android:text="个人中心"
+
+                    />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"></View>
+
+                <ImageView
+                    android:id="@+id/iv_setting"
+                    android:layout_width="20dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="16dp"
+                    android:src="@mipmap/icon_quit" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@mipmap/ic_head" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="16dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/text_style2"
+                            android:text="小明同学" />
+
+                        <ImageView
+                            android:id="@+id/iv_name"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="8dp"
+                            android:src="@mipmap/icon_modify" />
+                    </LinearLayout>
+
+
+                    <TextView
+                        style="@style/text_style3"
+                        android:layout_marginTop="8dp"
+                        android:text="兔币:120" />
+
+                    <Button
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="60dp"
+                        android:layout_height="25dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/circle_button_r15"
+                        android:text="充值"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/lin_class"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@mipmap/icon_coures" />
+
+                        <TextView
+                            style="@style/text_style3"
+                            android:layout_marginTop="10dp"
+                            android:text="我的课程" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lin_question"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@mipmap/icon_ask" />
+
+                        <TextView
+                            style="@style/text_style3"
+                            android:layout_marginTop="10dp"
+                            android:text="我的提问" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lin_evaluation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@mipmap/icon_test" />
+
+                        <TextView
+                            style="@style/text_style3"
+                            android:layout_marginTop="10dp"
+                            android:text="我的测评" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/lin_teacher"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@mipmap/icon_ask" />
+
+                        <TextView
+                            style="@style/text_style3"
+                            android:layout_marginTop="10dp"
+                            android:text="我的老师" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lin_study"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@mipmap/icon_progress" />
+
+                        <TextView
+                            style="@style/text_style3"
+                            android:layout_marginTop="10dp"
+                            android:text="学习历程" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lin_sign"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@mipmap/icon_coures" />
+
+                        <TextView
+                            style="@style/text_style3"
+                            android:layout_marginTop="10dp"
+                            android:text="签到有礼" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/text_style4"
+
+                        android:gravity="center"
+                        android:paddingLeft="10dp"
+                        android:text="官网:www.xuesituedu.com"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        style="@style/text_style4"
+                        android:text="  |  "
+                        android:textSize="12sp" />
+
+                    <TextView
+                        style="@style/text_style4"
+                        android:text="师资展示"
+
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/text_style4"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="关于我们"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        style="@style/text_style4"
+                        android:text="  |  "
+                        android:textSize="12sp" />
+
+                    <TextView
+                        style="@style/text_style4"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="注册协议"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        style="@style/text_style4"
+                        android:text="  |  "
+                        android:textSize="12sp" />
+
+                    <TextView
+                        style="@style/text_style4"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="联系我们"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        style="@style/text_style4"
+                        android:text="  |  "
+                        android:textSize="12sp" />
+
+                    <TextView
+                        style="@style/text_style4"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="常见问题"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</ScrollView>
