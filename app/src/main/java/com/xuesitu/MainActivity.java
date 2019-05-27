@@ -108,7 +108,7 @@ public class MainActivity extends BaseAppActivity {
         fragments.clear();
         fragments.add(FragmentUtils.getYouXuanFragment());
         fragments.add(FragmentUtils.getSiXueFragment());
-        fragments.add(FragmentUtils.getCenterFragment());
+        fragments.add(FragmentUtils.getDayiFragment());
         fragments.add(FragmentUtils.getJianKeFragment());
         fragments.add(FragmentUtils.getFengXiangFragment());
 

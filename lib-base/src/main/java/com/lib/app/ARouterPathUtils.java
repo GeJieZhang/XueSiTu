@@ -6,7 +6,7 @@ package com.lib.app;
 
 public class ARouterPathUtils {
 
-    public static final String YouXuan_CenterFragment = "/youxuan/CenterFragment";
+    public static final String Dayi_DayiFragment = "/dayi/DayiFragment";
     public static final String YouXuan_FengXiangFragment = "/youxuan/FengXiangFragment";
     public static final String YouXuan_JianKeFragment = "/youxuan/JianKeFragment";
     public static final String YouXuan_SiXueFragment = "/youxuan/SiXueFragment";

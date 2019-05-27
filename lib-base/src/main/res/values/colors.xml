@@ -12,6 +12,9 @@
     //蓝色
     <color name="base_blue">#68c4ff</color>
 
+
+    <color name="base_white">#f6f6f6</color>
+
     <color name="base_yellow">#ffe000</color>
     //灰色
     <color name="base_gray">#686868</color>
@@ -30,6 +33,5 @@
     //百分之100透明
     <color name="alpha_black100">#00000000</color>
 
-    
 
 </resources>

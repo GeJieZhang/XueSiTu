@@ -106,6 +106,8 @@ dependencies {
         api project(':module-youxuan')
 
         api project(':module-live')
+
+        api project(':module-dayi')
     }
 
 

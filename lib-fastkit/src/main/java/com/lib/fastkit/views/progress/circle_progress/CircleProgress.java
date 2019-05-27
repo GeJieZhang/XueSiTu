@@ -48,6 +48,7 @@ public class CircleProgress extends View {
     private int mValueColor;
     private float mValueSize;
 
+
     //绘制圆弧
     private Paint mArcPaint;
     private int mArcColor1, mArcColor2, mArcColor3;
@@ -152,7 +153,7 @@ public class CircleProgress extends View {
         mValuePaint.setTextSize(mValueSize);
         mValuePaint.setColor(mValueColor);
         // 设置Typeface对象，即字体风格，包括粗体，斜体以及衬线体，非衬线体等
-        mValuePaint.setTypeface(Typeface.DEFAULT_BOLD);
+        //mValuePaint.setTypeface(Typeface.DEFAULT_BOLD);
         mValuePaint.setTextAlign(Paint.Align.CENTER);
 
         mUnitPaint = new TextPaint();
@@ -201,6 +202,7 @@ public class CircleProgress extends View {
         float maxArcWidth = Math.max(mArcWidth, mBgArcWidth);
         //减去圆弧的宽度，否则会造成部分圆弧绘制在外围，通过clipPadding属性可以解决
         mRadius = size / 2 - maxArcWidth;
+
         //绘制圆弧的边界
         mRectF.left = mLocationOnScreen[0] + getPaddingLeft();
         mRectF.top = mLocationOnScreen[1] + getPaddingTop();
@@ -226,7 +228,7 @@ public class CircleProgress extends View {
         // float textWidth = mValuePaint.measureText(mValue.toString());
         // float x = mFloatX - textWidth / 2;
         float y = mFloatY - (mValuePaint.descent() + mValuePaint.ascent()) / 2;
-        canvas.drawText(String.format(mPrecisionFormat, mValue), mFloatX, y, mValuePaint);
+        canvas.drawText(String.format(mPrecisionFormat, mValue) + mUnit.toString(), mFloatX, y, mValuePaint);
 
         if (mHint != null) {
             float hy = mFloatY * 2 / 3 - (mHintPaint.descent() + mHintPaint.ascent()) / 2;
@@ -235,7 +237,7 @@ public class CircleProgress extends View {
 
         if (mUnit != null) {
             float uy = mFloatY * 4 / 3 - (mUnitPaint.descent() + mUnitPaint.ascent()) / 2;
-            canvas.drawText(mUnit.toString(), mFloatX, uy, mUnitPaint);
+            //canvas.drawText(mUnit.toString(), mFloatX, uy, mUnitPaint);
         }
     }
 

@@ -12,8 +12,8 @@ import com.alibaba.android.arouter.launcher.ARouter;
 
 public class FragmentUtils {
 
-    public static Fragment getCenterFragment() {
-        Fragment fragment = (Fragment) ARouter.getInstance().build(ARouterPathUtils.YouXuan_CenterFragment).navigation();
+    public static Fragment getDayiFragment() {
+        Fragment fragment = (Fragment) ARouter.getInstance().build(ARouterPathUtils.Dayi_DayiFragment).navigation();
         return fragment;
     }
 
