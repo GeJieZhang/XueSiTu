@@ -1,4 +1,4 @@
-package com.youxuan.bean;
+package com.dayi.bean;
 
 /**
  * Created by songwenchao
