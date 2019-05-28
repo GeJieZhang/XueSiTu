@@ -12,9 +12,9 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import java.security.MessageDigest;
 
 /**
- * 作者：Created by 周正权 on 2018/6/1.
- * <p>
- * 作用：
+ *
+ * 纯圆角
+ *
  */
 public class GlideCircleTransform extends BitmapTransformation {
     public GlideCircleTransform(Context context) {

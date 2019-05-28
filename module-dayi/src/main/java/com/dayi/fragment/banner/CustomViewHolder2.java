@@ -1,15 +1,14 @@
-package com.youxuan.fragment.banner;
+package com.dayi.fragment.banner;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.lib.fastkit.utils.log.LogUtil;
+import com.lib.bean.CustomData;
+import com.live.R;
 import com.ms.banner.holder.BannerViewHolder;
 
-import com.youxuan.R;
-import com.youxuan.bean.CustomData;
 
 /**
  * Created by songwenchao

@@ -1,8 +1,7 @@
-package com.littlejie.circleprogress;
+package com.lib.fastkit.views.progress.circle_progress;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -16,8 +15,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import com.littlejie.circleprogress.utils.Constant;
-import com.littlejie.circleprogress.utils.MiscUtil;
+import com.lib.fastkit.BuildConfig;
+import com.lib.fastkit.R;
+
 
 /**
  * 圆形进度条，类似 QQ 健康中运动步数的 UI 控件
@@ -191,14 +191,14 @@ public class CircleProgress extends View {
         mArcPaint.setStrokeWidth(mArcWidth);
         // 当画笔样式为STROKE或FILL_OR_STROKE时，设置笔刷的图形样式，如圆形样式
         // Cap.ROUND,或方形样式 Cap.SQUARE
-        mArcPaint.setStrokeCap(Paint.Cap.ROUND);
+        mArcPaint.setStrokeCap(Paint.Cap.SQUARE);
 
         mBgArcPaint = new Paint();
         mBgArcPaint.setAntiAlias(antiAlias);
         mBgArcPaint.setColor(mBgArcColor);
         mBgArcPaint.setStyle(Paint.Style.STROKE);
         mBgArcPaint.setStrokeWidth(mBgArcWidth);
-        mBgArcPaint.setStrokeCap(Paint.Cap.ROUND);
+        mBgArcPaint.setStrokeCap(Paint.Cap.SQUARE);
     }
 
     @Override
@@ -260,14 +260,14 @@ public class CircleProgress extends View {
         // 计算文字宽度，由于Paint已设置为居中绘制，故此处不需要重新计算
         // float textWidth = mValuePaint.measureText(mValue.toString());
         // float x = mCenterPoint.x - textWidth / 2;
-        canvas.drawText(String.format(mPrecisionFormat, mValue), mCenterPoint.x, mValueOffset, mValuePaint);
+        canvas.drawText(String.format(mPrecisionFormat, mValue)+mUnit.toString(), mCenterPoint.x, mValueOffset, mValuePaint);
 
         if (mHint != null) {
             canvas.drawText(mHint.toString(), mCenterPoint.x, mHintOffset, mHintPaint);
         }
 
         if (mUnit != null) {
-            canvas.drawText(mUnit.toString(), mCenterPoint.x, mUnitOffset, mUnitPaint);
+            //canvas.drawText(mUnit.toString(), mCenterPoint.x, mUnitOffset, mUnitPaint);
         }
     }
 

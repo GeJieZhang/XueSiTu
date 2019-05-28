@@ -1,4 +1,4 @@
-package com.dayi.bean;
+package com.lib.bean;
 
 /**
  * Created by songwenchao

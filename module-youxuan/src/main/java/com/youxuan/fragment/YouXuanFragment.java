@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.FragmentUtils;
+import com.lib.bean.CustomData;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.recyclerview.tool.MyLinearLayoutManager;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
@@ -28,7 +29,6 @@ import com.ms.banner.Transformer;
 import com.ms.banner.listener.OnBannerClickListener;
 import com.youxuan.R;
 import com.youxuan.R2;
-import com.youxuan.bean.CustomData;
 import com.youxuan.fragment.banner.CustomViewHolder2;
 
 import java.util.ArrayList;

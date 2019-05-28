@@ -1,4 +1,4 @@
-package com.littlejie.circleprogress.utils;
+package com.lib.fastkit.views.progress.circle_progress;
 
 /**
  * Created by littlejie on 2017/2/26.
