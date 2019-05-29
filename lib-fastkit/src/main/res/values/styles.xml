@@ -1,14 +1,17 @@
 <resources>
 
 
-
-
     //==============================================================================================
     //=================================================================================自定义View====
     //==============================================================================================
 
 
+    <!--ZenHui的Dialog-->
 
+    <style name="kit_dialog_from_bottom_anim">
+        <item name="android:windowEnterAnimation">@anim/kit_dialog_from_bottom_anim_in</item>
+        <item name="android:windowExitAnimation">@anim/kit_dialog_from_bottom_anim_out</item>
+    </style>
 
     <style name="kit_dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>

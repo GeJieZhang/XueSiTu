@@ -50,7 +50,7 @@
                         app:hintSize="15sp"
                         app:maxValue="10000"
                         app:startAngle="175"
-                        app:sweepAngle="180"
+                        app:sweepAngle="185"
                         app:unit="元"
                         app:unitColor="#ff4663"
                         app:unitSize="15sp"

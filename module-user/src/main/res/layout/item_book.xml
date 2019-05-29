@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center"
     android:orientation="vertical">
 
     <Button
@@ -9,10 +10,8 @@
         style="@style/button1"
         android:layout_width="65dp"
         android:layout_height="35dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginTop="16dp"
-        android:textColor="@color/base_text1"
-        android:background="@drawable/bg_circle_hollow_r22_1" />
+        android:background="@drawable/bg_circle_hollow_r22_1"
+        android:textColor="@color/base_text1" />
 
 </LinearLayout>

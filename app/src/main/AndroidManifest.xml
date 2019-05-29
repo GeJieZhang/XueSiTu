@@ -31,9 +31,9 @@
 
         <!-- 启动页面 -->
         <activity
-            android:name=".MainActivity"
+            android:name=".LaunchActivity"
             android:hardwareAccelerated="true"
-            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:theme="@style/SplashTheme"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,10 +42,12 @@
             </intent-filter>
         </activity>
 
-        <!--<activity android:name=".TestViewActivity"></activity>-->
+        <activity android:name=".MainActivity"
+            ></activity>
 
 
-
+        <!--初始化项目组件服务-->
+        <service android:name="com.lib.service.InitIntentService" />
     </application>
 
 </manifest>

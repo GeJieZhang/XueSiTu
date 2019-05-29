@@ -8,6 +8,7 @@ import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.lib.service.InitIntentService;
 import com.lib.utls.application_deal.UIUtils;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.http.ok.OkHttpEngine;
@@ -40,6 +41,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         applicationInstance = this;
+
         //组件化开发
         initRouter(this);
 
@@ -124,7 +126,7 @@ public class MyApplication extends Application {
      *
      * @return
      */
-    public static Context getInstance() {
+    public static Application getInstance() {
         return applicationInstance;
     }
 
@@ -132,8 +134,6 @@ public class MyApplication extends Application {
      * 初始化网络请求
      */
     private void initHttp() {
-
-
 
 
         HttpUtils.init(new OkHttpEngine(applicationInstance));

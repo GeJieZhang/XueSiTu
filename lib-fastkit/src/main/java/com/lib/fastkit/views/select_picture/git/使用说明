@@ -6,6 +6,8 @@
     1.来自GitHub
         compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.1.0'
 
+        https://github.com/LuckSiege/PictureSelector
+
     2.使用方法
      /**
          * 选择图片

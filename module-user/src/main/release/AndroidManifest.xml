@@ -9,5 +9,6 @@
         <activity android:name=".activity.LoginActivity"></activity>
         <activity android:name=".activity.StartActivity"></activity>
         <activity android:name=".activity.BookChooseActivity"></activity>
+        <activity android:name=".activity.IdentityActivity"></activity>
     </application>
 </manifest>

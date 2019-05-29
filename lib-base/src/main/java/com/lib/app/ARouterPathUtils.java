@@ -17,6 +17,9 @@ public class ARouterPathUtils {
 
     public static final String App_MainActivity = "/app/MainActivity";
 
+    public static final String App_LaunchActivity = "/app/LaunchActivity";
+
+
 
     //==============================================================================================
     //======================================================================================优选====
@@ -31,5 +34,5 @@ public class ARouterPathUtils {
     public static final String User_LoginActivity = "/user/LoginActivity";
     public static final String User_BookChooseActivity = "/user/BookChooseActivity";
     public static final String User_StartActivity = "/user/StartActivity";
-
+    public static final String User_IdentityActivity = "/user/IdentityActivity";
 }

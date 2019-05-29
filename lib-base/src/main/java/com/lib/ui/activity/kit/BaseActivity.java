@@ -57,7 +57,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         initSystemBarTint();
         addActivity();
-        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(getLayoutId());
         unbinder = ButterKnife.bind(this);
         EventBus.getDefault().register(this);

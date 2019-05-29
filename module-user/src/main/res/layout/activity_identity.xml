@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/text_style6"
+        android:layout_gravity="center"
+        android:text="请选择你的身份！"
+
+        android:textSize="24sp"
+        android:textStyle="normal" />
+
+
+    <FrameLayout
+        android:id="@+id/f_teacher"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:layout_marginTop="60dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_circle_bule1" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:background="@drawable/bg_circle_bule2" />
+
+        <TextView
+            style="@style/text_style6"
+
+            android:layout_gravity="center"
+
+            android:text="老师"
+
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="normal"
+
+            />
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/f_student"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:layout_marginTop="40dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_circle_purple1" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:background="@drawable/bg_circle_purple2" />
+
+        <TextView
+            style="@style/text_style6"
+
+            android:layout_gravity="center"
+
+            android:text="学生"
+
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="normal"
+
+            />
+
+
+    </FrameLayout>
+
+</LinearLayout>
