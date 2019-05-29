@@ -1,5 +1,6 @@
 package com.user.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -7,10 +8,15 @@ import android.widget.Button;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.lib.app.ARouterPathUtils;
+import com.lib.fastkit.http.ok.EngineCallBack;
+import com.lib.fastkit.http.ok.HttpUtils;
+import com.lib.fastkit.http.ok.extension.HttpNormalCallBack;
 import com.lib.fastkit.utils.timer_countdown.CountDownTimer;
 import com.lib.ui.activity.BaseAppActivity;
 import com.user.R;
 import com.user.R2;
+
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,7 +57,7 @@ public class LoginActivity extends BaseAppActivity {
 
 
             btnCode.setBackgroundResource(R.drawable.bg_circle_gradient_r10);
-            btnCode.setTextColor(getResources().getColor(R.color.base_text1));
+            btnCode.setTextColor(getResources().getColor(R.color.white));
             btnCode.setText("获取验证码");
 
 
@@ -69,6 +75,26 @@ public class LoginActivity extends BaseAppActivity {
             btnCode.setBackgroundResource(R.drawable.bg_circle_hollow_r10);
             btnCode.setTextColor(getResources().getColor(R.color.base_text1));
             timer.start();
+
+
+            HttpUtils.with(this).url("https://www.baidu.com/")
+                    .addParam("requestType", "LOGIN")
+
+                    .post()
+                    .execute(new HttpNormalCallBack<String>() {
+                        @Override
+                        public void onSuccess(String result) {
+
+                            showLog(result);
+
+
+                        }
+
+                        @Override
+                        public void onError(String e) {
+
+                        }
+                    });
 
         } else if (i == R.id.btn_login) {
 

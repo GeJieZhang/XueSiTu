@@ -9,6 +9,7 @@ import android.util.Log;
 import com.lib.fastkit.http.ok.err.HttpException;
 import com.lib.fastkit.http.ok.interceptor.CacheInterceptor;
 import com.lib.fastkit.http.ok.interceptor.RequestInterceptor;
+import com.lib.fastkit.utils.rsa.RsaAndAesUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -62,13 +63,13 @@ public class OkHttpEngine implements IHttpEngine {
     }
 
     @Override
-    public void post( final Context context, String url, Map<String, Object> params, final EngineCallBack callBack) {
-
+    public void post(final Context context, String url, Map<String, Object> params, final EngineCallBack callBack) {
         final String jointUrl = HttpUtils.jointParams(url, params);  //打印
         Log.e(TAG, jointUrl);
 
 
         RequestBody requestBody = appendBody(params);
+
         final Request request = new Request.Builder()
                 .url(url)
                 .tag(context)
@@ -178,7 +179,9 @@ public class OkHttpEngine implements IHttpEngine {
     }
 
     @Override
-    public void get( final Context context, String url, Map<String, Object> params, final EngineCallBack callBack) {
+    public void get(final Context context, String url, Map<String, Object> params, final EngineCallBack callBack) {
+
+
         url = HttpUtils.jointParams(url, params);
 
         Log.e(TAG, url);

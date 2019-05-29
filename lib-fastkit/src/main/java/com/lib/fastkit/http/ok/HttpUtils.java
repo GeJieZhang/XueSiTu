@@ -2,6 +2,10 @@ package com.lib.fastkit.http.ok;
 
 import android.content.Context;
 
+import com.lib.fastkit.utils.rsa.RsaAndAesUtils;
+
+import org.json.JSONObject;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -111,11 +115,23 @@ public class HttpUtils {
 
 
     private void get(String url, Map<String, Object> params, EngineCallBack callBack) {
+
         mHttpEngine.get(mContext, url, params, callBack);
     }
 
 
     private void post(String url, Map<String, Object> params, EngineCallBack callBack) {
+
+        JSONObject json =new JSONObject(params);
+        params.clear();
+
+        Map<String, String> formatParams =RsaAndAesUtils.paramsFormat(json.toString());
+
+       // Map<String, Object>  newParams=new HashMap<>();
+
+        params.putAll(formatParams);
+
+
         mHttpEngine.post(mContext, url, params, callBack);
     }
 
