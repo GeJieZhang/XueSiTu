@@ -1,5 +1,6 @@
 package com.xuesitu;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -273,7 +274,14 @@ public class MainActivity extends BaseAppActivity {
 
             if (count > 1) {
                 //  showFinishDialog();
-                ActivityCollector.finishAll();
+
+
+                //ActivityCollector.finishAll();
+                Intent startMain = new Intent(Intent.ACTION_MAIN);
+                startMain.addCategory(Intent.CATEGORY_HOME);
+                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(startMain);
+                System.exit(0);
             } else {
                 showToast("再按一次退出应用");
 

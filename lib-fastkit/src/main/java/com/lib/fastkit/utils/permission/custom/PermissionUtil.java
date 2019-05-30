@@ -88,6 +88,8 @@ public class PermissionUtil {
 
     public static void requestPermission(RxPermissions rxPermissions, final RequestPermission requestPermission, String... permissions) {
         if (permissions == null || permissions.length == 0) return;
+        if (requestPermission == null) return;
+        if (rxPermissions == null) return;
 
         List<String> needRequest = new ArrayList<>();
         for (String permission : permissions) { //过滤调已经申请过的权限

@@ -32,7 +32,7 @@
 
         <!-- 启动页面 -->
         <activity
-            android:name=".TestX5"
+            android:name=".LaunchActivity"
             android:hardwareAccelerated="true"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -46,7 +46,10 @@
 
 
         <!--初始化项目组件服务-->
-        <service android:name="com.lib.service.InitIntentService" />
+        <service
+            android:name="com.lib.service.InitIntentService"
+            android:label="dexopt"
+            android:process=":dexopt" />
     </application>
 
 </manifest>

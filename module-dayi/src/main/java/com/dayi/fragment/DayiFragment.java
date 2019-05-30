@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.dayi.R;
+import com.dayi.R2;
 import com.dayi.fragment.banner.CustomViewHolder2;
 import com.lib.bean.CustomData;
 import com.lib.app.ARouterPathUtils;
@@ -17,8 +19,7 @@ import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.progress.circle_progress.CircleProgress;
 import com.lib.ui.fragment.BaseAppFragment;
 
-import com.live.R;
-import com.live.R2;
+
 import com.ms.banner.Banner;
 import com.ms.banner.BannerConfig;
 import com.ms.banner.Transformer;

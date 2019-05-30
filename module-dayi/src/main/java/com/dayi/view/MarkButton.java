@@ -12,11 +12,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.dayi.R;
 import com.lib.app.EventBusTagUtils;
 
 import com.lib.bean.Event;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
-import com.live.R;
+
 
 import org.simple.eventbus.EventBus;
 

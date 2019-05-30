@@ -2,6 +2,7 @@ package com.user.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ public class LoginActivity extends BaseAppActivity {
     Button btnLogin;
     @BindView(R2.id.tv_xieyi)
     TextView tvXieyi;
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreateView() {
@@ -39,7 +41,12 @@ public class LoginActivity extends BaseAppActivity {
 //        setContentView(R.layout.activity_login);
 //        ButterKnife.bind(this);
 
-
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                tvXieyi.setText("lcj");
+            }
+        }, 3 * 60 * 1000);
     }
 
     @Override

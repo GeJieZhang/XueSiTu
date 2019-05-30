@@ -5,8 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.dayi.R;
 import com.lib.bean.CustomData;
-import com.live.R;
+
 import com.ms.banner.holder.BannerViewHolder;
 
 

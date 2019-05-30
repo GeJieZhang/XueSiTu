@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 
@@ -43,26 +44,29 @@ public class MyApplication extends Application {
         super.onCreate();
         applicationInstance = this;
 
-
         //组件化开发
-        initRouter(this);
-
-
-        //通过服务初始化其他组件
-        // InitIntentService.start(applicationInstance);
-
+        initRouter();
 
         //网络请求
         initHttp();
-
-        //腾讯浏览器内核
-        initWebViewX5();
-
         //Timber日志
         initTimber();
-
         //内存检测
         initLeakCanary();
+        //X5内核
+        initX5();
+
+    }
+
+    private void initX5() {
+        Intent intent = new Intent(this, InitIntentService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent);
+        } else {
+            startService(intent);
+        }
+
+
     }
 
     /**
@@ -150,9 +154,9 @@ public class MyApplication extends Application {
     /**
      * 初始化阿里组件化开发
      *
-     * @param mApplication
+     * @param
      */
-    private void initRouter(MyApplication mApplication) {
+    private void initRouter() {
         // 这两行必须写在init之前，否则这些配置在init过程中将无效
         if (UIUtils.isApkInDebug(applicationInstance)) {
             //打印日志
@@ -164,7 +168,7 @@ public class MyApplication extends Application {
             ARouter.printStackTrace();
         }
         // 尽可能早，推荐在Application中初始化
-        ARouter.init(mApplication);
+        ARouter.init(applicationInstance);
 
     }
 
