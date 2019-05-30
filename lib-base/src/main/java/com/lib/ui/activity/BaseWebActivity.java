@@ -9,10 +9,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
+
+
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -23,16 +23,23 @@ import com.lib.base.R;
 import com.lib.fastkit.BuildConfig;
 import com.lib.fastkit.utils.network.NetUtils;
 import com.lib.fastkit.utils.status_bar.QMUI.QMUIDisplayHelper;
-import com.lib.fastkit.views.webview_qm.QDWebView;
-import com.lib.fastkit.views.webview_qm.util.QMUIPackageHelper;
+
+import com.lib.fastkit.views.webview_x5.X5WebView;
 import com.lib.ui.activity.kit.BaseActivity;
+import com.tencent.smtt.export.external.interfaces.IX5WebChromeClient;
+import com.tencent.smtt.export.external.interfaces.JsResult;
+import com.tencent.smtt.sdk.CookieSyncManager;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.utils.TbsLog;
 
 
 public abstract class BaseWebActivity extends BaseActivity {
 
     private LinearLayout lin_web;
     private ProgressBar p_bar;
-    private QDWebView webView;
+    private X5WebView webView;
 
     private Handler handler = new Handler();
 
@@ -43,9 +50,10 @@ public abstract class BaseWebActivity extends BaseActivity {
         lin_web = findViewById(R.id.lin_web);
         p_bar = findViewById(R.id.p_bar);
 
-        webView = findViewById(R.id.qm_web);
+        //webView = findViewById(R.id.qm_web);
+        webView = new X5WebView(this, null);
 //        webView = new QDWebView(this);
-//        lin_web.addView(webView);
+        lin_web.addView(webView);
         //init(MyApplication.getInstance());
         setWebView();
         onCreateView(webView);
@@ -63,7 +71,18 @@ public abstract class BaseWebActivity extends BaseActivity {
 
     public void setWebView() {
 
+
         try {
+
+            webView.setWebViewClient(new com.tencent.smtt.sdk.WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    return false;
+                }
+
+
+            });
+
             webView.setWebChromeClient(new WebChromeClient() {
 
                 @Override
@@ -89,11 +108,43 @@ public abstract class BaseWebActivity extends BaseActivity {
                     }
 
                 }
+
             });
+
+
+            initSeting();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void initSeting() {
+        WebSettings webSetting = webView.getSettings();
+        webSetting.setAllowFileAccess(true);
+        webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+        webSetting.setSupportZoom(true);
+        webSetting.setBuiltInZoomControls(true);
+        webSetting.setUseWideViewPort(true);
+        webSetting.setSupportMultipleWindows(false);
+        // webSetting.setLoadWithOverviewMode(true);
+        webSetting.setAppCacheEnabled(true);
+        // webSetting.setDatabaseEnabled(true);
+        webSetting.setDomStorageEnabled(true);
+        webSetting.setJavaScriptEnabled(true);
+        webSetting.setGeolocationEnabled(true);
+        webSetting.setAppCacheMaxSize(Long.MAX_VALUE);
+        webSetting.setAppCachePath(this.getDir("appcache", 0).getPath());
+        webSetting.setDatabasePath(this.getDir("databases", 0).getPath());
+        webSetting.setGeolocationDatabasePath(this.getDir("geolocation", 0)
+                .getPath());
+        // webSetting.setPageCacheCapacity(IX5WebSettings.DEFAULT_CACHE_CAPACITY);
+        webSetting.setPluginState(WebSettings.PluginState.ON_DEMAND);
+        // webSetting.setRenderPriority(WebSettings.RenderPriority.HIGH);
+        // webSetting.setPreFectch(true);
+
+        CookieSyncManager.createInstance(this);
+        CookieSyncManager.getInstance().sync();
     }
 
 
@@ -138,34 +189,6 @@ public abstract class BaseWebActivity extends BaseActivity {
         }
         super.onDestroy();
     }
-    @SuppressLint("SetJavaScriptEnabled")
-    protected void init(Context context) {
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setSupportZoom(true);
-        webSettings.setBuiltInZoomControls(true);
-        webSettings.setDefaultTextEncodingName("GBK");
-        webSettings.setUseWideViewPort(true);
-        webSettings.setLoadWithOverviewMode(true);
-        webSettings.setDomStorageEnabled(true);
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webSettings.setTextZoom(100);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
-        }
-
-        String screen = QMUIDisplayHelper.getScreenWidth(context) + "x" + QMUIDisplayHelper.getScreenHeight(context);
-        String userAgent = "QMUIDemo/" + QMUIPackageHelper.getAppVersion(context)
-                + " (Android; " + Build.VERSION.SDK_INT
-                + "; Screen/" + screen + "; Scale/" + QMUIDisplayHelper.getDensity(context) + ")";
-        String agent = webView.getSettings().getUserAgentString();
-        if (agent == null || !agent.contains(userAgent)) {
-            webView.getSettings().setUserAgentString(agent + " " + userAgent);
-        }
-
-
-
-    }
 
 }

@@ -314,6 +314,14 @@ rx.internal.util.atomic.LinkedQueueNode consumerNode;
 #--------------------------------------------------------------------------------------------------
 #腾讯X5
 
+-dontwarn dalvik.**
+-dontwarn com.tencent.smtt.**
+#-overloadaggressively
+
+# ------------------ Keep LineNumbers and properties ---------------- #
+-keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,EnclosingMethod
+# --------------------------------------------------------------------------
+
 # Addidional for x5.sdk classes for apps
 
 -keep class com.tencent.smtt.export.external.**{
@@ -547,7 +555,6 @@ rx.internal.util.atomic.LinkedQueueNode consumerNode;
 -keep public class com.tencent.smtt.gamesdk.internal.TBSGameServiceClient {
 	public *;
 }
-
 
 #--------------------------------------------------------------------------------------------------
 #pinyin4j

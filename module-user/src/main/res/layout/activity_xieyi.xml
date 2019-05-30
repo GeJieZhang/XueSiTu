@@ -4,15 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <com.tencent.smtt.sdk.WebView
 
-    <!--<com.lib.fastkit.views.webview_qm.QDWebView-->
-    <!--android:id="@+id/lin_web"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-
-    <!--&gt;</com.lib.fastkit.views.webview_qm.QDWebView>-->
-
-    <include layout="@layout/include_web"></include>
+        android:id="@+id/lin_web"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.tencent.smtt.sdk.WebView>
 
 
 </LinearLayout>

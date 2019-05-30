@@ -20,6 +20,7 @@ import com.squareup.leakcanary.LeakCanary;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tencent.smtt.sdk.QbSdk;
 
+
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -42,14 +43,17 @@ public class MyApplication extends Application {
         super.onCreate();
         applicationInstance = this;
 
+
         //组件化开发
         initRouter(this);
 
+
+        //通过服务初始化其他组件
+        // InitIntentService.start(applicationInstance);
+
+
         //网络请求
         initHttp();
-
-        //阿里热修复
-        //queryHotFix();
 
         //腾讯浏览器内核
         initWebViewX5();
@@ -100,7 +104,8 @@ public class MyApplication extends Application {
                 // TODO Auto-generated method stub
                 //x5內核初始化完成的回调，为true表示x5内核加载成功，否则表示x5内核加载失败，会自动切换到系统内核。
 
-                Timber.d("onViewInitFinished");
+
+                LogUtil.e("初始化腾讯X5浏览器内核完成!");
             }
 
             @Override

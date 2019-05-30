@@ -14,8 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.lang.annotation.Annotation;
-
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.EventBusTagUtils;
@@ -25,7 +23,6 @@ import com.lib.fastkit.ui.base.control.ActivityCollector;
 import com.lib.fastkit.utils.animation_deal.AnimationUtil;
 import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.fastkit.views.viewpager.my.MyViewPager;
-import com.lib.framework.component.interceptor.GroupUtils;
 import com.lib.ui.activity.BaseAppActivity;
 
 import org.simple.eventbus.Subscriber;

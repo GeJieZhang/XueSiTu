@@ -19,7 +19,6 @@ android {
             }
         }
 
-        resConfigs "zh", "en"
 
     }
     //https://blog.csdn.net/willba/article/details/70876889
@@ -49,6 +48,10 @@ android {
                     }
                 }
             }
+            lintOptions {
+                checkReleaseBuilds false
+                abortOnError false
+            }
         }
 
         release {
@@ -57,7 +60,7 @@ android {
             //混淆
             minifyEnabled false
             //Zipalign优化,优化代码性能
-            zipAlignEnabled true
+            zipAlignEnabled false
             // 移除无用的resource文件
             shrinkResources false
             //前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
@@ -75,7 +78,10 @@ android {
                     }
                 }
             }
-
+            lintOptions {
+                checkReleaseBuilds false
+                abortOnError false
+            }
 
         }
 
@@ -105,11 +111,10 @@ dependencies {
 
         api project(':module-youxuan')
 
-        api project(':module-live')
+
 
         api project(':module-dayi')
+        //api project(':module-live')
     }
 
-
-    //implementation 'com.google.android.gms:play-services-ads:17.1.3'
 }

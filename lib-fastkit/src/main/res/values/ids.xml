@@ -8,7 +8,5 @@
     <item name="kit_node_items" type="id" />
     <item name="kit_tree_items" type="id" />
 
-    //-----------------------------------------------------------------------QMUI_WEBVIEW
-    <item name="qmui_window_inset_keyboard_area_consumer" type="id" />
-    //-----------------------------------------------------------------------QMUI_WEBVIEW
+
 </resources>

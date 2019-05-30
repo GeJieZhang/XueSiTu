@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.xuesitu"
-    android:versionCode="20"
-    android:versionName="1.8.0">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.xuesitu">
+
 
     <application
         android:name="com.lib.MyApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_new_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_new_logo"
@@ -31,10 +32,9 @@
 
         <!-- 启动页面 -->
         <activity
-            android:name=".LaunchActivity"
+            android:name=".TestX5"
             android:hardwareAccelerated="true"
-            android:theme="@style/SplashTheme"
-            >
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,8 +42,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity"
-            ></activity>
+        <activity android:name=".MainActivity"></activity>
 
 
         <!--初始化项目组件服务-->

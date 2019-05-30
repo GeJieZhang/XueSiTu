@@ -2,15 +2,19 @@ package com.lib.service;
 
 import android.app.Application;
 import android.app.IntentService;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.provider.SyncStateContract;
 import android.support.annotation.Nullable;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.lib.MyApplication;
+import com.lib.base.R;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.http.ok.OkHttpEngine;
+import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.utls.application_deal.UIUtils;
 import com.squareup.leakcanary.LeakCanary;
 import com.tencent.smtt.sdk.QbSdk;
@@ -47,13 +51,14 @@ public class InitIntentService extends IntentService {
         } else {
             application.startService(intent);
         }
+
+
     }
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         if (intent != null && ACTION_INIT.equals(intent.getAction())) {
-            //组件化开发
-            //initRouter(MyApplication.getInstance());
+
 
             //网络请求
             initHttp(MyApplication.getInstance());
@@ -112,7 +117,7 @@ public class InitIntentService extends IntentService {
                 // TODO Auto-generated method stub
                 //x5內核初始化完成的回调，为true表示x5内核加载成功，否则表示x5内核加载失败，会自动切换到系统内核。
 
-                Timber.d("onViewInitFinished");
+                LogUtil.e("x5内核加载成功!");
             }
 
             @Override
@@ -137,26 +142,5 @@ public class InitIntentService extends IntentService {
 
     }
 
-
-    /**
-     * 初始化阿里组件化开发
-     *
-     * @param
-     */
-    private void initRouter(Application application) {
-        // 这两行必须写在init之前，否则这些配置在init过程中将无效
-        if (UIUtils.isApkInDebug(application)) {
-            //打印日志
-            ARouter.openLog();
-            //开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！
-            //线上版本需要关闭,否则有安全风险)
-            ARouter.openDebug();
-            // 打印日志的时候打印线程堆栈
-            ARouter.printStackTrace();
-        }
-        // 尽可能早，推荐在Application中初始化
-        ARouter.init(application);
-
-    }
 
 }

@@ -10,12 +10,12 @@
         android:id="@+id/p_bar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="1dp" />
+        android:layout_height="2dp" />
 
-    <com.lib.fastkit.views.webview_qm.QDWebView
-        android:id="@+id/qm_web"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"></com.lib.fastkit.views.webview_qm.QDWebView>
+    <!--<com.lib.fastkit.views.webview_x5.X5WebView-->
+        <!--android:id="@+id/qm_web"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"></com.lib.fastkit.views.webview_x5.X5WebView>-->
 
 </LinearLayout>
