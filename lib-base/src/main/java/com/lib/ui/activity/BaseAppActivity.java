@@ -27,9 +27,9 @@ public abstract class BaseAppActivity extends BaseActivity {
 
     }
 
-    @Override
-    protected int setStatusBarColor() {
-        return R.color.colorPrimaryDark;
-    }
+//    @Override
+//    protected int setStatusBarColor() {
+//        return R.color.colorPrimaryDark;
+//    }
 
 }

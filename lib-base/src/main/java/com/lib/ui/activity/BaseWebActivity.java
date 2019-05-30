@@ -1,6 +1,8 @@
 package com.lib.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -15,99 +17,53 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.lib.MyApplication;
 import com.lib.base.R;
 
+import com.lib.fastkit.BuildConfig;
 import com.lib.fastkit.utils.network.NetUtils;
+import com.lib.fastkit.utils.status_bar.QMUI.QMUIDisplayHelper;
+import com.lib.fastkit.views.webview_qm.QDWebView;
+import com.lib.fastkit.views.webview_qm.util.QMUIPackageHelper;
 import com.lib.ui.activity.kit.BaseActivity;
 
 
 public abstract class BaseWebActivity extends BaseActivity {
 
-    private LinearLayout webLinearLayout;
-
-    private ProgressBar progressBar;
-    private WebView webView;
+    private LinearLayout lin_web;
+    private ProgressBar p_bar;
+    private QDWebView webView;
 
     private Handler handler = new Handler();
 
     @Override
     protected void onCreateView() {
 
-        setContentView(getWebLayout());
-        //webLinearLayout = findViewById(getWebId());
-        progressBar = new ProgressBar(this);
-        //webView = new WebView(this);
-        //webLinearLayout.addView(progressBar);
-        //webLinearLayout.addView(webView);
-        webView=findViewById(getWebId());
-        initView();
-        initWebView();
+        setContentView(getLayoutId());
+        lin_web = findViewById(R.id.lin_web);
+        p_bar = findViewById(R.id.p_bar);
 
+        webView = findViewById(R.id.qm_web);
+//        webView = new QDWebView(this);
+//        lin_web.addView(webView);
+        //init(MyApplication.getInstance());
+        setWebView();
+        onCreateView(webView);
     }
 
 
-    public WebView getWebView() throws Exception {
+    protected abstract void onCreateView(WebView webView);
 
-        if (webView != null) {
+    protected abstract int getLayoutId();
 
-            return webView;
-        } else {
-            throw new Exception("WebVeiw does not exist!");
-        }
-
-    }
-
-    protected abstract void initView();
-
-    protected abstract int getWebLayout();
-
-    protected abstract int getWebId();
-
-
-    protected abstract String getUrl();
-
-    @Override
-    protected int setStatusBarColor() {
-        return R.color.colorPrimaryDark;
-    }
-
-    /**
-     * 初始化WebView的配置
-     */
-    @SuppressWarnings("deprecation")
-    @SuppressLint("SetJavaScriptEnabled")
-    private void initWebView() {
-        webView.requestFocus();
-        webView.setHorizontalScrollBarEnabled(false);
-        webView.setVerticalScrollBarEnabled(false);
-        webView.getSettings().setJavaScriptEnabled(true);
-        // 设置 缓存模式
-        if (NetUtils.isNetworkAvailable(this)) {
-            webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
-        } else {
-            webView.getSettings().setCacheMode(
-                    WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        }
-        // webView.getSettings().setBlockNetworkImage(true);// 把图片加载放在最后来加载渲染
-        webView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-        // 支持多窗口
-        webView.getSettings().setSupportMultipleWindows(true);
-        // 开启 DOM storage API 功能
-        webView.getSettings().setDomStorageEnabled(true);
-        // 开启 Application Caches 功能
-        webView.getSettings().setAppCacheEnabled(true);
-        onLoad();
-    }
 
     /**
      * 开始加载Url
      */
-    @SuppressWarnings("deprecation")
-    @SuppressLint("SetJavaScriptEnabled")
-    public void onLoad() {
+
+    public void setWebView() {
 
         try {
-
             webView.setWebChromeClient(new WebChromeClient() {
 
                 @Override
@@ -116,61 +72,27 @@ public abstract class BaseWebActivity extends BaseActivity {
 
                     if (newProgress >= 100) {
 
-                        progressBar.setProgress(100);
+                        p_bar.setProgress(100);
 
 
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
 
+                                p_bar.setVisibility(View.GONE);
 
-                                progressBar.setVisibility(View.GONE);
                             }
                         }, 250);//3秒后执行Runnable中的run方法
                     } else {
-                        progressBar.setVisibility(View.VISIBLE);
-                        progressBar.setProgress(newProgress);
+                        p_bar.setVisibility(View.VISIBLE);
+                        p_bar.setProgress(newProgress);
                     }
 
                 }
             });
-            /**
-             * WebViewClient
-             */
-            webView.setWebViewClient(new WebViewClient() {
-
-                @Override
-                public void onLoadResource(WebView view, String url) {
-
-
-                    super.onLoadResource(view, url);
-                }
-
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView webview,
-                                                        String url) {
-
-                    webview.loadUrl(url);
-
-                    return true;
-                }
-
-                @Override
-                public void onPageFinished(WebView view, String url) {
-
-
-                }
-
-                @Override
-                public void onReceivedError(WebView view, int errorCode,
-                                            String description, String failingUrl) {
-                }
-            });
-
-            webView.loadUrl(getUrl());
 
         } catch (Exception e) {
-            return;
+            e.printStackTrace();
         }
     }
 
@@ -216,6 +138,34 @@ public abstract class BaseWebActivity extends BaseActivity {
         }
         super.onDestroy();
     }
+    @SuppressLint("SetJavaScriptEnabled")
+    protected void init(Context context) {
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setSupportZoom(true);
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setDefaultTextEncodingName("GBK");
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webSettings.setTextZoom(100);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
+        }
+
+        String screen = QMUIDisplayHelper.getScreenWidth(context) + "x" + QMUIDisplayHelper.getScreenHeight(context);
+        String userAgent = "QMUIDemo/" + QMUIPackageHelper.getAppVersion(context)
+                + " (Android; " + Build.VERSION.SDK_INT
+                + "; Screen/" + screen + "; Scale/" + QMUIDisplayHelper.getDensity(context) + ")";
+        String agent = webView.getSettings().getUserAgentString();
+        if (agent == null || !agent.contains(userAgent)) {
+            webView.getSettings().setUserAgentString(agent + " " + userAgent);
+        }
+
+
+
+    }
 
 }

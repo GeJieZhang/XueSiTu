@@ -35,4 +35,6 @@ public class ARouterPathUtils {
     public static final String User_BookChooseActivity = "/user/BookChooseActivity";
     public static final String User_StartActivity = "/user/StartActivity";
     public static final String User_IdentityActivity = "/user/IdentityActivity";
+    public static final String User_XieyiActivity = "/user/XieyiActivity";
+    public static final String User_XieyiActivity2 = "/user/XieyiActivity2";
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -29,6 +30,8 @@ public class LoginActivity extends BaseAppActivity {
     Button btnCode;
     @BindView(R2.id.btn_login)
     Button btnLogin;
+    @BindView(R2.id.tv_xieyi)
+    TextView tvXieyi;
 
     @Override
     protected void onCreateView() {
@@ -65,7 +68,7 @@ public class LoginActivity extends BaseAppActivity {
     };
 
 
-    @OnClick({R2.id.btn_code, R2.id.btn_login})
+    @OnClick({R2.id.btn_code, R2.id.btn_login, R2.id.tv_xieyi})
     public void onViewClicked(View view) {
         int i = view.getId();
         if (i == R.id.btn_code) {
@@ -77,9 +80,8 @@ public class LoginActivity extends BaseAppActivity {
             timer.start();
 
 
-            HttpUtils.with(this).url("https://www.baidu.com/")
+            HttpUtils.with(this)
                     .addParam("requestType", "LOGIN")
-
                     .post()
                     .execute(new HttpNormalCallBack<String>() {
                         @Override
@@ -99,7 +101,12 @@ public class LoginActivity extends BaseAppActivity {
         } else if (i == R.id.btn_login) {
 
 
-            ARouter.getInstance().build(ARouterPathUtils.User_IdentityActivity).navigation();
+            //ARouter.getInstance().build(ARouterPathUtils.User_IdentityActivity).navigation();
+            ARouter.getInstance().build(ARouterPathUtils.User_XieyiActivity2).navigation();
+
+        } else if (i == R.id.tv_xieyi) {
+
+            ARouter.getInstance().build(ARouterPathUtils.User_XieyiActivity).navigation();
 
         }
     }

@@ -20,11 +20,13 @@ import java.util.Map;
 public class HttpUtils {
 
     // 直接带参数 ，链式调用
-    private String mUrl;
+    private String mUrl = "http://192.168.2.28:8080/xuesitu_api/api/";
     // 请求方式
     private int mType = POST_TYPE;
     private static final int POST_TYPE = 0x0011;
     private static final int GET_TYPE = 0x0022;
+
+    private boolean IS_ENCRYPT = true;
 
 
     private Map<String, Object> mParams;
@@ -58,6 +60,13 @@ public class HttpUtils {
         mType = GET_TYPE;
         return this;
     }
+
+    //是否使用加密
+    public HttpUtils isEncrypt(boolean b) {
+        IS_ENCRYPT = b;
+        return this;
+    }
+
 
     // 添加参数
     public HttpUtils addParam(String key, Object value) {
@@ -115,21 +124,24 @@ public class HttpUtils {
 
 
     private void get(String url, Map<String, Object> params, EngineCallBack callBack) {
-
+        if (IS_ENCRYPT && params.size() > 0) {
+            JSONObject json = new JSONObject(params);
+            params.clear();
+            Map<String, String> formatParams = RsaAndAesUtils.paramsFormat(json.toString());
+            params.putAll(formatParams);
+        }
         mHttpEngine.get(mContext, url, params, callBack);
     }
 
 
     private void post(String url, Map<String, Object> params, EngineCallBack callBack) {
 
-        JSONObject json =new JSONObject(params);
-        params.clear();
-
-        Map<String, String> formatParams =RsaAndAesUtils.paramsFormat(json.toString());
-
-       // Map<String, Object>  newParams=new HashMap<>();
-
-        params.putAll(formatParams);
+        if (IS_ENCRYPT && params.size() > 0) {
+            JSONObject json = new JSONObject(params);
+            params.clear();
+            Map<String, String> formatParams = RsaAndAesUtils.paramsFormat(json.toString());
+            params.putAll(formatParams);
+        }
 
 
         mHttpEngine.post(mContext, url, params, callBack);

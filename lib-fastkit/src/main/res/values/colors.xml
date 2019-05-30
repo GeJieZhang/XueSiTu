@@ -27,5 +27,5 @@
     //背景
     <color name="kit_bg">#e8e8e8</color>
     //线条
-
+    <color name="kit_blue">#68c4ff</color>
 </resources>

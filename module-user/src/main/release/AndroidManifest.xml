@@ -10,5 +10,9 @@
         <activity android:name=".activity.StartActivity"></activity>
         <activity android:name=".activity.BookChooseActivity"></activity>
         <activity android:name=".activity.IdentityActivity"></activity>
+        <activity android:name=".activity.XieyiActivity"></activity>
+        <activity android:name=".activity.XieyiActivity2"></activity>
+
+        <activity android:name=".activity.WebViewTest"></activity>
     </application>
 </manifest>
