@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">用户模块</string>
+
+    <string name="link_rule"><u>了解调退课规则</u></string>
 </resources>

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/base_white"
+    android:orientation="vertical">
+
+    <!--清理缓存-->
+    <LinearLayout
+        android:id="@+id/lin_clear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                style="@style/text_style7"
+                android:layout_weight="1"
+                android:text="清理缓存" />
+
+            <TextView
+                style="@style/text_style7"
+                android:text="5M"
+                android:textColor="@color/base_text1"
+
+                />
+
+            <ImageView style="@style/image1" />
+
+        </LinearLayout>
+
+        <View
+            style="@style/line_dotted"
+            android:layout_marginBottom="4dp"
+            android:visibility="invisible" />
+    </LinearLayout>
+    <!--支付设置-->
+    <LinearLayout
+        android:id="@+id/lin_zhifu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                style="@style/text_style7"
+                android:layout_weight="1"
+                android:text="支付设置" />
+
+            <TextView
+                style="@style/text_style7"
+                android:text=""
+                android:textColor="@color/base_text1"
+
+                />
+
+            <ImageView style="@style/image1" />
+
+        </LinearLayout>
+
+        <View
+            style="@style/line_dotted"
+            android:layout_marginBottom="4dp" />
+    </LinearLayout>
+    <!--版本更新-->
+    <LinearLayout
+        android:id="@+id/lin_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                style="@style/text_style7"
+                android:layout_weight="1"
+                android:text="版本更新" />
+
+            <TextView
+                style="@style/text_style7"
+                android:text="暂无更新"
+                android:textColor="@color/base_text1"
+
+                />
+
+            <ImageView style="@style/image1" />
+
+        </LinearLayout>
+
+        <View
+            style="@style/line_dotted"
+            android:layout_marginBottom="4dp" />
+    </LinearLayout>
+    <!--帮助与反馈-->
+    <LinearLayout
+        android:id="@+id/lin_help"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                style="@style/text_style7"
+                android:layout_weight="1"
+                android:text="帮助与反馈" />
+
+            <TextView
+                style="@style/text_style7"
+                android:text=""
+                android:textColor="@color/base_text1"
+
+                />
+
+            <ImageView style="@style/image1" />
+
+        </LinearLayout>
+
+        <View
+            style="@style/line_dotted"
+            android:layout_marginBottom="4dp" />
+    </LinearLayout>
+    <!--关于-->
+    <LinearLayout
+        android:id="@+id/lin_about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                style="@style/text_style7"
+                android:layout_weight="1"
+                android:text="关于" />
+
+            <TextView
+                style="@style/text_style7"
+                android:text=""
+                android:textColor="@color/base_text1"
+
+                />
+
+            <ImageView style="@style/image1" />
+
+        </LinearLayout>
+
+        <View
+            style="@style/line_dotted"
+            android:layout_marginBottom="4dp"
+            android:visibility="invisible" />
+    </LinearLayout>
+    <!--退出登录-->
+    <LinearLayout
+        android:id="@+id/lin_out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                style="@style/text_style7"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="退出登录" />
+
+
+        </LinearLayout>
+
+        <View
+            style="@style/line_dotted"
+            android:layout_marginBottom="4dp"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+
+</LinearLayout>

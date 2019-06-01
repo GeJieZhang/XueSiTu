@@ -20,7 +20,6 @@ public class ARouterPathUtils {
     public static final String App_LaunchActivity = "/app/LaunchActivity";
 
 
-
     //==============================================================================================
     //======================================================================================优选====
     //==============================================================================================
@@ -36,5 +35,12 @@ public class ARouterPathUtils {
     public static final String User_StartActivity = "/user/StartActivity";
     public static final String User_IdentityActivity = "/user/IdentityActivity";
     public static final String User_XieyiActivity = "/user/XieyiActivity";
-    public static final String User_XieyiActivity2 = "/user/XieyiActivity2";
+    public static final String User_SetActivity = "/user/SetActivity";
+
+    public static final String User_SetZhiFuActivity = "/user/SetZhiFuActivity";
+    public static final String User_MyClassActivity = "/user/MyClassActivity";
+    public static final String User_MyClassDetailActivity = "/user/MyClassDetailActivity";
+    public static final String User_RechargeActivity = "/user/RechargeActivity";
+
+
 }

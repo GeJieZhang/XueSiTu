@@ -23,7 +23,7 @@
     <color name="base_title">#282828</color>
     //灰色字体1
     <color name="base_text1">#989898</color>
-
+    <color name="base_purple">#877eff</color>
     <color name="base_money">#ff4a5a</color>
 
     //虚线

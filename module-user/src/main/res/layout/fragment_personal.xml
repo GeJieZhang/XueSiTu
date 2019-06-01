@@ -49,7 +49,7 @@
                     android:layout_width="20dp"
                     android:layout_height="30dp"
                     android:layout_marginRight="16dp"
-                    android:src="@mipmap/icon_quit" />
+                    android:src="@mipmap/icon_install" />
 
             </LinearLayout>
 
@@ -90,6 +90,7 @@
                             android:layout_width="20dp"
                             android:layout_height="30dp"
                             android:layout_marginLeft="8dp"
+                            android:padding="1dp"
                             android:src="@mipmap/icon_modify" />
                     </LinearLayout>
 
@@ -100,6 +101,7 @@
                         android:text="兔币:120" />
 
                     <Button
+                        android:id="@+id/btn_recharge"
                         style="?android:attr/borderlessButtonStyle"
                         android:layout_width="60dp"
                         android:layout_height="25dp"
@@ -210,7 +212,7 @@
                         <ImageView
                             android:layout_width="35dp"
                             android:layout_height="35dp"
-                            android:src="@mipmap/icon_ask" />
+                            android:src="@mipmap/icon_teacher" />
 
                         <TextView
                             style="@style/text_style3"
@@ -251,7 +253,7 @@
 
                             android:layout_width="35dp"
                             android:layout_height="35dp"
-                            android:src="@mipmap/icon_coures" />
+                            android:src="@mipmap/icon_sign" />
 
                         <TextView
                             style="@style/text_style3"

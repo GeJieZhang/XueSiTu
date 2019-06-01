@@ -46,7 +46,6 @@ public class MyApplication extends Application {
 
         //组件化开发
         initRouter();
-
         //网络请求
         initHttp();
         //Timber日志

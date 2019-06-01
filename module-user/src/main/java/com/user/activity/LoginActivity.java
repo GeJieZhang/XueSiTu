@@ -33,20 +33,14 @@ public class LoginActivity extends BaseAppActivity {
     Button btnLogin;
     @BindView(R2.id.tv_xieyi)
     TextView tvXieyi;
-    private Handler mHandler = new Handler();
+
 
     @Override
     protected void onCreateView() {
 
-//        setContentView(R.layout.activity_login);
-//        ButterKnife.bind(this);
 
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                tvXieyi.setText("lcj");
-            }
-        }, 3 * 60 * 1000);
+
+
     }
 
     @Override
@@ -108,8 +102,8 @@ public class LoginActivity extends BaseAppActivity {
         } else if (i == R.id.btn_login) {
 
 
-            //ARouter.getInstance().build(ARouterPathUtils.User_IdentityActivity).navigation();
-            ARouter.getInstance().build(ARouterPathUtils.User_XieyiActivity2).navigation();
+            ARouter.getInstance().build(ARouterPathUtils.User_IdentityActivity).navigation();
+           // ARouter.getInstance().build(ARouterPathUtils.User_XieyiActivity2).navigation();
 
         } else if (i == R.id.tv_xieyi) {
 

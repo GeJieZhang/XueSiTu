@@ -107,6 +107,45 @@
         <item name="android:ellipsize">end</item>
         <item name="android:textColor">@color/base_title</item>
     </style>
+
+    <!--设置中的文字-->
+    <style name="text_style7">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/base_title</item>
+    </style>
+
+
+    <!--我的课程列表-->
+    <style name="text_style8">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/base_title</item>
+    </style>
+    <!--我的课程列表-->
+    <style name="text_style9">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/base_text1</item>
+    </style>
+    <!--我的课程列表-->
+    <style name="text_style10">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/base_purple</item>
+    </style>
     //==============================================================================================
     //=============================================================================线条=======
     //==============================================================================================
@@ -141,6 +180,7 @@
         <item name="android:layout_height">35dp</item>
         <item name="android:textSize">14sp</item>
         <item name="android:background">@drawable/bg_circle_gradient_r10</item>
+        直播
 
     </style>
 
@@ -161,7 +201,64 @@
     </style>
 
 
+    //==============================================================================================
+    //=============================================================================ImageView=========
+    //==============================================================================================
 
 
+    <!--设置中向右箭头-->
+    <style name="image1">
+        <item name="android:layout_width">10dp</item>
+        <item name="android:layout_height">14dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:src">@mipmap/nav_next</item>
 
+    </style>
+
+    //==============================================================================================
+    //=============================================================================TitleBar=========
+    //==============================================================================================
+
+
+    <style name="base_title_text_style">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/base_title</item>
+    </style>
+
+
+    <style name="base_title_bar_style">
+
+        <item name="android:background">@color/white</item>
+        <item name="android:paddingLeft">0.0dip</item>
+        <item name="android:paddingRight">0.0dip</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">44.0dip</item>
+    </style>
+
+
+    <style name="base_back_view">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@mipmap/nav_back</item>
+        <item name="android:paddingLeft">0.0dip</item>
+        <item name="android:paddingRight">0.0dip</item>
+        <item name="android:layout_marginLeft">0.0dip</item>
+        <item name="android:layout_marginRight">0.0dip</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:text">@null</item>
+        <item name="android:drawableLeft">@null</item>
+    </style>
+
+    <style name="base_title_bar_button">
+        <item name="android:textSize">16.0sp</item>
+        <item name="android:textColor">@color/base_title</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@null</item>
+        <item name="android:paddingLeft">5.0dip</item>
+        <item name="android:paddingRight">5.0dip</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_marginLeft">0.0dip</item>
+        <item name="android:layout_marginRight">10.0dip</item>
+    </style>
 </resources>

@@ -5,9 +5,11 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lib.fastkit.R;
+
+import com.lib.base.R;
 import com.lib.fastkit.views.navigationbar.AbsNavigationBar;
 
 
@@ -28,7 +30,7 @@ public class NomalNavigationBar<D extends
 
     @Override
     public int bindLayoutId() {
-        return R.layout.kit_title_bar;
+        return R.layout.base_title_bar;
     }
 
     @Override
@@ -39,8 +41,9 @@ public class NomalNavigationBar<D extends
         // 绑定效果
         setTitleText(R.id.title, getParams().mTitle);
         setRightText(R.id.right_text, getParams().mRightText);
-        setRightIcon(R.id.right_text, getParams().mRightIcon);
+        setRightIcon(R.id.right_icon, getParams().mRightIcon);
         setOnClickListener(R.id.right_text, getParams().mRightClickListener);
+        setOnClickListener(R.id.right_icon, getParams().mRightClickListener);
         // 左边 要写一个默认的  finishActivity
         setOnClickListener(R.id.back, getParams().mLeftClickListener);
     }
@@ -52,11 +55,13 @@ public class NomalNavigationBar<D extends
      * @param viewId
      * @param text
      */
+
+    private TextView titleTextView;
     protected void setTitleText(int viewId, String text) {
-        TextView tv = findViewById(viewId);
+        titleTextView= findViewById(viewId);
         if (!TextUtils.isEmpty(text)) {
-            tv.setVisibility(View.VISIBLE);
-            tv.setText(text);
+            titleTextView.setVisibility(View.VISIBLE);
+            titleTextView.setText(text);
         }
     }
 
@@ -68,6 +73,7 @@ public class NomalNavigationBar<D extends
      * @param text
      */
     private TextView tvRight;
+    private ImageView ivRight;
 
     protected void setRightText(int viewId, String text) {
 
@@ -80,16 +86,17 @@ public class NomalNavigationBar<D extends
 
 
     protected void setRightIcon(int viewId, Integer icon) {
-        if (icon!=null){
-            tvRight = findViewById(viewId);
-            tvRight.setVisibility(View.VISIBLE);
-            tvRight.setBackgroundResource(icon);
+        if (icon != null) {
+            ivRight = findViewById(viewId);
+            ivRight.setVisibility(View.VISIBLE);
+            ivRight.setImageResource(icon);
         }
 
 
-
     }
-
+    public TextView getTitleTextView() {
+        return titleTextView;
+    }
     public TextView getRightTextView() {
         return tvRight;
     }

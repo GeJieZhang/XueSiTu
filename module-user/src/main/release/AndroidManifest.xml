@@ -11,6 +11,11 @@
         <activity android:name=".activity.BookChooseActivity"></activity>
         <activity android:name=".activity.IdentityActivity"></activity>
         <activity android:name=".activity.XieyiActivity"></activity>
+        <activity android:name=".activity.SetActivity"></activity>
+        <activity android:name=".activity.SetZhiFuActivity"></activity>
+        <activity android:name=".activity.MyClassActivity"></activity>
+        <activity android:name=".activity.MyClassDetailActivity"></activity>
+        <activity android:name=".activity.RechargeActivity"></activity>
 
     </application>
 </manifest>
