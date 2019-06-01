@@ -2,8 +2,8 @@ package com.lib.fastkit.db.shared_prefrences;
 
 import android.content.Context;
 
-import com.lib.fastkit.db.shared_prefrences.impl.CacheRepoImpl;
-import com.lib.fastkit.db.shared_prefrences.impl.ConfigRepoImpl;
+import com.lib.fastkit.db.shared_prefrences.impl.UserCacheImpl;
+import com.lib.fastkit.db.shared_prefrences.interfaces.UserCacheInterface;
 
 
 /**
@@ -13,33 +13,31 @@ import com.lib.fastkit.db.shared_prefrences.impl.ConfigRepoImpl;
  * Blog : http://www.jianshu.com/u/e76853f863a9
  * Email : freedompaladin@gmail.com
  */
-public class DataManager {
+public class SharedPreferenceManager {
 
-    private final CacheRepo mCacheRepo;
-    private final ConfigRepo mConfigRepo;
-    private volatile static DataManager INSTANCE;
+    private final UserCacheInterface mCacheRepo;
 
-    private DataManager(Context context) {
-        mCacheRepo = new CacheRepoImpl(context);
-        mConfigRepo = new ConfigRepoImpl(context);
+    private volatile static SharedPreferenceManager INSTANCE;
+
+    private SharedPreferenceManager(Context context) {
+        mCacheRepo = new UserCacheImpl(context);
+
     }
 
-    public static DataManager getInstance(Context context) {
+    public static SharedPreferenceManager getInstance(Context context) {
         if (INSTANCE == null) {
-            synchronized (DataManager.class) {
+            synchronized (SharedPreferenceManager.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new DataManager(context);
+                    INSTANCE = new SharedPreferenceManager(context);
                 }
             }
         }
         return INSTANCE;
     }
 
-    public CacheRepo getCacheRepo() {
+    public UserCacheInterface getUserCache() {
         return mCacheRepo;
     }
 
-    public ConfigRepo getConfigRepo() {
-        return mConfigRepo;
-    }
+
 }

@@ -46,15 +46,11 @@ public abstract class BaseWebActivity extends BaseActivity {
     @Override
     protected void onCreateView() {
 
-        setContentView(getLayoutId());
+
         lin_web = findViewById(R.id.lin_web);
         p_bar = findViewById(R.id.p_bar);
-
-        //webView = findViewById(R.id.qm_web);
-        webView = new X5WebView(this, null);
-//        webView = new QDWebView(this);
+        webView = new X5WebView(this);
         lin_web.addView(webView);
-        //init(MyApplication.getInstance());
         setWebView();
         onCreateView(webView);
     }
@@ -73,15 +69,6 @@ public abstract class BaseWebActivity extends BaseActivity {
 
 
         try {
-
-            webView.setWebViewClient(new com.tencent.smtt.sdk.WebViewClient() {
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    return false;
-                }
-
-
-            });
 
             webView.setWebChromeClient(new WebChromeClient() {
 
@@ -112,39 +99,9 @@ public abstract class BaseWebActivity extends BaseActivity {
             });
 
 
-            initSeting();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void initSeting() {
-        WebSettings webSetting = webView.getSettings();
-        webSetting.setAllowFileAccess(true);
-        webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
-        webSetting.setSupportZoom(true);
-        webSetting.setBuiltInZoomControls(true);
-        webSetting.setUseWideViewPort(true);
-        webSetting.setSupportMultipleWindows(false);
-        // webSetting.setLoadWithOverviewMode(true);
-        webSetting.setAppCacheEnabled(true);
-        // webSetting.setDatabaseEnabled(true);
-        webSetting.setDomStorageEnabled(true);
-        webSetting.setJavaScriptEnabled(true);
-        webSetting.setGeolocationEnabled(true);
-        webSetting.setAppCacheMaxSize(Long.MAX_VALUE);
-        webSetting.setAppCachePath(this.getDir("appcache", 0).getPath());
-        webSetting.setDatabasePath(this.getDir("databases", 0).getPath());
-        webSetting.setGeolocationDatabasePath(this.getDir("geolocation", 0)
-                .getPath());
-        // webSetting.setPageCacheCapacity(IX5WebSettings.DEFAULT_CACHE_CAPACITY);
-        webSetting.setPluginState(WebSettings.PluginState.ON_DEMAND);
-        // webSetting.setRenderPriority(WebSettings.RenderPriority.HIGH);
-        // webSetting.setPreFectch(true);
-
-        CookieSyncManager.createInstance(this);
-        CookieSyncManager.getInstance().sync();
     }
 
 

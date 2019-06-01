@@ -4,11 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.tencent.smtt.sdk.WebView
-
-        android:id="@+id/lin_web"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.tencent.smtt.sdk.WebView>
+<include layout="@layout/include_web"></include>
 
 
 </LinearLayout>

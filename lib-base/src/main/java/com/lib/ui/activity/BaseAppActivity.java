@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.lib.base.BuildConfig;
 import com.lib.base.R;
+import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.ui.activity.kit.BaseActivity;
 
 
@@ -23,6 +24,8 @@ public abstract class BaseAppActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+
 
 
     }

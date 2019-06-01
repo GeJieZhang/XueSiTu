@@ -2,7 +2,7 @@ package com.lib.fastkit.db.shared_prefrences.impl;
 
 import android.content.Context;
 
-import com.lib.fastkit.db.shared_prefrences.CacheRepo;
+import com.lib.fastkit.db.shared_prefrences.interfaces.UserCacheInterface;
 
 
 /**
@@ -12,22 +12,26 @@ import com.lib.fastkit.db.shared_prefrences.CacheRepo;
  * Blog : http://www.jianshu.com/u/e76853f863a9
  * Email : freedompaladin@gmail.com
  */
-public class CacheRepoImpl extends SharedPreferenceDataRepo implements CacheRepo {
+public class UserCacheImpl extends SharedPreferenceModel implements UserCacheInterface {
 
-    private static final String FILE_NAME = "ticktock_cache_sp";
-    private static final String ARTIST_SHARED_KEY = "key_artist_avatar";
+    private static final String FILE_NAME = "USER";
 
-    public CacheRepoImpl(Context context) {
+    private static final String Key_User_Name = "UserName";
+
+    public UserCacheImpl(Context context) {
         super(context, FILE_NAME, Context.MODE_PRIVATE);
     }
 
+
     @Override
-    public void setArtistAvatar(String artistName, String avatarUrl) {
-        put(artistName, avatarUrl);
+    public void setUserName(String name) {
+
+        put(Key_User_Name, name);
+
     }
 
     @Override
-    public String getArtistAvatar(String artistName) {
-        return getString(artistName);
+    public String getUserName() {
+        return getString(Key_User_Name);
     }
 }

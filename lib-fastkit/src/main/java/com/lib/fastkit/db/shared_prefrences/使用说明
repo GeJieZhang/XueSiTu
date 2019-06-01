@@ -5,3 +5,6 @@
     1.参考
     https://www.jianshu.com/p/1645b81dc994
 
+
+    SharedPreferenceManager.getInstance(this).getUserCache().getUserName();
+

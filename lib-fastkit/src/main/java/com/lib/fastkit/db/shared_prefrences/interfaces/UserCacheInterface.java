@@ -1,4 +1,4 @@
-package com.lib.fastkit.db.shared_prefrences;
+package com.lib.fastkit.db.shared_prefrences.interfaces;
 
 /**
  * Desc : 缓存
@@ -7,11 +7,9 @@ package com.lib.fastkit.db.shared_prefrences;
  * Blog : http://www.jianshu.com/u/e76853f863a9
  * Email : freedompaladin@gmail.com
  */
-public interface CacheRepo extends DataRepo{
+public interface UserCacheInterface extends BaseCacheInterface {
 
-    void setArtistAvatar(String artistName, String avatarUrl);
+    void setUserName(String name);
 
-    String getArtistAvatar(String artistName);
-
-
+    String getUserName();
 }

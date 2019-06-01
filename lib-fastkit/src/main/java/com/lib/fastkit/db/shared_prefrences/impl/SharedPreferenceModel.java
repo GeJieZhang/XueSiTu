@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 
-import com.lib.fastkit.db.shared_prefrences.DataRepo;
+import com.lib.fastkit.db.shared_prefrences.interfaces.BaseCacheInterface;
 
 import java.util.Map;
 
@@ -17,11 +17,11 @@ import java.util.Map;
  * Email : freedompaladin@gmail.com
  */
 @SuppressLint("ApplySharedPref")
-public class SharedPreferenceDataRepo implements DataRepo {
+public class SharedPreferenceModel implements BaseCacheInterface {
 
     private final SharedPreferences mSharedPreferences;
 
-    public SharedPreferenceDataRepo(Context context, String fileName, int mode) {
+    public SharedPreferenceModel(Context context, String fileName, int mode) {
         mSharedPreferences = context.getSharedPreferences(fileName, mode);
     }
 
