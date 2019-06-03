@@ -17,6 +17,7 @@ import com.lib.fastkit.utils.timer_countdown.CountDownTimer;
 import com.lib.ui.activity.BaseAppActivity;
 import com.user.R;
 import com.user.R2;
+import com.user.test.LoginManager;
 
 import java.util.Map;
 
@@ -39,7 +40,7 @@ public class LoginActivity extends BaseAppActivity {
     protected void onCreateView() {
 
 
-
+        LoginManager.getInstance(this).dealData();
 
     }
 
@@ -103,7 +104,7 @@ public class LoginActivity extends BaseAppActivity {
 
 
             ARouter.getInstance().build(ARouterPathUtils.User_IdentityActivity).navigation();
-           // ARouter.getInstance().build(ARouterPathUtils.User_XieyiActivity2).navigation();
+            // ARouter.getInstance().build(ARouterPathUtils.User_XieyiActivity2).navigation();
 
         } else if (i == R.id.tv_xieyi) {
 

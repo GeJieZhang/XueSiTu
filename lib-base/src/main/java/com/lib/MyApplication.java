@@ -53,7 +53,7 @@ public class MyApplication extends Application {
         //内存检测
         initLeakCanary();
         //X5内核
-        initX5();
+        // initX5();
 
     }
 

@@ -7,7 +7,7 @@
 
     <!-- 实际显示的线 -->
     <stroke
-        android:width="0.2dp"
+        android:width="0.5dp"
         android:color="@color/line_dotted"
         android:dashGap="5dp"
         android:dashWidth="10dp" />

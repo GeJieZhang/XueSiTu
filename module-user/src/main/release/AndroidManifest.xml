@@ -16,6 +16,6 @@
         <activity android:name=".activity.MyClassActivity"></activity>
         <activity android:name=".activity.MyClassDetailActivity"></activity>
         <activity android:name=".activity.RechargeActivity"></activity>
-
+        <activity android:name=".activity.UserInfoActivity"></activity>
     </application>
 </manifest>

@@ -41,6 +41,6 @@ public class ARouterPathUtils {
     public static final String User_MyClassActivity = "/user/MyClassActivity";
     public static final String User_MyClassDetailActivity = "/user/MyClassDetailActivity";
     public static final String User_RechargeActivity = "/user/RechargeActivity";
-
+    public static final String User_UserInfoActivity = "/user/UserInfoActivity";
 
 }

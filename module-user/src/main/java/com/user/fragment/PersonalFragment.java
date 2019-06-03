@@ -64,6 +64,8 @@ public class PersonalFragment extends BaseAppFragment {
             ARouter.getInstance().build(ARouterPathUtils.User_SetActivity).navigation();
 
         } else if (i == R.id.iv_name) {
+
+            ARouter.getInstance().build(ARouterPathUtils.User_UserInfoActivity).navigation();
         } else if (i == R.id.lin_class) {
 
             ARouter.getInstance().build(ARouterPathUtils.User_MyClassActivity).navigation();

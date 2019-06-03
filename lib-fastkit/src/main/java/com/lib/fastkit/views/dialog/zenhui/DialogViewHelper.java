@@ -23,8 +23,14 @@ class DialogViewHelper {
     public DialogViewHelper(Context context, int layoutResId) {
         this();
 
+        try {
+            mContentView = LayoutInflater.from(context).inflate(layoutResId, null);
 
-        mContentView = LayoutInflater.from(context).inflate(layoutResId, null);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
 
 
     }

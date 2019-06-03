@@ -130,40 +130,48 @@ class AlertController {
                 throw new IllegalArgumentException("请设置布局setContentView()");
             }
 
-            // 给Dialog 设置布局
-            mAlert.getDialog().setContentView(viewHelper.getContentView());
 
-            // 设置 Controller的辅助类
-            mAlert.setViewHelper(viewHelper);
+            try {
+                // 给Dialog 设置布局
+                mAlert.getDialog().setContentView(viewHelper.getContentView());
 
-            // 2.设置文本
-            int textArraySize = mTextArray.size();
-            for (int i = 0; i < textArraySize; i++) {
-                mAlert.setText(mTextArray.keyAt(i), mTextArray.valueAt(i));
+                // 设置 Controller的辅助类
+                mAlert.setViewHelper(viewHelper);
+
+
+                // 2.设置文本
+                int textArraySize = mTextArray.size();
+                for (int i = 0; i < textArraySize; i++) {
+                    mAlert.setText(mTextArray.keyAt(i), mTextArray.valueAt(i));
+                }
+
+
+                // 3.设置点击
+                int clickArraySize = mClickArray.size();
+                for (int i = 0; i < clickArraySize; i++) {
+                    mAlert.setOnclickListener(mClickArray.keyAt(i), mClickArray.valueAt(i));
+                }
+
+                // 4.配置自定义的效果  全屏  从底部弹出    默认动画
+                Window window = mAlert.getWindow();
+                // 设置位置
+                window.setGravity(mGravity);
+
+                // 设置动画
+                if (mAnimations != 0) {
+                    window.setWindowAnimations(mAnimations);
+                }
+
+                // 设置宽高
+                WindowManager.LayoutParams params = window.getAttributes();
+                params.width = mWidth;
+                params.height = mHeight;
+                window.setAttributes(params);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
             }
-
-
-            // 3.设置点击
-            int clickArraySize = mClickArray.size();
-            for (int i = 0; i < clickArraySize; i++) {
-                mAlert.setOnclickListener(mClickArray.keyAt(i), mClickArray.valueAt(i));
-            }
-
-            // 4.配置自定义的效果  全屏  从底部弹出    默认动画
-            Window window = mAlert.getWindow();
-            // 设置位置
-            window.setGravity(mGravity);
-
-            // 设置动画
-            if (mAnimations != 0) {
-                window.setWindowAnimations(mAnimations);
-            }
-
-            // 设置宽高
-            WindowManager.LayoutParams params = window.getAttributes();
-            params.width = mWidth;
-            params.height = mHeight;
-            window.setAttributes(params);
         }
     }
 }

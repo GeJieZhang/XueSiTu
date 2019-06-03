@@ -13,6 +13,17 @@ import java.io.ByteArrayOutputStream;
  */
 public class PcUtils {
 
+
+    /**
+     * 获取图片路径
+     *
+     * @param pathName
+     * @return
+     */
+    public static Bitmap getBitmapFromFile(String pathName) {
+        return BitmapFactory.decodeFile(pathName);
+    }
+
     /**
      * 压缩图片
      *

@@ -78,6 +78,9 @@ public class IdentityActivity extends BaseAppActivity {
 
                         if (studentChooseFragment != null) {
                             getSupportFragmentManager().beginTransaction().remove(studentChooseFragment).commit();
+
+                            studentChooseFragment = null;
+
                         }
 
 
