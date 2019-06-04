@@ -57,6 +57,7 @@
                     android:orientation="horizontal">
 
                     <EditText
+                        android:id="@+id/et_phone"
                         style="@style/edit_text1"
                         android:layout_weight="1"
                         android:hint="请输入手机号码"
@@ -106,6 +107,7 @@
                         android:orientation="vertical">
 
                         <EditText
+                            android:id="@+id/et_code"
                             style="@style/edit_text1"
                             android:layout_weight="1"
                             android:hint="请输入验证码"

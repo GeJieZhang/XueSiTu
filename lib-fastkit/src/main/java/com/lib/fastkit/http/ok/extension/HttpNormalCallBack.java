@@ -71,7 +71,7 @@ public abstract class HttpNormalCallBack<T> implements EngineCallBack {
 
     @Override
     public void onError(Exception e) {
-
+        //统一异常处理类
         responseErrorListener.handleResponseError(context, e);
         onError(e.getMessage());
 

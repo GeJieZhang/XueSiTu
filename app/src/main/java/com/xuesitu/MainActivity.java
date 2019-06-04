@@ -16,12 +16,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.EventBusTagUtils;
 import com.lib.app.FragmentUtils;
 import com.lib.bean.Event;
+import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.ui.base.control.ActivityCollector;
 import com.lib.fastkit.utils.animation_deal.AnimationUtil;
+import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.fastkit.views.viewpager.my.MyViewPager;
 import com.lib.ui.activity.BaseAppActivity;
@@ -93,9 +96,6 @@ public class MainActivity extends BaseAppActivity {
 
             }
         });
-
-
-
 
 
     }
@@ -303,10 +303,14 @@ public class MainActivity extends BaseAppActivity {
 
             case 1: {
 
-
+//                boolean isLogin = SharedPreferenceManager.getInstance(this).getUserCache().getIsLogin();
+//
+//                if (isLogin) {
+//                    setMenu();
+//                } else {
+//                    ARouter.getInstance().build(ARouterPathUtils.User_LoginActivity).navigation();
+//                }
                 setMenu();
-
-
                 break;
             }
 

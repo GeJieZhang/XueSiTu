@@ -16,7 +16,7 @@ public class EventBusTagUtils {
     public static final String HomeNavigationBar = "HomeNavigationBar";
 
     /**
-     *
+     * 学生和老师的选择
      */
-    public static final String TeacherChooseFragment = "TeacherChooseFragment";
+    public static final String TeacherStudentChooseFragment = "TeacherStudentChooseFragment";
 }

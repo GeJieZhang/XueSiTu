@@ -97,7 +97,7 @@ public class IdentityActivity extends BaseAppActivity {
             @Override
             public void onGradeChoose(String str) {
 
-                showToast(str);
+                //showToast(str);
 
             }
         });
@@ -130,7 +130,7 @@ public class IdentityActivity extends BaseAppActivity {
         teacherChooseFragment.setGradeChooseListener(new TeacherChooseFragment.GradeChooseListener() {
             @Override
             public void onGradeChoose(String str) {
-                showToast(str);
+                //showToast(str);
             }
         });
 

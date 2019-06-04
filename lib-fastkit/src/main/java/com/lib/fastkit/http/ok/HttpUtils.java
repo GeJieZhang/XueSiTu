@@ -2,6 +2,7 @@ package com.lib.fastkit.http.ok;
 
 import android.content.Context;
 
+import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.rsa.RsaAndAesUtils;
 
 import org.json.JSONObject;
@@ -19,14 +20,18 @@ import java.util.Map;
  */
 public class HttpUtils {
 
-    // 直接带参数 ，链式调用
-    private String mUrl = "http://192.168.2.28:8080/xuesitu_api/api/";
+    // 正式
+    //private String mUrl = "http://192.168.2.28:8081/xuesitu_api/api/";
+    //本地
+    private String mUrl = "http://192.168.2.196:8081/api";
+
+
     // 请求方式
     private int mType = POST_TYPE;
     private static final int POST_TYPE = 0x0011;
     private static final int GET_TYPE = 0x0022;
 
-    private boolean IS_ENCRYPT = true;
+    private boolean IS_ENCRYPT = false;
 
 
     private Map<String, Object> mParams;
@@ -138,8 +143,12 @@ public class HttpUtils {
 
         if (IS_ENCRYPT && params.size() > 0) {
             JSONObject json = new JSONObject(params);
+            LogUtil.e(json.toString());
             params.clear();
             Map<String, String> formatParams = RsaAndAesUtils.paramsFormat(json.toString());
+
+
+            LogUtil.e(formatParams.toString());
             params.putAll(formatParams);
         }
 

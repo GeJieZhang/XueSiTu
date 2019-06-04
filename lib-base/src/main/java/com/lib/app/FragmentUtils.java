@@ -10,7 +10,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
  * Created by Administrator on 2017/12/4 0004.
  */
 
-public class FragmentUtils {
+public  class FragmentUtils {
 
     public static Fragment getDayiFragment() {
         Fragment fragment = (Fragment) ARouter.getInstance().build(ARouterPathUtils.Dayi_DayiFragment).navigation();

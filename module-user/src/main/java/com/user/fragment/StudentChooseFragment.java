@@ -9,11 +9,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.lib.app.EventBusTagUtils;
+import com.lib.bean.Event;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.ui.fragment.BaseAppFragment;
 import com.user.R;
 import com.user.R2;
+import com.user.bean.IdentityUserBean;
+
+import org.simple.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,24 +32,42 @@ public class StudentChooseFragment extends BaseAppFragment {
     @BindView(R2.id.tv_title)
     TextView tv_title;
 
+    @BindView(R2.id.btn_sure)
+    Button btnSure;
+
     private GradeAdapter gradeAdapter;
 
-    private String title="年级";
+    private String title = "年级";
     private String[] grade = {
             "一年级", "二年级", "三年级",
             "四年级", "五年级", "六年级",
             "初一", "初二", "初三",
             "高一", "高二", "高三"};
+
+    IdentityUserBean identityUserBean;
     private List<Button> btnGradeList = new ArrayList<>();
     private List<String> mDataGrade = new ArrayList<>();
 
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
         tv_title.setText(title);
+
+        initView();
         initData();
         gradeAdapter = new GradeAdapter(getContext(), mDataGrade);
         rvGrade.setLayoutManager(new GridLayoutManager(getContext(), 3));
         rvGrade.setAdapter(gradeAdapter);
+
+
+    }
+
+    private void initView() {
+        btnSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new Event<IdentityUserBean>(1, identityUserBean), EventBusTagUtils.TeacherStudentChooseFragment);
+            }
+        });
     }
 
     private void initData() {
@@ -96,6 +119,15 @@ public class StudentChooseFragment extends BaseAppFragment {
                     if (gradeChooseListener != null) {
                         gradeChooseListener.onGradeChoose(grade[position]);
                     }
+
+
+                    int id = position + 1;
+
+
+                    identityUserBean = new IdentityUserBean();
+                    identityUserBean.setType("1");
+                    identityUserBean.setGrade_id(id + "");
+
 
                 }
 

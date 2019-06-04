@@ -45,7 +45,7 @@ public class OkHttpEngine implements IHttpEngine {
     private static final int TIME_OUT = 15;
 
     private static final int CACHE_TIME_OUT = 3;
-    private static final String TAG = "======网络请求路径======";
+    private static final String TAG = "网络请求路径======";
     private Handler mDelivery;
 
     private CacheControl cacheControl;

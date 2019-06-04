@@ -17,6 +17,7 @@ public class UserCacheImpl extends SharedPreferenceModel implements UserCacheInt
     private static final String FILE_NAME = "USER";
 
     private static final String Key_User_Name = "UserName";
+    private static final String Key_Is_Login = "IsLogin";
 
     public UserCacheImpl(Context context) {
         super(context, FILE_NAME, Context.MODE_PRIVATE);
@@ -33,5 +34,15 @@ public class UserCacheImpl extends SharedPreferenceModel implements UserCacheInt
     @Override
     public String getUserName() {
         return getString(Key_User_Name);
+    }
+
+    @Override
+    public void setIsLogin(boolean b) {
+        put(Key_Is_Login, b);
+    }
+
+    @Override
+    public boolean getIsLogin() {
+        return getBoolean(Key_Is_Login);
     }
 }

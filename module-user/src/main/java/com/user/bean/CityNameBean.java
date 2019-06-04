@@ -12,7 +12,7 @@ import java.util.List;
  * @date: 2017/3/16 15:36
  */
 
-public class JsonBean implements IPickerViewData {
+public class CityNameBean implements IPickerViewData {
 
 
     /**

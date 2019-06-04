@@ -258,7 +258,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param msg
      */
     public static void showLog(String msg) {
-        Log.e("调试日志", msg);
+        Log.e("调试日志======", msg);
     }
 
 

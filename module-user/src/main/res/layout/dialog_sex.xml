@@ -13,11 +13,17 @@
         android:layout_marginRight="16dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="0dp">
+
         <fragment
             android:id="@+id/fragment_sex"
             android:name="com.user.fragment.SexFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></fragment>
+
+        <!--<FrameLayout-->
+            <!--android:id="@+id/fragment_content"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"></FrameLayout>-->
 
 
 

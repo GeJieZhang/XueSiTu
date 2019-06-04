@@ -3,6 +3,9 @@
  */
 package com.lib.fastkit.utils.string_deal.regex;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,6 +15,24 @@ import java.util.regex.Pattern;
  * @create 2012-11-15 下午4:54:42
  */
 public class RegexUtils {
+
+
+    public static boolean checkCode(Context context, String code) {
+        String regex = "\\w+@\\w+\\.[a-z]+(\\.[a-z]+)?";
+
+
+        if (code.length() <= 0) {
+            Toast.makeText(context, "验证码不能为空!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (code.length() != 6) {
+            Toast.makeText(context, "验证码格式不正确!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
+    }
 
     /**
      * 验证Email
@@ -62,9 +83,19 @@ public class RegexUtils {
      *              <p><b>电话号码：</b>这包含从 0 到 9 的一个或多个数字 </p>
      * @return 验证成功返回true，验证失败返回false
      */
-    public static boolean checkPhone(String phone) {
+    public static boolean checkPhone(Context context, String phone) {
+
+        if (phone.length() <= 0) {
+            Toast.makeText(context, "手机号不能为空!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         String regex = "^[1][3578][0-9]{9}$";
-        return Pattern.matches(regex, phone);
+        boolean b = Pattern.matches(regex, phone);
+        if (!b) {
+            Toast.makeText(context, "请输入正确的手机号码!", Toast.LENGTH_SHORT).show();
+        }
+        return b;
     }
 
     /**

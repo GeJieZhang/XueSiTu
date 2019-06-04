@@ -5,19 +5,28 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.lib.app.ARouterPathUtils;
+import com.lib.app.CodeUtil;
+import com.lib.app.EventBusTagUtils;
+import com.lib.bean.Event;
 import com.lib.fastkit.http.ok.EngineCallBack;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.http.ok.extension.HttpNormalCallBack;
+import com.lib.fastkit.utils.string_deal.regex.RegexUtils;
 import com.lib.fastkit.utils.timer_countdown.CountDownTimer;
 import com.lib.ui.activity.BaseAppActivity;
 import com.user.R;
 import com.user.R2;
+import com.user.bean.GetCodeBean;
+import com.user.bean.IdentityUserBean;
 import com.user.test.LoginManager;
+
+import org.simple.eventbus.Subscriber;
 
 import java.util.Map;
 
@@ -35,6 +44,11 @@ public class LoginActivity extends BaseAppActivity {
     @BindView(R2.id.tv_xieyi)
     TextView tvXieyi;
 
+    @BindView(R2.id.et_phone)
+    EditText etphone;
+
+    @BindView(R2.id.et_code)
+    EditText etCode;
 
     @Override
     protected void onCreateView() {
@@ -74,37 +88,14 @@ public class LoginActivity extends BaseAppActivity {
     public void onViewClicked(View view) {
         int i = view.getId();
         if (i == R.id.btn_code) {
+            requestCode();
 
-            btnCode.setEnabled(false);
-
-            btnCode.setBackgroundResource(R.drawable.bg_circle_hollow_r10);
-            btnCode.setTextColor(getResources().getColor(R.color.base_text1));
-            timer.start();
-
-
-            HttpUtils.with(this)
-                    .addParam("requestType", "LOGIN")
-                    .post()
-                    .execute(new HttpNormalCallBack<String>() {
-                        @Override
-                        public void onSuccess(String result) {
-
-                            showLog(result);
-
-
-                        }
-
-                        @Override
-                        public void onError(String e) {
-
-                        }
-                    });
 
         } else if (i == R.id.btn_login) {
 
 
-            ARouter.getInstance().build(ARouterPathUtils.User_IdentityActivity).navigation();
-            // ARouter.getInstance().build(ARouterPathUtils.User_XieyiActivity2).navigation();
+            requestLogin();
+
 
         } else if (i == R.id.tv_xieyi) {
 
@@ -113,9 +104,195 @@ public class LoginActivity extends BaseAppActivity {
         }
     }
 
+    private void requestLogin() {
+        String phone = etphone.getText().toString().trim();
+        String code = etCode.getText().toString().trim();
+
+
+        if (!RegexUtils.checkCode(this, code)) {
+
+            return;
+        }
+
+
+        if (!RegexUtils.checkPhone(this, phone)) {
+
+            return;
+        }
+
+        HttpUtils.with(this)
+                .addParam("requestType", "LOGIN")
+                .addParam("phone", phone)
+                .addParam("code", code)
+                .post()
+                .execute(new HttpNormalCallBack<GetCodeBean>() {
+                    @Override
+                    public void onSuccess(GetCodeBean result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+
+                            ARouter.getInstance().build(ARouterPathUtils.App_MainActivity).navigation();
+
+
+                        }
+
+                        if (result.getCode() == CodeUtil.CODE_402) {
+
+                            requestCheckCode();
+
+                        }
+
+
+                        showToast(result.getMsg());
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
+    }
+
+    /**
+     * 检测验证码
+     */
+    private void requestCheckCode() {
+        String phone = etphone.getText().toString().trim();
+        String code = etCode.getText().toString().trim();
+
+
+        if (!RegexUtils.checkCode(this, code)) {
+
+            return;
+        }
+
+
+        if (!RegexUtils.checkPhone(this, phone)) {
+
+            return;
+        }
+
+        HttpUtils.with(this)
+                .addParam("requestType", "VERIFY_CODE_CHECK")
+                .addParam("phone", phone)
+                .addParam("code", code)
+                .post()
+                .execute(new HttpNormalCallBack<GetCodeBean>() {
+                    @Override
+                    public void onSuccess(GetCodeBean result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+
+                            ARouter.getInstance().build(ARouterPathUtils.User_IdentityActivity).navigation();
+
+
+                        }
+                        showToast(result.getMsg());
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
+
+
+    }
+
+    private void requestCode() {
+        String phone = etphone.getText().toString().trim();
+        if (!RegexUtils.checkPhone(this, phone)) {
+
+            return;
+        }
+        HttpUtils.with(this)
+                .addParam("requestType", "VERIFY_CODE_SEND")
+                .addParam("phone", phone)
+                .post()
+                .execute(new HttpNormalCallBack<GetCodeBean>() {
+                    @Override
+                    public void onSuccess(GetCodeBean result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+                            btnCode.setEnabled(false);
+                            btnCode.setBackgroundResource(R.drawable.bg_circle_hollow_r10);
+                            btnCode.setTextColor(getResources().getColor(R.color.base_text1));
+                            timer.start();
+                        }
+                        showToast(result.getMsg());
+
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
+
+
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         timer.cancel();
     }
+
+
+    @Subscriber(tag = EventBusTagUtils.TeacherStudentChooseFragment)
+    public void fromTeacherStudentChooseFragment(Event event) {
+        switch (event.getEventCode()) {
+            case 1: {
+
+                IdentityUserBean identityUserBean = (IdentityUserBean) event.getData();
+
+                requestRegist(identityUserBean);
+
+
+                break;
+            }
+
+        }
+
+    }
+
+    private void requestRegist(IdentityUserBean identityUserBean) {
+
+        String phone = etphone.getText().toString().trim();
+        if (!RegexUtils.checkPhone(this, phone)) {
+
+            return;
+        }
+        HttpUtils.with(this)
+                .addParam("requestType", "REGISTERED")
+                .addParam("phone", phone)
+                .addParam("identity", identityUserBean.getType())
+                .addParam("grade_id", identityUserBean.getGrade_id())
+                .addParam("subject_id", identityUserBean.getSubject_id())
+                .post()
+                .execute(new HttpNormalCallBack<GetCodeBean>() {
+                    @Override
+                    public void onSuccess(GetCodeBean result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+
+                            ARouter.getInstance().build(ARouterPathUtils.App_MainActivity).navigation();
+
+
+                        }
+                        showToast(result.getMsg());
+
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
+
+
+    }
+
 }

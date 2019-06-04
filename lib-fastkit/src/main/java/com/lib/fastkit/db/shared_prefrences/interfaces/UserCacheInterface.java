@@ -12,4 +12,9 @@ public interface UserCacheInterface extends BaseCacheInterface {
     void setUserName(String name);
 
     String getUserName();
+
+
+    void setIsLogin(boolean b);
+
+    boolean getIsLogin();
 }

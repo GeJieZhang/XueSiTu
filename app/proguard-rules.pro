@@ -571,6 +571,13 @@ rx.internal.util.atomic.LinkedQueueNode consumerNode;
 -keep public class javax.lang.model.element.Element { *; }
 -keep public class * extends javax.lang.model.element.Element { *; }
 #--------------------------------------------------------------------------------------------------
+#七牛云存储
+
+-keep class com.qiniu.**{*;}
+-keep class com.qiniu.**{public <init>();}
+-ignorewarnings
+
+#--------------------------------------------------------------------------------------------------
 #bean
 -keep public class com.youxuan.bean.**{*;}
 -keep public class com.lib.bean.**{*;}

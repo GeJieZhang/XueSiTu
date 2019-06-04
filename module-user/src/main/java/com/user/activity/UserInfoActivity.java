@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -14,7 +16,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
@@ -34,7 +35,7 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.user.R;
 import com.user.R2;
-import com.user.bean.JsonBean;
+import com.user.bean.CityNameBean;
 import com.user.fragment.ChooseSchoolFragment;
 import com.user.fragment.NickNameFragment;
 import com.user.fragment.SexFragment;
@@ -254,6 +255,7 @@ public class UserInfoActivity extends BaseAppActivity {
             }
         });
 
+
     }
 
     //=============================================================================================
@@ -327,6 +329,8 @@ public class UserInfoActivity extends BaseAppActivity {
                 showToast(str);
             }
         });
+
+
     }
 
     //=============================================================================================
@@ -387,7 +391,7 @@ public class UserInfoActivity extends BaseAppActivity {
     //==============================================================================城市选择=======
     //=============================================================================================
 
-    private List<JsonBean> options1Items = new ArrayList<>();
+    private List<CityNameBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
 
@@ -436,7 +440,7 @@ public class UserInfoActivity extends BaseAppActivity {
          * */
         String JsonData = new GetJsonDataUtil().getJson(this, "province.json");//获取assets目录下的json文件数据
 
-        ArrayList<JsonBean> jsonBean = parseData(JsonData);//用Gson 转成实体
+        ArrayList<CityNameBean> jsonBean = parseData(JsonData);//用Gson 转成实体
 
         /**
          * 添加省份数据
@@ -481,13 +485,13 @@ public class UserInfoActivity extends BaseAppActivity {
     }
 
 
-    public ArrayList<JsonBean> parseData(String result) {//Gson 解析
-        ArrayList<JsonBean> detail = new ArrayList<>();
+    public ArrayList<CityNameBean> parseData(String result) {//Gson 解析
+        ArrayList<CityNameBean> detail = new ArrayList<>();
         try {
             JSONArray data = new JSONArray(result);
             Gson gson = new Gson();
             for (int i = 0; i < data.length(); i++) {
-                JsonBean entity = gson.fromJson(data.optJSONObject(i).toString(), JsonBean.class);
+                CityNameBean entity = gson.fromJson(data.optJSONObject(i).toString(), CityNameBean.class);
                 detail.add(entity);
             }
         } catch (Exception e) {
@@ -550,5 +554,10 @@ public class UserInfoActivity extends BaseAppActivity {
 
     }
 
-
+    protected void addFragment(int containerId, Fragment fragment, String tag) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(containerId, fragment, tag);
+        fragmentTransaction.addToBackStack(tag);
+        fragmentTransaction.commit();
+    }
 }

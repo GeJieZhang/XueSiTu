@@ -9,11 +9,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.lib.app.EventBusTagUtils;
+import com.lib.bean.Event;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.ui.fragment.BaseAppFragment;
 import com.user.R;
 import com.user.R2;
+import com.user.bean.IdentityUserBean;
+
+import org.simple.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,24 +30,37 @@ public class TeacherChooseFragment extends BaseAppFragment {
     RecyclerView rvGrade;
     @BindView(R2.id.tv_title)
     TextView tv_title;
+    @BindView(R2.id.btn_sure)
+    Button btnSure;
     private GradeAdapter gradeAdapter;
 
     private String title = "学科";
     private String[] grade = {
             "语文", "数学", "英语",
-            "物理", "化学", "生物",
-            "政治", "历史", "地理",
+            "化学", "地理", "生物", "历史", "物理",
+            "政治"
     };
+    IdentityUserBean identityUserBean;
     private List<Button> btnGradeList = new ArrayList<>();
     private List<String> mDataGrade = new ArrayList<>();
 
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
         tv_title.setText(title);
+        initView();
         initData();
         gradeAdapter = new GradeAdapter(getContext(), mDataGrade);
         rvGrade.setLayoutManager(new GridLayoutManager(getContext(), 3));
         rvGrade.setAdapter(gradeAdapter);
+    }
+
+    private void initView() {
+        btnSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new Event<IdentityUserBean>(1, identityUserBean), EventBusTagUtils.TeacherStudentChooseFragment);
+            }
+        });
     }
 
     private void initData() {
@@ -90,10 +108,15 @@ public class TeacherChooseFragment extends BaseAppFragment {
                     btn_text.setBackgroundResource(R.drawable.bg_circle_red_r22_1);
                     btn_text.setTextColor(getResources().getColor(R.color.white));
 
-
                     if (gradeChooseListener != null) {
                         gradeChooseListener.onGradeChoose(grade[position]);
                     }
+
+                    int id = position + 1;
+                    identityUserBean = new IdentityUserBean();
+                    identityUserBean.setType("1");
+                    identityUserBean.setSubject_id(id + "");
+
 
                 }
 
