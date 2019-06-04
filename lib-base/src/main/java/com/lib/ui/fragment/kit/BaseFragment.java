@@ -7,9 +7,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.lib.fastkit.utils.log.LogUtil;
+import com.lib.fastkit.views.button_deal.click.ClickUtils;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -64,4 +68,8 @@ public abstract class BaseFragment extends Fragment {
             mToast.show();
         }
     }
+
+
+
+
 }

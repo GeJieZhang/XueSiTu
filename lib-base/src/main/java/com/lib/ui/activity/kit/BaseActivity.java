@@ -22,7 +22,9 @@ import android.widget.Toast;
 
 import com.lib.fastkit.R;
 import com.lib.fastkit.ui.base.control.ActivityCollector;
+import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.status_bar.QMUI.QMUIStatusBarHelper;
+import com.lib.fastkit.views.button_deal.click.ClickUtils;
 
 import org.simple.eventbus.EventBus;
 
@@ -110,6 +112,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * 设置点击屏幕隐藏键盘
+     * 防止二次点击
      *
      * @param ev
      * @return
@@ -118,14 +121,26 @@ public abstract class BaseActivity extends AppCompatActivity {
     public boolean dispatchTouchEvent(MotionEvent ev) {
 
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+
+            boolean b = ClickUtils.isFastDoubleClick();
+            LogUtil.e(b + "");
+            if (b) {
+
+
+                return true;
+            }
             // get current focus,Generally it is EditText
             View view = getCurrentFocus();
             if (isShouldHideSoftKeyBoard(view, ev)) {
                 hideSoftKeyBoard(view.getWindowToken());
             }
+
+
         }
+
         return super.dispatchTouchEvent(ev);
     }
+
 
     /**
      * Judge what situation hide the soft keyboard,click EditText view should show soft keyboard
@@ -342,4 +357,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         unbinder.unbind();
         ActivityCollector.removeActivity(this);
     }
+
+
 }
