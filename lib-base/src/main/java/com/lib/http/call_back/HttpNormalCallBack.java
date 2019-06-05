@@ -1,11 +1,20 @@
-package com.lib.fastkit.http.ok.extension;
+package com.lib.http.call_back;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.google.gson.JsonObject;
+import com.lib.app.EventBusTagUtils;
+import com.lib.bean.Event;
 import com.lib.fastkit.http.ok.EngineCallBack;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.http.ok.err.ResponseErrorListenerImpl;
 import com.google.gson.Gson;
+import com.lib.fastkit.utils.log.LogUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.simple.eventbus.EventBus;
 
 import java.util.Map;
 
@@ -54,6 +63,15 @@ public abstract class HttpNormalCallBack<T> implements EngineCallBack {
     public void onSuccess(String result) {
 
         try {
+            JSONObject jsonObject = new JSONObject(result);
+
+            int code = (int) jsonObject.get("code");
+
+            if (code == 300) {
+                EventBus.getDefault().post(new Event<String>(1, "Token失效！"), EventBusTagUtils.HttpNormalCallBack);
+                return;
+            }
+
             Gson gson = new Gson();
             T objResult = (T) gson.fromJson(result,
                     HttpUtils.analysisClazzInfo(this));

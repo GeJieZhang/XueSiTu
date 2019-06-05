@@ -1,6 +1,6 @@
 package com.user.bean;
 
-public class GetCodeBean {
+public class BaseLoginBean {
 
     /**
      * code : 200
@@ -53,7 +53,10 @@ public class GetCodeBean {
 
         private int code;
         private String phone;
-
+        private String photo_url;
+        private String name;
+        private String token;
+        private String identity;
         public int getCode() {
             return code;
         }
@@ -68,6 +71,38 @@ public class GetCodeBean {
 
         public void setPhone(String phone) {
             this.phone = phone;
+        }
+
+        public String getPhoto_url() {
+            return photo_url;
+        }
+
+        public void setPhoto_url(String photo_url) {
+            this.photo_url = photo_url;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
+        public String getIdentity() {
+            return identity;
+        }
+
+        public void setIdentity(String identity) {
+            this.identity = identity;
         }
     }
 }

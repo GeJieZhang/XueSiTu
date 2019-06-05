@@ -51,6 +51,8 @@ public class RequestInterceptor implements Interceptor {
         //可在此添加请求头
         Request request = chain.request();
 
+
+
         boolean logRequest = printLevel == Level.ALL || (printLevel != Level.NONE && printLevel == Level.REQUEST);
 
         if (logRequest) {

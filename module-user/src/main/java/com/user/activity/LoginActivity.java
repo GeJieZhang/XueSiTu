@@ -1,8 +1,5 @@
 package com.user.activity;
 
-import android.content.Context;
-import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,24 +11,22 @@ import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
 import com.lib.app.EventBusTagUtils;
 import com.lib.bean.Event;
-import com.lib.fastkit.http.ok.EngineCallBack;
+import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
+import com.lib.fastkit.db.shared_prefrences.interfaces.UserCacheInterface;
 import com.lib.fastkit.http.ok.HttpUtils;
-import com.lib.fastkit.http.ok.extension.HttpNormalCallBack;
+import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.fastkit.utils.string_deal.regex.RegexUtils;
 import com.lib.fastkit.utils.timer_countdown.CountDownTimer;
 import com.lib.ui.activity.BaseAppActivity;
 import com.user.R;
 import com.user.R2;
-import com.user.bean.GetCodeBean;
+import com.user.bean.BaseLoginBean;
 import com.user.bean.IdentityUserBean;
 import com.user.test.LoginManager;
 
 import org.simple.eventbus.Subscriber;
 
-import java.util.Map;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
@@ -125,11 +120,19 @@ public class LoginActivity extends BaseAppActivity {
                 .addParam("phone", phone)
                 .addParam("code", code)
                 .post()
-                .execute(new HttpNormalCallBack<GetCodeBean>() {
+                .execute(new HttpNormalCallBack<BaseLoginBean>() {
                     @Override
-                    public void onSuccess(GetCodeBean result) {
+                    public void onSuccess(BaseLoginBean result) {
 
                         if (result.getCode() == CodeUtil.CODE_200) {
+
+                            UserCacheInterface userCacheInterface = SharedPreferenceManager.getInstance(LoginActivity.this).getUserCache();
+                            userCacheInterface.setUserToken(result.getObj().getToken());
+                            userCacheInterface.setUserIdentity(result.getObj().getIdentity());
+                            userCacheInterface.setUserName(result.getObj().getName());
+                            userCacheInterface.setUserHeadUrl(result.getObj().getPhoto_url());
+                            userCacheInterface.setUserPhone(result.getObj().getPhone());
+
 
                             ARouter.getInstance().build(ARouterPathUtils.App_MainActivity).navigation();
 
@@ -177,9 +180,9 @@ public class LoginActivity extends BaseAppActivity {
                 .addParam("phone", phone)
                 .addParam("code", code)
                 .post()
-                .execute(new HttpNormalCallBack<GetCodeBean>() {
+                .execute(new HttpNormalCallBack<BaseLoginBean>() {
                     @Override
-                    public void onSuccess(GetCodeBean result) {
+                    public void onSuccess(BaseLoginBean result) {
 
                         if (result.getCode() == CodeUtil.CODE_200) {
 
@@ -209,9 +212,9 @@ public class LoginActivity extends BaseAppActivity {
                 .addParam("requestType", "VERIFY_CODE_SEND")
                 .addParam("phone", phone)
                 .post()
-                .execute(new HttpNormalCallBack<GetCodeBean>() {
+                .execute(new HttpNormalCallBack<BaseLoginBean>() {
                     @Override
-                    public void onSuccess(GetCodeBean result) {
+                    public void onSuccess(BaseLoginBean result) {
 
                         if (result.getCode() == CodeUtil.CODE_200) {
                             btnCode.setEnabled(false);
@@ -271,12 +274,17 @@ public class LoginActivity extends BaseAppActivity {
                 .addParam("grade_id", identityUserBean.getGrade_id())
                 .addParam("subject_id", identityUserBean.getSubject_id())
                 .post()
-                .execute(new HttpNormalCallBack<GetCodeBean>() {
+                .execute(new HttpNormalCallBack<BaseLoginBean>() {
                     @Override
-                    public void onSuccess(GetCodeBean result) {
+                    public void onSuccess(BaseLoginBean result) {
 
                         if (result.getCode() == CodeUtil.CODE_200) {
-
+                            UserCacheInterface userCacheInterface = SharedPreferenceManager.getInstance(LoginActivity.this).getUserCache();
+                            userCacheInterface.setUserToken(result.getObj().getToken());
+                            userCacheInterface.setUserIdentity(result.getObj().getIdentity());
+                            userCacheInterface.setUserName(result.getObj().getName());
+                            userCacheInterface.setUserHeadUrl(result.getObj().getPhoto_url());
+                            userCacheInterface.setUserPhone(result.getObj().getPhone());
                             ARouter.getInstance().build(ARouterPathUtils.App_MainActivity).navigation();
 
 

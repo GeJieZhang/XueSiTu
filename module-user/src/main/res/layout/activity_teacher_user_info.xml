@@ -584,6 +584,7 @@
                         android:paddingRight="16dp">
 
                         <TextView
+                            android:id="@+id/tv_tips"
                             style="@style/text_style7"
                             android:layout_width="match_parent"
                             android:text="全部信息提交审核通过后,即可认证成功。"

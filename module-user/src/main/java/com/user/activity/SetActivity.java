@@ -7,6 +7,8 @@ import android.widget.LinearLayout;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.lib.app.ARouterPathUtils;
+import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
+import com.lib.fastkit.views.dialog.normal.NormalDialog;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.view.navigationbar.NomalNavigationBar;
 import com.user.R;
@@ -60,7 +62,6 @@ public class SetActivity extends BaseAppActivity {
     }
 
 
-
     @OnClick({R2.id.lin_clear, R2.id.lin_zhifu, R2.id.lin_update, R2.id.lin_help, R2.id.lin_about, R2.id.lin_out})
     public void onViewClicked(View view) {
         int i = view.getId();
@@ -72,6 +73,28 @@ public class SetActivity extends BaseAppActivity {
         } else if (i == R.id.lin_help) {
         } else if (i == R.id.lin_about) {
         } else if (i == R.id.lin_out) {
+
+            NormalDialog.getInstance(this)
+                    .setTitle("退出登录")
+                    .setContent("你确认要退出登录么?")
+                    .setCancelListener(new NormalDialog.CancelListener() {
+                        @Override
+                        public void onCancel(NormalDialog normalDialog) {
+
+                        }
+
+
+                    })
+                    .setSureListener(new NormalDialog.SurelListener() {
+                        @Override
+                        public void onSure(NormalDialog normalDialog) {
+                            SharedPreferenceManager.getInstance(SetActivity.this).getUserCache().setUserToken("");
+                            normalDialog.dismiss();
+                        }
+
+
+                    })
+                    .show();
         }
     }
 }

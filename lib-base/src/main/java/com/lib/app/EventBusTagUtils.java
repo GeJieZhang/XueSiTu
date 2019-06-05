@@ -19,4 +19,11 @@ public class EventBusTagUtils {
      * 学生和老师的选择
      */
     public static final String TeacherStudentChooseFragment = "TeacherStudentChooseFragment";
+
+
+    /**
+     * Token失效
+     */
+    public static final String HttpNormalCallBack = "HttpNormalCallBack";
+
 }

@@ -49,8 +49,8 @@ ext {
             versionchecklib    : "1.5",
 
             //图片加载
-            glide              : "4.0.0",
-            glide_compiler     : "4.0.0",
+            glide              : "4.7.1",
+            glide_compiler     : "4.7.1",
             //权限
             rxpermissions      : "0.9.5@aar",
             //Dialogs

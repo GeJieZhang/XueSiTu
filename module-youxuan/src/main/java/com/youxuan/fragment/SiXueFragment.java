@@ -5,10 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.lib.app.ARouterPathUtils;
-import com.lib.fastkit.http.ok.HttpUtils;
-import com.lib.fastkit.http.ok.extension.HttpNormalCallBack;
 import com.lib.ui.fragment.BaseAppFragment;
 import com.youxuan.R;
 
@@ -47,8 +44,24 @@ public class SiXueFragment extends BaseAppFragment {
 //                        });
 
 
+                // ARouter.getInstance().build(ARouterPathUtils.User_LoginActivity).navigation();
 
-                ARouter.getInstance().build(ARouterPathUtils.User_LoginActivity).navigation();
+
+//                HttpUtils.with(getContext())
+//
+//                      .get()
+//                        .execute(new HttpNormalCallBack<String>() {
+//                            @Override
+//                            public void onSuccess(String str) {
+//
+//
+//                            }
+//
+//                            @Override
+//                            public void onError(String e) {
+//
+//                            }
+//                        });
 
             }
         });

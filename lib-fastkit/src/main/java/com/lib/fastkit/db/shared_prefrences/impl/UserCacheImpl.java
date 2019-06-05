@@ -18,6 +18,10 @@ public class UserCacheImpl extends SharedPreferenceModel implements UserCacheInt
 
     private static final String Key_User_Name = "UserName";
     private static final String Key_Is_Login = "IsLogin";
+    private static final String Key_Token = "Token";
+    private static final String Key_Identity = "Identity";
+    private static final String Key_Url = "Url";
+    private static final String Key_Phone = "Phone";
 
     public UserCacheImpl(Context context) {
         super(context, FILE_NAME, Context.MODE_PRIVATE);
@@ -44,5 +48,47 @@ public class UserCacheImpl extends SharedPreferenceModel implements UserCacheInt
     @Override
     public boolean getIsLogin() {
         return getBoolean(Key_Is_Login);
+    }
+
+    @Override
+    public void setUserToken(String token) {
+        put(Key_Token, token);
+    }
+
+    @Override
+    public String getUserToken() {
+        return getString(Key_Token);
+    }
+
+    @Override
+    public void setUserIdentity(String identity) {
+
+
+        put(Key_Identity, identity);
+    }
+
+    @Override
+    public String getUserIdentity() {
+        return getString(Key_Identity);
+    }
+
+    @Override
+    public void setUserHeadUrl(String url) {
+        put(Key_Url, url);
+    }
+
+    @Override
+    public String getUserHeadUrl() {
+        return getString(Key_Url);
+    }
+
+    @Override
+    public void setUserPhone(String phone) {
+        put(Key_Phone, phone);
+    }
+
+    @Override
+    public String getUserPhone() {
+        return getString(Key_Phone);
     }
 }

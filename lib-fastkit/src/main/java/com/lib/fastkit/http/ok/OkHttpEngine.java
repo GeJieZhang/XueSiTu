@@ -9,6 +9,7 @@ import android.util.Log;
 import com.lib.fastkit.http.ok.err.HttpException;
 import com.lib.fastkit.http.ok.interceptor.CacheInterceptor;
 import com.lib.fastkit.http.ok.interceptor.RequestInterceptor;
+import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.rsa.RsaAndAesUtils;
 
 import java.io.File;
@@ -43,82 +44,27 @@ public class OkHttpEngine implements IHttpEngine {
     private static OkHttpClient mOkHttpClient;
     private static List<Call> callList = new ArrayList<>();
     private static final int TIME_OUT = 15;
-
-    private static final int CACHE_TIME_OUT = 3;
     private static final String TAG = "网络请求路径======";
     private Handler mDelivery;
 
-    private CacheControl cacheControl;
 
     public OkHttpEngine(Context context) {
 
         mDelivery = new Handler(Looper.getMainLooper());
 
 
+//        mOkHttpClient = new OkHttpClient.Builder()
+//                .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
+//                .addInterceptor(new RequestInterceptor(RequestInterceptor.Level.ALL))
+//                .addNetworkInterceptor(new CacheInterceptor())
+//                .cache(new Cache(context.getCacheDir(), 10240 * 1024))
+//                .build();
+
+
         mOkHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .addInterceptor(new RequestInterceptor(RequestInterceptor.Level.ALL))
                 .build();
-
-    }
-
-    @Override
-    public void post(final Context context, String url, Map<String, Object> params, final EngineCallBack callBack) {
-        final String jointUrl = HttpUtils.jointParams(url, params);  //打印
-        Log.e(TAG, jointUrl);
-
-
-        RequestBody requestBody = appendBody(params);
-
-        final Request request = new Request.Builder()
-                .url(url)
-                .tag(context)
-                .post(requestBody)
-                .build();
-
-
-        Call call = mOkHttpClient.newCall(request);
-        callList.add(call);
-        call.enqueue(
-                new Callback() {
-                    @Override
-                    public void onFailure(final Call call, final IOException e) {
-
-                        mDelivery.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                callBack.onError(e);
-
-                                callList.remove(call);
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onResponse(final Call call, final Response response) throws IOException {
-                        final String result = response.body().string();
-
-                        mDelivery.post(new Runnable() {
-                            @Override
-                            public void run() {
-
-
-                                if (response.code() != 200) {
-                                    callBack.onError(new HttpException(response));
-                                } else {
-                                    callBack.onSuccess(result);
-                                }
-
-                                callList.remove(call);
-
-                            }
-                        });
-
-
-                    }
-                }
-        );
 
     }
 
@@ -186,12 +132,14 @@ public class OkHttpEngine implements IHttpEngine {
 
         Log.e(TAG, url);
 
-        Request.Builder requestBuilder = new Request.Builder()
-                .url(url)
-                .tag(context);
 
-        //可以省略，默认是GET请求
-        Request request = requestBuilder.build();
+        Request request = new Request.Builder()
+                .url(url)
+                .tag(context)
+                .get()
+                .build();
+
+
         Call call = mOkHttpClient.newCall(request);
         callList.add(call);
         call.enqueue(new Callback() {
@@ -211,8 +159,8 @@ public class OkHttpEngine implements IHttpEngine {
 
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
-                final String resultJson = response.body().string();
-
+                final String result = response.body().string();
+                LogUtil.e(result);
 
                 mDelivery.post(new Runnable() {
                     @Override
@@ -220,7 +168,7 @@ public class OkHttpEngine implements IHttpEngine {
                         if (response.code() != 200) {
                             callBack.onError(new HttpException(response));
                         } else {
-                            callBack.onSuccess(resultJson);
+                            callBack.onSuccess(result);
                         }
                         callList.remove(call);
 
@@ -231,6 +179,64 @@ public class OkHttpEngine implements IHttpEngine {
 
     }
 
+    @Override
+    public void post(final Context context, String url, Map<String, Object> params, final EngineCallBack callBack) {
+        final String jointUrl = HttpUtils.jointParams(url, params);  //打印
+        Log.e(TAG, jointUrl);
+
+        RequestBody requestBody = appendBody(params);
+
+        final Request request = new Request.Builder()
+                .url(url)
+                .tag(context)
+                .post(requestBody)
+                .build();
+
+        Call call = mOkHttpClient.newCall(request);
+        callList.add(call);
+        call.enqueue(
+                new Callback() {
+                    @Override
+                    public void onFailure(final Call call, final IOException e) {
+
+                        mDelivery.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                callBack.onError(e);
+
+                                callList.remove(call);
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onResponse(final Call call, final Response response) throws IOException {
+                        final String result = response.body().string();
+                        LogUtil.e(result);
+
+                        mDelivery.post(new Runnable() {
+                            @Override
+                            public void run() {
+
+
+                                if (response.code() != 200) {
+                                    callBack.onError(new HttpException(response));
+                                } else {
+                                    callBack.onSuccess(result);
+                                }
+
+                                callList.remove(call);
+
+                            }
+                        });
+
+
+                    }
+                }
+        );
+
+    }
 
     public void cancel() {
         if (callList.size() > 0) {

@@ -3,7 +3,6 @@ package com.user.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -22,12 +21,18 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.lib.app.ARouterPathUtils;
+import com.lib.app.CodeUtil;
+import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
+import com.lib.fastkit.http.ok.HttpUtils;
+import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.fastkit.utils.file_size.PcUtils;
 import com.lib.fastkit.utils.json_deal.GetJsonDataUtil;
 import com.lib.fastkit.views.dialog.zenhui.AlertDialog;
 import com.lib.ui.activity.BaseAppActivity;
+import com.lib.utls.glide.GlideConfig;
 import com.lib.utls.picture_select.PhotoUtil;
 import com.lib.view.navigationbar.NomalNavigationBar;
 import com.luck.picture.lib.PictureSelector;
@@ -36,6 +41,7 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.user.R;
 import com.user.R2;
 import com.user.bean.CityNameBean;
+import com.user.bean.TeacherInfoBean;
 import com.user.fragment.ChooseSchoolFragment;
 import com.user.fragment.NickNameFragment;
 import com.user.fragment.SexFragment;
@@ -48,8 +54,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-@Route(path = ARouterPathUtils.User_UserInfoActivity)
-public class UserInfoActivity extends BaseAppActivity {
+@Route(path = ARouterPathUtils.User_TeacherUserInfoActivity)
+public class TeacherUserInfoActivity extends BaseAppActivity {
     @BindView(R2.id.iv_head)
     ImageView ivHead;
     @BindView(R2.id.lin_head)
@@ -108,6 +114,9 @@ public class UserInfoActivity extends BaseAppActivity {
     @BindView(R2.id.btn_sure)
     Button btnSure;
 
+    @BindView(R2.id.tv_tips)
+    TextView tvTips;
+
     //1为学生
     private final int SET_PASSWORD = 1;
     //2为老师
@@ -120,10 +129,43 @@ public class UserInfoActivity extends BaseAppActivity {
     protected void onCreateView() {
         initTitle();
         initNoLinkOptionsPicker();
-
+        initCityPicker();
         initView();
 
+        initData();
+
     }
+
+    private void initData() {
+
+        String token = SharedPreferenceManager.getInstance(this).getUserCache().getUserToken();
+
+        HttpUtils.with(this)
+                .post()
+                .addParam("requestType", "TEACHER_PERSONAL_INFO")
+                .addParam("token", token)
+                .execute(new HttpNormalCallBack<TeacherInfoBean>() {
+                    @Override
+                    public void onSuccess(TeacherInfoBean result) {
+
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+
+                            initTeacherData(result);
+
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
+
+    }
+
 
     private void initView() {
         etExperience.addTextChangedListener(new TextWatcher() {
@@ -159,7 +201,7 @@ public class UserInfoActivity extends BaseAppActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_user_info;
+        return R.layout.activity_teacher_user_info;
     }
 
 
@@ -171,48 +213,9 @@ public class UserInfoActivity extends BaseAppActivity {
     private final int SELECT_ID_F = 2;
     //教师资格证
     private final int SELECT_CERTIFICATE = 3;
+    //头像
+    private final int SELECT_HEAD = 4;
     private int SELECT_TYPE = 1;
-
-
-    @OnClick({R2.id.lin_head, R2.id.lin_nickname, R2.id.lin_sex, R2.id.f_id_z, R2.id.f_id_f, R2.id.f_certificate, R2.id.f_video, R2.id.lin_school, R2.id.lin_age, R2.id.lin_city, R2.id.btn_sure})
-    public void onViewClicked(View view) {
-        int i = view.getId();
-        if (i == R.id.lin_head) {
-        } else if (i == R.id.lin_nickname) {
-
-            showNick();
-
-        } else if (i == R.id.lin_sex) {
-            showSex();
-
-        } else if (i == R.id.f_id_z) {
-
-            PhotoUtil.cutCertificatePicture(this, lisId_Z, 1);
-            SELECT_TYPE = SELECT_ID_Z;
-
-        } else if (i == R.id.f_id_f) {
-
-            PhotoUtil.cutCertificatePicture(this, lisId_F, 1);
-            SELECT_TYPE = SELECT_ID_F;
-
-        } else if (i == R.id.f_certificate) {
-            SELECT_TYPE = SELECT_CERTIFICATE;
-            PhotoUtil.cutCertificatePicture(this, lisCertificate, 1);
-
-
-        } else if (i == R.id.f_video) {
-        } else if (i == R.id.lin_school) {
-            showSchool();
-
-        } else if (i == R.id.lin_age) {
-            agePicker.show();
-
-        } else if (i == R.id.lin_city) {
-            showPickerView();
-
-        } else if (i == R.id.btn_sure) {
-        }
-    }
 
 
     //=============================================================================================
@@ -377,6 +380,13 @@ public class UserInfoActivity extends BaseAppActivity {
 
                                 break;
                             }
+
+                            case SELECT_HEAD: {
+
+
+                                ivHead.setImageBitmap(bitmap);
+                                break;
+                            }
                         }
 
                     }
@@ -394,10 +404,11 @@ public class UserInfoActivity extends BaseAppActivity {
     private List<CityNameBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
+    OptionsPickerView cityPicker;
 
-    private void showPickerView() {// 弹出选择器
+    private void initCityPicker() {// 弹出选择器
         initJsonData();
-        OptionsPickerView pvOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
+        cityPicker = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 //返回的分别是三个级别的选中位置
@@ -418,16 +429,25 @@ public class UserInfoActivity extends BaseAppActivity {
             }
         })
 
-                .setTitleText("城市选择")
-                .setDividerColor(Color.BLACK)
-                .setTextColorCenter(Color.BLACK) //设置选中项文字颜色
-                .setContentTextSize(20)
+                .isCenterLabel(true) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .isDialog(false)//是否显示为对话框样式
+                .setCancelText("取消")//取消按钮文字
+                .setSubmitText("确认")//确认按钮文字
+                .setTitleSize(20)//标题文字大小
+                .setTitleText("城市")//标题文字
+                .setOutSideCancelable(false)//点击屏幕，点在控件外部范围时，是否取消显示
+                .setTitleColor(getResources().getColor(R.color.base_title))//标题文字颜色
+                .setSubmitColor(getResources().getColor(R.color.base_blue))//确定按钮文字颜色
+                .setCancelColor(getResources().getColor(R.color.base_blue))//取消按钮文字颜色
+                .setTitleBgColor(getResources().getColor(R.color.white))//标题背景颜色 Night mode
+                .setBgColor(getResources().getColor(R.color.base_white))//滚轮背景颜色 Night mode
+                .setOutSideCancelable(true)
                 .build();
 
         /*pvOptions.setPicker(options1Items);//一级选择器
         pvOptions.setPicker(options1Items, options2Items);//二级选择器*/
-        pvOptions.setPicker(options1Items, options2Items, options3Items);//三级选择器
-        pvOptions.show();
+        cityPicker.setPicker(options1Items, options2Items, options3Items);//三级选择器
+
     }
 
 
@@ -501,7 +521,7 @@ public class UserInfoActivity extends BaseAppActivity {
     }
 
     //=============================================================================================
-    //==============================================================================城市选择=======
+    //==============================================================================教龄=======
     //=============================================================================================
 
     private String ageList[] = {
@@ -547,7 +567,22 @@ public class UserInfoActivity extends BaseAppActivity {
                 String str = "options1: " + options1 + "\noptions2: " + options2 + "\noptions3: " + options3;
 
             }
-        }).setSelectOptions(0).build();
+        })
+                .setSelectOptions(0)
+                .isCenterLabel(true) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .isDialog(false)//是否显示为对话框样式
+                .setCancelText("取消")//取消按钮文字
+                .setSubmitText("确认")//确认按钮文字
+                .setTitleSize(20)//标题文字大小
+                .setTitleText("教龄")//标题文字
+                .setOutSideCancelable(false)//点击屏幕，点在控件外部范围时，是否取消显示
+                .setTitleColor(getResources().getColor(R.color.base_title))//标题文字颜色
+                .setSubmitColor(getResources().getColor(R.color.base_blue))//确定按钮文字颜色
+                .setCancelColor(getResources().getColor(R.color.base_blue))//取消按钮文字颜色
+                .setTitleBgColor(getResources().getColor(R.color.white))//标题背景颜色 Night mode
+                .setBgColor(getResources().getColor(R.color.base_white))//滚轮背景颜色 Night mode
+                .setOutSideCancelable(true)
+                .build();
 
         agePicker.setPicker(ageArray);
 
@@ -560,4 +595,102 @@ public class UserInfoActivity extends BaseAppActivity {
         fragmentTransaction.addToBackStack(tag);
         fragmentTransaction.commit();
     }
+
+
+    //------------------------------------------------------------------------------------点击事件
+    @OnClick({R2.id.lin_head, R2.id.lin_nickname, R2.id.lin_sex, R2.id.f_id_z, R2.id.f_id_f, R2.id.f_certificate, R2.id.f_video, R2.id.lin_school, R2.id.lin_age, R2.id.lin_city, R2.id.btn_sure})
+    public void onViewClicked(View view) {
+        int i = view.getId();
+        if (i == R.id.lin_head) {
+        } else if (i == R.id.lin_nickname) {
+
+            showNick();
+
+        } else if (i == R.id.lin_sex) {
+            showSex();
+
+        } else if (i == R.id.f_id_z) {
+
+            PhotoUtil.cutCertificatePicture(this, lisId_Z, 1);
+            SELECT_TYPE = SELECT_ID_Z;
+
+        } else if (i == R.id.f_id_f) {
+
+            PhotoUtil.cutCertificatePicture(this, lisId_F, 1);
+            SELECT_TYPE = SELECT_ID_F;
+
+        } else if (i == R.id.f_certificate) {
+            SELECT_TYPE = SELECT_CERTIFICATE;
+            PhotoUtil.cutCertificatePicture(this, lisCertificate, 1);
+
+
+        } else if (i == R.id.f_video) {
+        } else if (i == R.id.lin_school) {
+            showSchool();
+
+        } else if (i == R.id.lin_age) {
+            agePicker.show();
+
+        } else if (i == R.id.lin_city) {
+            cityPicker.show();
+
+        } else if (i == R.id.btn_sure) {
+        }
+    }
+
+
+    //----------------------------------------------------------------------------------初始化老师数据
+
+    private void initTeacherData(TeacherInfoBean result) {
+
+        Glide.with(this)
+                .load(result.getObj().getPhoto_url())
+                .apply(GlideConfig.getCircleOptions())
+                .into(ivHead);
+
+
+        tvNickname.setText(result.getObj().getName());
+
+
+        if (result.getObj().getSex().equals("0")) {
+            tvSex.setText("男");
+        } else {
+            tvSex.setText("女");
+        }
+
+
+        Glide.with(this)
+                .load(result.getObj().getIdcard_p())
+                .apply(GlideConfig.getRoundOptions(20))
+                .into(ivIdZ);
+
+        Glide.with(this)
+                .load(result.getObj().getIdcard_n())
+                .apply(GlideConfig.getRoundOptions(20))
+                .into(ivIdF);
+
+
+        Glide.with(this)
+                .load(result.getObj().getCertificate())
+                .apply(GlideConfig.getRoundOptions(20))
+                .into(ivCertificate);
+
+
+        Glide.with(this)
+                .load(result.getObj().getSelf_video())
+                .apply(GlideConfig.getRoundOptions(20))
+                .into(ivCertificate);
+
+        tvShool.setText(result.getObj().getSchool_name());
+
+        tvAge.setText(result.getObj().getWork_year());
+
+        tvCity.setText(result.getObj().getArea());
+
+        etExperience.setText(result.getObj().getWork_exp());
+
+
+    }
+
+
 }

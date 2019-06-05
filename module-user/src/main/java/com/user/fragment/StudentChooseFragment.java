@@ -125,7 +125,7 @@ public class StudentChooseFragment extends BaseAppFragment {
 
 
                     identityUserBean = new IdentityUserBean();
-                    identityUserBean.setType("1");
+                    identityUserBean.setType("2");
                     identityUserBean.setGrade_id(id + "");
 
 

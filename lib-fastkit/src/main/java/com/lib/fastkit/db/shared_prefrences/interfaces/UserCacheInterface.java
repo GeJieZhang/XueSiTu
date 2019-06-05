@@ -17,4 +17,23 @@ public interface UserCacheInterface extends BaseCacheInterface {
     void setIsLogin(boolean b);
 
     boolean getIsLogin();
+
+
+    void setUserToken(String token);
+
+    String getUserToken();
+
+
+    void setUserIdentity(String identity);
+
+    String getUserIdentity();
+
+
+    void setUserHeadUrl(String url);
+
+    String getUserHeadUrl();
+
+    void setUserPhone(String phone);
+
+    String getUserPhone();
 }

@@ -44,7 +44,7 @@ public class HomeNavigationBar extends FrameLayout {
         iv_personal.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new Event<>(1,"打开个人中心"), EventBusTagUtils.PersonalFragment);
+                EventBus.getDefault().post(new Event<>(1,"打开个人中心"), EventBusTagUtils.HomeNavigationBar);
             }
         });
     }

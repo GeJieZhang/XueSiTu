@@ -123,7 +123,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
 
             boolean b = ClickUtils.isFastDoubleClick();
-            LogUtil.e(b + "");
+            //LogUtil.e(b + "");
             if (b) {
 
 

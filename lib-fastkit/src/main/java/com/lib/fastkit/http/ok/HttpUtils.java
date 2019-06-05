@@ -23,8 +23,8 @@ public class HttpUtils {
     // 正式
     //private String mUrl = "http://192.168.2.28:8081/xuesitu_api/api/";
     //本地
-    private String mUrl = "http://192.168.2.196:8081/api";
-
+    private String mUrl = "http://192.168.2.197:8081/api";
+    //private String mUrl = "http://www.baidu.com/";
 
     // 请求方式
     private int mType = POST_TYPE;

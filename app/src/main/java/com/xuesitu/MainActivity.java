@@ -303,14 +303,10 @@ public class MainActivity extends BaseAppActivity {
 
             case 1: {
 
-//                boolean isLogin = SharedPreferenceManager.getInstance(this).getUserCache().getIsLogin();
-//
-//                if (isLogin) {
-//                    setMenu();
-//                } else {
-//                    ARouter.getInstance().build(ARouterPathUtils.User_LoginActivity).navigation();
-//                }
+
                 setMenu();
+
+
                 break;
             }
 
@@ -328,7 +324,39 @@ public class MainActivity extends BaseAppActivity {
             case 1: {
 
 
-                setMenu();
+                String token = SharedPreferenceManager.getInstance(this).getUserCache().getUserToken();
+
+
+                if (token.equals("")) {
+
+                    ARouter.getInstance().build(ARouterPathUtils.User_LoginActivity).navigation();
+
+                } else {
+
+                    setMenu();
+
+                }
+
+                break;
+            }
+
+        }
+
+
+    }
+
+
+    @Subscriber(tag = EventBusTagUtils.HttpNormalCallBack)
+    public void fromHttpNormalCallBack(Event event) {
+
+        switch (event.getEventCode()) {
+
+            case 1: {
+
+                //Token失效
+                ARouter.getInstance().build(ARouterPathUtils.User_LoginActivity).navigation();
+
+                showToast("Token失效请重新登录!");
 
 
                 break;

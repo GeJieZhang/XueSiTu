@@ -45,6 +45,7 @@ public class SharedPreferenceModel implements BaseCacheInterface {
         mSharedPreferences.edit().putLong(key, value).commit();
     }
 
+
     @Override
     public String getString(String key) {
         return getString(key, "");
