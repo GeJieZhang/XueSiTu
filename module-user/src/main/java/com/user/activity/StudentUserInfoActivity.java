@@ -435,6 +435,11 @@ public class StudentUserInfoActivity extends BaseAppActivity {
 
         schoolFragment = (ChooseSchoolFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_school);
 
+
+        if (studentInfoBean != null) {
+            schoolFragment.setSchool(studentInfoBean.getObj().getSchool_name());
+        }
+
         schoolFragment.setOnNomalChangeListener(new ChooseSchoolFragment.NormalChangeListener() {
             @Override
             public void onNomalChange(String str) {

@@ -59,6 +59,12 @@ public class ChooseSchoolFragment extends BaseFragment {
     }
 
 
+    public void setSchool(String str){
+
+        etSchool.setText(str);
+
+    }
+
     public interface NormalChangeListener {
 
         void onNomalChange(String str);
