@@ -39,15 +39,22 @@ public class ChooseSchoolFragment extends BaseFragment {
     public void onViewClicked(View view) {
         int i = view.getId();
         if (i == R.id.iv_school) {
-
+            etSchool.setText("");
 
         } else if (i == R.id.btn_sure) {
 
             String school = etSchool.getText().toString().trim();
+            if (school.equals("")) {
+
+                showToast("学校不能为空！");
+                return;
+            }
 
             if (normalChangeListener != null) {
                 normalChangeListener.onNomalChange(school);
             }
+
+
         }
     }
 

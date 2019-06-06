@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +28,8 @@ import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
+import com.lib.fastkit.utils.log.LogUtil;
+import com.lib.fastkit.views.dialog.normal.NormalDialog;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.fastkit.utils.file_size.PcUtils;
 import com.lib.fastkit.utils.json_deal.GetJsonDataUtil;
@@ -34,6 +37,8 @@ import com.lib.fastkit.views.dialog.zenhui.AlertDialog;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.utls.glide.GlideConfig;
 import com.lib.utls.picture_select.PhotoUtil;
+import com.lib.utls.upload.QiNiuUploadTask;
+import com.lib.utls.upload.initerface.FileUploadListener;
 import com.lib.view.navigationbar.NomalNavigationBar;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
@@ -42,6 +47,8 @@ import com.user.R;
 import com.user.R2;
 import com.user.bean.CityNameBean;
 import com.user.bean.TeacherInfoBean;
+import com.user.bean.UpdateBean;
+import com.user.bean.UpdateInfoBean;
 import com.user.fragment.ChooseSchoolFragment;
 import com.user.fragment.NickNameFragment;
 import com.user.fragment.SexFragment;
@@ -49,7 +56,9 @@ import com.user.fragment.SexFragment;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -60,6 +69,9 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
     ImageView ivHead;
     @BindView(R2.id.lin_head)
     LinearLayout linHead;
+    @BindView(R2.id.lin_parent)
+    LinearLayout linParent;
+
     @BindView(R2.id.tv_nickname)
     TextView tvNickname;
     @BindView(R2.id.lin_nickname)
@@ -117,12 +129,8 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
     @BindView(R2.id.tv_tips)
     TextView tvTips;
 
-    //1为学生
-    private final int SET_PASSWORD = 1;
-    //2为老师
-    private final int CHANGE_PASSWORD = 2;
-    //默认为学生
-    private int TYPE = 1;
+
+    List<UpdateInfoBean> updateInfoBeans = new ArrayList<>();
 
 
     @Override
@@ -131,12 +139,19 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
         initNoLinkOptionsPicker();
         initCityPicker();
         initView();
-
         initData();
+        updateInfoBeans.clear();
+
 
     }
 
+
+    private TeacherInfoBean teacherInfoBean;
+
     private void initData() {
+
+
+        uploadToken = SharedPreferenceManager.getInstance(this).getUserCache().getQiNiuToken();
 
         String token = SharedPreferenceManager.getInstance(this).getUserCache().getUserToken();
 
@@ -147,7 +162,7 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
                 .execute(new HttpNormalCallBack<TeacherInfoBean>() {
                     @Override
                     public void onSuccess(TeacherInfoBean result) {
-
+                        teacherInfoBean = result;
 
                         if (result.getCode() == CodeUtil.CODE_200) {
 
@@ -168,6 +183,19 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
 
 
     private void initView() {
+        linParent.setFocusable(true);
+        linParent.setFocusableInTouchMode(true);
+        linParent.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                linParent.setFocusable(true);
+                linParent.setFocusableInTouchMode(true);
+                linParent.requestFocus();
+
+                return false;
+            }
+        });
+
         etExperience.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -182,10 +210,22 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
             public void onTextChanged(CharSequence s, int start, int before,
                                       int count) {
                 String content = etExperience.getText().toString();
+
+
                 tvSize.setText(content.length() + "/"
                         + 500);
             }
 
+        });
+
+        etExperience.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                String work_exp = etExperience.getText().toString().trim();
+                if (!work_exp.equals("")) {
+                    addUpdateInfo("work_exp", work_exp);
+                }
+            }
         });
 
     }
@@ -194,6 +234,33 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
         NomalNavigationBar navigationBar = new
                 NomalNavigationBar.Builder(this)
                 .setTitle("个人资料")
+                .setLeftClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        etExperience.clearFocus();
+
+                        if (updateInfoBeans.size() > 0) {
+
+                            NormalDialog.getInstance(TeacherUserInfoActivity.this)
+                                    .setTitle("提示")
+                                    .setContent("退出后修改的信息将丢失,你确定要退出么?")
+                                    .setSureListener(new NormalDialog.SurelListener() {
+                                        @Override
+                                        public void onSure(NormalDialog normalDialog) {
+
+                                            finish();
+
+                                        }
+                                    })
+                                    .show();
+
+
+                        } else {
+                            finish();
+                        }
+
+                    }
+                })
                 .builder();
 
 
@@ -208,13 +275,15 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
     List<LocalMedia> lisId_Z = new ArrayList<>();
     List<LocalMedia> lisId_F = new ArrayList<>();
     List<LocalMedia> lisCertificate = new ArrayList<>();
-
+    List<LocalMedia> lisVideo = new ArrayList<>();
+    List<LocalMedia> listHead = new ArrayList<>();
     private final int SELECT_ID_Z = 1;
     private final int SELECT_ID_F = 2;
     //教师资格证
     private final int SELECT_CERTIFICATE = 3;
     //头像
     private final int SELECT_HEAD = 4;
+    private final int SELECT_VIDEO = 5;
     private int SELECT_TYPE = 1;
 
 
@@ -250,11 +319,33 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
 
 
         sexFragment = (SexFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_sex);
+
+        if (teacherInfoBean != null) {
+            if (teacherInfoBean.getObj().getSex().equals("0")) {
+                sexFragment.setSex(SexFragment.MEN);
+            } else {
+                sexFragment.setSex(SexFragment.WOMAN);
+            }
+        }
         sexFragment.setSexChooseListener(new SexFragment.SexChooseListener() {
             @Override
             public void onSexChoose(String str) {
-                showToast(str);
+
+                String sex = "0";
+
+                if (str.equals("男")) {
+                    sex = "0";
+                } else {
+                    sex = "1";
+                }
+
+
+                addUpdateInfo("sex", sex);
+
+                tvSex.setText(str);
                 dialog.dismiss();
+
+
             }
         });
 
@@ -270,7 +361,7 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
     private void showNick() {
 
 
-        AlertDialog dialog = new AlertDialog.Builder(this)
+        final AlertDialog dialog = new AlertDialog.Builder(this)
                 .setContentView(R.layout.dialog_nick)
                 .setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
@@ -288,11 +379,22 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
                 .show();
 
         nickNameFragment = (NickNameFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_nick);
+        if (teacherInfoBean != null) {
 
+
+            nickNameFragment.setNickName(teacherInfoBean.getObj().getName());
+
+        }
         nickNameFragment.setOnNomalChangeListener(new NickNameFragment.NormalChangeListener() {
             @Override
             public void onNomalChange(String str) {
-                showToast(str);
+
+
+                addUpdateInfo("name", str);
+
+                tvNickname.setText(str);
+                dialog.dismiss();
+
             }
         });
     }
@@ -306,7 +408,7 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
     private void showSchool() {
 
 
-        AlertDialog dialog = new AlertDialog.Builder(this)
+        final AlertDialog dialog = new AlertDialog.Builder(this)
                 .setContentView(R.layout.dialog_school)
                 .setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
@@ -329,7 +431,11 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
         schoolFragment.setOnNomalChangeListener(new ChooseSchoolFragment.NormalChangeListener() {
             @Override
             public void onNomalChange(String str) {
-                showToast(str);
+
+                addUpdateInfo("school_name", str);
+                tvShool.setText(str);
+
+                dialog.dismiss();
             }
         });
 
@@ -360,42 +466,94 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
 
                     if (media.isCompressed()) {
 
-                        showToast(media.getCompressPath());
-                        Bitmap bitmap = PcUtils.getBitmapFromFile(media.getCompressPath());
+
+                        String compressPath = media.getCompressPath();
 
                         switch (SELECT_TYPE) {
                             case SELECT_ID_Z: {
-                                ivIdZ.setImageBitmap(bitmap);
+                                //ivIdZ.setImageBitmap(bitmap);
+
+                                Glide.with(this)
+                                        .load(compressPath)
+                                        .apply(GlideConfig.getRoundOptions(10))
+                                        .into(ivIdZ);
+                                uploadId_Z(compressPath);
                                 break;
                             }
 
                             case SELECT_ID_F: {
-                                ivIdF.setImageBitmap(bitmap);
+                                //ivIdF.setImageBitmap(bitmap);
+
+                                Glide.with(this)
+                                        .load(compressPath)
+                                        .apply(GlideConfig.getRoundOptions(10))
+                                        .into(ivIdF);
+
+                                uploadId_F(compressPath);
                                 break;
                             }
 
                             case SELECT_CERTIFICATE: {
-
-                                ivCertificate.setImageBitmap(bitmap);
-
+                                Glide.with(this)
+                                        .load(compressPath)
+                                        .apply(GlideConfig.getRoundOptions(10))
+                                        .into(ivCertificate);
+                                //ivCertificate.setImageBitmap(bitmap);
+                                uploadcertificate(compressPath);
                                 break;
                             }
 
                             case SELECT_HEAD: {
 
+                                Glide.with(this)
+                                        .load(compressPath)
+                                        .apply(GlideConfig.getCircleOptions())
+                                        .into(ivHead);
 
-                                ivHead.setImageBitmap(bitmap);
+                                uploadHead(compressPath);
                                 break;
                             }
+
+
                         }
 
                     }
 
                     break;
-            }
-        }
 
+
+                case PhotoUtil.CHOOSE_VIDEO:
+
+
+                    List<LocalMedia> selectList2 = PictureSelector.obtainMultipleResult(data);
+                    LocalMedia media2 = selectList2.get(0);
+
+                    String path = media2.getPath();
+
+                    switch (SELECT_TYPE) {
+
+                        case SELECT_VIDEO: {
+                            //ivVideo.setImageBitmap(bitmap);
+
+                            Glide.with(this)
+                                    .load(path)
+                                    .apply(GlideConfig.getRoundVdieoOptions(10))
+                                    .into(ivVideo);
+
+                            uploadVideo(path);
+                            break;
+                        }
+
+                    }
+
+
+                    break;
+            }
+
+
+        }
     }
+
 
     //=============================================================================================
     //==============================================================================城市选择=======
@@ -425,7 +583,13 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
                         options3Items.get(options1).get(options2).get(options3) : "";
 
                 String tx = opt1tx + opt2tx + opt3tx;
-                showToast(tx);
+
+
+                addUpdateInfo("area", opt3tx);
+
+
+                tvCity.setText(opt3tx);
+
             }
         })
 
@@ -450,6 +614,26 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
 
     }
 
+
+    private void addUpdateInfo(String key, String value) {
+        boolean isExist = false;
+
+        for (UpdateInfoBean updateInfoBean : updateInfoBeans) {
+
+            if (updateInfoBean.getKey().equals(key)) {
+                updateInfoBean.setValue(value);
+                isExist = true;
+            }
+
+        }
+
+
+        if (!isExist) {
+            updateInfoBeans.add(new UpdateInfoBean(key, value));
+        }
+
+
+    }
 
     private void initJsonData() {//解析数据
 
@@ -556,7 +740,12 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
 
-                showToast(ageArray.get(options1));
+                String age = ageArray.get(options1).replace("年", "").replace("以上", "");
+
+
+                addUpdateInfo("work_year", age);
+
+                tvAge.setText(ageArray.get(options1));
 
             }
 
@@ -602,6 +791,9 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
     public void onViewClicked(View view) {
         int i = view.getId();
         if (i == R.id.lin_head) {
+
+            SELECT_TYPE = SELECT_HEAD;
+            PhotoUtil.cutHeadPicture(this, listHead, 1);
         } else if (i == R.id.lin_nickname) {
 
             showNick();
@@ -610,14 +802,14 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
             showSex();
 
         } else if (i == R.id.f_id_z) {
-
-            PhotoUtil.cutCertificatePicture(this, lisId_Z, 1);
             SELECT_TYPE = SELECT_ID_Z;
+            PhotoUtil.cutCertificatePicture(this, lisId_Z, 1);
+
 
         } else if (i == R.id.f_id_f) {
-
-            PhotoUtil.cutCertificatePicture(this, lisId_F, 1);
             SELECT_TYPE = SELECT_ID_F;
+            PhotoUtil.cutCertificatePicture(this, lisId_F, 1);
+
 
         } else if (i == R.id.f_certificate) {
             SELECT_TYPE = SELECT_CERTIFICATE;
@@ -625,6 +817,10 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
 
 
         } else if (i == R.id.f_video) {
+            SELECT_TYPE = SELECT_VIDEO;
+            PhotoUtil.introduceVideo(this, lisVideo, 1);
+
+
         } else if (i == R.id.lin_school) {
             showSchool();
 
@@ -635,7 +831,53 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
             cityPicker.show();
 
         } else if (i == R.id.btn_sure) {
+
+
+            goUpdate();
+
         }
+    }
+
+    private void goUpdate() {
+
+
+        String token = SharedPreferenceManager.getInstance(this).getUserCache().getUserToken();
+        Map<String, Object> map = new HashMap<>();
+
+
+        for (UpdateInfoBean updateInfoBean : updateInfoBeans) {
+            map.put(updateInfoBean.getKey(), updateInfoBean.getValue());
+        }
+
+
+        HttpUtils.with(this)
+                .addParam("requestType", "PERSONAL_INFO_UPDATE")
+                .addParam("token", token)
+                .addParams(map)
+                .post()
+                .execute(new HttpNormalCallBack<UpdateBean>() {
+                    @Override
+                    public void onSuccess(UpdateBean result) {
+                        if (result.getCode() == CodeUtil.CODE_200) {
+
+                            showToast(result.getMsg());
+
+                            finish();
+
+                        } else {
+                            showToast(result.getMsg());
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
+
+
     }
 
 
@@ -649,45 +891,223 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
                 .into(ivHead);
 
 
-        tvNickname.setText(result.getObj().getName());
-
-
-        if (result.getObj().getSex().equals("0")) {
-            tvSex.setText("男");
-        } else {
-            tvSex.setText("女");
+        String nick = result.getObj().getName();
+        tvNickname.setText(nick);
+        if (nick.equals("")) {
+            tvNickname.setText("未填写");
         }
 
 
+        String sex = result.getObj().getSex();
+
+        if (sex.equals("0")) {
+            tvSex.setText("男");
+        } else if (sex.equals("1")) {
+            tvSex.setText("女");
+        } else {
+            tvSex.setText("未填写");
+        }
+
+
+        if (!result.getObj().getIdcard_p().equals("")) {
+            tvIdZ.setText("");
+        }
         Glide.with(this)
                 .load(result.getObj().getIdcard_p())
                 .apply(GlideConfig.getRoundOptions(20))
                 .into(ivIdZ);
 
+
+        if (!result.getObj().getIdcard_n().equals("")) {
+            tvIdF.setText("");
+        }
         Glide.with(this)
                 .load(result.getObj().getIdcard_n())
                 .apply(GlideConfig.getRoundOptions(20))
                 .into(ivIdF);
 
-
+        if (!result.getObj().getCertificate().equals("")) {
+            tvCertificate.setText("");
+        }
         Glide.with(this)
                 .load(result.getObj().getCertificate())
                 .apply(GlideConfig.getRoundOptions(20))
                 .into(ivCertificate);
 
-
+        if (!result.getObj().getSelf_video().equals("")) {
+            tvVideo.setText("");
+        }
         Glide.with(this)
                 .load(result.getObj().getSelf_video())
                 .apply(GlideConfig.getRoundOptions(20))
-                .into(ivCertificate);
+                .into(ivVideo);
 
-        tvShool.setText(result.getObj().getSchool_name());
 
-        tvAge.setText(result.getObj().getWork_year());
+        String school = result.getObj().getSchool_name();
+        tvShool.setText(school);
+        if (school.equals("")) {
+            tvShool.setText("未填写");
+        }
 
-        tvCity.setText(result.getObj().getArea());
 
-        etExperience.setText(result.getObj().getWork_exp());
+        String work_year = result.getObj().getWork_year();
+        tvAge.setText(work_year + "年");
+        if (work_year.equals("")) {
+            tvAge.setText("未填写");
+        }
+
+
+        String area = result.getObj().getArea();
+        tvCity.setText(area);
+        if (area.equals("")) {
+            tvCity.setText("未填写");
+        }
+
+        String work_exp = result.getObj().getWork_exp();
+        etExperience.setText(work_exp);
+
+
+    }
+
+
+    //-------------------------------------------------------------------------------------------上传头像
+    String uploadToken = "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:8H1MtKDGgiN5SNFbWL2eCe3bDUU=:eyJzY29wZSI6Inh1ZXNpdHUiLCJkZWFkbGluZSI6MTU1OTgxMDk3M30=";
+
+    private void uploadHead(String compressPath) {
+        QiNiuUploadTask qiNiuUploadTask = new QiNiuUploadTask();
+        qiNiuUploadTask.setFileUploadListener(new FileUploadListener() {
+            @Override
+            public void onProgress(int progress) {
+
+            }
+
+            @Override
+            public void onSuccess(String s) {
+
+
+                addUpdateInfo("photo_url", s);
+
+            }
+
+            @Override
+            public void onError(String e) {
+
+            }
+        });
+        qiNiuUploadTask.execute(compressPath, uploadToken);
+
+
+    }
+
+    private void uploadcertificate(String compressPath) {
+        QiNiuUploadTask qiNiuUploadTask = new QiNiuUploadTask();
+        qiNiuUploadTask.setFileUploadListener(new FileUploadListener() {
+            @Override
+            public void onProgress(int progress) {
+                tvCertificate.setTextColor(getResources().getColor(R.color.white));
+                tvCertificate.setText(progress + "%");
+            }
+
+            @Override
+            public void onSuccess(String s) {
+
+//                tvCertificate.setTextColor(getResources().getColor(R.color.white));
+//                tvCertificate.setText("上传成功");
+                addUpdateInfo("certificate", s);
+            }
+
+            @Override
+            public void onError(String e) {
+
+            }
+        });
+        qiNiuUploadTask.execute(compressPath, uploadToken);
+
+
+    }
+
+
+    private void uploadId_Z(String compressPath) {
+        QiNiuUploadTask qiNiuUploadTask = new QiNiuUploadTask();
+        qiNiuUploadTask.setFileUploadListener(new FileUploadListener() {
+            @Override
+            public void onProgress(int progress) {
+                tvIdZ.setTextColor(getResources().getColor(R.color.white));
+                tvIdZ.setText(progress + "%");
+            }
+
+            @Override
+            public void onSuccess(String s) {
+
+//                tvIdZ.setTextColor(getResources().getColor(R.color.white));
+//                tvIdZ.setText("上传成功");
+                addUpdateInfo("idcard_p", s);
+            }
+
+            @Override
+            public void onError(String e) {
+                LogUtil.e(e + "");
+            }
+        });
+        qiNiuUploadTask.execute(compressPath, uploadToken);
+
+
+    }
+
+    private void uploadId_F(String compressPath) {
+        QiNiuUploadTask qiNiuUploadTask = new QiNiuUploadTask();
+        qiNiuUploadTask.setFileUploadListener(new FileUploadListener() {
+            @Override
+            public void onProgress(int progress) {
+                tvIdF.setTextColor(getResources().getColor(R.color.white));
+                tvIdF.setText(progress + "%");
+
+            }
+
+            @Override
+            public void onSuccess(String s) {
+//                tvIdF.setTextColor(getResources().getColor(R.color.white));
+//                tvIdF.setText("上传成功");
+
+                addUpdateInfo("idcard_n", s);
+            }
+
+            @Override
+            public void onError(String e) {
+
+            }
+        });
+        qiNiuUploadTask.execute(compressPath, uploadToken);
+
+
+    }
+
+    private void uploadVideo(String compressPath) {
+        QiNiuUploadTask qiNiuUploadTask = new QiNiuUploadTask();
+        qiNiuUploadTask.setFileUploadListener(new FileUploadListener() {
+            @Override
+            public void onProgress(int progress) {
+
+
+                tvVideo.setTextColor(getResources().getColor(R.color.white));
+                tvVideo.setText(progress + "%");
+
+            }
+
+            @Override
+            public void onSuccess(String s) {
+//                tvVideo.setTextColor(getResources().getColor(R.color.white));
+//                tvVideo.setText("上传成功");
+
+                addUpdateInfo("self_video", s);
+            }
+
+            @Override
+            public void onError(String e) {
+
+            }
+        });
+        qiNiuUploadTask.execute(compressPath, uploadToken);
 
 
     }

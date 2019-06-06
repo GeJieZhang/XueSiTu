@@ -35,6 +35,24 @@ public class GlideConfig {
      */
     public static RequestOptions getRoundOptions(int size) {
         RequestOptions options = new RequestOptions()
+
+                .placeholder(R.mipmap.ic_launcher)    //加载成功之前占位图
+                .error(R.mipmap.ic_launcher)    //加载错误之后的错误图
+                .bitmapTransform(new RoundedCorners(size))
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)    //智能缓存
+                ;
+
+        return options;
+    }
+    /**
+     * 圆角视频
+     *
+     * @param size
+     * @return
+     */
+    public static RequestOptions getRoundVdieoOptions(int size) {
+        RequestOptions options = new RequestOptions()
+                .frame(4000000)
                 .placeholder(R.mipmap.ic_launcher)    //加载成功之前占位图
                 .error(R.mipmap.ic_launcher)    //加载错误之后的错误图
                 .bitmapTransform(new RoundedCorners(size))

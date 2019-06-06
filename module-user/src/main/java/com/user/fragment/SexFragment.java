@@ -26,9 +26,9 @@ public class SexFragment extends BaseFragment {
     LinearLayout linWoman;
 
     //1男
-    private final int MEN = 1;
+    public static final int MEN = 1;
     //2女
-    private final int WOMAN = 2;
+    public static final int WOMAN = 2;
     //默认为学生
     private int TYPE = 1;
 
@@ -85,6 +85,12 @@ public class SexFragment extends BaseFragment {
             initSex();
 
         }
+    }
+
+
+    public void setSex(int type) {
+        TYPE = type;
+        initSex();
     }
 
 

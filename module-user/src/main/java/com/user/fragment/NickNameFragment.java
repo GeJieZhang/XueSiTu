@@ -40,15 +40,26 @@ public class NickNameFragment extends BaseFragment {
         int i = view.getId();
         if (i == R.id.iv_nick) {
 
-
+            etNick.setText("");
         } else if (i == R.id.btn_sure) {
 
             String nick = etNick.getText().toString().trim();
+
+            if (nick.equals("")) {
+
+                showToast("昵称不能为空！");
+                return;
+            }
 
             if (normalChangeListener != null) {
                 normalChangeListener.onNomalChange(nick);
             }
         }
+    }
+
+
+    public void setNickName(String str){
+        etNick.setText(str);
     }
 
 

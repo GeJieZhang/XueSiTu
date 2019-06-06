@@ -84,9 +84,9 @@ public class NormalDialog extends DialogFragment {
 
                 if (builder.cancelListener != null) {
                     builder.cancelListener.onCancel(normalDialog);
-                    dismiss();
-                }
 
+                }
+                dismiss();
 
             }
         });
@@ -99,7 +99,7 @@ public class NormalDialog extends DialogFragment {
                     builder.surelListener.onSure(normalDialog);
 
                 }
-
+                dismiss();
 
             }
         });

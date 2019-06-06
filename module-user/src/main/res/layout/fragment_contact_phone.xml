@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical">
+
+        <!--手机-->
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    style="@style/text_style7"
+                    android:text="手机号" />
+
+                <EditText
+                    android:id="@+id/et_phone"
+                    style="@style/edit_text1"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="1"
+                    android:hint="请输入需要关联手机号" />
+
+            </LinearLayout>
+
+            <View
+                style="@style/line_dotted"
+                android:layout_marginBottom="4dp" />
+        </LinearLayout>
+        <!--称呼-->
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    style="@style/text_style7"
+                    android:text="称呼" />
+
+                <EditText
+                    android:id="@+id/et_nick"
+                    style="@style/edit_text1"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="1"
+                    android:hint="比如爸爸、妈妈" />
+
+            </LinearLayout>
+
+            <View
+                style="@style/line_dotted"
+                android:layout_marginBottom="4dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+
+                android:layout_marginBottom="16dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    style="@style/text_style7"
+                    android:layout_width="match_parent"
+                    android:maxLines="2"
+                    android:singleLine="false"
+                    android:text="关联成功后，我们将实时为您反馈孩子的学习状态。"
+                    android:textColor="@color/base_text1" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btn_sure"
+            style="@style/button1"
+            android:layout_width="180dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/circle_button_blue_r10"
+            android:text="确认"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
+
+
+
+

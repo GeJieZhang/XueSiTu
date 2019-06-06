@@ -103,5 +103,7 @@ dependencies {
         exclude group: 'com.android.support'
     }
 
+    //七牛云云存储
+    api 'com.qiniu:qiniu-android-sdk:7.3.15'
     //api files('libs/tbs_sdk_thirdapp_v3.6.0.1310_43612_sharewithdownload_withoutGame_obfs_20180706_163319.jar')
 }

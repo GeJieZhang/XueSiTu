@@ -18,16 +18,20 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.lib.app.ARouterPathUtils;
+import com.lib.app.CodeUtil;
 import com.lib.app.EventBusTagUtils;
 import com.lib.app.FragmentUtils;
 import com.lib.bean.Event;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
+import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.ui.base.control.ActivityCollector;
 import com.lib.fastkit.utils.animation_deal.AnimationUtil;
 import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.fastkit.views.viewpager.my.MyViewPager;
+import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
+import com.xuesitu.bean.QiNiuBean;
 
 import org.simple.eventbus.Subscriber;
 
@@ -97,7 +101,7 @@ public class MainActivity extends BaseAppActivity {
             }
         });
 
-
+        getQiniuToken();
     }
 
     @Override
@@ -428,5 +432,30 @@ public class MainActivity extends BaseAppActivity {
             }
         }
     }
+
+    private void getQiniuToken() {
+
+
+        HttpUtils.with(this)
+                .post()
+                .addParam("requestType", "QUERY_QNTOKEN")
+                .execute(new HttpNormalCallBack<QiNiuBean>() {
+                    @Override
+                    public void onSuccess(QiNiuBean result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+                            SharedPreferenceManager.getInstance(MainActivity.this).getUserCache().setQiNiuToken(result.getObj());
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
+    }
+
 
 }

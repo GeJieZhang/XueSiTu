@@ -9,5 +9,4 @@ public class ApiUtils {
      */
     public static final String MAIN_URL = "http://192.168.2.28:8080/xuesitu_api/api/";
 
-
 }
