@@ -23,7 +23,7 @@ public class HttpUtils {
     // 正式
     //private String mUrl = "http://192.168.2.28:8081/xuesitu_api/api/";
     //本地
-    private String mUrl = "http://192.168.2.197:8081/api";
+    private String mUrl = "http://192.168.2.199:8081/api";
     //private String mUrl = "http://www.baidu.com/";
 
     // 请求方式
@@ -37,7 +37,7 @@ public class HttpUtils {
     private Map<String, Object> mParams;
 
     // 上下文
-    private static Context mContext;
+    private  Context mContext;
     // 默认OkHttpEngine
     private static IHttpEngine mHttpEngine;
 

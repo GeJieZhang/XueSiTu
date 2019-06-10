@@ -578,6 +578,12 @@ rx.internal.util.atomic.LinkedQueueNode consumerNode;
 -ignorewarnings
 
 #--------------------------------------------------------------------------------------------------
+#bugly
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+-keep class android.support.**{*;}
+
+#--------------------------------------------------------------------------------------------------
 #bean
 -keep public class com.youxuan.bean.**{*;}
 -keep public class com.lib.bean.**{*;}

@@ -15,6 +15,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/lin_cache"
             android:layout_width="match_parent"
             android:layout_height="45dp"
 
@@ -29,8 +30,9 @@
                 android:text="清理缓存" />
 
             <TextView
+                android:id="@+id/tv_cache"
                 style="@style/text_style7"
-                android:text="5M"
+                android:text="0KB"
                 android:textColor="@color/base_text1"
 
                 />
@@ -56,7 +58,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="45dp"
-
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="16dp"
@@ -105,6 +106,7 @@
                 android:text="版本更新" />
 
             <TextView
+                android:id="@+id/tv_update"
                 style="@style/text_style7"
                 android:text="暂无更新"
                 android:textColor="@color/base_text1"

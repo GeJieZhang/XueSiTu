@@ -1,28 +1,14 @@
 package com.lib.service;
 
-import android.app.Application;
-import android.app.IntentService;
-import android.app.Notification;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.IBinder;
-import android.provider.SyncStateContract;
 import android.support.annotation.Nullable;
 
-import com.alibaba.android.arouter.launcher.ARouter;
-import com.lib.MyApplication;
-import com.lib.base.R;
-import com.lib.fastkit.http.ok.HttpUtils;
-import com.lib.fastkit.http.ok.OkHttpEngine;
-import com.lib.fastkit.utils.log.LogUtil;
-import com.lib.utls.application_deal.UIUtils;
-import com.squareup.leakcanary.LeakCanary;
-import com.tencent.smtt.sdk.QbSdk;
 
-import butterknife.ButterKnife;
-import timber.log.Timber;
+import com.lib.fastkit.utils.log.LogUtil;
+
+import com.tencent.smtt.sdk.QbSdk;
 
 /**
  * Created by 卖火柴的小女孩 - Jc on 2018/8/8.

@@ -1,4 +1,4 @@
-package com.xuesitu;
+package com.xuesitu.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,13 +24,13 @@ import com.lib.app.FragmentUtils;
 import com.lib.bean.Event;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
-import com.lib.fastkit.ui.base.control.ActivityCollector;
 import com.lib.fastkit.utils.animation_deal.AnimationUtil;
-import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.fastkit.views.viewpager.my.MyViewPager;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
+import com.xuesitu.R;
+import com.xuesitu.bugly.BuglyUtil;
 import com.xuesitu.bean.QiNiuBean;
 
 import org.simple.eventbus.Subscriber;
@@ -102,6 +102,8 @@ public class MainActivity extends BaseAppActivity {
         });
 
         getQiniuToken();
+
+        BuglyUtil.checkUpdate();
     }
 
     @Override
@@ -169,6 +171,8 @@ public class MainActivity extends BaseAppActivity {
             case R.id.lin_jianke:
                 mViewPager.setCurrentItem(3);
                 initSelected(3);
+
+                startActivity(Test.class);
                 break;
             case R.id.lin_fengxiang:
                 mViewPager.setCurrentItem(4);
@@ -238,12 +242,12 @@ public class MainActivity extends BaseAppActivity {
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        // TODO: add setContentView(...) invocation
+//        ButterKnife.bind(this);
+//    }
 
 
     /**

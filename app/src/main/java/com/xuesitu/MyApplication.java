@@ -1,11 +1,9 @@
-package com.lib;
+package com.xuesitu;
 
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -16,13 +14,10 @@ import com.lib.fastkit.http.ok.OkHttpEngine;
 
 import com.lib.fastkit.utils.log.LogUtil;
 
-import com.squareup.leakcanary.LeakCanary;
 
-import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.squareup.leakcanary.LeakCanary;
 import com.tencent.smtt.sdk.QbSdk;
 
-
-import java.util.List;
 
 import butterknife.ButterKnife;
 import timber.log.Timber;
@@ -52,8 +47,10 @@ public class MyApplication extends Application {
         initTimber();
         //内存检测
         initLeakCanary();
+
+
         //X5内核
-        // initX5();
+        initX5();
 
     }
 

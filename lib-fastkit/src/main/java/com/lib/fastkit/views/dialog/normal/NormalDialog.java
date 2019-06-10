@@ -1,5 +1,6 @@
 package com.lib.fastkit.views.dialog.normal;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -21,14 +22,27 @@ import android.widget.TextView;
 import com.lib.fastkit.R;
 import com.lib.fastkit.utils.file_size.PcUtils;
 
+
 public class NormalDialog extends DialogFragment {
 
 
-    private View root;
-
     private TextView tv_title, tv_content, tv_cancel, tv_sure;
+    private String title = "请设置标题";
+    private String content = "请设置内容！";
+    private String cancel = "取消";
+    private String sure = "确定";
+    private CancelListener cancelListener;
+    private SurelListener surelListener;
 
-    public static NormalDialog normalDialog;
+    //private  NormalDialog normalDialog;
+
+    public static NormalDialog getInstance() {
+
+//        normalDialog = new NormalDialog();
+//        return normalDialog;
+
+        return new NormalDialog();
+    }
 
     @Override
     public void onStart() {
@@ -50,40 +64,44 @@ public class NormalDialog extends DialogFragment {
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
 
-    private static Builder builder;
-
-    public static AppCompatActivity activity;
-
-    public static Builder getInstance(AppCompatActivity con) {
-
-        builder = new Builder();
-        activity = con;
-        return builder;
     }
+
+    //
+//    public AppCompatActivity activity;
+//
+////    public static Builder getInstance(AppCompatActivity con) {
+////
+////        builder = new Builder();
+////        activity = con;
+////        return builder;
+////    }
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.kit_normal_dialog, container, false);
+        View root = inflater.inflate(R.layout.kit_normal_dialog, container, false);
         tv_title = root.findViewById(R.id.tv_title);
         tv_content = root.findViewById(R.id.tv_content);
         tv_cancel = root.findViewById(R.id.tv_cancel);
         tv_sure = root.findViewById(R.id.tv_sure);
 
-        tv_title.setText(builder.title);
-        tv_content.setText(builder.content);
-        tv_cancel.setText(builder.cancel);
-        tv_sure.setText(builder.sure);
+        tv_title.setText(title);
+        tv_content.setText(content);
+        tv_cancel.setText(cancel);
+        tv_sure.setText(sure);
 
 
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (builder.cancelListener != null) {
-                    builder.cancelListener.onCancel(normalDialog);
+                if (cancelListener != null) {
+                    cancelListener.onCancel();
 
                 }
                 dismiss();
@@ -95,8 +113,8 @@ public class NormalDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
 
-                if (builder.surelListener != null) {
-                    builder.surelListener.onSure(normalDialog);
+                if (surelListener != null) {
+                    surelListener.onSure();
 
                 }
                 dismiss();
@@ -108,90 +126,150 @@ public class NormalDialog extends DialogFragment {
         return root;
     }
 
+//
+//    public static class Builder {
+//        private String title = "请设置标题";
+//        private String content = "请设置内容！";
+//        private String cancel = "取消";
+//        private String sure = "确定";
+//        private CancelListener cancelListener;
+//        private SurelListener surelListener;
+//        private NormalDialog normalDialog;
+//
+//        private AppCompatActivity activity;
+//
+//        public Builder(AppCompatActivity con) {
+//            this.activity = con;
+//
+//        }
+//
+////        public Builder Builder(AppCompatActivity con) {
+////
+////            this.activity = con;
+////
+////
+////            return this;
+////        }
+//
+//        public Builder setTitle(String title) {
+//
+//            this.title = title;
+//
+//            return this;
+//        }
+//
+//        public Builder setContent(String content) {
+//
+//            this.content = content;
+//
+//            return this;
+//        }
+//
+//
+//        public Builder setCancelText(String cancel) {
+//
+//            this.cancel = cancel;
+//
+//            return this;
+//        }
+//
+//        public Builder setSuerText(String sure) {
+//
+//            this.sure = sure;
+//
+//            return this;
+//        }
+//
+//        public Builder setCancelListener(CancelListener listener) {
+//
+//            this.cancelListener = listener;
+//
+//            return this;
+//        }
+//
+//        public Builder setSureListener(SurelListener listener) {
+//
+//            this.surelListener = listener;
+//
+//            return this;
+//        }
+//
+//
+//        public NormalDialog show() {
+//            normalDialog = new NormalDialog(this, activity);
+//            normalDialog.showNormalDialog();
+//            return normalDialog;
+//        }
+//    }
 
-    public static class Builder {
-        private String title = "请设置标题";
-        private String content = "请设置内容！";
-        private String cancel = "取消";
-        private String sure = "确定";
-        private CancelListener cancelListener;
-        private SurelListener surelListener;
+//    private void showNormalDialog() {
+//        if (!this.isAdded()) {
+//            activity.getSupportFragmentManager().beginTransaction().add(this, "").commitAllowingStateLoss();
+//        }
+//
+//    }
 
-        public Builder() {
+    public NormalDialog setTitle(String title) {
 
+        this.title = title;
 
-        }
-
-        public Builder setTitle(String title) {
-
-            this.title = title;
-
-            return this;
-        }
-
-        public Builder setContent(String content) {
-
-            this.content = content;
-
-            return this;
-        }
-
-
-        public Builder setCancelText(String cancel) {
-
-            this.cancel = cancel;
-
-            return this;
-        }
-
-        public Builder setSuerText(String sure) {
-
-            this.sure = sure;
-
-            return this;
-        }
-
-        public Builder setCancelListener(CancelListener listener) {
-
-            this.cancelListener = listener;
-
-            return this;
-        }
-
-        public Builder setSureListener(SurelListener listener) {
-
-            this.surelListener = listener;
-
-            return this;
-        }
-
-
-        public NormalDialog show() {
-            normalDialog = new NormalDialog();
-            normalDialog.showNormalDialog();
-            return normalDialog;
-        }
+        return this;
     }
 
-    private void showNormalDialog() {
-        if (!this.isAdded()) {
-            activity.getSupportFragmentManager().beginTransaction().add(this, "").commitAllowingStateLoss();
-        }
+    public NormalDialog setContent(String content) {
 
+        this.content = content;
+
+        return this;
+    }
+
+
+    public NormalDialog setCancelText(String cancel) {
+
+        this.cancel = cancel;
+
+        return this;
+    }
+
+    public NormalDialog setSuerText(String sure) {
+
+        this.sure = sure;
+
+        return this;
+    }
+
+    public NormalDialog setCancelListener(CancelListener listener) {
+
+        this.cancelListener = listener;
+
+        return this;
+    }
+
+    public NormalDialog setSureListener(SurelListener listener) {
+
+        this.surelListener = listener;
+
+        return this;
+    }
+
+    public NormalDialog show(FragmentManager fragmentManager) {
+        super.show(fragmentManager, String.valueOf(System.currentTimeMillis()));
+        return this;
     }
 
 
     public interface CancelListener {
-        void onCancel(NormalDialog normalDialog);
+        void onCancel();
     }
 
     public interface SurelListener {
-        void onSure(NormalDialog normalDialog);
+        void onSure();
     }
 
     @Override
     public void dismiss() {
         super.dismissAllowingStateLoss();
+
     }
 
 }

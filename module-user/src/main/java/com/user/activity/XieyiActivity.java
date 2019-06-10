@@ -1,6 +1,7 @@
 package com.user.activity;
 
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -18,12 +19,37 @@ import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.utils.TbsLog;
 import com.user.R;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 
 @Route(path = ARouterPathUtils.User_XieyiActivity)
 public class XieyiActivity extends BaseWebActivity {
     @Override
     protected void onCreateView(WebView webView) {
-        webView.loadUrl("https://www.baidu.com/");
+
+
+//        try {
+//            if (Build.VERSION.SDK_INT >= 16) {
+//                Class<?> clazz = webView.getSettings().getClass();
+//                Method method = clazz.getMethod(
+//                        "setAllowUniversalAccessFromFileURLs", boolean.class);//利用反射机制去修改设置对象
+//                if (method != null) {
+//                    method.invoke(webView.getSettings(), true);//修改设置
+//                }
+//            }
+//        } catch (IllegalArgumentException e) {
+//            e.printStackTrace();
+//        } catch (NoSuchMethodException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        } catch (InvocationTargetException e) {
+//            e.printStackTrace();
+//        }
+
+
+        webView.loadUrl("http://192.168.2.113:8848/xstweb/agreement.html");
     }
 
     @Override

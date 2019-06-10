@@ -2,6 +2,12 @@ package com.user.test;
 
 import android.content.Context;
 
+
+/**
+ * 内存泄漏检测
+ * 测试类
+ */
+
 public class LoginManager {
     private static LoginManager mInstance;
     private Context mContext;

@@ -241,18 +241,19 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
 
                         if (updateInfoBeans.size() > 0) {
 
-                            NormalDialog.getInstance(TeacherUserInfoActivity.this)
+
+                            NormalDialog.getInstance()
                                     .setTitle("提示")
                                     .setContent("退出后修改的信息将丢失,你确定要退出么?")
                                     .setSureListener(new NormalDialog.SurelListener() {
                                         @Override
-                                        public void onSure(NormalDialog normalDialog) {
+                                        public void onSure() {
 
                                             finish();
 
                                         }
                                     })
-                                    .show();
+                                    .show(getSupportFragmentManager());
 
 
                         } else {

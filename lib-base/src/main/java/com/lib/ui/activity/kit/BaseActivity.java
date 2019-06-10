@@ -1,6 +1,5 @@
 package com.lib.ui.activity.kit;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,7 +13,6 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -22,7 +20,6 @@ import android.widget.Toast;
 
 import com.lib.fastkit.R;
 import com.lib.fastkit.ui.base.control.ActivityCollector;
-import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.status_bar.QMUI.QMUIStatusBarHelper;
 import com.lib.fastkit.views.button_deal.click.ClickUtils;
 
@@ -76,7 +73,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     //==============================================================================================
     //Activity的管理
     private void addActivity() {
-        ActivityCollector.addActivity(this);
+        ActivityCollector.getInstance().addActivity(this);
     }
 
     //Activity的操作
@@ -326,12 +323,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         return true;
     }
 
-    /**
-     * 返回主页面
-     */
-    public void toMainActivity() {
-        ActivityCollector.toMainActivity();
-    }
 
     /**
      * 启动Activity
@@ -355,7 +346,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         unbinder.unbind();
-        ActivityCollector.removeActivity(this);
+        ActivityCollector.getInstance().finishActivity(this);
     }
 
 

@@ -9,8 +9,8 @@ ext {
             minSdkVersion      : 19,
             targetSdkVersion   : 28,
             buildToolsVersion  : "28.0.3",
-            versionCode        : 20,
-            versionName        : "1.8.0",
+            versionCode        : 1,
+            versionName        : "2.0.0",
 
             //默认
             junit              : "4.12",
@@ -78,7 +78,7 @@ ext {
             //日志
             timber             : "4.7.1",
             //内存检测
-            leakcanary         : "1.6.1"
+            leakcanary         : "1.6.3"
     ]
 
 }

@@ -1,7 +1,9 @@
 package com.user.activity;
 
+import android.content.DialogInterface;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -14,6 +16,7 @@ import com.lib.bean.Event;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.db.shared_prefrences.interfaces.UserCacheInterface;
 import com.lib.fastkit.http.ok.HttpUtils;
+import com.lib.fastkit.views.dialog.zenhui.AlertDialog;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.fastkit.utils.string_deal.regex.RegexUtils;
 import com.lib.fastkit.utils.timer_countdown.CountDownTimer;
@@ -22,6 +25,8 @@ import com.user.R;
 import com.user.R2;
 import com.user.bean.BaseLoginBean;
 import com.user.bean.IdentityUserBean;
+import com.user.fragment.NickNameFragment;
+import com.user.fragment.XieYiFragment;
 import com.user.test.LoginManager;
 
 import org.simple.eventbus.Subscriber;
@@ -45,11 +50,14 @@ public class LoginActivity extends BaseAppActivity {
     @BindView(R2.id.et_code)
     EditText etCode;
 
+    @BindView(R2.id.checkBox)
+    CheckBox checkBox;
+
     @Override
     protected void onCreateView() {
 
 
-        LoginManager.getInstance(this).dealData();
+        //LoginManager.getInstance(this).dealData();
 
     }
 
@@ -88,13 +96,17 @@ public class LoginActivity extends BaseAppActivity {
 
         } else if (i == R.id.btn_login) {
 
-
-            requestLogin();
+            if (checkBox.isChecked()) {
+                requestLogin();
+            } else {
+                showToast("请阅读注册协议");
+            }
 
 
         } else if (i == R.id.tv_xieyi) {
 
-            ARouter.getInstance().build(ARouterPathUtils.User_XieyiActivity).navigation();
+            //ARouter.getInstance().build(ARouterPathUtils.User_XieyiActivity).navigation();
+            showXieYi();
 
         }
     }
@@ -299,6 +311,34 @@ public class LoginActivity extends BaseAppActivity {
 
                     }
                 });
+
+
+    }
+
+
+    XieYiFragment xieYiFragment;
+
+    private void showXieYi() {
+
+
+        final AlertDialog dialog = new AlertDialog.Builder(this)
+                .setContentView(R.layout.dialog_xieyi)
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        if (xieYiFragment != null) {
+                            getSupportFragmentManager().beginTransaction().remove(xieYiFragment).commit();
+                            xieYiFragment = null;
+                        }
+
+                    }
+                })
+
+                .fullWidth()
+                .addDefaultAnimation()
+                .show();
+
+        xieYiFragment = (XieYiFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_xieyi);
 
 
     }

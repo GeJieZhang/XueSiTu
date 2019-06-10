@@ -1,38 +1,22 @@
 package com.lib.ui.activity;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.os.Build;
 import android.os.Handler;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
 
-import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.lib.MyApplication;
+
 import com.lib.base.R;
-
-import com.lib.fastkit.BuildConfig;
-import com.lib.fastkit.utils.network.NetUtils;
-import com.lib.fastkit.utils.status_bar.QMUI.QMUIDisplayHelper;
 
 import com.lib.fastkit.views.webview_x5.X5WebView;
 import com.lib.ui.activity.kit.BaseActivity;
-import com.tencent.smtt.export.external.interfaces.IX5WebChromeClient;
-import com.tencent.smtt.export.external.interfaces.JsResult;
-import com.tencent.smtt.sdk.CookieSyncManager;
 import com.tencent.smtt.sdk.WebChromeClient;
-import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.utils.TbsLog;
 
 
 public abstract class BaseWebActivity extends BaseActivity {
