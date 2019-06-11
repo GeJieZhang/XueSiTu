@@ -26,6 +26,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
 
     public void updateData(List<T> mData) {
         this.mData = mData;
+
     }
 
     @Override

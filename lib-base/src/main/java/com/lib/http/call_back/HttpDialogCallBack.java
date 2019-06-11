@@ -1,13 +1,12 @@
-package com.lib.fastkit.http.ok.extension;
+package com.lib.http.call_back;
 
 import android.content.Context;
 
-import com.lib.fastkit.views.dialog.git.DialogUtils;
+import com.google.gson.Gson;
 import com.lib.fastkit.http.ok.EngineCallBack;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.http.ok.err.ResponseErrorListenerImpl;
-import com.google.gson.Gson;
-
+import com.lib.fastkit.views.dialog.http.DialogUtils;
 
 import java.util.Map;
 
@@ -22,10 +21,12 @@ public abstract class HttpDialogCallBack<T> implements EngineCallBack {
 
     private ResponseErrorListenerImpl responseErrorListener;
 
+    private DialogUtils dialogUtils;
+
     private static final int LOADING_TIME = 500;
 
     public HttpDialogCallBack() {
-
+        dialogUtils = new DialogUtils();
         responseErrorListener = new ResponseErrorListenerImpl();
     }
 
@@ -51,13 +52,15 @@ public abstract class HttpDialogCallBack<T> implements EngineCallBack {
     // 开始执行了
     public void onPreExecute() {
 
-        DialogUtils.showNormalDialog(context,"加载中");
 
+        dialogUtils.showNormalDialog(context, "加载中");
 
     }
 
     @Override
     public void onSuccess(String result) {
+
+
         try {
             Gson gson = new Gson();
             T objResult = (T) gson.fromJson(result,
@@ -89,13 +92,14 @@ public abstract class HttpDialogCallBack<T> implements EngineCallBack {
 
     public void onErrorHide() {
 
-        DialogUtils.dismiss();
+        dialogUtils.dismiss();
+        HttpUtils.cancel();
 
     }
 
     public void onSuccessHide() {
 
-        DialogUtils.dismiss();
+        dialogUtils.dismiss();
     }
 
 

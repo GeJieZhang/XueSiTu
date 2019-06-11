@@ -31,6 +31,7 @@
         <attr name="emptyView" format="reference" />
         <attr name="errorView" format="reference" />
         <attr name="networkErrorView" format="reference" />
+
         <attr name="viewState" format="enum">
             <enum name="content" value="0" />
             <enum name="error" value="1" />
@@ -87,6 +88,12 @@
         <attr name="arcColor3" format="color|reference" />
     </declare-styleable>
 
+    <!--************ QMUILoading ***********-->
+    <declare-styleable name="QMUILoadingView">
+        <attr name="qmui_loading_view_size" format="dimension"/>
+        <attr name="android:color"/>
+    </declare-styleable>
+    <attr name="QMUILoadingStyle" format="reference"/>
 
 
 

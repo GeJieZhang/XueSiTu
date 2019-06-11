@@ -24,6 +24,6 @@ public class EventBusTagUtils {
     /**
      * Token失效
      */
-    public static final String HttpNormalCallBack = "HttpNormalCallBack";
+    public static final String HttpCallBack = "HttpCallBack";
 
 }

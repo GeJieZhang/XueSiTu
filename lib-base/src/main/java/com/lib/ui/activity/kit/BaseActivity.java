@@ -240,11 +240,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void showToast(String text) {
         if (!TextUtils.isEmpty(text)) {
             if (mToast == null) {
-                mToast = Toast.makeText(getApplicationContext(), text,
-                        Toast.LENGTH_SHORT);
-            } else {
-                mToast.setText(text);
+                mToast = Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT);
             }
+            mToast.setText(text);
             mToast.show();
         }
     }

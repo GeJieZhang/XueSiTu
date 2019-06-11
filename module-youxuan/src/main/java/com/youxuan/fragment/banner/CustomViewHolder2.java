@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.lib.base.R;
 import com.lib.bean.CustomData;
+import com.lib.utls.glide.GlideConfig;
 import com.ms.banner.holder.BannerViewHolder;
 
 
@@ -34,9 +36,11 @@ public class CustomViewHolder2 implements BannerViewHolder<CustomData> {
 
     @Override
     public void onBind(Context context, int position, CustomData data) {
-        image1.setImageResource(R.mipmap.banner_1);
 
 
-       // LogUtil.e(data.getName());
+        Glide.with(context)
+                .load(data.getUrl())
+                .apply(GlideConfig.getRoundVdieoOptions(15))
+                .into(image1);
     }
 }

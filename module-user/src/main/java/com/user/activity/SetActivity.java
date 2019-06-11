@@ -10,13 +10,17 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.lib.app.ARouterPathUtils;
+import com.lib.app.CodeUtil;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
+import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.clear_cache.ClearDataUtils;
 import com.lib.fastkit.views.dialog.normal.NormalDialog;
+import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.view.navigationbar.NomalNavigationBar;
 import com.user.R;
 import com.user.R2;
+import com.user.bean.LoginOutBean;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,8 +51,6 @@ public class SetActivity extends BaseAppActivity {
         initView();
 
     }
-
-
 
 
     private void initView() {
@@ -139,7 +141,9 @@ public class SetActivity extends BaseAppActivity {
                     .setSureListener(new NormalDialog.SurelListener() {
                         @Override
                         public void onSure() {
-                            SharedPreferenceManager.getInstance(SetActivity.this).getUserCache().setUserToken("");
+
+                            requestLoginOut();
+
 
                         }
 
@@ -147,6 +151,42 @@ public class SetActivity extends BaseAppActivity {
                     })
                     .show(getSupportFragmentManager());
         }
+    }
+
+
+    private void requestLoginOut() {
+
+        String token = SharedPreferenceManager.getInstance(this).getUserCache().getUserToken();
+
+
+        HttpUtils.with(this)
+                .post()
+                .addParam("requestType", "SIGNOUT")
+                .addParam("token", token)
+                .execute(new HttpNormalCallBack<LoginOutBean>() {
+                    @Override
+                    public void onSuccess(LoginOutBean result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+
+
+                            //ARouter.getInstance().build(ARouterPathUtils.App_MainActivity).navigation();
+                            SharedPreferenceManager.getInstance(SetActivity.this).getUserCache().setUserToken("");
+
+                        }
+                        finish();
+                        showToast(result.getMsg());
+
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+                        finish();
+                    }
+                });
+
+
     }
 
 

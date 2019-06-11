@@ -30,6 +30,7 @@ import com.lib.fastkit.views.viewpager.my.MyViewPager;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.xuesitu.R;
+import com.xuesitu.bean.CheckTokenBean;
 import com.xuesitu.bugly.BuglyUtil;
 import com.xuesitu.bean.QiNiuBean;
 
@@ -101,8 +102,8 @@ public class MainActivity extends BaseAppActivity {
             }
         });
 
-        getQiniuToken();
-
+        requestQiniuToken();
+        requestCheckToken();
         BuglyUtil.checkUpdate();
     }
 
@@ -182,6 +183,16 @@ public class MainActivity extends BaseAppActivity {
         }
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+        menuHide();
+
+
+    }
 
     private void initSelected(int position) {
 
@@ -324,6 +335,9 @@ public class MainActivity extends BaseAppActivity {
     }
 
 
+    /**
+     * @param event
+     */
     @Subscriber(tag = EventBusTagUtils.HomeNavigationBar)
     public void fromHomeNavigationBar(Event event) {
 
@@ -353,16 +367,22 @@ public class MainActivity extends BaseAppActivity {
 
     }
 
-
-    @Subscriber(tag = EventBusTagUtils.HttpNormalCallBack)
-    public void fromHttpNormalCallBack(Event event) {
+    /**
+     * 全局登录监听
+     *
+     * @param event
+     */
+    @Subscriber(tag = EventBusTagUtils.HttpCallBack)
+    public void fromHttpCallBack(Event event) {
 
         switch (event.getEventCode()) {
 
             case 1: {
 
                 //Token失效
-                ARouter.getInstance().build(ARouterPathUtils.User_LoginActivity).navigation();
+                //ARouter.getInstance().build(ARouterPathUtils.User_LoginActivity).navigation();
+
+                SharedPreferenceManager.getInstance(this).getUserCache().setUserToken("");
 
                 showToast("Token失效请重新登录!");
 
@@ -378,66 +398,74 @@ public class MainActivity extends BaseAppActivity {
     private void setMenu() {
         switch (linPersonal.getVisibility()) {
             case View.VISIBLE: {
-                linPersonal.setVisibility(View.GONE);
-
-
-                AnimationSet animationSet = new AnimationSet(true);
-                animationSet.addAnimation(AnimationUtil.leftToView());
-                animationSet.addAnimation(AnimationUtil.Alpha1To0());
-                linPersonal.startAnimation(animationSet);
-
-                animationSet.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-                        linPersonal.setBackgroundResource(R.color.alpha_black100);
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
-                    }
-                });
+                menuHide();
                 break;
             }
 
 
             case View.GONE: {
-                linPersonal.setVisibility(View.VISIBLE);
-
-
-                AnimationSet animationSet = new AnimationSet(true);
-                animationSet.addAnimation(AnimationUtil.rightToView());
-                animationSet.addAnimation(AnimationUtil.Alpha0To1());
-                linPersonal.startAnimation(animationSet);
-                animationSet.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-
-                        linPersonal.setBackgroundResource(R.color.alpha_black60);
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
-                    }
-                });
+                menuShow();
 
             }
         }
     }
 
-    private void getQiniuToken() {
+    private void menuHide() {
+        linPersonal.setVisibility(View.GONE);
+
+
+        AnimationSet animationSet = new AnimationSet(true);
+        animationSet.addAnimation(AnimationUtil.leftToView());
+        animationSet.addAnimation(AnimationUtil.Alpha1To0());
+        linPersonal.startAnimation(animationSet);
+
+        animationSet.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                linPersonal.setBackgroundResource(R.color.alpha_black100);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+    }
+
+    private void menuShow() {
+        linPersonal.setVisibility(View.VISIBLE);
+
+
+        AnimationSet animationSet = new AnimationSet(true);
+        animationSet.addAnimation(AnimationUtil.rightToView());
+        animationSet.addAnimation(AnimationUtil.Alpha0To1());
+        linPersonal.startAnimation(animationSet);
+        animationSet.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+                linPersonal.setBackgroundResource(R.color.alpha_black60);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+    }
+
+    private void requestQiniuToken() {
 
 
         HttpUtils.with(this)
@@ -449,6 +477,38 @@ public class MainActivity extends BaseAppActivity {
 
                         if (result.getCode() == CodeUtil.CODE_200) {
                             SharedPreferenceManager.getInstance(MainActivity.this).getUserCache().setQiNiuToken(result.getObj());
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
+    }
+
+
+    private void requestCheckToken() {
+
+        String token = SharedPreferenceManager.getInstance(this).getUserCache().getUserToken();
+
+
+        HttpUtils.with(this)
+                .post()
+                .addParam("requestType", "CHENCK_TOKEN")
+                .addParam("token", token)
+                .execute(new HttpNormalCallBack<CheckTokenBean>() {
+                    @Override
+                    public void onSuccess(CheckTokenBean result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+
+                        } else {
+
+                            SharedPreferenceManager.getInstance(MainActivity.this).getUserCache().setUserToken("");
+
                         }
 
 

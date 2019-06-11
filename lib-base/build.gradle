@@ -99,9 +99,11 @@ dependencies {
     /**
      * 轮播图
      */
-    api('com.github.wenchaosong:Banner:2.3.11') {
-        exclude group: 'com.android.support'
-    }
+//    api('com.github.wenchaosong:Banner:2.3.11') {
+//        exclude group: 'com.android.support'
+//    }
+    api "com.ms:Banner:2.3.15"
+
 
     /**
      *  七牛云云存储

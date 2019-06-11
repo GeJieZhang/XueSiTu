@@ -30,6 +30,7 @@ import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.views.dialog.normal.NormalDialog;
+import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.fastkit.utils.file_size.PcUtils;
 import com.lib.fastkit.utils.json_deal.GetJsonDataUtil;
@@ -159,7 +160,7 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
                 .post()
                 .addParam("requestType", "TEACHER_PERSONAL_INFO")
                 .addParam("token", token)
-                .execute(new HttpNormalCallBack<TeacherInfoBean>() {
+                .execute(new HttpDialogCallBack<TeacherInfoBean>() {
                     @Override
                     public void onSuccess(TeacherInfoBean result) {
                         teacherInfoBean = result;

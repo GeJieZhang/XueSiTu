@@ -68,7 +68,7 @@ public abstract class HttpNormalCallBack<T> implements EngineCallBack {
             int code = (int) jsonObject.get("code");
 
             if (code == 300) {
-                EventBus.getDefault().post(new Event<String>(1, "Token失效！"), EventBusTagUtils.HttpNormalCallBack);
+                EventBus.getDefault().post(new Event<String>(1, "Token失效！"), EventBusTagUtils.HttpCallBack);
                 return;
             }
 
@@ -94,6 +94,8 @@ public abstract class HttpNormalCallBack<T> implements EngineCallBack {
         onError(e.getMessage());
 
         //Toast.makeText(context, "请求超时", Toast.LENGTH_SHORT).show();
+
+
 
     }
 

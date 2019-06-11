@@ -147,7 +147,9 @@ public class LoginActivity extends BaseAppActivity {
                             userCacheInterface.setUserPhone(result.getObj().getPhone());
 
 
-                            ARouter.getInstance().build(ARouterPathUtils.App_MainActivity).navigation();
+                           // ARouter.getInstance().build(ARouterPathUtils.App_MainActivity).navigation();
+
+                            finish();
 
 
                         }

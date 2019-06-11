@@ -8,7 +8,7 @@ import com.user.R;
 public class XieYiFragment extends BaseWebFragment {
     @Override
     protected void onCreateView(WebView webView) {
-        webView.loadUrl("https://www.baidu.com/");
+        webView.loadUrl("http://192.168.2.113/agreement.html");
     }
 
     @Override

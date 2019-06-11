@@ -59,7 +59,6 @@ public class MyClassActivity extends BaseAppActivity {
                 springView.onFinishFreshAndLoad();
             }
         });
-
     }
 
     protected void initTitle() {

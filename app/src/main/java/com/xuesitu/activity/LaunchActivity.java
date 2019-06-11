@@ -13,6 +13,8 @@ public class LaunchActivity extends BaseAppActivity {
 
         ARouter.getInstance().build(ARouterPathUtils.App_MainActivity).navigation();
 
+        finish();
+
 
     }
 
