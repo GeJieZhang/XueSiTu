@@ -3,10 +3,15 @@ package com.lib.http.call_back;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.lib.app.EventBusTagUtils;
+import com.lib.bean.Event;
 import com.lib.fastkit.http.ok.EngineCallBack;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.http.ok.err.ResponseErrorListenerImpl;
 import com.lib.fastkit.views.dialog.http.DialogUtils;
+
+import org.json.JSONObject;
+import org.simple.eventbus.EventBus;
 
 import java.util.Map;
 
@@ -62,6 +67,15 @@ public abstract class HttpDialogCallBack<T> implements EngineCallBack {
 
 
         try {
+
+            JSONObject jsonObject = new JSONObject(result);
+
+            int code = (int) jsonObject.get("code");
+
+            if (code == 300) {
+                EventBus.getDefault().post(new Event<String>(1, "Token失效！"), EventBusTagUtils.HttpCallBack);
+                return;
+            }
             Gson gson = new Gson();
             T objResult = (T) gson.fromJson(result,
                     HttpUtils.analysisClazzInfo(this));

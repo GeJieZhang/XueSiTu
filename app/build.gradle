@@ -22,7 +22,6 @@ android {
 
     }
 
-
     //https://blog.csdn.net/willba/article/details/70876889
     dexOptions {
         javaMaxHeapSize "4g"

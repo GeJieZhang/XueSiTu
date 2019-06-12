@@ -19,7 +19,7 @@ public class DialogUtils {
                 .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
                 .setTipWord(str)
                 .create();
-        tipDialog.setCancelable(false);
+        tipDialog.setCancelable(true);
         tipDialog.show();
 
     }

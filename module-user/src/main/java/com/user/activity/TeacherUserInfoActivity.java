@@ -787,7 +787,7 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
         fragmentTransaction.commit();
     }
 
-
+    //    tv_tips
     //------------------------------------------------------------------------------------点击事件
     @OnClick({R2.id.lin_head, R2.id.lin_nickname, R2.id.lin_sex, R2.id.f_id_z, R2.id.f_id_f, R2.id.f_certificate, R2.id.f_video, R2.id.lin_school, R2.id.lin_age, R2.id.lin_city, R2.id.btn_sure})
     public void onViewClicked(View view) {
@@ -967,6 +967,30 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
 
         String work_exp = result.getObj().getWork_exp();
         etExperience.setText(work_exp);
+
+        int status = result.getObj().getStatus();
+
+        switch (status) {
+            case 0: {
+
+                tvTips.setText("全部信息提交审核通过后,即可认证成功。");
+
+                break;
+            }
+            case 1: {
+                tvTips.setText("审核中");
+                break;
+            }
+            case 2: {
+                tvTips.setText("审核通过");
+                break;
+            }
+            case 3: {
+                tvTips.setText("审核失败");
+                break;
+            }
+
+        }
 
 
     }
