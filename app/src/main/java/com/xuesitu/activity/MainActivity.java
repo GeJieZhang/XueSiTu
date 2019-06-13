@@ -1,7 +1,6 @@
 package com.xuesitu.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -31,7 +30,7 @@ import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.xuesitu.R;
 import com.xuesitu.bean.CheckTokenBean;
-import com.xuesitu.bugly.BuglyUtil;
+import com.lib.utls.bugly.BuglyUtil;
 import com.xuesitu.bean.QiNiuBean;
 
 import org.simple.eventbus.Subscriber;
@@ -40,7 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 @Route(path = ARouterPathUtils.App_MainActivity)

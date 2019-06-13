@@ -14,9 +14,11 @@ import com.lib.app.CodeUtil;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.clear_cache.ClearDataUtils;
+import com.lib.fastkit.utils.system.SystemUtil;
 import com.lib.fastkit.views.dialog.normal.NormalDialog;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
+import com.lib.utls.bugly.BuglyUtil;
 import com.lib.view.navigationbar.NomalNavigationBar;
 import com.user.R;
 import com.user.R2;
@@ -42,6 +44,8 @@ public class SetActivity extends BaseAppActivity {
     LinearLayout linOut;
     @BindView(R2.id.tv_cache)
     TextView tvCache;
+    @BindView(R2.id.tv_update)
+    TextView tvUpdate;
 
     @Override
     protected void onCreateView() {
@@ -56,6 +60,9 @@ public class SetActivity extends BaseAppActivity {
     private void initView() {
 
         setCache();
+        String version = SystemUtil.getVerName(this);
+        tvUpdate.setText(version);
+
 
     }
 
@@ -123,6 +130,20 @@ public class SetActivity extends BaseAppActivity {
 
             ARouter.getInstance().build(ARouterPathUtils.User_SetZhiFuActivity).navigation();
         } else if (i == R.id.lin_update) {
+
+
+            if (BuglyUtil.isVersionUpdate()) {
+                BuglyUtil.checkUpdateByClick();
+            } else {
+//                NormalDialog.getInstance()
+//                        .setTitle("更新检测")
+//                        .setContent("当前版本已是最新版本！")
+//                        .show(getSupportFragmentManager());
+
+                showToast("暂无更新");
+            }
+
+
         } else if (i == R.id.lin_help) {
         } else if (i == R.id.lin_about) {
         } else if (i == R.id.lin_out) {

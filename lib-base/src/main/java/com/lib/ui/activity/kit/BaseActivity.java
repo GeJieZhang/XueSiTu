@@ -247,6 +247,22 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * Toast
+     *
+     * @param text
+     */
+    public void showLongToast(String text) {
+        if (!TextUtils.isEmpty(text)) {
+            if (mToast == null) {
+                mToast = Toast.makeText(getApplicationContext(), "", Toast.LENGTH_LONG);
+            }
+            mToast.setText(text);
+            mToast.show();
+        }
+    }
+
     /**
      * Toast
      *

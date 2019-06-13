@@ -93,7 +93,7 @@ dependencies {
     /**
      * 版本更新
      */
-    api "com.allenliu.versionchecklib:library:$var.versionchecklib"
+    //api "com.allenliu.versionchecklib:library:$var.versionchecklib"
 
     /**
      * 图片加载
