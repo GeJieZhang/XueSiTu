@@ -22,20 +22,12 @@ public interface IHttpEngine {
 
     // 下载文件
 
-    /**
-     * @param context
-     * @param url              下载连接
-     * @param destFileDir      下载的文件储存目录
-     * @param destFileName     下载文件名称
-     * @param downloadListener 下载监听
-     */
-    void download(Context context, String url, String destFileDir, String destFileName, OnDownloadListener downloadListener);
 
 
     // 上传文件
 
 
-    void upload(Context context, String url, String destFileDir, EngineCallBack callBack);
+
 
 
     // https 添加证书

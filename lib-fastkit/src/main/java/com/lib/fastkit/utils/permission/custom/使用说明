@@ -1,0 +1,21 @@
+    //==============================================================================================
+    //==================================================================================权限管理====
+    //==============================================================================================
+
+
+private static final int REQUEST_PERMISSIONS = 23;
+    private void requestPermissons(){
+        String[]  permissions= new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,//文件读写
+                Manifest.permission.CAMERA,//相机
+                Manifest.permission.RECORD_AUDIO//音频
+        };
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                Toast.makeText(this, "用户曾拒绝xxxx", Toast.LENGTH_SHORT).show();
+            }else {
+                ActivityCompat.requestPermissions(this, permissions, REQUEST_PERMISSIONS);
+            }
+        }
+    }

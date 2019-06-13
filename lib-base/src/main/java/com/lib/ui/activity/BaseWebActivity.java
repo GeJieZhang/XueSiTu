@@ -89,24 +89,18 @@ public abstract class BaseWebActivity extends BaseActivity {
     }
 
 
-    /**
-     * 点击返回按钮如果有浏览记录就返回上一个页面，没有就结束Actiity
-     *
-     * @param keyCode
-     * @param event
-     * @return
-     */
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        if (webView.canGoBack()) {
             webView.goBack();
-            return true;
+
         } else {
             finish();
-            return true;
+
         }
     }
-
 
     @Override
     protected void onDestroy() {

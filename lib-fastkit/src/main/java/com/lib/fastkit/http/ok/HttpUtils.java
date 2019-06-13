@@ -158,22 +158,7 @@ public class HttpUtils {
         mHttpEngine.post(mContext, url, params, callBack);
     }
 
-
-    /**
-     * 文件下载
-     *
-     * @param
-     * @param url
-     * @param destFileDir
-     * @param destFileName
-     * @param downloadListener
-     */
-    public void dowload(String url, String destFileDir, String destFileName, OnDownloadListener downloadListener) {
-
-        mHttpEngine.download(mContext, url, destFileDir, destFileName, downloadListener);
-
-    }
-
+    
     /**
      * 拼接参数
      */

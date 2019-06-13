@@ -18,14 +18,16 @@ package com.lib.fastkit.http.ok.err;
 
 import okhttp3.Response;
 
-import static com.lzy.okgo.utils.TypeUtils.checkNotNull;
 
 /**
  * Exception for an unexpected, non-2xx HTTP response.
  */
 public class HttpException extends RuntimeException {
     private static String getMessage(Response response) {
-        checkNotNull(response, "response == null");
+
+        if (response == null) {
+            throw new NullPointerException("response == null");
+        }
         return "HTTP " + response.code() + " " + response.message();
     }
 

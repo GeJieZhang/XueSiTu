@@ -384,7 +384,7 @@ public class MainActivity extends BaseAppActivity {
 
                 SharedPreferenceManager.getInstance(this).getUserCache().setUserToken("");
 
-                showToast("Token失效请重新登录!");
+                //showToast("Token失效请重新登录!");
 
 
                 break;
