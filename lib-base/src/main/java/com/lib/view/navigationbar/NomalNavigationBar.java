@@ -57,8 +57,9 @@ public class NomalNavigationBar<D extends
      */
 
     private TextView titleTextView;
+
     protected void setTitleText(int viewId, String text) {
-        titleTextView= findViewById(viewId);
+        titleTextView = findViewById(viewId);
         if (!TextUtils.isEmpty(text)) {
             titleTextView.setVisibility(View.VISIBLE);
             titleTextView.setText(text);
@@ -94,11 +95,18 @@ public class NomalNavigationBar<D extends
 
 
     }
+
     public TextView getTitleTextView() {
         return titleTextView;
     }
+
     public TextView getRightTextView() {
         return tvRight;
+    }
+
+    public View getView(int viewId) {
+
+        return findViewById(viewId);
     }
 
     private void setLeft(int viewId, boolean isHideLeft) {

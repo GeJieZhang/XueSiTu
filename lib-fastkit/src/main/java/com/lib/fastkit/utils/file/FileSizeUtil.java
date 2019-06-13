@@ -1,4 +1,4 @@
-package com.lib.fastkit.utils.file_size;
+package com.lib.fastkit.utils.file;
 
 import android.util.Log;
 

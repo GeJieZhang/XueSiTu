@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application>
-
+        <activity android:name=".activity.YouXuanMainActivity"></activity>
+        <activity android:name=".activity.CompanyClassActivity"></activity>
     </application>
+
+
 </manifest>

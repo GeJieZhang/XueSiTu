@@ -62,6 +62,10 @@ public class X5WebView extends WebView {
         // webSetting.setPreFectch(true);
         CookieSyncManager.createInstance(mContext);
         CookieSyncManager.getInstance().sync();
+
+
+        setWebViewClient(client);
+
     }
 
 

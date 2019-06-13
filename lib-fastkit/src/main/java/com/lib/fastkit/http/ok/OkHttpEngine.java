@@ -7,14 +7,19 @@ import android.util.Log;
 
 
 import com.lib.fastkit.http.ok.err.HttpException;
+import com.lib.fastkit.http.ok.extension.FileProgressRequestBody;
+import com.lib.fastkit.http.ok.extension.file.OnDownloadListener;
 import com.lib.fastkit.http.ok.interceptor.CacheInterceptor;
 import com.lib.fastkit.http.ok.interceptor.RequestInterceptor;
 import com.lib.fastkit.utils.log.LogUtil;
+import com.lib.fastkit.utils.num.NumUtil;
 import com.lib.fastkit.utils.rsa.RsaAndAesUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.FileNameMap;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -26,6 +31,7 @@ import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -237,6 +243,199 @@ public class OkHttpEngine implements IHttpEngine {
         );
 
     }
+
+
+    @Override
+    public void download(Context context, final String url, final String destFileDir, final String destFileName, final OnDownloadListener listener) {
+
+        Log.e(TAG, url);
+
+        Request request = new Request
+                .Builder()
+                .url(url)
+                .build();
+
+        Call call = mOkHttpClient.newCall(request);
+        callList.add(call);
+
+
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(final Call call, final IOException e) {
+
+
+                mDelivery.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.onDownloadFailed(e);
+                        callList.remove(call);
+
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(final Call call, final Response response) throws IOException {
+
+
+                if (response.code() != 200) {
+
+                    mDelivery.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            listener.onDownloadFailed(new HttpException(response));
+                        }
+                    });
+
+                } else {
+
+
+                    donwloadIO(response, destFileDir, destFileName, listener);
+
+                }
+
+                callList.remove(call);
+
+            }
+
+
+        });
+    }
+
+    @Override
+    public void upload(Context context, String url, String destFileDir, final EngineCallBack callBack) {
+
+
+        File file = new File(destFileDir);
+
+        FileProgressRequestBody filePart = new FileProgressRequestBody(file, "application/octet-stream", new FileProgressRequestBody.ProgressListener() {
+            @Override
+            public void transferred(long size) {
+
+            }
+        });
+        MultipartBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("up", file.getName(), filePart)
+                .build();
+
+        final Request request = new Request.Builder()
+                .url(url)
+                .tag(context)
+                .post(requestBody)
+                .build();
+
+        Call call = mOkHttpClient.newCall(request);
+        callList.add(call);
+        call.enqueue(
+                new Callback() {
+                    @Override
+                    public void onFailure(final Call call, final IOException e) {
+
+                        mDelivery.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                callBack.onError(e);
+
+                                callList.remove(call);
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onResponse(final Call call, final Response response) throws IOException {
+                        final String result = response.body().string();
+                        LogUtil.e(result);
+
+                        mDelivery.post(new Runnable() {
+                            @Override
+                            public void run() {
+
+
+                                if (response.code() != 200) {
+                                    callBack.onError(new HttpException(response));
+                                } else {
+                                    callBack.onSuccess(result);
+                                }
+
+                                callList.remove(call);
+
+                            }
+                        });
+
+
+                    }
+                }
+        );
+
+    }
+
+    private void donwloadIO(Response response, String destFileDir, String destFileName, final OnDownloadListener listener) {
+        InputStream is = null;
+        byte[] buf = new byte[2048];
+        int len = 0;
+        FileOutputStream fos = null;
+        // 储存下载文件的目录
+        File dir = new File(destFileDir);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        final File file = new File(dir, destFileName);
+        try {
+            is = response.body().byteStream();
+            long total = response.body().contentLength();
+            fos = new FileOutputStream(file);
+            long sum = 0;
+            while ((len = is.read(buf)) != -1) {
+                fos.write(buf, 0, len);
+                sum += len;
+                final int progress = (int) (sum * 1.0f / total * 100);
+                // final int progress = (int) (NumUtil.scaleFloor(sum/total, 2) * 100);
+
+                mDelivery.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 下载中更新进度条
+                        listener.onDownloading(progress);
+                    }
+                });
+
+
+            }
+            fos.flush();
+
+            mDelivery.post(new Runnable() {
+                @Override
+                public void run() {
+                    // 下载完成
+                    listener.onDownloadSuccess(file);
+                }
+            });
+
+        } catch (final Exception e) {
+
+            mDelivery.post(new Runnable() {
+                @Override
+                public void run() {
+                    listener.onDownloadFailed(e);
+                }
+            });
+
+        } finally {
+            try {
+                if (is != null)
+                    is.close();
+            } catch (IOException e) {
+            }
+            try {
+                if (fos != null)
+                    fos.close();
+            } catch (IOException e) {
+            }
+        }
+    }
+
 
     public void cancel() {
         if (callList.size() > 0) {

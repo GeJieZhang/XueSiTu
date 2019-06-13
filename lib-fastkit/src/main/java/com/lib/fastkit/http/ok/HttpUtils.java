@@ -2,6 +2,7 @@ package com.lib.fastkit.http.ok;
 
 import android.content.Context;
 
+import com.lib.fastkit.http.ok.extension.file.OnDownloadListener;
 import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.rsa.RsaAndAesUtils;
 
@@ -37,7 +38,7 @@ public class HttpUtils {
     private Map<String, Object> mParams;
 
     // 上下文
-    private  Context mContext;
+    private Context mContext;
     // 默认OkHttpEngine
     private static IHttpEngine mHttpEngine;
 
@@ -108,6 +109,7 @@ public class HttpUtils {
         }
     }
 
+
     public void execute() {
         execute(null);
     }
@@ -154,6 +156,22 @@ public class HttpUtils {
 
 
         mHttpEngine.post(mContext, url, params, callBack);
+    }
+
+
+    /**
+     * 文件下载
+     *
+     * @param
+     * @param url
+     * @param destFileDir
+     * @param destFileName
+     * @param downloadListener
+     */
+    public void dowload(String url, String destFileDir, String destFileName, OnDownloadListener downloadListener) {
+
+        mHttpEngine.download(mContext, url, destFileDir, destFileName, downloadListener);
+
     }
 
     /**

@@ -81,4 +81,5 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
 
     protected abstract void toBindViewHolder(ViewHolder holder, int position, List<T> mData);
 
+
 }

@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
@@ -156,7 +157,7 @@ public class YouXuanFragment extends BaseAppFragment {
             mList.add(new CustomData(carouselBean.getHash(), carouselBean.getGroup(), false));
         }
 
-      initBannerView();
+        initBannerView();
 
 
     }
@@ -180,7 +181,6 @@ public class YouXuanFragment extends BaseAppFragment {
                 springView.onFinishFreshAndLoad();
             }
         });
-
 
 
         initWanFuView();
@@ -209,7 +209,12 @@ public class YouXuanFragment extends BaseAppFragment {
     }
 
     private void initBannerView() {
+        lastPosition = 0;
+
+
         initIndicator();
+
+
         banner.setAutoPlay(true)
                 .setPages(mList, new CustomViewHolder2())
                 .setBannerStyle(BannerConfig.NOT_INDICATOR)
@@ -244,6 +249,8 @@ public class YouXuanFragment extends BaseAppFragment {
     }
 
     private void initIndicator() {
+        indicator.removeAllViews();
+        indicatorImages.clear();
         for (int i = 0; i < mList.size(); i++) {
             ImageView imageView = new ImageView(getActivity());
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -312,6 +319,7 @@ public class YouXuanFragment extends BaseAppFragment {
             int screenWidth = QMUIDisplayHelper.getScreenWidth(getContext());
 
             LinearLayout linearLayout = holder.getView(R.id.lin_parent);
+
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) linearLayout.getLayoutParams();
             params.width = screenWidth / 3;
 
@@ -324,7 +332,12 @@ public class YouXuanFragment extends BaseAppFragment {
                     .load(mData.get(position).getIcon())
                     .apply(GlideConfig.getRectangleOptions())
                     .into(imageView);
-
+            linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ARouter.getInstance().build(ARouterPathUtils.YouXuan_CompanyClassActivity).navigation();
+                }
+            });
 
         }
 
@@ -479,13 +492,22 @@ public class YouXuanFragment extends BaseAppFragment {
     @Override
     public void onStart() {
         super.onStart();
-        banner.startAutoPlay();
+
+        if (banner != null) {
+            banner.startAutoPlay();
+        }
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        banner.stopAutoPlay();
+
+
+        if (banner != null) {
+            banner.stopAutoPlay();
+        }
+
     }
 
 

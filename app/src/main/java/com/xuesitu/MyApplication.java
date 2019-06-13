@@ -17,6 +17,7 @@ import com.lib.fastkit.utils.log.LogUtil;
 
 import com.squareup.leakcanary.LeakCanary;
 import com.tencent.smtt.sdk.QbSdk;
+import com.xuesitu.bugly.BuglyUtil;
 
 
 import butterknife.ButterKnife;
@@ -45,6 +46,9 @@ public class MyApplication extends Application {
         initHttp();
         //Timber日志
         initTimber();
+
+
+        BuglyUtil.init(this);
         //内存检测
         initLeakCanary();
 

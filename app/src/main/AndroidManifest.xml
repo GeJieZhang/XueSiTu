@@ -46,6 +46,18 @@
 
         <activity android:name=".activity.MainActivity"></activity>
         <activity android:name=".activity.Test"></activity>
+
+
+
+        <!--bugly-->
+        <activity
+            android:name="com.tencent.bugly.beta.ui.BetaActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|locale"
+            android:theme="@android:style/Theme.Translucent" />
+
+
+
+
         <!--初始化项目组件服务-->
         <service
             android:name="com.lib.service.InitIntentService"

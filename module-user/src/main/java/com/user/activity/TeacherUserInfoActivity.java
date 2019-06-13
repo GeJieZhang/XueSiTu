@@ -2,7 +2,6 @@ package com.user.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -32,7 +31,6 @@ import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.views.dialog.normal.NormalDialog;
 import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.http.call_back.HttpNormalCallBack;
-import com.lib.fastkit.utils.file_size.PcUtils;
 import com.lib.fastkit.utils.json_deal.GetJsonDataUtil;
 import com.lib.fastkit.views.dialog.zenhui.AlertDialog;
 import com.lib.ui.activity.BaseAppActivity;

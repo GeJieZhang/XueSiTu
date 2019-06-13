@@ -77,7 +77,7 @@ dependencies {
     /**
      * 蒲公英更新检测
      */
-    api "com.pgyersdk:sdk:$var.pgyersdk"
+    //api "com.pgyersdk:sdk:$var.pgyersdk"
 
     /**
      * 阿里热修复

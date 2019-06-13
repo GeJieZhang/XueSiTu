@@ -40,7 +40,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="16dp"
-        android:padding="4dp"
+        android:padding="6dp"
         android:src="@mipmap/nav_share"
         android:visibility="gone" />
 </RelativeLayout>
