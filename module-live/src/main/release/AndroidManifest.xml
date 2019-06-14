@@ -6,5 +6,7 @@
 
     <application>
 
+        <activity android:name=".activity.RoomActivity"></activity>
+
     </application>
 </manifest>

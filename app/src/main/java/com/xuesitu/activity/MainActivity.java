@@ -28,6 +28,8 @@ import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.fastkit.views.viewpager.my.MyViewPager;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
+import com.live.activity.RoomActivity;
+import com.live.utils.QNAppServer;
 import com.xuesitu.R;
 import com.xuesitu.bean.CheckTokenBean;
 import com.lib.utls.bugly.BuglyUtil;
@@ -102,7 +104,7 @@ public class MainActivity extends BaseAppActivity {
 
         requestQiniuToken();
         requestCheckToken();
-        BuglyUtil.checkUpdate();
+        // BuglyUtil.checkUpdate();
     }
 
     @Override
@@ -171,7 +173,7 @@ public class MainActivity extends BaseAppActivity {
                 mViewPager.setCurrentItem(3);
                 initSelected(3);
 
-                startActivity(Test.class);
+                gotoRoomActivity();
                 break;
             case R.id.lin_fengxiang:
                 mViewPager.setCurrentItem(4);
@@ -179,6 +181,28 @@ public class MainActivity extends BaseAppActivity {
                 break;
 
         }
+    }
+
+    private void gotoRoomActivity() {
+
+        PermissionUtil.getInstance(this).externalZhiBo(new PermissionUtil.RequestPermission() {
+            @Override
+            public void onRequestPermissionSuccess() {
+                final String token = QNAppServer.getInstance().requestRoomToken(MainActivity.this, "zhangjie", "test");
+                Intent intent = new Intent(MainActivity.this, RoomActivity.class);
+                intent.putExtra(RoomActivity.EXTRA_ROOM_ID, "test");
+                intent.putExtra(RoomActivity.EXTRA_ROOM_TOKEN, token);
+                intent.putExtra(RoomActivity.EXTRA_USER_ID, "zhangjie");
+                startActivity(intent);
+            }
+
+            @Override
+            public void onRequestPermissionFailure() {
+
+            }
+        });
+
+
     }
 
 

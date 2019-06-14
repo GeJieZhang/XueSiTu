@@ -20,6 +20,11 @@ public class ARouterPathUtils {
     public static final String App_LaunchActivity = "/app/LaunchActivity";
 
 
+    //----------------------------------------------------------------------------ARouterInterface
+
+    public static final String APP_Interface_ISkillImpl = "/app/ISkillImpl";
+
+
     //==============================================================================================
     //======================================================================================优选====
     //==============================================================================================
@@ -44,5 +49,10 @@ public class ARouterPathUtils {
     public static final String User_TeacherUserInfoActivity = "/user/TeacherUserInfoActivity";
 
     public static final String User_StudentUserInfoActivity = "/user/StudentUserInfoActivity";
+    //==============================================================================================
+    //======================================================================================live====
+    //==============================================================================================
+    public static final String Live_RoomActivity = "/live/RoomActivity";
+
 
 }

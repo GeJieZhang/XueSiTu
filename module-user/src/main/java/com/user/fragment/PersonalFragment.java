@@ -14,10 +14,12 @@ import com.lib.app.EventBusTagUtils;
 import com.lib.bean.Event;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.db.shared_prefrences.interfaces.UserCacheInterface;
+import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.ui.fragment.BaseAppFragment;
 import com.lib.utls.glide.GlideConfig;
 import com.user.R;
 import com.user.R2;
+
 
 import org.simple.eventbus.EventBus;
 
@@ -120,6 +122,11 @@ public class PersonalFragment extends BaseAppFragment {
         } else if (i == R.id.lin_question) {
         } else if (i == R.id.lin_evaluation) {
         } else if (i == R.id.lin_teacher) {
+
+
+
+
+
         } else if (i == R.id.lin_study) {
         } else if (i == R.id.lin_sign) {
         } else if (i == R.id.lin_userInfo) {

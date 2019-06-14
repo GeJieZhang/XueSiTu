@@ -12,7 +12,11 @@ android {
         vectorDrawables.useSupportLibrary = true
         //https://www.cnblogs.com/Android-FJH/p/5973547.html
         multiDexEnabled true
+        ndk {
+//          abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
 
+            abiFilters 'armeabi-v7a'
+        }
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [moduleName: "app"]
@@ -115,7 +119,7 @@ dependencies {
 
 
         api project(':module-dayi')
-        //api project(':module-live')
+        api project(':module-live')
     }
 
 }

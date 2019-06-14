@@ -144,6 +144,20 @@ public class PermissionUtil {
     }
 
 
+    /**
+     * 请求直播需要的权限
+     *
+     * @param requestPermission
+     */
+    public static void externalZhiBo(RequestPermission requestPermission) {
+        requestPermission(rxPermissions, requestPermission, Manifest.permission.WRITE_EXTERNAL_STORAGE
+                , Manifest.permission.READ_EXTERNAL_STORAGE
+                , Manifest.permission.MODIFY_AUDIO_SETTINGS
+                , Manifest.permission.RECORD_AUDIO
+                , Manifest.permission.CAMERA
+        );
+    }
+
     private static void onRequestPermissionFailure(List<String> strings) {
 
 

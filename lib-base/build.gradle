@@ -14,6 +14,12 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true
+
+        ndk {
+//          abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
+
+            abiFilters 'armeabi-v7a'
+        }
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [moduleName: "base"]
@@ -111,6 +117,10 @@ dependencies {
     api 'com.qiniu:qiniu-android-sdk:7.3.15'
     //api files('libs/tbs_sdk_thirdapp_v3.6.0.1310_43612_sharewithdownload_withoutGame_obfs_20180706_163319.jar')
 
+
+
+
+    api files('libs/qndroid-rtc-2.2.0.jar')
     /**
      * bugly
      * 日志统计

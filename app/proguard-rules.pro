@@ -576,7 +576,13 @@ rx.internal.util.atomic.LinkedQueueNode consumerNode;
 -keep class com.qiniu.**{*;}
 -keep class com.qiniu.**{public <init>();}
 -ignorewarnings
+#--------------------------------------------------------------------------------------------------
+#七牛实时音视频云
 
+-keep class org.webrtc.** {*;}
+-dontwarn org.webrtc.**
+-keep class com.qiniu.droid.rtc.**{*;}
+-keep interface com.qiniu.droid.rtc.**{*;}
 #--------------------------------------------------------------------------------------------------
 #bugly
 -dontwarn com.tencent.bugly.**
@@ -589,4 +595,6 @@ rx.internal.util.atomic.LinkedQueueNode consumerNode;
 -keep public class com.lib.bean.**{*;}
 -keep public class com.user.bean.**{*;}
 -keep public class com.xuesitu.bean.**{*;}
+-keep public class com.live.bean.**{*;}
+
 

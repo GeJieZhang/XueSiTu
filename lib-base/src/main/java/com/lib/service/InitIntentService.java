@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 
 import com.lib.fastkit.utils.log.LogUtil;
 
+import com.qiniu.droid.rtc.QNLogLevel;
+import com.qiniu.droid.rtc.QNRTCEnv;
 import com.tencent.smtt.sdk.QbSdk;
 
 /**
@@ -33,6 +35,15 @@ public class InitIntentService extends Service {
         initWebViewX5();
 
 
+        //初始化七牛直播
+        initQiNiuLive();
+
+    }
+
+    private void initQiNiuLive() {
+        QNRTCEnv.setLogLevel(QNLogLevel.INFO);
+        QNRTCEnv.init(getApplicationContext());
+        QNRTCEnv.setLogFileEnabled(true);
     }
 
 

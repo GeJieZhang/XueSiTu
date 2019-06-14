@@ -11,10 +11,11 @@ android {
 
         multiDexEnabled true
 
+        //需要再APP包下的主工程中配置，否则可能生成其他架构的so
         ndk {
 //          abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
 
-            abiFilters 'armeabi'
+            abiFilters 'armeabi-v7a'
         }
 
         resConfigs "zh", "en"
@@ -125,7 +126,7 @@ dependencies {
     /**
      * 腾讯浏览器X5内核
      */
-     api files('libs/tbs_sdk_thirdapp_v3.6.0.1310_43612_sharewithdownload_withoutGame_obfs_20180706_163319.jar')
+    api files('libs/tbs_sdk_thirdapp_v3.6.0.1310_43612_sharewithdownload_withoutGame_obfs_20180706_163319.jar')
 
     /**
      * 内存检测
