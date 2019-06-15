@@ -7,6 +7,6 @@
     <application>
 
         <activity android:name=".activity.RoomActivity"></activity>
-
+        <activity android:name=".activity.MainRoomActivity"></activity>
     </application>
 </manifest>

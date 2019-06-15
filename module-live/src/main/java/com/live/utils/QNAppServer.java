@@ -52,25 +52,17 @@ public class QNAppServer {
         return QNAppServerHolder.instance;
     }
 
-    public String requestRoomToken(Context context, String userId, String roomName) {
-//        /**
-//         * 此处服务器 URL 仅用于 Demo 测试，随时可能修改/失效，请勿用于 App 线上环境！！
-//         * 此处服务器 URL 仅用于 Demo 测试，随时可能修改/失效，请勿用于 App 线上环境！！
-//         * 此处服务器 URL 仅用于 Demo 测试，随时可能修改/失效，请勿用于 App 线上环境！！
-//         */
-//        String url = APP_SERVER_ADDR + "/v1/rtc/token/admin/app/" + getAppId(context) + "/room/" + roomName + "/user/" + userId + "?bundleId=" + packageName(context);
-//        try {
-//            OkHttpClient okHttpClient = new OkHttpClient.Builder().sslSocketFactory(new SSLSocketFactoryCompat(), getTrustManager()).build();
-//            Request request = new Request.Builder()
-//                    .url(url)
-//                    .build();
-//            Response response = okHttpClient.newCall(request).execute();
-//            return response.body().string();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        return "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:OhA7WDVA4u8t-6pFW0CoMeUjnlg=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoidGVzdCIsInVzZXJJZCI6InpoYW5namllIiwiZXhwaXJlQXQiOjE1NjA1ODM5MzAsInBlcm1pc3Npb24iOiJhZG1pbiJ9";
+
+    private String str1 = "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:idSQxdXL86rRagHY37khuYoWpk0=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoicm9vbTUxMjMiLCJ1c2VySWQiOiJ6aGFuZ2ppZSIsImV4cGlyZUF0IjoxNTYwNjc1MjMyLCJwZXJtaXNzaW9uIjoidXNlciJ9";
+    private String str2 = "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:nNYBue5TXCambzmcZ6tNGlyVrhI=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoicm9vbTUxMjMiLCJ1c2VySWQiOiJ3c3QiLCJleHBpcmVBdCI6MTU2MDY3NTIzMiwicGVybWlzc2lvbiI6InVzZXIifQ==";
+
+    public String requestRoomToken() {
+
+        return str1;
     }
+
+
+
 
     public UserList getUserList(Context context, String roomName) {
         String url = APP_SERVER_ADDR + "/v1/rtc/users/app/" + getAppId(context) + "/room/" + roomName;

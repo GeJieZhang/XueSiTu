@@ -176,7 +176,7 @@ public class RoomActivity extends Activity implements QNRTCEngineEventListener, 
 
         List<QNTrackInfo> localTrackListExcludeScreenTrack = new ArrayList<>(mLocalTrackList);
         localTrackListExcludeScreenTrack.remove(mLocalScreenTrack);
-        mTrackWindowMgr.addTrackInfo(mUserId, localTrackListExcludeScreenTrack);
+        mTrackWindowMgr.addTrackInfo(mUserId, localTrackListExcludeScreenTrack);//添加本地推流
 
         LogUtil.e("初始化完毕");
     }
@@ -315,6 +315,8 @@ public class RoomActivity extends Activity implements QNRTCEngineEventListener, 
     }
 
     private void reportError(final String description) {
+
+        LogUtil.e(description);
         // TODO: handle error.
         if (!mIsError) {
             mIsError = true;

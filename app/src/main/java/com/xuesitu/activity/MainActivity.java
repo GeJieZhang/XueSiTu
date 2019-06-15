@@ -28,6 +28,7 @@ import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.fastkit.views.viewpager.my.MyViewPager;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
+import com.live.activity.MainRoomActivity;
 import com.live.activity.RoomActivity;
 import com.live.utils.QNAppServer;
 import com.xuesitu.R;
@@ -178,9 +179,21 @@ public class MainActivity extends BaseAppActivity {
             case R.id.lin_fengxiang:
                 mViewPager.setCurrentItem(4);
                 initSelected(4);
+
+
+                gotoRoom2();
                 break;
 
         }
+    }
+
+    private void gotoRoom2() {
+        final String token = QNAppServer.getInstance().requestRoomToken();
+        Intent intent = new Intent(MainActivity.this, RoomActivity.class);
+        intent.putExtra(RoomActivity.EXTRA_ROOM_ID, "5123");
+        intent.putExtra(RoomActivity.EXTRA_ROOM_TOKEN, token);
+        intent.putExtra(RoomActivity.EXTRA_USER_ID, "zhangjie");
+        startActivity(intent);
     }
 
     private void gotoRoomActivity() {
@@ -188,11 +201,15 @@ public class MainActivity extends BaseAppActivity {
         PermissionUtil.getInstance(this).externalZhiBo(new PermissionUtil.RequestPermission() {
             @Override
             public void onRequestPermissionSuccess() {
-                final String token = QNAppServer.getInstance().requestRoomToken(MainActivity.this, "zhangjie", "test");
-                Intent intent = new Intent(MainActivity.this, RoomActivity.class);
-                intent.putExtra(RoomActivity.EXTRA_ROOM_ID, "test");
-                intent.putExtra(RoomActivity.EXTRA_ROOM_TOKEN, token);
-                intent.putExtra(RoomActivity.EXTRA_USER_ID, "zhangjie");
+//                final String token = QNAppServer.getInstance().requestRoomToken();
+//                Intent intent = new Intent(MainActivity.this, RoomActivity.class);
+//                intent.putExtra(RoomActivity.EXTRA_ROOM_ID, "test");
+//                intent.putExtra(RoomActivity.EXTRA_ROOM_TOKEN, token);
+//                intent.putExtra(RoomActivity.EXTRA_USER_ID, "zhangjie");
+//                startActivity(intent);
+
+                Intent intent = new Intent(MainActivity.this, MainRoomActivity.class);
+
                 startActivity(intent);
             }
 
