@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--<com.qiniu.droid.rtc.QNSurfaceView-->
+        <!--android:id="@+id/local_surface_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
+
+        <!--<com.qiniu.droid.rtc.QNSurfaceView-->
+        <!--android:id="@+id/remote_surface_view"-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="150dp" />-->
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.qiniu.droid.rtc.QNSurfaceView
+                android:id="@+id/local_surface_view"
+                android:layout_width="match_parent"
+                android:layout_height="260dp" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:background="@color/base_white"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="4dp">
+
+                <FrameLayout
+                    android:id="@+id/list_video"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+
+                    ></FrameLayout>
+            </android.support.v7.widget.CardView>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/green"></FrameLayout>
+
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+</LinearLayout>

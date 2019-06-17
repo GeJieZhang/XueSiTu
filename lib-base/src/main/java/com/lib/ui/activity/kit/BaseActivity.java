@@ -194,6 +194,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 if (calmStatusBar()) {
 
                     QMUIStatusBarHelper.setStatusBarLightMode(this);
+
                 }
 
 
