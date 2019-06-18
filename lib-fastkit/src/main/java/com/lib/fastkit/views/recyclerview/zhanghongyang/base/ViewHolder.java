@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.Checkable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -233,6 +234,21 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         View view = getView(viewId);
         view.setOnLongClickListener(listener);
         return this;
+    }
+
+
+    public void setVisibility(boolean visible) {
+        RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) itemView.getLayoutParams();
+        if (visible) {
+            param.height = LinearLayout.LayoutParams.WRAP_CONTENT; // 根据具体需求场景设置
+            param.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+            itemView.setVisibility(View.VISIBLE);
+        } else {
+            itemView.setVisibility(View.GONE);
+            param.height = 0;
+            param.width = 0;
+        }
+        itemView.setLayoutParams(param);
     }
 
 

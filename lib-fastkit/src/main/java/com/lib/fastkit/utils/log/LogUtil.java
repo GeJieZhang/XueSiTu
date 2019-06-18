@@ -13,8 +13,15 @@ public class LogUtil {
     private static final String TAG = "调试日志======";
 
     public static void e(String content) {
+
+        String str = "空日志信息";
+
+        if (content != null ||! content.equals("null") || !content.equals("")) {
+            str = content;
+        }
+
         if (DEBUG) {
-            Log.e(TAG, content);
+            Log.e(TAG, str);
         }
     }
 

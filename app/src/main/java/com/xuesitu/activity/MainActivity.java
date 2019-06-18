@@ -174,14 +174,14 @@ public class MainActivity extends BaseAppActivity {
                 mViewPager.setCurrentItem(3);
                 initSelected(3);
 
-                gotoRoomActivity();
+
                 break;
             case R.id.lin_fengxiang:
                 mViewPager.setCurrentItem(4);
                 initSelected(4);
 
 
-                gotoRoom2();
+
                 break;
 
         }

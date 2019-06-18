@@ -130,5 +130,8 @@ dependencies {
     api 'com.tencent.bugly:crashreport_upgrade:latest.release'
     api 'com.tencent.bugly:nativecrashreport:latest.release'
 
-
+    /**
+     * 弹出成层
+     */
+    api 'com.github.zyyoona7:EasyPopup:1.1.2'
 }

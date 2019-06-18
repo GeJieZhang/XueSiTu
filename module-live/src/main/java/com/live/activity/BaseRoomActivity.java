@@ -4,16 +4,19 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.lib.fastkit.views.button_deal.click.ClickUtils;
+import com.lib.ui.activity.kit.BaseActivity;
 
 public class BaseRoomActivity extends AppCompatActivity {
-
+    private Toast mToast;
 
     //横屏
     public static int screenHorization = Configuration.ORIENTATION_LANDSCAPE;
@@ -104,5 +107,22 @@ public class BaseRoomActivity extends AppCompatActivity {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
     }
+
+
+    /**
+     * Toast
+     *
+     * @param text
+     */
+    public void showToast(String text) {
+        if (!TextUtils.isEmpty(text)) {
+            if (mToast == null) {
+                mToast = Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT);
+            }
+            mToast.setText(text);
+            mToast.show();
+        }
+    }
+
 
 }

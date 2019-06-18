@@ -8,11 +8,10 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <ImageView
+    <com.qiniu.droid.rtc.QNSurfaceView
+        android:id="@+id/qn_video"
         android:layout_width="100dp"
-        android:layout_height="80dp"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/ic_new_logo" />
+        android:layout_height="80dp" />
 
     <TextView
         style="@style/text_style3"

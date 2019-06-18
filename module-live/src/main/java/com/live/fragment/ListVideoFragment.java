@@ -19,6 +19,9 @@ import com.live.R;
 import com.live.R2;
 import com.live.activity.MainRoomActivity;
 import com.live.activity.RoomActivity;
+import com.qiniu.droid.rtc.QNRTCEngine;
+import com.qiniu.droid.rtc.QNSurfaceView;
+import com.qiniu.droid.rtc.QNTrackInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,13 +44,13 @@ public class ListVideoFragment extends BaseAppFragment {
     private LinearLayoutManager linearLayoutManager;
 
 
-    private List<String> list = new ArrayList<>();
+    private List<QNTrackInfo> list = new ArrayList<>();
 
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
         initRecyclerView();
 
-        LogUtil.e("onCreateView");
+        //LogUtil.e("onCreateView");
 
     }
 
@@ -55,7 +58,7 @@ public class ListVideoFragment extends BaseAppFragment {
     @Override
     public void onResume() {
         super.onResume();
-        LogUtil.e("onResume");
+        //LogUtil.e("onResume");
         if (MainRoomActivity.screenOrientation == screenVertical) {
 
             if (linearLayoutManager != null) {
@@ -72,14 +75,23 @@ public class ListVideoFragment extends BaseAppFragment {
             }
 
         }
+
+
+        setQNSurfaceView();
+
+
+    }
+
+    private void setQNSurfaceView() {
+
+        homeAdapter.notifyDataSetChanged();
+
     }
 
     public void initRecyclerView() {
 
         if (rvListVideo != null) {
-            list.clear();
-            list.add("");
-            list.add("");
+
             homeAdapter = new HomeAdapter(getActivity(), list);
             linearLayoutManager = new LinearLayoutManager(getActivity());
             linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -96,9 +108,11 @@ public class ListVideoFragment extends BaseAppFragment {
     }
 
 
-    public class HomeAdapter extends BaseAdapter<String> {
+    //private List<QNSurfaceView> qnSurfaceViewList = new ArrayList<>();
 
-        public HomeAdapter(Context context, List<String> mData) {
+    public class HomeAdapter extends BaseAdapter<QNTrackInfo> {
+
+        public HomeAdapter(Context context, List<QNTrackInfo> mData) {
             super(context, mData);
         }
 
@@ -108,11 +122,67 @@ public class ListVideoFragment extends BaseAppFragment {
         }
 
         @Override
-        protected void toBindViewHolder(final ViewHolder holder, int position, List<String> mData) {
+        protected void toBindViewHolder(final ViewHolder holder, final int position, List<QNTrackInfo> mData) {
 
+
+            setParentSize(holder);
+
+            final QNSurfaceView qn_video = holder.getView(R.id.qn_video);
+
+
+            if (list.get(position).getUserId() != null) {
+                LogUtil.e(list.get(position).getUserId().toString());
+            }
+
+
+//            if (list.get(position).getUserId() == null || !list.get(position).getUserId().equals("token1")) {
+//                mEngine.setRenderWindow(list.get(position), qn_video);
+//
+//
+//            } else {
+//
+//                if (listener != null) {
+//                    listener.onFindAdmin(list.get(position));
+//
+//
+//                    holder.setVisibility(false);
+//
+//
+//                }
+//
+//            }
+
+            if (list.get(position).getUserId() != null && list.get(position).getUserId().equals("token1")) {
+
+
+                listener.onFindAdmin(list.get(position), qn_video);
+            } else {
+                mEngine.setRenderWindow(list.get(position), qn_video);
+            }
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (listener != null) {
+                        listener.onChangeQNSurfaceView(list.get(position), qn_video);
+                    }
+
+
+                }
+            });
+
+
+        }
+
+
+        /**
+         * 设置父容器的大小
+         *
+         * @param holder
+         */
+        private void setParentSize(ViewHolder holder) {
             LinearLayout linearLayout = holder.getView(R.id.item_parent);
-
-
             ViewGroup.LayoutParams params = linearLayout.getLayoutParams();
             if (MainRoomActivity.screenOrientation == screenVertical) {
                 params.width = DisplayUtil.dip2px(getActivity(), 100);
@@ -129,16 +199,49 @@ public class ListVideoFragment extends BaseAppFragment {
     }
 
 
+    private QNRTCEngine mEngine;
+
+    public void setTrackInfo(QNRTCEngine engine, List<QNTrackInfo> trackInfoList) {
+        this.mEngine = engine;
+
+        list.clear();
+        list.addAll(trackInfoList);
+
+
+        if (homeAdapter != null) {
+            homeAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+
+    public interface ListVideoFragmentListener {
+
+        void onFindAdmin(QNTrackInfo trackInfo, QNSurfaceView qnSurfaceView);
+
+
+        void onChangeQNSurfaceView(QNTrackInfo trackInfo, QNSurfaceView qnSurfaceView);
+
+    }
+
+    private ListVideoFragmentListener listener;
+
+    public void setListVideoFragmentListener(ListVideoFragmentListener listVideoFragmentListener) {
+
+        this.listener = listVideoFragmentListener;
+
+    }
+
     @Override
     public void onPause() {
         super.onPause();
-        LogUtil.e("onPause");
+        //LogUtil.e("onPause");
     }
 
     @Override
     public void onDestroyView() {
 
-        LogUtil.e("onDestroyView");
+        //LogUtil.e("onDestroyView");
         super.onDestroyView();
     }
 
