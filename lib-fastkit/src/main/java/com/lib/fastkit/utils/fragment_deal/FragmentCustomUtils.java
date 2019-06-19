@@ -18,8 +18,8 @@ public class FragmentCustomUtils {
     public static void addFragment(AppCompatActivity activity, int containerId, Fragment fragment, String tag) {
         FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(containerId, fragment, tag);
-        fragmentTransaction.addToBackStack(tag);
         fragmentTransaction.commit();
+
     }
 
     /**

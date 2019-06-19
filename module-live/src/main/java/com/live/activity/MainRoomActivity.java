@@ -33,9 +33,11 @@ import com.lib.fastkit.utils.status_bar.StatusBarUtil;
 import com.lib.fastkit.views.button_deal.click.ClickUtils;
 import com.lib.ui.activity.kit.BaseActivity;
 import com.live.R;
+import com.live.bean.control.RoomControlBean;
 import com.live.fragment.ListVideoFragment;
 import com.live.fragment.RoomControlFragment;
 import com.live.utils.Config;
+import com.live.utils.MyHashMap;
 import com.live.utils.QNAppServer;
 import com.live.view.UserTrackView;
 import com.qiniu.droid.rtc.QNErrorCode;
@@ -46,6 +48,7 @@ import com.qiniu.droid.rtc.QNRoomState;
 import com.qiniu.droid.rtc.QNSourceType;
 import com.qiniu.droid.rtc.QNStatisticsReport;
 import com.qiniu.droid.rtc.QNSurfaceView;
+
 import com.qiniu.droid.rtc.QNTrackInfo;
 import com.qiniu.droid.rtc.QNTrackKind;
 import com.qiniu.droid.rtc.QNVideoFormat;
@@ -68,41 +71,29 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
     QNSurfaceView localSurfaceView;
 
-    //QNSurfaceView remoteSurfaceView;
-
-
     FrameLayout list_video;
     FrameLayout f_controller;
     private QNRTCEngine mEngine;
     private QNTrackInfo localVideoTrack;
-
     private QNTrackInfo localAudioTrack;
-//    private int mScreenWidth = 0;
-//    private int mScreenHeight = 0;
+    //正在播放的Track
+    private QNTrackInfo playingScreenVideoTrack;
 
 
-    List<QNTrackInfo> trackInfoList = new ArrayList<>();
+    private MyHashMap<String, QNTrackInfo> trackInfoMap = new MyHashMap<>();
 
+    //控制页面的状态管理
+    public static RoomControlBean roomControlBean = new RoomControlBean();
 
-    private static final int BITRATE_FOR_SCREEN_VIDEO = (int) (1.5 * 1000 * 1000);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-//                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-//                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-//        getWindow().getDecorView().setSystemUiVisibility(getSystemUiVisibility());
         QMUIStatusBarHelper.setStatusBarDarkMode(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         StatusBarUtil.statusBarTintColor(this, getResources().getColor(R.color.black));
-//        final WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-//        DisplayMetrics outMetrics = new DisplayMetrics();
-//        windowManager.getDefaultDisplay().getRealMetrics(outMetrics);
-//        mScreenWidth = outMetrics.widthPixels;
-//        mScreenHeight = outMetrics.heightPixels;
+
 
         setContentView(R.layout.activity_main_room_vertical);
         ARouter.getInstance().inject(this);
@@ -130,19 +121,16 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         updateVideoFragment();
 
         roomControlFragment = new RoomControlFragment();
-
+        roomControlFragment.setRoomControlFragmentListener(roomControlFragmentListener);
 
         FragmentCustomUtils.setFragment(this, R.id.list_video, listVideoFragment, FragmentTag.List_Video);
         FragmentCustomUtils.setFragment(this, R.id.f_controller, roomControlFragment, FragmentTag.Room_Controller);
-        //FragmentCustomUtils.removeFragment(this,listVideoFragment,FragmentTag.List_Video);
-        // FragmentCustomUtils.addFragment(this, R.id.list_video, listVideoFragment, FragmentTag.List_Video);
 
-        //listVideoFragment.setTrackInfo(mEngine, trackInfoList);
     }
 
     private void updateVideoFragment() {
-        trackInfoList.remove(localVideoTrack);
-        listVideoFragment.setTrackInfo(mEngine, trackInfoList);
+
+        listVideoFragment.setTrackInfo(trackInfoMap.getOrderedValues());
     }
 
 
@@ -152,7 +140,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         list_video = findViewById(R.id.list_video);
 
         f_controller = findViewById(R.id.f_controller);
-        //remoteSurfaceView = findViewById(R.id.remote_surface_view);
+
     }
 
 
@@ -188,10 +176,11 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
                 .setBitrate(64 * 1000)// 设置音频码率
                 .setMaster(true)
                 .create();
-        trackInfoList.add(localVideoTrack);
 
-        mEngine.setRenderWindow(localVideoTrack, localSurfaceView);
-        LogUtil.e(roomToken);
+
+        playingScreenVideoTrack = localVideoTrack;
+        trackInfoMap.put("local", playingScreenVideoTrack);
+
         mEngine.joinRoom(roomToken);
     }
 
@@ -205,10 +194,21 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         LogUtil.e("onRoomStateChanged");
 
         switch (qnRoomState) {
+            case RECONNECTING:
+                //重新连接中
+                showToast(getString(R.string.reconnecting_to_room));
+                break;
             case CONNECTED:
+                //连接成功
                 mEngine.publishTracks(Arrays.asList(localVideoTrack, localAudioTrack));
-
-
+                break;
+            case RECONNECTED:
+                //重新连接成功
+                showToast(getString(R.string.connected_to_room));
+                break;
+            case CONNECTING:
+                //连接中
+                showToast(getString(R.string.connecting_to));
                 break;
         }
 
@@ -246,7 +246,9 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         logQNTrackInfo(list);
         for (QNTrackInfo track : list) {
             if (track.getTrackKind().equals(QNTrackKind.VIDEO)) {
-                trackInfoList.add(track);
+
+
+                trackInfoMap.put(track.getUserId(), track, track.getUserId().equals("token1"));
             }
         }
 
@@ -262,7 +264,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         for (QNTrackInfo track : list) {
             if (track.getTrackKind().equals(QNTrackKind.VIDEO)) {
 
-                trackInfoList.remove(track);
+                trackInfoMap.remove(track.getUserId());
                 //trackInfoList.add(track);
             }
         }
@@ -328,58 +330,56 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         }
     }
 
-    //--------------------------------------------------------------判断是不是主播，如果是设置为主屏观看
+    //--------------------------------------------------------------视频列表
 
 
     private ListVideoFragment.ListVideoFragmentListener listVideoFragmentListener = new ListVideoFragment.ListVideoFragmentListener() {
 
         @Override
-        public void onFindAdmin(QNTrackInfo trackInfo, QNSurfaceView qnSurfaceView) {
-            mEngine.setRenderWindow(localVideoTrack, null);
-            mEngine.setRenderWindow(trackInfo, null);
-
-
-            mEngine.setRenderWindow(trackInfo, qnSurfaceView);
-            mEngine.setRenderWindow(localVideoTrack, qnSurfaceView);
+        public void onFindAdmin(QNTrackInfo trackInfo) {
+            mEngine.setRenderWindow(playingScreenVideoTrack, null);
+            playingScreenVideoTrack = trackInfo;
+            mEngine.setRenderWindow(trackInfo, localSurfaceView);
 
 
         }
 
         @Override
+        public void onSetQNSurfaceView(QNTrackInfo trackInfo, QNSurfaceView qnSurfaceView) {
+            mEngine.setRenderWindow(trackInfo, qnSurfaceView);
+        }
+
+        @Override
         public void onChangeQNSurfaceView(QNTrackInfo trackInfo, QNSurfaceView qnSurfaceView) {
 
-//            QNTrackInfo trackInfo1 = trackInfo;
-//            for (QNTrackInfo qnTrackInfo : trackInfoList) {
-//
-//                if (qnTrackInfo.getUserId().equals(trackInfo1.getUserId())) {
-//                    qnTrackInfo = localVideoTrack;
-//                    localVideoTrack = trackInfo1;
-//
-//
-//                }
-//
-//            }
-//            updateVideoFragment();
-
-            // mEngine.setRenderWindow(trackInfo, localSurfaceView);
-
-
-//            mEngine.setRenderWindow(localVideoTrack, null);
-//            mEngine.setRenderWindow(trackInfo, null);
-//
-//            if (trackInfo.getUserId().equals(localVideoTrack.getUserId())) {
-//                mEngine.setRenderWindow(localVideoTrack, localSurfaceView);
-//                mEngine.setRenderWindow(trackInfo, qnSurfaceView);
-//            } else {
-//                mEngine.setRenderWindow(localVideoTrack, qnSurfaceView);
-//                mEngine.setRenderWindow(trackInfo, localSurfaceView);
-//            }
+            trackInfoMap.replacePositonByValue(playingScreenVideoTrack, trackInfo);
+            updateVideoFragment();
 
 
         }
 
 
     };
+
+
+    private RoomControlFragment.RoomControlFragmentListener roomControlFragmentListener = new RoomControlFragment.RoomControlFragmentListener() {
+        @Override
+        public void onCameraClick() {
+
+            localVideoTrack.setMuted(true);
+            playingScreenVideoTrack.setMuted(true);
+            mEngine.muteTracks(Arrays.asList(playingScreenVideoTrack, localVideoTrack));
+
+        }
+
+        @Override
+        public void onVoiceClick() {
+            localAudioTrack.setMuted(true);
+            mEngine.muteTracks(Arrays.asList(localAudioTrack));
+        }
+    };
+
+    //--------------------------------------------------------------控制回调
 
 
     @Override
@@ -396,6 +396,8 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     }
 
 
+    //--------------------------------------------------------------屏幕切换控制
+
     //默认为竖屏
     public static int screenOrientation = screenVertical;
 
@@ -409,7 +411,6 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
             fullscreen(true);
             Toast.makeText(getApplicationContext(), "横屏", Toast.LENGTH_SHORT).show();
-
 
             setContentView(R.layout.activity_main_room_horizontal);
             findView();
@@ -433,16 +434,6 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
 
     }
-
-
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        if (keyCode == KeyEvent.KEYCODE_BACK) {
-//            finish();
-//            return true;
-//        }
-//        return super.onKeyDown(keyCode, event);
-//    }
 
 
 }

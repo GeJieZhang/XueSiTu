@@ -23,22 +23,20 @@ public class NormalDialog extends DialogFragment {
 
 
     private TextView tv_title, tv_content, tv_cancel, tv_sure;
-    private String title = "请设置标题";
+    private String title = "";
     private String content = "请设置内容！";
     private String cancel = "取消";
     private String sure = "确定";
     private CancelListener cancelListener;
     private SurelListener surelListener;
 
-    //private  NormalDialog normalDialog;
+    private int dialogWidth = WindowManager.LayoutParams.MATCH_PARENT;
 
     public static NormalDialog getInstance() {
 
-//        normalDialog = new NormalDialog();
-//        return normalDialog;
-
         return new NormalDialog();
     }
+
 
     @Override
     public void onStart() {
@@ -46,7 +44,7 @@ public class NormalDialog extends DialogFragment {
         Window window = getDialog().getWindow();
         WindowManager.LayoutParams params = window.getAttributes();
         params.gravity = Gravity.CENTER;
-        params.width = WindowManager.LayoutParams.MATCH_PARENT;
+        params.width = dialogWidth;
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(params);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -66,16 +64,6 @@ public class NormalDialog extends DialogFragment {
 
     }
 
-    //
-//    public AppCompatActivity activity;
-//
-////    public static Builder getInstance(AppCompatActivity con) {
-////
-////        builder = new Builder();
-////        activity = con;
-////        return builder;
-////    }
-
 
     @Nullable
     @Override
@@ -86,6 +74,10 @@ public class NormalDialog extends DialogFragment {
         tv_cancel = root.findViewById(R.id.tv_cancel);
         tv_sure = root.findViewById(R.id.tv_sure);
 
+
+        if (title.equals("")) {
+            tv_title.setVisibility(View.GONE);
+        }
         tv_title.setText(title);
         tv_content.setText(content);
         tv_cancel.setText(cancel);
@@ -122,88 +114,6 @@ public class NormalDialog extends DialogFragment {
         return root;
     }
 
-//
-//    public static class Builder {
-//        private String title = "请设置标题";
-//        private String content = "请设置内容！";
-//        private String cancel = "取消";
-//        private String sure = "确定";
-//        private CancelListener cancelListener;
-//        private SurelListener surelListener;
-//        private NormalDialog normalDialog;
-//
-//        private AppCompatActivity activity;
-//
-//        public Builder(AppCompatActivity con) {
-//            this.activity = con;
-//
-//        }
-//
-////        public Builder Builder(AppCompatActivity con) {
-////
-////            this.activity = con;
-////
-////
-////            return this;
-////        }
-//
-//        public Builder setTitle(String title) {
-//
-//            this.title = title;
-//
-//            return this;
-//        }
-//
-//        public Builder setContent(String content) {
-//
-//            this.content = content;
-//
-//            return this;
-//        }
-//
-//
-//        public Builder setCancelText(String cancel) {
-//
-//            this.cancel = cancel;
-//
-//            return this;
-//        }
-//
-//        public Builder setSuerText(String sure) {
-//
-//            this.sure = sure;
-//
-//            return this;
-//        }
-//
-//        public Builder setCancelListener(CancelListener listener) {
-//
-//            this.cancelListener = listener;
-//
-//            return this;
-//        }
-//
-//        public Builder setSureListener(SurelListener listener) {
-//
-//            this.surelListener = listener;
-//
-//            return this;
-//        }
-//
-//
-//        public NormalDialog show() {
-//            normalDialog = new NormalDialog(this, activity);
-//            normalDialog.showNormalDialog();
-//            return normalDialog;
-//        }
-//    }
-
-//    private void showNormalDialog() {
-//        if (!this.isAdded()) {
-//            activity.getSupportFragmentManager().beginTransaction().add(this, "").commitAllowingStateLoss();
-//        }
-//
-//    }
 
     public NormalDialog setTitle(String title) {
 
@@ -219,6 +129,13 @@ public class NormalDialog extends DialogFragment {
         return this;
     }
 
+
+    public NormalDialog setWidth(int width) {
+
+        this.dialogWidth = width;
+
+        return this;
+    }
 
     public NormalDialog setCancelText(String cancel) {
 

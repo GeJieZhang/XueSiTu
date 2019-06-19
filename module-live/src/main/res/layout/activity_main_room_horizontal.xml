@@ -13,11 +13,39 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <FrameLayout
-            android:id="@+id/list_video"
-            android:layout_width="120dp"
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@color/base_blue"></FrameLayout>
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="290dp"
+                android:layout_height="match_parent"
+
+                android:background="@drawable/bg_part_circle_live1"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:id="@+id/list_video"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="100dp"></FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"></FrameLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="-16dp"
+                android:src="@mipmap/icon_left" />
+
+        </LinearLayout>
 
         <FrameLayout
             android:id="@+id/f_controller"

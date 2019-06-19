@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_user_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+        </android.support.v7.widget.RecyclerView>
+
+
+    </android.support.v7.widget.CardView>
+
+    <View
+        android:id="@+id/v_arrow"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="12dp"
+
+        />
+
+</LinearLayout>

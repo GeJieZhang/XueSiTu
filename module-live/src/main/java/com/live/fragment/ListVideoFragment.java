@@ -59,22 +59,22 @@ public class ListVideoFragment extends BaseAppFragment {
     public void onResume() {
         super.onResume();
         //LogUtil.e("onResume");
-        if (MainRoomActivity.screenOrientation == screenVertical) {
-
-            if (linearLayoutManager != null) {
-
-                linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-            }
-
-        } else {
-
-            if (linearLayoutManager != null) {
-                linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
-
-            }
-
-        }
+//        if (MainRoomActivity.screenOrientation == screenVertical) {
+//
+//            if (linearLayoutManager != null) {
+//
+//                linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+//            }
+//
+//        } else {
+//
+//            if (linearLayoutManager != null) {
+//                linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//
+//
+//            }
+//
+//        }
 
 
         setQNSurfaceView();
@@ -125,39 +125,24 @@ public class ListVideoFragment extends BaseAppFragment {
         protected void toBindViewHolder(final ViewHolder holder, final int position, List<QNTrackInfo> mData) {
 
 
-            setParentSize(holder);
+            //setParentSize(holder);
 
             final QNSurfaceView qn_video = holder.getView(R.id.qn_video);
 
+            if (position == 0) {
 
-            if (list.get(position).getUserId() != null) {
-                LogUtil.e(list.get(position).getUserId().toString());
-            }
+                holder.setVisibility(false);
 
+                if (listener != null) {
+                    listener.onFindAdmin(list.get(position));
+                }
 
-//            if (list.get(position).getUserId() == null || !list.get(position).getUserId().equals("token1")) {
-//                mEngine.setRenderWindow(list.get(position), qn_video);
-//
-//
-//            } else {
-//
-//                if (listener != null) {
-//                    listener.onFindAdmin(list.get(position));
-//
-//
-//                    holder.setVisibility(false);
-//
-//
-//                }
-//
-//            }
-
-            if (list.get(position).getUserId() != null && list.get(position).getUserId().equals("token1")) {
-
-
-                listener.onFindAdmin(list.get(position), qn_video);
             } else {
-                mEngine.setRenderWindow(list.get(position), qn_video);
+
+                if (listener != null) {
+                    listener.onSetQNSurfaceView(list.get(position), qn_video);
+                }
+
             }
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -199,15 +184,10 @@ public class ListVideoFragment extends BaseAppFragment {
     }
 
 
-    private QNRTCEngine mEngine;
-
-    public void setTrackInfo(QNRTCEngine engine, List<QNTrackInfo> trackInfoList) {
-        this.mEngine = engine;
+    public void setTrackInfo(List<QNTrackInfo> trackInfoList) {
 
         list.clear();
         list.addAll(trackInfoList);
-
-
         if (homeAdapter != null) {
             homeAdapter.notifyDataSetChanged();
         }
@@ -217,8 +197,10 @@ public class ListVideoFragment extends BaseAppFragment {
 
     public interface ListVideoFragmentListener {
 
-        void onFindAdmin(QNTrackInfo trackInfo, QNSurfaceView qnSurfaceView);
+        void onFindAdmin(QNTrackInfo trackInfo);
 
+
+        void onSetQNSurfaceView(QNTrackInfo trackInfo, QNSurfaceView qnSurfaceView);
 
         void onChangeQNSurfaceView(QNTrackInfo trackInfo, QNSurfaceView qnSurfaceView);
 
