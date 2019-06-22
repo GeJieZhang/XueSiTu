@@ -157,6 +157,16 @@
         <item name="android:ellipsize">end</item>
         <item name="android:textColor">@color/base_title</item>
     </style>
+
+   <!--聊天-->
+    <style name="text_style12">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/base_title</item>
+    </style>
     //==============================================================================================
     //=============================================================================线条=======
     //==============================================================================================

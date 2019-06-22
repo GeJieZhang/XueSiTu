@@ -8,4 +8,6 @@ public class FragmentTag {
 
     //直播控制
     public static final String Room_Controller = "Room_Controller";
+
+    public static final String Chat_Fragment = "Chat_Fragment";
 }

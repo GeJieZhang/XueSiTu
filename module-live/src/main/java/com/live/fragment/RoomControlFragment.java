@@ -8,13 +8,17 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 
 import com.lib.fastkit.utils.fragment_deal.FragmentCustomUtils;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.dialog.arrow.TriangleDrawable;
 import com.lib.fastkit.views.dialog.normal.NormalDialog;
+import com.lib.fastkit.views.dialog.zenhui.AlertDialog;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.ui.fragment.BaseAppFragment;
@@ -22,6 +26,8 @@ import com.live.R;
 import com.live.R2;
 import com.live.activity.MainRoomActivity;
 import com.live.bean.control.RoomControlBean;
+import com.live.utils.KeyboardUtils;
+import com.live.view.CmmtPopup;
 import com.qiniu.droid.rtc.QNSurfaceView;
 import com.qiniu.droid.rtc.QNTrackInfo;
 import com.zyyoona7.popup.EasyPopup;
@@ -59,6 +65,8 @@ public class RoomControlFragment extends BaseAppFragment {
     ImageView ivMenu;
     @BindView(R2.id.iv_quality)
     ImageView ivQuality;
+    @BindView(R2.id.f_quality)
+    FrameLayout fQuality;
 
 
     private RoomControlBean roomControlBean;
@@ -67,10 +75,17 @@ public class RoomControlFragment extends BaseAppFragment {
     protected void onCreateView(View view, Bundle savedInstanceState) {
         initQualityPopup();
         initUserListPopup();
-
+        initCmmtPop();
         initIconState();
 
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        checkMeuState();
     }
 
     private void initIconState() {
@@ -110,6 +125,7 @@ public class RoomControlFragment extends BaseAppFragment {
             showUserListPopup(view);
         } else if (i == R.id.iv_class) {
         } else if (i == R.id.iv_chat) {
+            showCmmtPop(view);
         } else if (i == R.id.iv_voice) {
 
             if (listener != null) {
@@ -140,15 +156,33 @@ public class RoomControlFragment extends BaseAppFragment {
         } else if (i == R.id.iv_menu) {
 
 
+            checkMeuState();
+
+
+        }
+    }
+
+    private void checkMeuState() {
+        if (roomControlBean.isDefault_menu()) {
             ivPen.setVisibility(View.GONE);
             ivPpt.setVisibility(View.GONE);
             ivList.setVisibility(View.GONE);
-            ivQuality.setVisibility(View.GONE);
+            fQuality.setVisibility(View.GONE);
             ivRotate.setVisibility(View.GONE);
             ivCamera.setVisibility(View.GONE);
             ivVoice.setVisibility(View.GONE);
-
-
+            ivMenu.setImageResource(R.mipmap.icon_menu_open);
+            roomControlBean.setDefault_menu(false);
+        } else {
+            ivPen.setVisibility(View.VISIBLE);
+            ivPpt.setVisibility(View.VISIBLE);
+            ivList.setVisibility(View.VISIBLE);
+            fQuality.setVisibility(View.VISIBLE);
+            ivRotate.setVisibility(View.VISIBLE);
+            ivCamera.setVisibility(View.VISIBLE);
+            ivVoice.setVisibility(View.VISIBLE);
+            ivMenu.setImageResource(R.mipmap.icon_menu_close);
+            roomControlBean.setDefault_menu(true);
         }
     }
 
@@ -242,12 +276,47 @@ public class RoomControlFragment extends BaseAppFragment {
         }
     }
 
+    //--------------------------------------------------------------------------------评论框弹出
+
+    private CmmtPopup mCmmtPopup;
+
+    private void initCmmtPop() {
+        mCmmtPopup = CmmtPopup.create(getActivity())
+                .setOnOkClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                        mCmmtPopup.dismiss();
+                    }
+                })
+                .setOnDismissListener(new PopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        mCmmtPopup.hideSoftInput();
+                    }
+                })
+                .apply();
+
+    }
+
+
+    private void showCmmtPop(View view) {
+        mCmmtPopup.showSoftInput().showAtLocation(view, Gravity.BOTTOM, 0, 0);
+
+
+    }
+
+
     public interface RoomControlFragmentListener {
 
         void onCameraClick();
 
         void onVoiceClick();
 
+//        void onHideSoftInput();
+//
+//        void onShowSoftInput();
 
     }
 

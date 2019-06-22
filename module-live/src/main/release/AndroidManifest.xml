@@ -6,10 +6,9 @@
     // android:configChanges="orientation|keyboardHidden|keyboard|layoutDirection|screenSize"
     <application>
 
-        <activity android:name=".activity.RoomActivity"></activity>
         <activity
             android:name=".activity.MainRoomActivity"
-
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
             android:configChanges="orientation|keyboardHidden|keyboard|layoutDirection|screenSize"
             android:screenOrientation="portrait"></activity>
     </application>

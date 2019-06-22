@@ -42,17 +42,19 @@
                     android:id="@+id/list_video"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:scrollbars="horizontal"
                     android:minHeight="100dp"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
 
                     ></FrameLayout>
             </android.support.v7.widget.CardView>
 
             <FrameLayout
+                android:id="@+id/f_chat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@color/green"></FrameLayout>
+                ></FrameLayout>
 
         </LinearLayout>
 

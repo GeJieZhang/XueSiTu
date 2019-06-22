@@ -1,23 +1,10 @@
 package com.live.activity;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -30,16 +17,14 @@ import com.lib.fastkit.utils.fragment_deal.FragmentCustomUtils;
 import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.status_bar.QMUI.QMUIStatusBarHelper;
 import com.lib.fastkit.utils.status_bar.StatusBarUtil;
-import com.lib.fastkit.views.button_deal.click.ClickUtils;
-import com.lib.ui.activity.kit.BaseActivity;
 import com.live.R;
 import com.live.bean.control.RoomControlBean;
+import com.live.fragment.ChatFragment;
 import com.live.fragment.ListVideoFragment;
 import com.live.fragment.RoomControlFragment;
 import com.live.utils.Config;
 import com.live.utils.MyHashMap;
-import com.live.utils.QNAppServer;
-import com.live.view.UserTrackView;
+import com.qiniu.droid.rtc.QNBeautySetting;
 import com.qiniu.droid.rtc.QNErrorCode;
 import com.qiniu.droid.rtc.QNRTCEngine;
 import com.qiniu.droid.rtc.QNRTCEngineEventListener;
@@ -54,11 +39,8 @@ import com.qiniu.droid.rtc.QNTrackKind;
 import com.qiniu.droid.rtc.QNVideoFormat;
 import com.qiniu.droid.rtc.model.QNAudioDevice;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import butterknife.Unbinder;
 
 import static com.live.utils.Config.DEFAULT_BITRATE;
 import static com.live.utils.Config.DEFAULT_FPS;
@@ -111,6 +93,9 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
     private RoomControlFragment roomControlFragment;
 
+    private ChatFragment chatFragment;
+
+
     private void initListVideo() {
 
 
@@ -123,9 +108,15 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         roomControlFragment = new RoomControlFragment();
         roomControlFragment.setRoomControlFragmentListener(roomControlFragmentListener);
 
+
+        chatFragment=new ChatFragment();
+
+
+
+
         FragmentCustomUtils.setFragment(this, R.id.list_video, listVideoFragment, FragmentTag.List_Video);
         FragmentCustomUtils.setFragment(this, R.id.f_controller, roomControlFragment, FragmentTag.Room_Controller);
-
+        FragmentCustomUtils.setFragment(this, R.id.f_chat, chatFragment, FragmentTag.Chat_Fragment);
     }
 
     private void updateVideoFragment() {
@@ -170,7 +161,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         localVideoTrack = mEngine.createTrackInfoBuilder()
                 .setSourceType(QNSourceType.VIDEO_CAMERA)
                 .setMaster(true)
-                .setTag(UserTrackView.TAG_CAMERA).create();
+                .create();
         localAudioTrack = mEngine.createTrackInfoBuilder()
                 .setSourceType(QNSourceType.AUDIO)
                 .setBitrate(64 * 1000)// 设置音频码率
@@ -181,7 +172,17 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         playingScreenVideoTrack = localVideoTrack;
         trackInfoMap.put("local", playingScreenVideoTrack);
 
+        initBeauty();
+
         mEngine.joinRoom(roomToken);
+
+
+    }
+
+    private void initBeauty() {
+        QNBeautySetting beautySetting = new QNBeautySetting(0.5f, 0.5f, 0.5f);
+        beautySetting.setEnable(true);
+        mEngine.setBeauty(beautySetting);
     }
 
 
@@ -377,6 +378,8 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
             localAudioTrack.setMuted(true);
             mEngine.muteTracks(Arrays.asList(localAudioTrack));
         }
+
+
     };
 
     //--------------------------------------------------------------控制回调

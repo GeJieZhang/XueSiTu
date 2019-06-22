@@ -13,4 +13,8 @@ public abstract class BaseAppFragment extends BaseFragment {
 
     protected abstract int getLayoutId();
 
+
+
+
+
 }

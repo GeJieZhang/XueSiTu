@@ -21,9 +21,8 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="290dp"
+                android:layout_width="350dp"
                 android:layout_height="match_parent"
-
                 android:background="@drawable/bg_part_circle_live1"
                 android:orientation="vertical">
 
@@ -31,9 +30,20 @@
                     android:id="@+id/list_video"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="100dp"></FrameLayout>
+                    android:minHeight="100dp"
+
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"></FrameLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/line_circle" />
 
                 <FrameLayout
+                    android:id="@+id/f_chat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"></FrameLayout>

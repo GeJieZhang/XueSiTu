@@ -5,12 +5,10 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.ui.adapter.BaseAdapter;
@@ -18,8 +16,6 @@ import com.lib.ui.fragment.BaseAppFragment;
 import com.live.R;
 import com.live.R2;
 import com.live.activity.MainRoomActivity;
-import com.live.activity.RoomActivity;
-import com.qiniu.droid.rtc.QNRTCEngine;
 import com.qiniu.droid.rtc.QNSurfaceView;
 import com.qiniu.droid.rtc.QNTrackInfo;
 
@@ -58,21 +54,17 @@ public class ListVideoFragment extends BaseAppFragment {
     @Override
     public void onResume() {
         super.onResume();
-        //LogUtil.e("onResume");
+
 //        if (MainRoomActivity.screenOrientation == screenVertical) {
-//
-//            if (linearLayoutManager != null) {
-//
-//                linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-//            }
-//
+//            ViewGroup.LayoutParams params = hScrollView.getLayoutParams();
+//            params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+//            params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+//            hScrollView.setLayoutParams(params);
 //        } else {
-//
-//            if (linearLayoutManager != null) {
-//                linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//
-//
-//            }
+//            ViewGroup.LayoutParams params = hScrollView.getLayoutParams();
+//            params.width = DisplayUtil.dip2px(getActivity(), 290);
+//            params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+//            hScrollView.setLayoutParams(params);
 //
 //        }
 
@@ -128,6 +120,8 @@ public class ListVideoFragment extends BaseAppFragment {
             //setParentSize(holder);
 
             final QNSurfaceView qn_video = holder.getView(R.id.qn_video);
+            qn_video.setZOrderOnTop(false);
+            qn_video.setZOrderMediaOverlay(false);
 
             if (position == 0) {
 

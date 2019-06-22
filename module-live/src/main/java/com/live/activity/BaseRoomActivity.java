@@ -124,5 +124,31 @@ public class BaseRoomActivity extends AppCompatActivity {
         }
     }
 
+    //==============================================================================================
+    //============================================================================显示与隐藏键盘====
+    //==============================================================================================
+
+    /**
+     * 隐藏软键盘
+     */
+    public void hideSoftInput() {
+        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                .hideSoftInputFromWindow(
+                        this.getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    /**
+     * 显示软键盘
+     */
+    public void showSoftInput() {
+        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                .toggleSoftInput(
+                        InputMethodManager.RESULT_UNCHANGED_SHOWN,
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+
+
 
 }

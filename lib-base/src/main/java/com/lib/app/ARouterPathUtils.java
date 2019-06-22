@@ -52,7 +52,7 @@ public class ARouterPathUtils {
     //==============================================================================================
     //======================================================================================live====
     //==============================================================================================
-    public static final String Live_RoomActivity = "/live/RoomActivity";
+
     public static final String Live_MainRoomActivity = "/live/MainRoomActivity";
 
 }

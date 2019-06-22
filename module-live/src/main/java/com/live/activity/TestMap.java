@@ -1,8 +1,6 @@
 package com.live.activity;
 
-import com.lib.fastkit.utils.log.LogUtil;
 import com.live.utils.MyHashMap;
-import com.live.view.UserTrackView;
 
 public class TestMap {
 
