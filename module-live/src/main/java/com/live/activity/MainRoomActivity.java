@@ -1,11 +1,16 @@
 package com.live.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -15,8 +20,10 @@ import com.lib.app.ARouterPathUtils;
 import com.lib.app.FragmentTag;
 import com.lib.fastkit.utils.fragment_deal.FragmentCustomUtils;
 import com.lib.fastkit.utils.log.LogUtil;
+import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.utils.status_bar.QMUI.QMUIStatusBarHelper;
 import com.lib.fastkit.utils.status_bar.StatusBarUtil;
+import com.lib.fastkit.views.dialog.bottom_dialog.BottomDialogs;
 import com.live.R;
 import com.live.bean.control.RoomControlBean;
 import com.live.fragment.ChatFragment;
@@ -24,6 +31,9 @@ import com.live.fragment.ListVideoFragment;
 import com.live.fragment.RoomControlFragment;
 import com.live.utils.Config;
 import com.live.utils.MyHashMap;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.entity.LocalMedia;
 import com.qiniu.droid.rtc.QNBeautySetting;
 import com.qiniu.droid.rtc.QNErrorCode;
 import com.qiniu.droid.rtc.QNRTCEngine;
@@ -47,7 +57,7 @@ import static com.live.utils.Config.DEFAULT_FPS;
 import static com.live.utils.Config.DEFAULT_RESOLUTION;
 
 @Route(path = ARouterPathUtils.Live_MainRoomActivity)
-public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEventListener {
+public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEventListener, View.OnClickListener {
     @Autowired(name = "roomToken")
     String roomToken;
 
@@ -67,6 +77,10 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     //控制页面的状态管理
     public static RoomControlBean roomControlBean = new RoomControlBean();
 
+    //横屏聊天按钮控制
+    private ImageView iv_chat_control;
+    //横屏聊天菜单
+    private LinearLayout lin_chat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,9 +123,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         roomControlFragment.setRoomControlFragmentListener(roomControlFragmentListener);
 
 
-        chatFragment=new ChatFragment();
-
-
+        chatFragment = new ChatFragment();
 
 
         FragmentCustomUtils.setFragment(this, R.id.list_video, listVideoFragment, FragmentTag.List_Video);
@@ -126,11 +138,32 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
 
     private void findView() {
+
+
         localSurfaceView = findViewById(R.id.local_surface_view);
 
         list_video = findViewById(R.id.list_video);
 
         f_controller = findViewById(R.id.f_controller);
+
+
+        if (screenOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+            //横屏
+
+            //聊天菜单控制
+            try {
+                iv_chat_control = findViewById(R.id.iv_chat_control);
+                iv_chat_control.setOnClickListener(this);
+                lin_chat = findViewById(R.id.lin_chat);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        } else {
+            //竖屏
+        }
+
 
     }
 
@@ -367,16 +400,43 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         @Override
         public void onCameraClick() {
 
-            localVideoTrack.setMuted(true);
-            playingScreenVideoTrack.setMuted(true);
+
+            if (localVideoTrack.isMuted()) {
+                localVideoTrack.setMuted(false);
+                playingScreenVideoTrack.setMuted(false);
+
+            } else {
+
+                localVideoTrack.setMuted(true);
+                playingScreenVideoTrack.setMuted(true);
+            }
+
             mEngine.muteTracks(Arrays.asList(playingScreenVideoTrack, localVideoTrack));
+
+
+//            if (trackInfoMap.get("token2") != null) {
+//
+//                QNTrackInfo qnTrackInfo = trackInfoMap.get("token2");
+//                qnTrackInfo.setMuted(true);
+//                mEngine.muteTracks(Arrays.asList(qnTrackInfo));
+//
+//            }
 
         }
 
         @Override
         public void onVoiceClick() {
-            localAudioTrack.setMuted(true);
+
+            if (localAudioTrack.isMuted()) {
+                localAudioTrack.setMuted(false);
+            } else {
+                localAudioTrack.setMuted(true);
+            }
+
+
             mEngine.muteTracks(Arrays.asList(localAudioTrack));
+
+
         }
 
 
@@ -437,6 +497,72 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
 
     }
+    //--------------------------------------------------------------点击事件
+
+    @Override
+    public void onClick(View v) {
+
+        int i = v.getId();
+
+        if (i == R.id.iv_chat_control) {
+
+            if (lin_chat.getVisibility() == View.VISIBLE) {
+                lin_chat.setVisibility(View.GONE);
+
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) iv_chat_control.getLayoutParams();
+                params.leftMargin = DisplayUtil.dip2px(this, 16);
+                iv_chat_control.setLayoutParams(params);
+                iv_chat_control.setImageResource(R.mipmap.icon_right);
+            } else {
+
+                lin_chat.setVisibility(View.VISIBLE);
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) iv_chat_control.getLayoutParams();
+                params.leftMargin = DisplayUtil.dip2px(this, -16);
+                iv_chat_control.setLayoutParams(params);
+
+                iv_chat_control.setImageResource(R.mipmap.icon_left);
+            }
 
 
+        }
+
+    }
+
+
+    //-----------------------------------------------------------------------------------图片选择回调
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PictureConfig.CHOOSE_REQUEST:
+                    // 图片、视频、音频选择结果回调
+                    List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+
+                    LocalMedia media = selectList.get(0);
+                    // 例如 LocalMedia 里面返回三种path
+                    // 1.media.getPath(); 为原图path
+                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true  注意：音视频除外
+                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
+                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
+
+                    if (media.isCompressed()) {
+
+                        String compressPath = media.getCompressPath();
+
+                        showToast("选择成功");
+
+
+                    }
+
+                    break;
+
+
+            }
+
+
+        }
+    }
 }

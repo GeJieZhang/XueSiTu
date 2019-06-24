@@ -26,7 +26,7 @@ import com.zyyoona7.popup.BasePopup;
 public class CmmtPopup extends BasePopup<CmmtPopup> {
 
     private View.OnClickListener mCancelListener;
-    private View.OnClickListener mOkListener;
+    private MyOkClickListener mOkListener;
     private ImageView iv_camera;
     private EditText et_message;
     private Button btn_send;
@@ -60,11 +60,25 @@ public class CmmtPopup extends BasePopup<CmmtPopup> {
         iv_camera = findViewById(R.id.iv_camera);
         et_message = findViewById(R.id.et_message);
         btn_send = findViewById(R.id.btn_send);
+
+        iv_camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOkListener != null) {
+
+                    hideSoftInput();
+                    dismiss();
+                    mOkListener.onCameraClick();
+                }
+            }
+        });
+
+
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mOkListener != null) {
-                    mOkListener.onClick(v);
+                    mOkListener.onClick(v, et_message.getText().toString().trim());
                 }
             }
         });
@@ -76,7 +90,7 @@ public class CmmtPopup extends BasePopup<CmmtPopup> {
         return this;
     }
 
-    public CmmtPopup setOnOkClickListener(View.OnClickListener listener) {
+    public CmmtPopup setOnOkClickListener(MyOkClickListener listener) {
         mOkListener = listener;
         return this;
     }
@@ -93,6 +107,7 @@ public class CmmtPopup extends BasePopup<CmmtPopup> {
         return this;
     }
 
+
     public CmmtPopup hideSoftInput() {
         if (et_message != null) {
             et_message.post(new Runnable() {
@@ -104,6 +119,16 @@ public class CmmtPopup extends BasePopup<CmmtPopup> {
         }
         return this;
     }
+
+
+    public interface MyOkClickListener {
+
+        void onClick(View v, String content);
+
+        void onCameraClick();
+    }
+
+
 }
 
 

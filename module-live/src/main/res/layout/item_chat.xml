@@ -46,7 +46,8 @@
         <ImageView
             android:id="@+id/iv_image"
             android:layout_width="130dp"
-            android:layout_height="160dp" />
+            android:layout_height="160dp"
+            android:scaleType="centerCrop" />
     </LinearLayout>
 
 

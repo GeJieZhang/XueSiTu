@@ -27,9 +27,9 @@ public class JianKeFragment extends BaseAppFragment {
     @BindView(R2.id.btn_token3)
     Button btnToken3;
 
-    String roomToken1 = "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:tVPf-cVhd5hUpc7LmpIUb0XmfHw=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoiNTEyMyIsInVzZXJJZCI6InRva2VuMSIsImV4cGlyZUF0IjoxNTYxMjU0NDc3LCJwZXJtaXNzaW9uIjoidXNlciJ9";
-    String roomToken2 = "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:TF65qabjWd787Iw5h6nVAH4B2wg=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoiNTEyMyIsInVzZXJJZCI6InRva2VuMiIsImV4cGlyZUF0IjoxNTYxMjU0NDc3LCJwZXJtaXNzaW9uIjoidXNlciJ9";
-    String roomToken3 = "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:i6nPmKZsbcsnr0nFiCn-iOZZ1fE=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoiNTEyMyIsInVzZXJJZCI6InRva2VuMyIsImV4cGlyZUF0IjoxNTYxMjU0NDc3LCJwZXJtaXNzaW9uIjoidXNlciJ9";
+    String roomToken1 = "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:NYlOOUeEW-mWFqo53hykVsFSe4g=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoiNTEyMyIsInVzZXJJZCI6InRva2VuMSIsImV4cGlyZUF0IjoxNTYxNDMyMTczLCJwZXJtaXNzaW9uIjoidXNlciJ9";
+    String roomToken2 = "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:f6uXJpcu0f0EChgjSKFwD-Rj6gg=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoiNTEyMyIsInVzZXJJZCI6InRva2VuMiIsImV4cGlyZUF0IjoxNTYxNDMyMTczLCJwZXJtaXNzaW9uIjoidXNlciJ9";
+    String roomToken3 = "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:F8Xcg7OybYvOPlWKmIl9ik4gTVY=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoiNTEyMyIsInVzZXJJZCI6InRva2VuMyIsImV4cGlyZUF0IjoxNTYxNDMyMTczLCJwZXJtaXNzaW9uIjoidXNlciJ9";
 
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {

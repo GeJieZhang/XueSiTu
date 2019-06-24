@@ -31,16 +31,35 @@ public class ChatFragment extends BaseAppFragment {
 
     private List<ChatBean> chatList = new ArrayList<>();
 
+    private LinearLayoutManager linearLayoutManager;
+
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
         chatList.add(new ChatBean("小明同学有话要说?", 0));
-        chatList.add(new ChatBean("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1561202333085&di=3c8d7207621db07ae4ca7434429e81f2&imgtype=0&src=http%3A%2F%2Fcdn.duitang.com%2Fuploads%2Fitem%2F201407%2F24%2F20140724190906_MCkXs.thumb.700_0.jpeg", 1));
+
+        chatList.add(new ChatBean("老师这道题不会", 0));
+        chatList.add(new ChatBean("小明同学有话要说?", 0));
+
+        chatList.add(new ChatBean("老师这道题不会", 0));
+        chatList.add(new ChatBean("小明同学有话要说?", 0));
+
+        chatList.add(new ChatBean("老师这道题不会", 0));
+        chatList.add(new ChatBean("http://img1.juimg.com/160418/330694-16041R3394114.jpg", 1));
 
         chatAdapter = new ChatAdapter(getContext(), chatList);
 
-        rvChat.setLayoutManager(new LinearLayoutManager(getContext()));
-
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        //linearLayoutManager.setStackFromEnd(true);
+        rvChat.setLayoutManager(linearLayoutManager);
         rvChat.setAdapter(chatAdapter);
+
+
+
+
+        if (chatAdapter.getItemCount()>2){
+            rvChat.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
+        }
+
 
     }
 

@@ -2,9 +2,13 @@ package com.live.fragment;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -120,8 +124,11 @@ public class ListVideoFragment extends BaseAppFragment {
             //setParentSize(holder);
 
             final QNSurfaceView qn_video = holder.getView(R.id.qn_video);
-            qn_video.setZOrderOnTop(false);
-            qn_video.setZOrderMediaOverlay(false);
+
+            qn_video.setZOrderOnTop(true);      // 这句不能少
+            qn_video.setZOrderMediaOverlay(true);
+            qn_video.getHolder().setFormat(PixelFormat.TRANSPARENT);
+
 
             if (position == 0) {
 

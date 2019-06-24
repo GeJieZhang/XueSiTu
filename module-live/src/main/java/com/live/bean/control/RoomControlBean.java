@@ -7,8 +7,11 @@ public class RoomControlBean {
     private boolean default_voice = true;
     private boolean default_camera = true;
     private boolean default_rotate = true;
-
     private boolean default_menu = true;
+
+    private boolean default_class=true;
+
+
     private int default_quality = 0;
 
     public boolean isDefault_voice() {
@@ -50,5 +53,13 @@ public class RoomControlBean {
 
     public void setDefault_menu(boolean default_menu) {
         this.default_menu = default_menu;
+    }
+
+    public boolean isDefault_class() {
+        return default_class;
+    }
+
+    public void setDefault_class(boolean default_class) {
+        this.default_class = default_class;
     }
 }
