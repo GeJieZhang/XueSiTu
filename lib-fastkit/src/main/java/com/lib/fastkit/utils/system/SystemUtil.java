@@ -3,6 +3,7 @@ package com.lib.fastkit.utils.system;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
@@ -119,5 +120,18 @@ public class SystemUtil {
         }
         return verName;
     }
+
+    public static boolean isDebuggable(Context context) {
+        boolean debuggable = false;
+        PackageManager pm = context.getPackageManager();
+        try{
+            ApplicationInfo appinfo = pm.getApplicationInfo(context.getPackageName(), 0);
+            debuggable = (0 != (appinfo.flags & ApplicationInfo.FLAG_DEBUGGABLE));
+        }catch(PackageManager.NameNotFoundException e){
+            /*debuggable variable will remain false*/
+        }
+        return debuggable;
+    }
+
 
 }

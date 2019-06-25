@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 
 import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.views.button_deal.click.ClickUtils;
+
+import org.simple.eventbus.EventBus;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -34,6 +37,9 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(getLayoutId(), container, false);
         binder = ButterKnife.bind(this, root);
+
+        EventBus.getDefault().register(this);
+
         onCreateView(root, savedInstanceState);
         return root;
     }
@@ -43,6 +49,7 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binder.unbind();
+        EventBus.getDefault().unregister(this);
     }
 
     public View getRootView() {
@@ -69,6 +76,14 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    /**
+     * Log
+     *
+     * @param msg
+     */
+    public static void showLog(String msg) {
+        Log.e("调试日志======", msg);
+    }
 
 
 

@@ -589,6 +589,13 @@ rx.internal.util.atomic.LinkedQueueNode consumerNode;
 -keep public class com.tencent.bugly.**{*;}
 -keep class android.support.**{*;}
 
+
+
+
+#--------------------------------------------------------------------------------------------------
+#环信
+-keep class com.hyphenate.** {*;}
+-dontwarn  com.hyphenate.**
 #--------------------------------------------------------------------------------------------------
 #bean
 -keep public class com.youxuan.bean.**{*;}

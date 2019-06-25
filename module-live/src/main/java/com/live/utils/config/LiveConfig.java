@@ -1,6 +1,6 @@
-package com.live.utils;
+package com.live.utils.config;
 
-public class Config {
+public class LiveConfig {
     public static final String ROOM_NAME_RULE = "^[a-zA-Z0-9_-]{3,64}$";
     public static final String USER_NAME_RULE = "^[a-zA-Z0-9_-]{3,50}$";
     public static final String DOWNLOAD_URL = "DownloadURL";

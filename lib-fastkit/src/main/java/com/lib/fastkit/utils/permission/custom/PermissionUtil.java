@@ -155,6 +155,7 @@ public class PermissionUtil {
                 , Manifest.permission.MODIFY_AUDIO_SETTINGS
                 , Manifest.permission.RECORD_AUDIO
                 , Manifest.permission.CAMERA
+                , Manifest.permission.WAKE_LOCK
         );
     }
 

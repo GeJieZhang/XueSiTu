@@ -83,6 +83,7 @@ dependencies {
     /**
      * 蒲公英更新检测
      */
+
     //api "com.pgyersdk:sdk:$var.pgyersdk"
 
     /**
@@ -105,28 +106,31 @@ dependencies {
     /**
      * 轮播图
      */
-//    api('com.github.wenchaosong:Banner:2.3.11') {
-//        exclude group: 'com.android.support'
-//    }
-    api "com.ms:Banner:2.3.15"
+
+    //    api('com.github.wenchaosong:Banner:2.3.11') {
+
+    //        exclude group: 'com.android.support'
+
+    //    }
+    api 'com.ms:Banner:2.3.15'
 
     /**
      *  七牛云云存储
      */
-
     api 'com.qiniu:qiniu-android-sdk:7.3.15'
+
     //api files('libs/tbs_sdk_thirdapp_v3.6.0.1310_43612_sharewithdownload_withoutGame_obfs_20180706_163319.jar')
 
-
-
-
+    /**
+     *  七牛云多人会议
+     */
     api files('libs/qndroid-rtc-2.2.0.jar')
+
     /**
      * bugly
      * 日志统计
      * 应用更新
      */
-
     api 'com.tencent.bugly:crashreport_upgrade:latest.release'
     api 'com.tencent.bugly:nativecrashreport:latest.release'
 
@@ -134,4 +138,11 @@ dependencies {
      * 弹出成层
      */
     api 'com.github.zyyoona7:EasyPopup:1.1.2'
+
+    /**
+     * 环信聊天
+     */
+    api files('libs/hyphenatechat_3.6.0.jar')
+
+
 }

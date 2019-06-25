@@ -91,6 +91,15 @@ android {
         }
 
     }
+    //环信9.0兼容
+    useLibrary 'org.apache.http.legacy'
+
+    // Keep the following configuration in order to target Java 8.
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 dependencies {

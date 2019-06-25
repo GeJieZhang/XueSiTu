@@ -79,6 +79,7 @@ public class CmmtPopup extends BasePopup<CmmtPopup> {
             public void onClick(View v) {
                 if (mOkListener != null) {
                     mOkListener.onClick(v, et_message.getText().toString().trim());
+                    et_message.setText("");
                 }
             }
         });

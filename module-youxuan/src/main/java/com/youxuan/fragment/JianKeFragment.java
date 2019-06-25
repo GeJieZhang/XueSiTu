@@ -56,6 +56,7 @@ public class JianKeFragment extends BaseAppFragment {
                     ARouter.getInstance()
                             .build(ARouterPathUtils.Live_MainRoomActivity)
                             .withString("roomToken", roomToken1)
+                            .withString("name", "token1")
                             .navigation();
 
                 }
@@ -74,6 +75,7 @@ public class JianKeFragment extends BaseAppFragment {
                     ARouter.getInstance()
                             .build(ARouterPathUtils.Live_MainRoomActivity)
                             .withString("roomToken", roomToken2)
+                            .withString("name", "token2")
                             .navigation();
 
                 }
@@ -92,6 +94,7 @@ public class JianKeFragment extends BaseAppFragment {
                     ARouter.getInstance()
                             .build(ARouterPathUtils.Live_MainRoomActivity)
                             .withString("roomToken", roomToken3)
+                            .withString("name", "token3")
                             .navigation();
 
                 }

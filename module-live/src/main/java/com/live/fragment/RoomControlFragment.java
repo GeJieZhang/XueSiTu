@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 
 import com.bumptech.glide.Glide;
+import com.lib.app.EventBusTagUtils;
+import com.lib.bean.Event;
 import com.lib.fastkit.utils.fragment_deal.FragmentCustomUtils;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.dialog.arrow.TriangleDrawable;
@@ -41,6 +43,8 @@ import com.qiniu.droid.rtc.QNTrackInfo;
 import com.zyyoona7.popup.EasyPopup;
 import com.zyyoona7.popup.XGravity;
 import com.zyyoona7.popup.YGravity;
+
+import org.simple.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -339,6 +343,11 @@ public class RoomControlFragment extends BaseAppFragment {
                             showToast("内容不能为空!");
                             return;
                         }
+
+
+                        EventBus.getDefault().post(new Event<>(1, content), EventBusTagUtils.RoomControlFragment);
+
+
                     }
 
                     @Override
@@ -375,11 +384,8 @@ public class RoomControlFragment extends BaseAppFragment {
 
         void onVoiceClick();
 
-//        void onHideSoftInput();
-//
-//        void onShowSoftInput();
-
     }
+
 
     private RoomControlFragmentListener listener;
 

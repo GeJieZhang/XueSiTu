@@ -17,19 +17,21 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.lib.app.ARouterPathUtils;
+import com.lib.app.EventBusTagUtils;
 import com.lib.app.FragmentTag;
+import com.lib.bean.Event;
 import com.lib.fastkit.utils.fragment_deal.FragmentCustomUtils;
 import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.utils.status_bar.QMUI.QMUIStatusBarHelper;
 import com.lib.fastkit.utils.status_bar.StatusBarUtil;
-import com.lib.fastkit.views.dialog.bottom_dialog.BottomDialogs;
 import com.live.R;
 import com.live.bean.control.RoomControlBean;
 import com.live.fragment.ChatFragment;
 import com.live.fragment.ListVideoFragment;
 import com.live.fragment.RoomControlFragment;
-import com.live.utils.Config;
+import com.live.utils.config.LiveConfig;
+import com.live.utils.HXChatUtils;
 import com.live.utils.MyHashMap;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
@@ -49,18 +51,21 @@ import com.qiniu.droid.rtc.QNTrackKind;
 import com.qiniu.droid.rtc.QNVideoFormat;
 import com.qiniu.droid.rtc.model.QNAudioDevice;
 
+import org.simple.eventbus.EventBus;
+
 import java.util.Arrays;
 import java.util.List;
 
-import static com.live.utils.Config.DEFAULT_BITRATE;
-import static com.live.utils.Config.DEFAULT_FPS;
-import static com.live.utils.Config.DEFAULT_RESOLUTION;
+import static com.live.utils.config.LiveConfig.DEFAULT_BITRATE;
+import static com.live.utils.config.LiveConfig.DEFAULT_FPS;
+import static com.live.utils.config.LiveConfig.DEFAULT_RESOLUTION;
 
 @Route(path = ARouterPathUtils.Live_MainRoomActivity)
 public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEventListener, View.OnClickListener {
     @Autowired(name = "roomToken")
     String roomToken;
-
+    @Autowired(name = "name")
+    String hx_username;
     QNSurfaceView localSurfaceView;
 
     FrameLayout list_video;
@@ -99,7 +104,12 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         initEngine();
 
         initListVideo();
+
+
+        HXChatUtils.signIn(hx_username, "123456", this);
         LogUtil.e("onCreate");
+
+
     }
 
 
@@ -130,6 +140,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         FragmentCustomUtils.setFragment(this, R.id.f_controller, roomControlFragment, FragmentTag.Room_Controller);
         FragmentCustomUtils.setFragment(this, R.id.f_chat, chatFragment, FragmentTag.Chat_Fragment);
     }
+
 
     private void updateVideoFragment() {
 
@@ -170,12 +181,12 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
     private void initEngine() {
         SharedPreferences preferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
-        int videoWidth = preferences.getInt(Config.WIDTH, DEFAULT_RESOLUTION[1][0]);
-        int videoHeight = preferences.getInt(Config.HEIGHT, DEFAULT_RESOLUTION[1][1]);
-        int fps = preferences.getInt(Config.FPS, DEFAULT_FPS[1]);
-        boolean isHwCodec = preferences.getInt(Config.CODEC_MODE, Config.HW) == Config.HW;
-        int videoBitrate = preferences.getInt(Config.BITRATE, DEFAULT_BITRATE[1]);
-        boolean isMaintainRes = preferences.getBoolean(Config.MAINTAIN_RES, false);
+        int videoWidth = preferences.getInt(LiveConfig.WIDTH, DEFAULT_RESOLUTION[1][0]);
+        int videoHeight = preferences.getInt(LiveConfig.HEIGHT, DEFAULT_RESOLUTION[1][1]);
+        int fps = preferences.getInt(LiveConfig.FPS, DEFAULT_FPS[1]);
+        boolean isHwCodec = preferences.getInt(LiveConfig.CODEC_MODE, LiveConfig.HW) == LiveConfig.HW;
+        int videoBitrate = preferences.getInt(LiveConfig.BITRATE, DEFAULT_BITRATE[1]);
+        boolean isMaintainRes = preferences.getBoolean(LiveConfig.MAINTAIN_RES, false);
 
 
         QNVideoFormat format = new QNVideoFormat(videoWidth, videoHeight, fps);
@@ -455,6 +466,9 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         }
 
 
+        HXChatUtils.signOut();
+        HXChatUtils.leaveChatRoom();
+
         LogUtil.e("onDestroy");
     }
 
@@ -553,6 +567,9 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
                         String compressPath = media.getCompressPath();
 
                         showToast("选择成功");
+
+
+                        EventBus.getDefault().post(new Event<>(2, compressPath), EventBusTagUtils.RoomControlFragment);
 
 
                     }

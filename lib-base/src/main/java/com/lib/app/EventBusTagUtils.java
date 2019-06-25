@@ -26,4 +26,10 @@ public class EventBusTagUtils {
      */
     public static final String HttpCallBack = "HttpCallBack";
 
+
+    /**
+     * 直播控制页面
+     */
+    public static final String RoomControlFragment = "RoomControlFragment";
+
 }
