@@ -35,7 +35,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ViewHolder holder;
         if (viewType == VIEW_TYPE) {
-            holder = ViewHolder.createViewHolder(context, parent, R.layout.base_empty);
+            holder = ViewHolder.createViewHolder(context, parent, getEmptyLayoutId());
         } else {
             holder = ViewHolder.createViewHolder(context, parent, getLayoutId());
         }
@@ -81,7 +81,14 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
 
     public abstract int getLayoutId();
 
+
     protected abstract void toBindViewHolder(ViewHolder holder, int position, List<T> mData);
+
+    public int getEmptyLayoutId() {
+
+        return R.layout.base_empty;
+
+    }
 
 
 }

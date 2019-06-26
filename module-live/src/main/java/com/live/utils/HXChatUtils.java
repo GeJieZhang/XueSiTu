@@ -22,6 +22,7 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
 import com.live.R;
+import com.live.fragment.ChatFragment;
 import com.live.utils.config.ChatConfig;
 
 import java.util.ArrayList;
@@ -200,22 +201,123 @@ public class HXChatUtils {
         return messageList;
     }
 
-    public static EMMessage sendMessage(String content) {
+    public static EMMessage sendMessage(String content, final ChatFragment.ChatAdapter chatAdapter, final Activity context) {
 
 
         EMMessage message = EMMessage.createTxtSendMessage(content, ChatConfig.RoomId);
 
         message.setChatType(EMMessage.ChatType.GroupChat);
 
+
+
+
+
+        message.setMessageStatusCallback(new EMCallBack() {
+            @Override
+            public void onSuccess() {
+
+
+                context.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        chatAdapter.notifyDataSetChanged();
+                    }
+                });
+                Log.e("===","1消息发送成功");
+            }
+
+            @Override
+            public void onError(int i, String s) {
+
+                Log.e("===","1消息发送失败");
+
+                context.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        chatAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+
+            @Override
+            public void onProgress(int i, String s) {
+
+
+
+
+                Log.e("===","1消息进度：" + i);
+
+
+                context.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        chatAdapter.notifyDataSetChanged();
+                    }
+                });
+
+
+            }
+        });
         EMClient.getInstance().chatManager().sendMessage(message);
         return message;
     }
 
-    public static EMMessage sendImageMessage(String imagePath) {
+    public static EMMessage sendImageMessage(String imagePath, final ChatFragment.ChatAdapter chatAdapter, final Activity context) {
         //imagePath为图片本地路径，false为不发送原图（默认超过100k的图片会压缩后发给对方），需要发送原图传true
         EMMessage message = EMMessage.createImageSendMessage(imagePath, false, ChatConfig.RoomId);
         //如果是群聊，设置chattype，默认是单聊
         message.setChatType(EMMessage.ChatType.GroupChat);
+
+        message.setMessageStatusCallback(new EMCallBack() {
+            @Override
+            public void onSuccess() {
+
+
+                context.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        chatAdapter.notifyDataSetChanged();
+                    }
+                });
+                Log.e("===","1消息发送成功");
+            }
+
+            @Override
+            public void onError(int i, String s) {
+
+                Log.e("===","1消息发送失败");
+
+                context.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        chatAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+
+            @Override
+            public void onProgress(int i, String s) {
+
+
+
+
+                Log.e("===","1消息进度：" + i);
+
+
+                context.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        chatAdapter.notifyDataSetChanged();
+                    }
+                });
+
+
+            }
+        });
+
+
+
+
         EMClient.getInstance().chatManager().sendMessage(message);
 
         return message;

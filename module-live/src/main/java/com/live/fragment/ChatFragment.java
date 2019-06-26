@@ -4,8 +4,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -15,8 +19,10 @@ import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMImageMessageBody;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
 import com.lib.app.EventBusTagUtils;
 import com.lib.bean.Event;
+import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.ui.fragment.BaseAppFragment;
@@ -24,6 +30,8 @@ import com.lib.utls.glide.GlideConfig;
 import com.live.R;
 import com.live.R2;
 import com.live.utils.HXChatUtils;
+import com.live.utils.hx.HXTextUtils;
+
 
 import org.simple.eventbus.Subscriber;
 
@@ -55,7 +63,7 @@ public class ChatFragment extends BaseAppFragment {
         rvChat.setAdapter(chatAdapter);
 
 
-        if (chatAdapter.getItemCount() > 2) {
+        if (chatAdapter.getItemCount() > 0) {
             rvChat.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
         }
 
@@ -94,7 +102,17 @@ public class ChatFragment extends BaseAppFragment {
             showLog("收到消息");
             messageList.addAll(messages);
 
-            chatAdapter.notifyDataSetChanged();
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    chatAdapter.notifyDataSetChanged();
+
+                    if (chatAdapter.getItemCount() > 0) {
+                        rvChat.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
+                    }
+                }
+            });
+
 
             // EMImageMessageBody messageBody= (EMImageMessageBody) messages.get(0).getBody();
 
@@ -112,6 +130,8 @@ public class ChatFragment extends BaseAppFragment {
         public void onMessageRead(List<EMMessage> messages) {
             //收到已读回执
             showLog("收到已读回执");
+
+            //messageList.indexOf(messages);
         }
 
         @Override
@@ -159,36 +179,15 @@ public class ChatFragment extends BaseAppFragment {
 
             final ImageView iv_err = holder.getView(R.id.iv_err);
             EMMessage message = mData.get(position);
-
-
             holder.setText(R.id.tv_name, message.getFrom());
-            message.setMessageStatusCallback(new EMCallBack() {
-                @Override
-                public void onSuccess() {
-                    pb.setVisibility(View.GONE);
-                    tv_progress.setVisibility(View.GONE);
-                    v_bg.setVisibility(View.GONE);
 
-                    showLog("消息发送成功");
-                }
+            if (position > 0 && position == messageList.size() - 1) {
 
-                @Override
-                public void onError(int i, String s) {
-                    tv_progress.setVisibility(View.GONE);
-                    iv_err.setVisibility(View.VISIBLE);
-                    showLog("消息发送失败");
-                }
+                LinearLayout linearLayout = holder.getView(R.id.lin_item);
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) linearLayout.getLayoutParams();
+                params.bottomMargin = DisplayUtil.dip2px(getContext(), 40);
 
-                @Override
-                public void onProgress(int i, String s) {
-
-
-                    tv_progress.setText(s + "%");
-
-                    showLog("消息进度：" + i);
-
-                }
-            });
+            }
 
 
             if (message.getType() == EMMessage.Type.TXT) {
@@ -197,15 +196,40 @@ public class ChatFragment extends BaseAppFragment {
                 holder.getView(R.id.tv_msg).setVisibility(View.VISIBLE);
                 holder.getView(R.id.f_image).setVisibility(View.GONE);
 
-                holder.setText(R.id.tv_msg, message.getBody().toString());
+                TextView textView = holder.getView(R.id.tv_msg);
+                Spannable span = HXTextUtils.getSmiledText(getContext(), message);
+                textView.setText(span, TextView.BufferType.SPANNABLE);
+
 
                 if (message.direct() == EMMessage.Direct.SEND) {
+                    switch (message.status()) {
+                        case SUCCESS:
 
+
+                            pb.setVisibility(View.GONE);
+                            break;
+                        case FAIL:
+                            pb.setVisibility(View.GONE);
+
+                            iv_err.setVisibility(View.VISIBLE);
+
+                            break;
+                        case CREATE:
+                            break;
+                        case INPROGRESS:
+                            break;
+                    }
+
+
+                    Log.e("===", message.status() + "");
+                    Log.e("===", message.progress() + "");
 
                 }
 
 
                 if (message.direct() == EMMessage.Direct.RECEIVE) {
+
+                    pb.setVisibility(View.GONE);
 
                 }
             }
@@ -219,8 +243,35 @@ public class ChatFragment extends BaseAppFragment {
                 holder.getView(R.id.f_image).setVisibility(View.VISIBLE);
                 ImageView imageView = holder.getView(R.id.iv_image);
 
-
+                tv_progress.setText(message.progress() + "%");
                 if (message.direct() == EMMessage.Direct.SEND) {
+
+
+                    switch (message.status()) {
+                        case SUCCESS:
+
+
+                            pb.setVisibility(View.GONE);
+                            tv_progress.setVisibility(View.GONE);
+                            v_bg.setVisibility(View.GONE);
+                            pb.setVisibility(View.GONE);
+                            break;
+                        case FAIL:
+                            pb.setVisibility(View.GONE);
+                            tv_progress.setVisibility(View.GONE);
+                            v_bg.setVisibility(View.GONE);
+                            pb.setVisibility(View.GONE);
+
+                            iv_err.setVisibility(View.VISIBLE);
+
+                            break;
+                        case CREATE:
+                            break;
+                        case INPROGRESS:
+                            break;
+                    }
+
+
                     Glide.with(getContext())
                             .load(emImageMessageBody.getLocalUrl())
                             .apply(GlideConfig.getRectangleOptions())
@@ -229,6 +280,12 @@ public class ChatFragment extends BaseAppFragment {
 
 
                 if (message.direct() == EMMessage.Direct.RECEIVE) {
+
+
+                    pb.setVisibility(View.GONE);
+                    tv_progress.setVisibility(View.GONE);
+                    v_bg.setVisibility(View.GONE);
+
                     Glide.with(getContext())
                             .load(emImageMessageBody.getRemoteUrl())
                             .apply(GlideConfig.getRectangleOptions())
@@ -237,6 +294,12 @@ public class ChatFragment extends BaseAppFragment {
             }
 
 
+        }
+
+
+        @Override
+        public int getEmptyLayoutId() {
+            return R.layout.chat_empty;
         }
     }
 
@@ -250,45 +313,41 @@ public class ChatFragment extends BaseAppFragment {
                 String content = (String) event.getData();
 
 
-                EMMessage message = HXChatUtils.sendMessage(content);
+                EMMessage message = HXChatUtils.sendMessage(content, chatAdapter, getActivity());
 
-                message.setMessageStatusCallback(new EMCallBack() {
+
+                messageList.add(message);
+
+                getActivity().runOnUiThread(new Runnable() {
                     @Override
-                    public void onSuccess() {
+                    public void run() {
+                        chatAdapter.notifyDataSetChanged();
 
-
-                        showLog("1消息发送成功");
-                    }
-
-                    @Override
-                    public void onError(int i, String s) {
-
-                        showLog("1消息发送失败");
-                    }
-
-                    @Override
-                    public void onProgress(int i, String s) {
-
-
-
-
-                        showLog("1消息进度：" + i);
-
+                        if (chatAdapter.getItemCount() > 0) {
+                            rvChat.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
+                        }
                     }
                 });
 
-                messageList.add(message);
-                chatAdapter.notifyDataSetChanged();
 
                 break;
             }
             case 2: {
                 String imagePath = (String) event.getData();
 
-                EMMessage message = HXChatUtils.sendImageMessage(imagePath);
+                EMMessage message = HXChatUtils.sendImageMessage(imagePath, chatAdapter, getActivity());
 
                 messageList.add(message);
-                chatAdapter.notifyDataSetChanged();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        chatAdapter.notifyDataSetChanged();
+
+                        if (chatAdapter.getItemCount() > 0) {
+                            rvChat.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
+                        }
+                    }
+                });
                 break;
             }
         }
