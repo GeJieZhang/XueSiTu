@@ -10,4 +10,6 @@ public class FragmentTag {
     public static final String Room_Controller = "Room_Controller";
 
     public static final String Chat_Fragment = "Chat_Fragment";
+    public static final String WhiteBoardFragment = "WhiteBoardFragment";
+
 }

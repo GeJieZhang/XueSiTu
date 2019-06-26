@@ -596,6 +596,17 @@ rx.internal.util.atomic.LinkedQueueNode consumerNode;
 #环信
 -keep class com.hyphenate.** {*;}
 -dontwarn  com.hyphenate.**
+
+#--------------------------------------------------------------------------------------------------
+#白板
+
+-keep class com.herewhite.** { *; }
+-keepattributes  *JavascriptInterface*
+-keepattributes Signature
+-keep class sun.misc.Unsafe { *; }
+-keep class com.google.gson.stream.** { *; }
+-keep class com.google.gson.examples.android.model.** { *; }
+-keep class com.google.gson.** { *;}
 #--------------------------------------------------------------------------------------------------
 #bean
 -keep public class com.youxuan.bean.**{*;}

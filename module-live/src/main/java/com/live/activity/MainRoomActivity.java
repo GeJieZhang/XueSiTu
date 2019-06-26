@@ -30,6 +30,7 @@ import com.live.bean.control.RoomControlBean;
 import com.live.fragment.ChatFragment;
 import com.live.fragment.ListVideoFragment;
 import com.live.fragment.RoomControlFragment;
+import com.live.fragment.WhiteBoardFragment;
 import com.live.utils.config.LiveConfig;
 import com.live.utils.HXChatUtils;
 import com.live.utils.MyHashMap;
@@ -106,6 +107,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         initListVideo();
 
 
+        //聊天室处理
         HXChatUtils.signIn(hx_username, "123456", this);
         LogUtil.e("onCreate");
 
@@ -118,6 +120,9 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     private RoomControlFragment roomControlFragment;
 
     private ChatFragment chatFragment;
+
+
+    private WhiteBoardFragment whiteBoardFragment;
 
 
     private void initListVideo() {
@@ -136,9 +141,13 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         chatFragment = new ChatFragment();
 
 
+        whiteBoardFragment = new WhiteBoardFragment();
+
+
         FragmentCustomUtils.setFragment(this, R.id.list_video, listVideoFragment, FragmentTag.List_Video);
         FragmentCustomUtils.setFragment(this, R.id.f_controller, roomControlFragment, FragmentTag.Room_Controller);
         FragmentCustomUtils.setFragment(this, R.id.f_chat, chatFragment, FragmentTag.Chat_Fragment);
+        FragmentCustomUtils.setFragment(this, R.id.f_whiteboard, whiteBoardFragment, FragmentTag.WhiteBoardFragment);
     }
 
 

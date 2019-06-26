@@ -144,5 +144,10 @@ dependencies {
      */
     api files('libs/hyphenatechat_3.6.0.jar')
 
+    /**
+     * 互动白板
+     */
+    api 'com.github.duty-os:white-sdk-android:2.0.0'
+
 
 }
