@@ -181,14 +181,6 @@ public class ChatFragment extends BaseAppFragment {
             EMMessage message = mData.get(position);
             holder.setText(R.id.tv_name, message.getFrom());
 
-            if (position > 0 && position == messageList.size() - 1) {
-
-                LinearLayout linearLayout = holder.getView(R.id.lin_item);
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) linearLayout.getLayoutParams();
-                params.bottomMargin = DisplayUtil.dip2px(getContext(), 40);
-
-            }
-
 
             if (message.getType() == EMMessage.Type.TXT) {
                 //纯文本
@@ -293,6 +285,21 @@ public class ChatFragment extends BaseAppFragment {
                 }
             }
 
+
+            /**
+             * 设置最后一条消息距离底部的距离
+             */
+            LinearLayout linearLayout = holder.getView(R.id.lin_item);
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) linearLayout.getLayoutParams();
+            if (position > 0 && position == messageList.size() - 1) {
+
+
+                params.bottomMargin = DisplayUtil.dip2px(getContext(), 40);
+
+            } else {
+
+                params.bottomMargin = DisplayUtil.dip2px(getContext(), 0);
+            }
 
         }
 

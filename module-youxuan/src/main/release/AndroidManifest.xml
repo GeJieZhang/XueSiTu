@@ -6,7 +6,7 @@
 
     <application>
         <activity android:name=".activity.YouXuanMainActivity"></activity>
-        <activity android:name=".activity.CompanyClassActivity"></activity>
+        <activity android:name=".activity.web.CompanyClassActivity"></activity>
     </application>
 
 

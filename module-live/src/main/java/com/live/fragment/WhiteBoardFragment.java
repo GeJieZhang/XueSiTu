@@ -1,9 +1,14 @@
 package com.live.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -27,6 +32,7 @@ import com.herewhite.sdk.domain.UrlInterrupter;
 import com.lib.ui.fragment.BaseAppFragment;
 import com.live.R;
 import com.live.R2;
+import com.live.utils.WhiteBoardUtils;
 import com.live.utils.white_board.DemoAPI;
 
 import java.io.IOException;
@@ -36,22 +42,44 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
+@SuppressLint("ValidFragment")
 public class WhiteBoardFragment extends BaseAppFragment {
 
-    /*和 iOS 名字一致*/
-    final String EVENT_NAME = "WhiteCommandCustomEvent";
-    private String TEST_UUID = "af35f6aa6b774035a275628416195015";
-    DemoAPI demoAPI = new DemoAPI();
-    Gson gson = new Gson();
-    Room room;
-    @BindView(R2.id.white_broad)
+
+    @BindView(R2.id.f_board)
+    FrameLayout f_board;
+
     WhiteBroadView whiteBroadView;
+
+    private Room whiteBroadRoom;
+
+    @SuppressLint("ValidFragment")
+    public WhiteBoardFragment(WhiteBroadView whiteBroadView, Room room) {
+        this.whiteBroadView = whiteBroadView;
+        this.whiteBroadRoom = room;
+
+        showLog("WhiteBoardFragment");
+    }
 
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
-        getRoomToken(TEST_UUID);
+
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+
+        whiteBroadView.setLayoutParams(params);
 
 
+        f_board.addView(whiteBroadView);
+
+
+//        whiteBroadView = view.findViewById(R.id.white_broad);
+//
+//
+//        WhiteBoardUtils.getInstance().joinToRoom(getActivity(), whiteBroadView);
+
+        showLog("onCreateView");
     }
 
     @Override
@@ -59,96 +87,16 @@ public class WhiteBoardFragment extends BaseAppFragment {
         return R.layout.fragment_white_board;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        f_board.removeAllViews();
+
+    }
+
 
     //------------------------------------------------------------------------------------API
-    private void getRoomToken(final String uuid) {
-        demoAPI.getRoomToken(uuid, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                showLog("获取房间 token 请求失败:" + e.toString());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) {
-                try {
-
-                    if (response.code() == 200) {
-                        JsonObject room = gson.fromJson(response.body().string(), JsonObject.class);
-                        String roomToken = room.getAsJsonObject("msg").get("roomToken").getAsString();
-
-                        joinRoom(uuid, roomToken);
-
-                    } else {
-                        showLog("获取房间 token 失败" + response.body().string());
-                    }
-                } catch (Throwable e) {
-                    showLog("获取房间 token 失败" + e.toString());
-                }
-            }
-        });
-    }
-
-    private void joinRoom(String uuid, String roomToken) {
-
-
-        WhiteSdkConfiguration sdkConfiguration = new WhiteSdkConfiguration(DeviceType.touch, 10, 0.1, true);
-        /*显示用户头像*/
-        sdkConfiguration.setUserCursor(true);
-        /*接受用户头像信息回调，自己实现头像回调。会导致 UserCursor 设置失效。*/
-        sdkConfiguration.setCustomCursor(true);
-
-        WhiteSdk whiteSdk = new WhiteSdk(
-                whiteBroadView,
-                getActivity(),
-                sdkConfiguration,
-                new UrlInterrupter() {
-                    @Override
-                    public String urlInterrupter(String sourceUrl) {
-                        return sourceUrl;
-                    }
-                });
-
-        whiteSdk.joinRoom(new RoomParams(uuid, roomToken), new AbstractRoomCallbacks() {
-            @Override
-            public void onPhaseChanged(RoomPhase phase) {
-                showToast(phase.name());
-
-                Log.e("======onPhaseChanged", phase.name());
-            }
-
-            @Override
-            public void onRoomStateChanged(RoomState modifyState) {
-
-
-                Log.e("=onRoomStateChanged", gson.toJson(modifyState));
-            }
-        }, new Promise<Room>() {
-            @Override
-            public void then(Room wRoom) {
-
-                Log.e("======then", "join in room success");
-                room = wRoom;
-                addCustomEventListener();
-
-                getPencil();
-            }
-
-            @Override
-            public void catchEx(SDKError t) {
-                showToast(t.getMessage());
-            }
-        });
-    }
-
-    private void addCustomEventListener() {
-        room.addMagixEventListener(EVENT_NAME, new EventListener() {
-            @Override
-            public void onEvent(EventEntry eventEntry) {
-                showLog("customEvent payload: " + eventEntry.getPayload().toString());
-                showToast(gson.toJson(eventEntry.getPayload()));
-            }
-        });
-    }
 
 
     public void getPencil() {
@@ -156,9 +104,13 @@ public class WhiteBoardFragment extends BaseAppFragment {
         MemberState memberState = new MemberState();
         memberState.setStrokeColor(new int[]{99, 99, 99});
         memberState.setCurrentApplianceName(Appliance.PENCIL);
-        memberState.setStrokeWidth(10);
-        memberState.setTextSize(10);
-        room.setMemberState(memberState);
+        memberState.setStrokeWidth(5);
+        memberState.setTextSize(5);
+
+        if (whiteBroadRoom != null) {
+            whiteBroadRoom.setMemberState(memberState);
+        }
+
 
         showLog("设置铅笔");
     }

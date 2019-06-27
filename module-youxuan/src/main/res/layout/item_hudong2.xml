@@ -31,10 +31,11 @@
                     android:src="@mipmap/icon_important" />
 
                 <TextView
+                    android:id="@+id/tv_title"
                     style="@style/text_style3"
-                    android:textStyle="bold"
                     android:layout_marginLeft="8dp"
-                    android:text="小升初衔接全面成长计划" />
+                    android:text="小升初衔接全面成长计划"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -73,11 +74,13 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tv_ks"
                     style="@style/text_style3"
                     android:layout_marginRight="16dp"
                     android:text="课时数:122" />
 
                 <TextView
+                    android:id="@+id/tv_money"
                     style="@style/text_style5"
                     android:layout_marginLeft="16dp"
                     android:text="￥754" />

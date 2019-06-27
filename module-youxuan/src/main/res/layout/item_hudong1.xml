@@ -30,6 +30,7 @@
                     android:src="@mipmap/icon_important" />
 
                 <TextView
+                    android:id="@+id/tv_name"
                     style="@style/text_style3"
                     android:layout_marginLeft="8dp"
                     android:text="小升初衔接全面成长计划"
@@ -50,6 +51,7 @@
                     android:layout_height="20dp" />
 
                 <TextView
+                    android:id="@+id/tv_remark"
                     style="@style/text_style4"
                     android:layout_marginLeft="8dp"
                     android:text="帮助孩子全面掌握知识机构" />
@@ -60,6 +62,7 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/btn_oto"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="100dp"
             android:layout_height="35dp"

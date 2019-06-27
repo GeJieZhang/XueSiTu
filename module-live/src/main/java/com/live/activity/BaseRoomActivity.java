@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -149,6 +150,14 @@ public class BaseRoomActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Log
+     *
+     * @param msg
+     */
+    public static void showLog(final String msg) {
 
+        Log.e("调试日志======", msg);
+    }
 
 }

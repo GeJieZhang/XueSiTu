@@ -16,6 +16,10 @@ import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.herewhite.sdk.Room;
+import com.herewhite.sdk.WhiteBroadView;
+import com.herewhite.sdk.domain.Appliance;
+import com.herewhite.sdk.domain.MemberState;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.EventBusTagUtils;
 import com.lib.app.FragmentTag;
@@ -31,6 +35,7 @@ import com.live.fragment.ChatFragment;
 import com.live.fragment.ListVideoFragment;
 import com.live.fragment.RoomControlFragment;
 import com.live.fragment.WhiteBoardFragment;
+import com.live.utils.WhiteBoardUtils;
 import com.live.utils.config.LiveConfig;
 import com.live.utils.HXChatUtils;
 import com.live.utils.MyHashMap;
@@ -69,13 +74,13 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     String hx_username;
     QNSurfaceView localSurfaceView;
 
-    FrameLayout list_video;
-    FrameLayout f_controller;
     private QNRTCEngine mEngine;
     private QNTrackInfo localVideoTrack;
     private QNTrackInfo localAudioTrack;
     //正在播放的Track
     private QNTrackInfo playingScreenVideoTrack;
+
+    private FrameLayout f_whiteboard;
 
 
     private MyHashMap<String, QNTrackInfo> trackInfoMap = new MyHashMap<>();
@@ -100,32 +105,45 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         setContentView(R.layout.activity_main_room_vertical);
         ARouter.getInstance().inject(this);
 
+
         findView();
 
         initEngine();
 
-        initListVideo();
-
 
         //聊天室处理
-        HXChatUtils.signIn(hx_username, "123456", this);
-        LogUtil.e("onCreate");
+        initChat();
 
+        initWhiteBorad();
 
+        initFragment();
     }
 
 
+    /**
+     * 初始化聊天
+     */
+    private void initChat() {
+        HXChatUtils.signIn(hx_username, "123456", this);
+    }
+
+
+    //---------------------------------------------------------------------------------Fragment
+
+    //视频菜单
     private ListVideoFragment listVideoFragment;
-
+    //控制页面
     private RoomControlFragment roomControlFragment;
-
+    //聊天
     private ChatFragment chatFragment;
-
-
+    //白板
     private WhiteBoardFragment whiteBoardFragment;
 
 
-    private void initListVideo() {
+    /**
+     * 初始化Fragment
+     */
+    private void initFragment() {
 
 
         listVideoFragment = new ListVideoFragment();
@@ -141,30 +159,41 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         chatFragment = new ChatFragment();
 
 
-        whiteBoardFragment = new WhiteBoardFragment();
+        whiteBoardFragment = new WhiteBoardFragment(whiteBroadView, whiteBoardRoom);
 
 
         FragmentCustomUtils.setFragment(this, R.id.list_video, listVideoFragment, FragmentTag.List_Video);
         FragmentCustomUtils.setFragment(this, R.id.f_controller, roomControlFragment, FragmentTag.Room_Controller);
         FragmentCustomUtils.setFragment(this, R.id.f_chat, chatFragment, FragmentTag.Chat_Fragment);
         FragmentCustomUtils.setFragment(this, R.id.f_whiteboard, whiteBoardFragment, FragmentTag.WhiteBoardFragment);
+
+
+    }
+
+    private void removeFragment() {
+        FragmentCustomUtils.removeFragment(this, FragmentTag.List_Video);
+        FragmentCustomUtils.removeFragment(this, FragmentTag.Room_Controller);
+        FragmentCustomUtils.removeFragment(this, FragmentTag.Chat_Fragment);
+        FragmentCustomUtils.removeFragment(this, FragmentTag.WhiteBoardFragment);
     }
 
 
+    /**
+     * 更新直播列表
+     */
     private void updateVideoFragment() {
 
         listVideoFragment.setTrackInfo(trackInfoMap.getOrderedValues());
     }
 
 
+    /**
+     * 获取控件ID
+     */
     private void findView() {
 
-
+        f_whiteboard = findViewById(R.id.f_whiteboard);
         localSurfaceView = findViewById(R.id.local_surface_view);
-
-        list_video = findViewById(R.id.list_video);
-
-        f_controller = findViewById(R.id.f_controller);
 
 
         if (screenOrientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -188,6 +217,9 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     }
 
 
+    /**
+     * 初始化直播
+     */
     private void initEngine() {
         SharedPreferences preferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
         int videoWidth = preferences.getInt(LiveConfig.WIDTH, DEFAULT_RESOLUTION[1][0]);
@@ -232,6 +264,10 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
     }
 
+
+    /**
+     * 美颜
+     */
     private void initBeauty() {
         QNBeautySetting beautySetting = new QNBeautySetting(0.5f, 0.5f, 0.5f);
         beautySetting.setEnable(true);
@@ -241,6 +277,12 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
     //--------------------------------------------------------------QNRTCEngineEventListener
 
+
+    /**
+     * 直播状态回调
+     *
+     * @param qnRoomState
+     */
     @Override
     public void onRoomStateChanged(QNRoomState qnRoomState) {
 
@@ -255,6 +297,8 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
             case CONNECTED:
                 //连接成功
                 mEngine.publishTracks(Arrays.asList(localVideoTrack, localAudioTrack));
+
+                showLog("连接直播房间成功");
                 break;
             case RECONNECTED:
                 //重新连接成功
@@ -412,6 +456,22 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
         }
 
+        @Override
+        public void onWhiteBoradClick() {
+
+            if (f_whiteboard.getVisibility() == View.VISIBLE) {
+                f_whiteboard.setVisibility(View.GONE);
+            } else {
+                f_whiteboard.setVisibility(View.VISIBLE);
+            }
+
+        }
+
+        @Override
+        public void onPPTClick() {
+
+        }
+
 
     };
 
@@ -500,7 +560,9 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
             setContentView(R.layout.activity_main_room_horizontal);
             findView();
-            initListVideo();
+
+            removeFragment();
+            initFragment();
 
 
             mEngine.setRenderWindow(localVideoTrack, localSurfaceView);
@@ -512,7 +574,9 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
             setContentView(R.layout.activity_main_room_vertical);
             findView();
-            initListVideo();
+
+            removeFragment();
+            initFragment();
             mEngine.setRenderWindow(localVideoTrack, localSurfaceView);
 
 
@@ -591,4 +655,28 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
         }
     }
+
+
+    //-----------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------白板相关
+    //------------------------------------------------------------------------------------------
+
+
+    WhiteBroadView whiteBroadView;
+
+    private Room whiteBoardRoom;
+
+    /**
+     * 初始化白板
+     */
+    private void initWhiteBorad() {
+
+        whiteBroadView = new WhiteBroadView(this);
+        whiteBoardRoom = WhiteBoardUtils.getInstance().joinToRoom(this, whiteBroadView);
+
+
+    }
+
+
+
 }

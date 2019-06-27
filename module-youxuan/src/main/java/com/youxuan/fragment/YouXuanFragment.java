@@ -45,6 +45,7 @@ import com.youxuan.R;
 import com.youxuan.R2;
 import com.youxuan.bean.YouXuanBean;
 import com.youxuan.fragment.banner.CustomViewHolder2;
+import com.youxuan.fragment.child.SchoolFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +83,8 @@ public class YouXuanFragment extends BaseAppFragment {
     private List<Fragment> fragments = new ArrayList<>();
 
     private List<CustomData> mList = new ArrayList<>();
+
+
     private List<ImageView> indicatorImages = new ArrayList<>();
     private List<ImageView> indicatorImages2 = new ArrayList<>();
     private int mIndicatorSelectedResId = R.mipmap.wheelpoint_selected;
@@ -91,7 +94,9 @@ public class YouXuanFragment extends BaseAppFragment {
     private int mIndicatorUnselectedResId2 = R.mipmap.wheelbar_default;
     private int lastPosition = 0;
     private int lastPosition2 = 0;
-    private String schoolList[] = {"小学", "初中", "高中"};
+    //private String schoolList[] = {"小学", "初中", "高中"};
+
+    private List<YouXuanBean.ObjBean.StageBean> schoolList = new ArrayList<>();
 
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
@@ -101,7 +106,6 @@ public class YouXuanFragment extends BaseAppFragment {
         initView();
 
 
-        initBottomViewPager();
     }
 
     private void initData() {
@@ -118,7 +122,10 @@ public class YouXuanFragment extends BaseAppFragment {
 
 
                             setWanfuData(youXuanBean);
+                            setOtOData(youXuanBean);
 
+
+                            setStageData(youXuanBean);
 
                         } else {
                             showToast(youXuanBean.getMsg());
@@ -127,6 +134,7 @@ public class YouXuanFragment extends BaseAppFragment {
 
                     }
 
+
                     @Override
                     public void onError(String e) {
 
@@ -134,6 +142,14 @@ public class YouXuanFragment extends BaseAppFragment {
                 });
 
 
+    }
+
+    private void setStageData(YouXuanBean youXuanBean) {
+
+        schoolList.clear();
+        schoolList.addAll(youXuanBean.getObj().getStage());
+
+        initBottomStageViewPager();
     }
 
     private void setWanfuData(YouXuanBean youXuanBean) {
@@ -147,6 +163,16 @@ public class YouXuanFragment extends BaseAppFragment {
 
     }
 
+    private void setOtOData(YouXuanBean youXuanBean) {
+
+
+        otoList.clear();
+        otoList.addAll(youXuanBean.getObj().getOto_course());
+
+        homeAdapter.updateData(otoList);
+        homeAdapter.notifyDataSetChanged();
+
+    }
 
     public void setBannerData(YouXuanBean youXuanBean) {
 
@@ -182,18 +208,24 @@ public class YouXuanFragment extends BaseAppFragment {
             }
         });
 
-
+        //初始化晚辅课
         initWanFuView();
-        //第一个互动
 
-        carList.add("");
-        carList.add("");
-        homeAdapter = new HomeAdapter(getActivity(), carList);
+
+        //一对一
+        initOtO();
+
+        //多人精品互动课
+
+        ///initBottomStageViewPager();
+
+    }
+
+    private void initOtO() {
+        homeAdapter = new HomeAdapter(getActivity(), otoList);
         rvHudong.setLayoutManager(new MyLinearLayoutManager(getActivity()));
         rvHudong.setNestedScrollingEnabled(false);
         rvHudong.setAdapter(homeAdapter);
-
-
     }
 
     private void initWanFuView() {
@@ -276,12 +308,12 @@ public class YouXuanFragment extends BaseAppFragment {
 
 
     //-------------------------------------------------------------------------------------1对1互动课
-    private List<String> carList = new ArrayList<>();
+    private List<YouXuanBean.ObjBean.OtoCourseBean> otoList = new ArrayList<>();
 
-    class HomeAdapter extends BaseAdapter<String> {
+    class HomeAdapter extends BaseAdapter<YouXuanBean.ObjBean.OtoCourseBean> {
 
 
-        public HomeAdapter(Context context, List<String> mData) {
+        public HomeAdapter(Context context, List<YouXuanBean.ObjBean.OtoCourseBean> mData) {
             super(context, mData);
         }
 
@@ -291,7 +323,24 @@ public class YouXuanFragment extends BaseAppFragment {
         }
 
         @Override
-        protected void toBindViewHolder(ViewHolder holder, int position, List<String> mData) {
+        protected void toBindViewHolder(ViewHolder holder, final int position, final List<YouXuanBean.ObjBean.OtoCourseBean> mData) {
+
+            holder.setText(R.id.tv_name, mData.get(position).getName());
+            holder.setText(R.id.tv_remark, mData.get(position).getRemark());
+
+
+            holder.getView(R.id.btn_oto).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    //跳转一对一详情
+
+                    ARouter.getInstance().build(ARouterPathUtils.YouXuan_CompanyClassActivity)
+                            .withString("urlPath", mData.get(position).getLink())
+                            .navigation();
+
+                }
+            });
 
         }
 
@@ -315,7 +364,7 @@ public class YouXuanFragment extends BaseAppFragment {
         }
 
         @Override
-        protected void toBindViewHolder(ViewHolder holder, int position, List<YouXuanBean.ObjBean.EveningCourseBean> mData) {
+        protected void toBindViewHolder(ViewHolder holder, final int position, final List<YouXuanBean.ObjBean.EveningCourseBean> mData) {
             int screenWidth = QMUIDisplayHelper.getScreenWidth(getContext());
 
             LinearLayout linearLayout = holder.getView(R.id.lin_parent);
@@ -335,7 +384,9 @@ public class YouXuanFragment extends BaseAppFragment {
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ARouter.getInstance().build(ARouterPathUtils.YouXuan_CompanyClassActivity).navigation();
+                    ARouter.getInstance().build(ARouterPathUtils.YouXuan_CompanyClassActivity)
+                            .withString("urlPath", mData.get(position).getLink())
+                            .navigation();
                 }
             });
 
@@ -346,12 +397,14 @@ public class YouXuanFragment extends BaseAppFragment {
 
     private DemandAdapter mDemandAdapter;
 
-    private void initBottomViewPager() {
+    private void initBottomStageViewPager() {
+        lastPosition2 = 0;
         //下方ViewPager
         fragments.clear();
-        fragments.add(FragmentUtils.getSchoolFragment());
-        fragments.add(FragmentUtils.getSchoolFragment());
-        fragments.add(FragmentUtils.getSchoolFragment());
+        for (YouXuanBean.ObjBean.StageBean stageBean : schoolList) {
+           // fragments.add(new SchoolFragment(stageBean.getCourse()));
+        }
+
 
         initBottomTitle();
         initIndicator2();
@@ -367,7 +420,7 @@ public class YouXuanFragment extends BaseAppFragment {
             @Override
             public void onPageSelected(int position) {
 
-                int size = schoolList.length;
+                int size = schoolList.size();
                 indicatorImages2.get((lastPosition2 + size) % size).setImageResource(mIndicatorUnselectedResId2);
                 indicatorImages2.get((position + size) % size).setImageResource(mIndicatorSelectedResId2);
                 lastPosition2 = position;
@@ -392,14 +445,16 @@ public class YouXuanFragment extends BaseAppFragment {
     private List<View> listTitle = new ArrayList<>();
 
     private void initBottomTitle() {
+
+        linTitle.removeAllViews();
         listTitle.clear();
-        for (int i = 0; i < schoolList.length; i++) {
+        for (int i = 0; i < schoolList.size(); i++) {
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.item_title, null);
             listTitle.add(view);
             final TextView tv_title = view.findViewById(R.id.tv_title);
 
             final View v_circle = view.findViewById(R.id.v_circle);
-            tv_title.setText(schoolList[i]);
+            tv_title.setText(schoolList.get(i).getName());
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             params.setMargins(DisplayUtil.dip2px(getActivity(), 16), 0, 0, 0);
@@ -435,21 +490,23 @@ public class YouXuanFragment extends BaseAppFragment {
                 v_circle.setVisibility(View.GONE);
                 tv_title.setTypeface(Typeface.DEFAULT, Typeface.NORMAL);
             }
+
+
+            contentViewPager.setCurrentItem(position);
+            View view = listTitle.get(position);
+            TextView tv_title = view.findViewById(R.id.tv_title);
+            View v_circle = view.findViewById(R.id.v_circle);
+            v_circle.setVisibility(View.VISIBLE);
+            tv_title.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         }
-
-
-        contentViewPager.setCurrentItem(position);
-        View view = listTitle.get(position);
-        TextView tv_title = view.findViewById(R.id.tv_title);
-        View v_circle = view.findViewById(R.id.v_circle);
-        v_circle.setVisibility(View.VISIBLE);
-        tv_title.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
 
     }
 
     private void initIndicator2() {
-        for (int i = 0; i < schoolList.length; i++) {
+
+        indicator2.removeAllViews();
+        indicatorImages2.clear();
+        for (int i = 0; i < schoolList.size(); i++) {
             ImageView imageView = new ImageView(getActivity());
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             LinearLayout.LayoutParams custom_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,

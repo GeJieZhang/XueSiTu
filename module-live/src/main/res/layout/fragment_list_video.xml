@@ -17,6 +17,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/lin_whiteboard"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginLeft="8dp"
@@ -37,6 +38,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/lin_ppt"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginLeft="8dp"

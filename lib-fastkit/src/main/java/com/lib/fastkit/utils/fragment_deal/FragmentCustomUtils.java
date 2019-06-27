@@ -82,11 +82,13 @@ public class FragmentCustomUtils {
 
     /**
      * @param activity
-     * @param fragment 实列对象
+     * @param
      * @param tag      唯一标识
      */
-    public static void removeFragment(AppCompatActivity activity, Fragment fragment, String tag) {
-        if (activity.getSupportFragmentManager().findFragmentByTag(tag) != null) {
+    public static void removeFragment(AppCompatActivity activity, String tag) {
+
+        Fragment fragment = activity.getSupportFragmentManager().findFragmentByTag(tag);
+        if (fragment != null) {
             FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
             fragmentTransaction.remove(fragment);
 

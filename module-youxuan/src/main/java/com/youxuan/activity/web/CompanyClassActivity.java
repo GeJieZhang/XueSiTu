@@ -1,4 +1,4 @@
-package com.youxuan.activity;
+package com.youxuan.activity.web;
 
 
 import android.content.Intent;
@@ -7,7 +7,9 @@ import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.lib.app.ARouterPathUtils;
 import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.ui.activity.BaseWebActivity;
@@ -25,18 +27,22 @@ public class CompanyClassActivity extends BaseWebActivity {
 
 
     private TextView title;
+    // @Autowired(name = "urlPath")
+    private String urlPath;
 
     @Override
     protected void onCreateView(WebView webView) {
 
+        //ARouter.getInstance().inject(this);
 
+        urlPath = getIntent().getStringExtra("urlPath");
         initWebView(webView);
 
 
         initView();
 
 
-        webView.loadUrl("http://192.168.2.125/index.html");
+        webView.loadUrl(urlPath);
     }
 
     private void initWebView(WebView webView) {

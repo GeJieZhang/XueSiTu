@@ -2,13 +2,10 @@ package com.live.fragment;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -27,16 +24,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class ListVideoFragment extends BaseAppFragment {
-    @BindView(R2.id.rv_list_video)
-    RecyclerView rvListVideo;
 
 
     //横屏
     public int screenHorization = Configuration.ORIENTATION_LANDSCAPE;
     //竖屏
     public int screenVertical = Configuration.ORIENTATION_PORTRAIT;
+    @BindView(R2.id.lin_whiteboard)
+    LinearLayout linWhiteboard;
+    @BindView(R2.id.lin_ppt)
+    LinearLayout linPpt;
+    @BindView(R2.id.rv_list_video)
+    RecyclerView rvListVideo;
 
 
     private HomeAdapter homeAdapter;
@@ -101,6 +103,24 @@ public class ListVideoFragment extends BaseAppFragment {
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_list_video;
+    }
+
+    @OnClick({R2.id.lin_ppt, R2.id.lin_whiteboard})
+    public void onViewClicked(View view) {
+        int i = view.getId();
+        if (i == R.id.lin_ppt) {
+
+            if (listener != null) {
+                listener.onPPTClick();
+            }
+
+
+        } else if (i == R.id.lin_whiteboard) {
+            if (listener != null) {
+                listener.onWhiteBoradClick();
+            }
+
+        }
     }
 
 
@@ -205,6 +225,11 @@ public class ListVideoFragment extends BaseAppFragment {
 
         void onChangeQNSurfaceView(QNTrackInfo trackInfo, QNSurfaceView qnSurfaceView);
 
+
+        void onWhiteBoradClick();
+
+        void onPPTClick();
+
     }
 
     private ListVideoFragmentListener listener;
@@ -219,13 +244,6 @@ public class ListVideoFragment extends BaseAppFragment {
     public void onPause() {
         super.onPause();
         //LogUtil.e("onPause");
-    }
-
-    @Override
-    public void onDestroyView() {
-
-        //LogUtil.e("onDestroyView");
-        super.onDestroyView();
     }
 
 
