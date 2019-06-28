@@ -19,8 +19,8 @@ public class GlideConfig {
 
         RequestOptions options = new RequestOptions()
                 .bitmapTransform(new CircleCrop())
-                .placeholder(R.mipmap.ic_launcher)    //加载成功之前占位图
-                .error(R.mipmap.ic_launcher)    //加载错误之后的错误图
+                .placeholder(R.mipmap.empty_circle)    //加载成功之前占位图
+                .error(R.mipmap.empty_circle)    //加载错误之后的错误图
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)    //智能缓存
                 ;
 
@@ -35,15 +35,16 @@ public class GlideConfig {
      */
     public static RequestOptions getRoundOptions(int size) {
         RequestOptions options = new RequestOptions()
-
-                .placeholder(R.mipmap.ic_launcher)    //加载成功之前占位图
-                .error(R.mipmap.ic_launcher)    //加载错误之后的错误图
                 .bitmapTransform(new RoundedCorners(size))
+                .placeholder(R.mipmap.empty_rectangle)    //加载成功之前占位图
+                .error(R.mipmap.empty_rectangle)    //加载错误之后的错误图
+
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)    //智能缓存
                 ;
 
         return options;
     }
+
     /**
      * 圆角视频
      *
@@ -53,9 +54,9 @@ public class GlideConfig {
     public static RequestOptions getRoundVdieoOptions(int size) {
         RequestOptions options = new RequestOptions()
                 .frame(4000000)
-                .placeholder(R.mipmap.ic_launcher)    //加载成功之前占位图
-                .error(R.mipmap.ic_launcher)    //加载错误之后的错误图
                 .bitmapTransform(new RoundedCorners(size))
+                .placeholder(R.mipmap.empty_video)    //加载成功之前占位图
+                .error(R.mipmap.empty_video)    //加载错误之后的错误图
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)    //智能缓存
                 ;
 
@@ -69,8 +70,8 @@ public class GlideConfig {
      */
     public static RequestOptions getRectangleOptions() {
         RequestOptions options = new RequestOptions()
-                .placeholder(R.mipmap.ic_launcher)    //加载成功之前占位图
-                .error(R.mipmap.ic_launcher)    //加载错误之后的错误图
+                .placeholder(R.mipmap.empty_rectangle)    //加载成功之前占位图
+                .error(R.mipmap.empty_rectangle)    //加载错误之后的错误图
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)    //智能缓存
                 ;
 

@@ -96,7 +96,6 @@ public abstract class HttpNormalCallBack<T> implements EngineCallBack {
         //Toast.makeText(context, "请求超时", Toast.LENGTH_SHORT).show();
 
 
-
     }
 
     public abstract void onError(String e);

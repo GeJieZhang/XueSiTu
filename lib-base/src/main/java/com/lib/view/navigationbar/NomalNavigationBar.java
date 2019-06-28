@@ -38,8 +38,11 @@ public class NomalNavigationBar<D extends
 
 
         setLeft(R.id.back, getParams().isHideLeft);
+        setLeftText(R.id.left_text, getParams().mLeftText);
         // 绑定效果
         setTitleText(R.id.title, getParams().mTitle);
+
+        setOnClickListener(R.id.left_text, getParams().mRightTextClickListener);
         setRightText(R.id.right_text, getParams().mRightText);
         setRightIcon(R.id.right_icon, getParams().mRightIcon);
         setOnClickListener(R.id.right_text, getParams().mRightClickListener);
@@ -48,6 +51,16 @@ public class NomalNavigationBar<D extends
         setOnClickListener(R.id.back, getParams().mLeftClickListener);
     }
 
+
+    private TextView left_text;
+
+    protected void setLeftText(int viewId, String text) {
+        left_text = findViewById(viewId);
+        if (!TextUtils.isEmpty(text)) {
+            left_text.setVisibility(View.VISIBLE);
+            left_text.setText(text);
+        }
+    }
 
     /**
      * 设置Title文本
@@ -147,6 +160,11 @@ public class NomalNavigationBar<D extends
             return this;
         }
 
+        public Builder setLeftText(String leftText) {
+            P.mLeftText = leftText;
+            return this;
+        }
+
         public Builder isHideLeftIcon(Boolean b) {
             P.isHideLeft = b;
             return this;
@@ -154,6 +172,16 @@ public class NomalNavigationBar<D extends
 
         public Builder setRightText(String rightText) {
             P.mRightText = rightText;
+            return this;
+        }
+
+
+        /**
+         * 设置右边的点击事件
+         */
+        public Builder
+        setLeftTextClickListener(View.OnClickListener rightListener) {
+            P.mRightTextClickListener = rightListener;
             return this;
         }
 
@@ -191,12 +219,16 @@ public class NomalNavigationBar<D extends
             // 2.所有效果放置
             public String mTitle;
 
+            public String mLeftText;
+
             public String mRightText;
 
             public Integer mRightIcon;
 
             // 后面还有一些通用的
             public View.OnClickListener mRightClickListener;
+
+            public View.OnClickListener mRightTextClickListener;
 
             public View.OnClickListener mLeftClickListener = new View.OnClickListener() {
                 @Override

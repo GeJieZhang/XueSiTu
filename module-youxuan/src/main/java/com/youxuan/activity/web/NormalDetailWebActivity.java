@@ -1,44 +1,43 @@
 package com.youxuan.activity.web;
 
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.widget.TextView;
 
-import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.lib.app.ARouterPathUtils;
-import com.lib.fastkit.utils.log.LogUtil;
-import com.lib.ui.activity.BaseWebActivity;
+import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.view.navigationbar.NomalNavigationBar;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 import com.youxuan.R;
+import com.youxuan.activity.web.base.BaseBusinessWebActivity;
 
 /**
  * 陪伴课
  */
 
-@Route(path = ARouterPathUtils.YouXuan_CompanyClassActivity)
-public class CompanyClassActivity extends BaseWebActivity {
+@Route(path = ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+public class NormalDetailWebActivity extends BaseBusinessWebActivity {
 
 
     private TextView title;
-    // @Autowired(name = "urlPath")
+
     private String urlPath;
+
+    private WebView webView;
 
     @Override
     protected void onCreateView(WebView webView) {
 
-        //ARouter.getInstance().inject(this);
+        super.onCreateView(webView);
+        this.webView = webView;
 
         urlPath = getIntent().getStringExtra("urlPath");
         initWebView(webView);
-
-
         initView();
 
 
@@ -46,8 +45,6 @@ public class CompanyClassActivity extends BaseWebActivity {
     }
 
     private void initWebView(WebView webView) {
-
-        webView.addJavascriptInterface(javaScriptFunction, "CompanyClassActivity");
 
 
         webView.setWebViewClient(client);
@@ -87,7 +84,6 @@ public class CompanyClassActivity extends BaseWebActivity {
             title.setText(webView.getTitle());
 
 
-            webView.loadUrl("javascript:hideheader()");
         }
     };
 
@@ -96,10 +92,32 @@ public class CompanyClassActivity extends BaseWebActivity {
                 NomalNavigationBar.Builder(this)
                 .setTitle("")
                 .setRightIcon(R.mipmap.nav_share)
+                .setLeftText("关闭")
+
+                .setLeftTextClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        finish();
+
+                    }
+                })
                 .setRightClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showToast("点击分享");
+                        finish();
+                    }
+                })
+                .setLeftClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (webView.canGoBack()) {
+                            webView.goBack();
+
+                        } else {
+                            finish();
+
+                        }
                     }
                 })
                 .builder();
@@ -109,31 +127,11 @@ public class CompanyClassActivity extends BaseWebActivity {
 
     }
 
+
     @Override
-    protected int getLayoutId() {
+    protected int getWebLayoutId() {
         return R.layout.activity_company_class;
     }
-
-
-    //------------------------------------------------------------------------------------JS交互
-
-    /**
-     * JS交互接口
-     */
-    public interface JavaScriptFunction {
-        String requestJava();
-    }
-
-
-    private JavaScriptFunction javaScriptFunction = new JavaScriptFunction() {
-        @JavascriptInterface // 加上注解 getUrl() 方法才能被 JS 调用
-        public String requestJava() {
-
-            showToast("js调用");
-            return "Success";
-
-        }
-    };
 
 
 }

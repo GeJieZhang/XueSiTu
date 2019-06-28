@@ -1,5 +1,6 @@
 package com.lib.ui.activity;
 
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
@@ -11,12 +12,15 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.lib.app.ARouterPathUtils;
 import com.lib.base.R;
 
 import com.lib.fastkit.views.webview_x5.X5WebView;
 import com.lib.ui.activity.kit.BaseActivity;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 
 
 public abstract class BaseWebActivity extends BaseActivity {
@@ -37,6 +41,7 @@ public abstract class BaseWebActivity extends BaseActivity {
         lin_web.addView(webView);
         setWebView();
         onCreateView(webView);
+
     }
 
 
@@ -53,6 +58,7 @@ public abstract class BaseWebActivity extends BaseActivity {
 
 
         try {
+
 
             webView.setWebChromeClient(new WebChromeClient() {
 

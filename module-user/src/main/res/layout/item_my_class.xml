@@ -32,16 +32,19 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/tv_title"
                     style="@style/text_style8"
                     android:layout_weight="1"
                     android:text="小明同学的专属学习计划" />
 
                 <ImageView
+                    android:id="@+id/iv_state"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@mipmap/icon_class_on" />
+                    android:src="@mipmap/icon_class_on1" />
 
                 <TextView
+                    android:id="@+id/tv_state"
                     style="@style/text_style10"
                     android:layout_marginLeft="8dp"
                     android:text="正在开课"
@@ -57,16 +60,20 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/tv_class"
                     style="@style/text_style9"
                     android:text="剩余课次:56" />
 
                 <TextView
+                    android:id="@+id/tv_price"
                     style="@style/text_style9"
                     android:layout_marginLeft="16dp"
                     android:layout_weight="1"
-                    android:text="课时单价:100兔币" />
+                    android:text="课时单价:100兔币"
+                    android:visibility="invisible" />
 
                 <Button
+                    android:id="@+id/btn_go_class"
                     style="@style/button1"
                     android:layout_width="100dp"
                     android:height="40dp"

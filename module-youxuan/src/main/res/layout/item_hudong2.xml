@@ -26,6 +26,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:id="@+id/iv_type"
                     android:layout_width="15dp"
                     android:layout_height="20dp"
                     android:src="@mipmap/icon_important" />
@@ -34,8 +35,17 @@
                     android:id="@+id/tv_title"
                     style="@style/text_style3"
                     android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
                     android:text="小升初衔接全面成长计划"
                     android:textStyle="bold" />
+
+
+                <TextView
+                    android:id="@+id/tv_remaining"
+                    style="@style/text_style3"
+                    android:layout_marginLeft="8dp"
+                    android:text="剩余名额:25"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -73,17 +83,38 @@
 
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tv_ks"
-                    style="@style/text_style3"
-                    android:layout_marginRight="16dp"
-                    android:text="课时数:122" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_money"
-                    style="@style/text_style5"
-                    android:layout_marginLeft="16dp"
-                    android:text="￥754" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_ks"
+                            style="@style/text_style3"
+                            android:layout_marginRight="16dp"
+                            android:text="课时数:122" />
+
+                        <TextView
+                            android:id="@+id/tv_money"
+                            style="@style/text_style5"
+                            android:layout_marginLeft="16dp"
+                            android:text="￥754" />
+                    </LinearLayout>
+
+                    <include
+                        android:id="@+id/include_time"
+                        layout="@layout/include_cut_time"
+
+                        />
+
+                </LinearLayout>
+
+
             </LinearLayout>
         </LinearLayout>
 

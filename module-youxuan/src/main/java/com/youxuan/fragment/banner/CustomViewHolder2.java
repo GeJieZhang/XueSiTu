@@ -40,7 +40,7 @@ public class CustomViewHolder2 implements BannerViewHolder<CustomData> {
 
         Glide.with(context)
                 .load(data.getUrl())
-                .apply(GlideConfig.getRoundVdieoOptions(15))
+                .apply(GlideConfig.getRoundOptions(10))
                 .into(image1);
     }
 }

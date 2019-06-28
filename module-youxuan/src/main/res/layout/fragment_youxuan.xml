@@ -71,6 +71,7 @@
                         android:layout_weight="1"></View>
 
                     <ImageView
+                        android:id="@+id/iv_more1"
                         android:layout_width="25dp"
                         android:layout_height="20dp"
                         android:layout_marginRight="16dp"
@@ -157,8 +158,7 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rv_wanfu"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                      >
+                        android:layout_height="match_parent">
 
 
                     </android.support.v7.widget.RecyclerView>
@@ -188,6 +188,7 @@
                         android:layout_weight="1"></View>
 
                     <ImageView
+                        android:id="@+id/iv_more2"
                         android:layout_width="25dp"
                         android:layout_height="20dp"
                         android:layout_marginRight="16dp"
@@ -232,6 +233,7 @@
                         android:layout_weight="1"></View>
 
                     <ImageView
+                        android:id="@+id/iv_more3"
                         android:layout_width="25dp"
                         android:layout_height="20dp"
                         android:layout_marginRight="16dp"

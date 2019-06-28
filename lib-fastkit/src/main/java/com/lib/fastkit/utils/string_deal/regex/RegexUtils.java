@@ -34,6 +34,16 @@ public class RegexUtils {
         return true;
     }
 
+
+    public static boolean checkPassWord(String password) {
+
+        String regex = "^(?![^a-zA-Z]+$)(?!\\D+$)[a-zA-Z0-9]{6}$";
+
+
+        return Pattern.matches(regex, password);
+    }
+
+
     /**
      * 验证Email
      *

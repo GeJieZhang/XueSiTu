@@ -1,13 +1,10 @@
 package com.live.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -16,30 +13,21 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 
-import com.bumptech.glide.Glide;
 import com.lib.app.EventBusTagUtils;
 import com.lib.bean.Event;
-import com.lib.fastkit.utils.fragment_deal.FragmentCustomUtils;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.dialog.arrow.TriangleDrawable;
 import com.lib.fastkit.views.dialog.normal.NormalDialog;
-import com.lib.fastkit.views.dialog.zenhui.AlertDialog;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.ui.fragment.BaseAppFragment;
-import com.lib.utls.glide.GlideConfig;
 import com.lib.utls.picture_select.PhotoUtil;
 import com.live.R;
 import com.live.R2;
 import com.live.activity.MainRoomActivity;
 import com.live.bean.control.RoomControlBean;
-import com.live.utils.KeyboardUtils;
 import com.live.view.CmmtPopup;
-import com.luck.picture.lib.PictureSelector;
-import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.entity.LocalMedia;
-import com.qiniu.droid.rtc.QNSurfaceView;
-import com.qiniu.droid.rtc.QNTrackInfo;
 import com.zyyoona7.popup.EasyPopup;
 import com.zyyoona7.popup.XGravity;
 import com.zyyoona7.popup.YGravity;
@@ -51,8 +39,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static android.app.Activity.RESULT_OK;
 
 public class RoomControlFragment extends BaseAppFragment {
     @BindView(R2.id.iv_quit)
@@ -107,7 +93,7 @@ public class RoomControlFragment extends BaseAppFragment {
         ivCamera.setImageResource(roomControlBean.isDefault_camera() ? R.mipmap.icon_camera_on : R.mipmap.icon_camera_off);
         ivVoice.setImageResource(roomControlBean.isDefault_voice() ? R.mipmap.icon_voice_on : R.mipmap.icon_voice_off);
         ivRotate.setImageResource(roomControlBean.isDefault_rotate() ? R.mipmap.icon_rotate_h : R.mipmap.icon_rotate_w);
-        ivClass.setImageResource(roomControlBean.isDefault_class() ? R.mipmap.icon_class_off : R.mipmap.icon_class_on);
+        ivClass.setImageResource(roomControlBean.isDefault_class() ? R.mipmap.icon_class_off1 : R.mipmap.icon_class_on1);
 
     }
 

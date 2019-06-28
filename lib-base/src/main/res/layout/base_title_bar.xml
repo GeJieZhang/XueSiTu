@@ -11,6 +11,14 @@
         android:layout_marginLeft="12dp" />
 
     <TextView
+        android:id="@+id/left_text"
+        style="@style/base_title_bar_button"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/back"
+        android:visibility="gone"
+        android:text="关闭 " />
+
+    <TextView
         android:id="@+id/title"
         style="@style/base_title_text_style"
         android:layout_width="wrap_content"

@@ -939,7 +939,7 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
         }
         Glide.with(this)
                 .load(result.getObj().getSelf_video())
-                .apply(GlideConfig.getRoundOptions(20))
+                .apply(GlideConfig.getRoundVdieoOptions(20))
                 .into(ivVideo);
 
 

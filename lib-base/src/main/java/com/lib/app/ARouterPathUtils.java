@@ -30,7 +30,7 @@ public class ARouterPathUtils {
     //==============================================================================================
     public static final String YouXuan_SchoolFragment = "/youxuan/SchoolFragment";
 
-    public static final String YouXuan_CompanyClassActivity = "/youxuan/CompanyClassActivity";
+    public static final String YouXuan_NormalDetailWebActivity = "/youxuan/NormalDetailWebActivity";
     //==============================================================================================
     //======================================================================================User====
     //==============================================================================================

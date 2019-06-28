@@ -16,12 +16,14 @@ import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.clear_cache.ClearDataUtils;
 import com.lib.fastkit.utils.system.SystemUtil;
 import com.lib.fastkit.views.dialog.normal.NormalDialog;
+import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.utls.bugly.BuglyUtil;
 import com.lib.view.navigationbar.NomalNavigationBar;
 import com.user.R;
 import com.user.R2;
+import com.user.bean.BaseBean;
 import com.user.bean.LoginOutBean;
 
 import butterknife.BindView;
@@ -128,7 +130,50 @@ public class SetActivity extends BaseAppActivity {
 
         } else if (i == R.id.lin_zhifu) {
 
-            ARouter.getInstance().build(ARouterPathUtils.User_SetZhiFuActivity).navigation();
+            String token = SharedPreferenceManager.getInstance(this).getUserCache().getUserToken();
+
+            HttpUtils.with(this)
+                    .addParam("requestType", "ACCOUNT_ISSET_PASSWORD")
+                    .addParam("token", token)
+                    .post()
+                    .execute(new HttpDialogCallBack<BaseBean>() {
+                        @Override
+                        public void onSuccess(BaseBean result) {
+
+                            if (result.getCode() == CodeUtil.CODE_200) {
+
+
+                                ARouter.getInstance().build(ARouterPathUtils.User_SetZhiFuActivity)
+
+                                        .withInt("NOW_TYPE", SetZhiFuActivity.CHANGE_PASSWORD)
+
+                                        .navigation();
+
+
+                            } else if (result.getCode() == CodeUtil.CODE_407) {
+
+                                ARouter.getInstance().build(ARouterPathUtils.User_SetZhiFuActivity)
+
+                                        .withInt("NOW_TYPE", SetZhiFuActivity.SET_PASSWORD)
+
+                                        .navigation();
+
+                            } else {
+
+                                showToast(result.getMsg());
+
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onError(String e) {
+
+                        }
+                    });
+
+
         } else if (i == R.id.lin_update) {
 
 

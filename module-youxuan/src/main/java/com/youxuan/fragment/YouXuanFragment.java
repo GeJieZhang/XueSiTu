@@ -3,6 +3,7 @@ package com.youxuan.fragment;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -11,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,12 +21,10 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
-import com.lib.app.FragmentUtils;
 import com.lib.bean.CustomData;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.utils.status_bar.QMUI.QMUIDisplayHelper;
-import com.lib.fastkit.utils.system.SystemUtil;
 import com.lib.fastkit.views.recyclerview.tool.MyLinearLayoutManager;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.fastkit.views.spring_refresh.container.DefaultFooter;
@@ -51,6 +49,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 @Route(path = ARouterPathUtils.YouXuan_YouXuanFragment)
 public class YouXuanFragment extends BaseAppFragment {
@@ -95,7 +94,7 @@ public class YouXuanFragment extends BaseAppFragment {
     private int lastPosition = 0;
     private int lastPosition2 = 0;
     //private String schoolList[] = {"小学", "初中", "高中"};
-
+    public final int CUT_TIME = 60000;
     private List<YouXuanBean.ObjBean.StageBean> schoolList = new ArrayList<>();
 
     @Override
@@ -108,6 +107,9 @@ public class YouXuanFragment extends BaseAppFragment {
 
     }
 
+
+    private YouXuanBean youXuanBeans;
+
     private void initData() {
         HttpUtils.with(getActivity())
                 .post()
@@ -117,6 +119,8 @@ public class YouXuanFragment extends BaseAppFragment {
                     public void onSuccess(YouXuanBean youXuanBean) {
 
                         if (youXuanBean.getCode() == CodeUtil.CODE_200) {
+
+                            youXuanBeans = youXuanBean;
                             //设置Banner
                             setBannerData(youXuanBean);
 
@@ -150,6 +154,8 @@ public class YouXuanFragment extends BaseAppFragment {
         schoolList.addAll(youXuanBean.getObj().getStage());
 
         initBottomStageViewPager();
+        handler.removeCallbacks(cutTimeRunnable);
+        handler.postDelayed(cutTimeRunnable, CUT_TIME);
     }
 
     private void setWanfuData(YouXuanBean youXuanBean) {
@@ -215,9 +221,6 @@ public class YouXuanFragment extends BaseAppFragment {
         //一对一
         initOtO();
 
-        //多人精品互动课
-
-        ///initBottomStageViewPager();
 
     }
 
@@ -310,6 +313,40 @@ public class YouXuanFragment extends BaseAppFragment {
     //-------------------------------------------------------------------------------------1对1互动课
     private List<YouXuanBean.ObjBean.OtoCourseBean> otoList = new ArrayList<>();
 
+
+    @OnClick({R2.id.iv_more1, R2.id.iv_more2, R2.id.iv_more3})
+    public void onViewClicked(View view) {
+        int i = view.getId();
+        if (i == R.id.iv_more1) {
+
+            if (youXuanBeans != null) {
+                String url = youXuanBeans.getObj().getLink().getEc_click_page();
+
+                ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+                        .withString("urlPath", url)
+                        .navigation();
+            }
+
+        } else if (i == R.id.iv_more2) {
+            if (youXuanBeans != null) {
+                String url = youXuanBeans.getObj().getLink().getOto_click_page();
+                ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+                        .withString("urlPath", url)
+                        .navigation();
+
+            }
+
+        } else if (i == R.id.iv_more3) {
+            if (youXuanBeans != null) {
+                String url = youXuanBeans.getObj().getLink().getOtm_more_course();
+                ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+                        .withString("urlPath", url)
+                        .navigation();
+
+            }
+        }
+    }
+
     class HomeAdapter extends BaseAdapter<YouXuanBean.ObjBean.OtoCourseBean> {
 
 
@@ -328,15 +365,26 @@ public class YouXuanFragment extends BaseAppFragment {
             holder.setText(R.id.tv_name, mData.get(position).getName());
             holder.setText(R.id.tv_remark, mData.get(position).getRemark());
 
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    //跳转一对一详情
+                    ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+                            .withString("urlPath", mData.get(position).getLink_detail())
+                            .navigation();
+
+                }
+            });
+
 
             holder.getView(R.id.btn_oto).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    //跳转一对一详情
 
-                    ARouter.getInstance().build(ARouterPathUtils.YouXuan_CompanyClassActivity)
-                            .withString("urlPath", mData.get(position).getLink())
+                    ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+                            .withString("urlPath", mData.get(position).getLink_evaluation())
                             .navigation();
 
                 }
@@ -384,7 +432,7 @@ public class YouXuanFragment extends BaseAppFragment {
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ARouter.getInstance().build(ARouterPathUtils.YouXuan_CompanyClassActivity)
+                    ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
                             .withString("urlPath", mData.get(position).getLink())
                             .navigation();
                 }
@@ -397,12 +445,13 @@ public class YouXuanFragment extends BaseAppFragment {
 
     private DemandAdapter mDemandAdapter;
 
+
     private void initBottomStageViewPager() {
         lastPosition2 = 0;
         //下方ViewPager
         fragments.clear();
         for (YouXuanBean.ObjBean.StageBean stageBean : schoolList) {
-           // fragments.add(new SchoolFragment(stageBean.getCourse()));
+            fragments.add(new SchoolFragment(stageBean.getCourse()));
         }
 
 
@@ -568,4 +617,42 @@ public class YouXuanFragment extends BaseAppFragment {
     }
 
 
+    private Handler handler = new Handler();
+
+
+    private Runnable cutTimeRunnable = new Runnable() {
+        @Override
+        public void run() {
+
+            for (Fragment fragment : fragments) {
+
+                SchoolFragment schoolFragment = (SchoolFragment) fragment;
+                schoolFragment.updateRemainingTime();
+            }
+
+
+            showLog("刷新剩余时间");
+            handler.postDelayed(cutTimeRunnable, CUT_TIME);
+
+        }
+    };
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (youXuanBeans != null) {
+
+            handler.postDelayed(cutTimeRunnable, 200);
+        }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        handler.removeCallbacks(cutTimeRunnable);
+    }
 }

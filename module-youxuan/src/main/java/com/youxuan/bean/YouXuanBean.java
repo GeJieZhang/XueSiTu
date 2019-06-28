@@ -7,7 +7,7 @@ public class YouXuanBean {
 
     /**
      * code : 200
-     * obj : {"evening_course":[{"id":14,"name":"啦啦啦","start_date":"00:00","end_date":"00:00","icon":"http://ps70o9d2f.bkt.clouddn.com/Fqc1z6pvib-GTJvGK5iq7fsOJKB1","subject_id":1,"link":"http://192.168.2.113/index.html?id=14&title=%E5%95%A6%E5%95%A6%E5%95%A6"},{"id":17,"name":"二年级数学","start_date":"19:00","end_date":"20:00","icon":"http://ps70o9d2f.bkt.clouddn.com/FiiGrcUHIRoOF12XG4z9sOnckqlj","subject_id":2,"link":"http://192.168.2.113/index.html?id=17&title=%E4%BA%8C%E5%B9%B4%E7%BA%A7%E6%95%B0%E5%AD%A6"},{"id":18,"name":"三年级英语","start_date":"20:00","end_date":"22:00","icon":"http://ps70o9d2f.bkt.clouddn.com/Fqc1z6pvib-GTJvGK5iq7fsOJKB1","subject_id":3,"link":"http://192.168.2.113/index.html?id=18&title=%E4%B8%89%E5%B9%B4%E7%BA%A7%E8%8B%B1%E8%AF%AD"},{"id":19,"name":"一年级语文","start_date":"08:00","end_date":"09:00","icon":"http://ps70o9d2f.bkt.clouddn.com/FiiGrcUHIRoOF12XG4z9sOnckqlj","subject_id":1,"link":"http://192.168.2.113/index.html?id=19&title=%E4%B8%80%E5%B9%B4%E7%BA%A7%E8%AF%AD%E6%96%87"}],"stage":[{"stage_id":1,"name":"小学","course":[{"teacher_name":"老王","teacher_id":62,"teacher_photo_url":"http://ps70o9d2f.bkt.clouddn.com/FscPYo_fSZ6zHz1ExL6ONLe9l1jy","course_id":12,"course_name":"测试3","total_class":20,"price":20,"grade_stage_id":1,"remaining":20,"course_link":"http://192.168.2.113/index12.html?id=12&title=%E6%B5%8B%E8%AF%953","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B"},{"teacher_name":"老王","teacher_id":62,"teacher_photo_url":"http://ps70o9d2f.bkt.clouddn.com/FscPYo_fSZ6zHz1ExL6ONLe9l1jy","course_id":13,"course_name":"测试43333","total_class":110,"price":50,"grade_stage_id":1,"r_teacher_id_one":"68","r_teacher_name_one":"李老师","r_teacher_photo_url_one":"http://ps70o9d2f.bkt.clouddn.com/FscPYo_fSZ6zHz1ExL6ONLe9l1jy","r_teacher_id_two":"68","r_teacher_name_two":"李老师","r_teacher_photo_url_two":"http://ps70o9d2f.bkt.clouddn.com/FscPYo_fSZ6zHz1ExL6ONLe9l1jy","remaining":200,"course_link":"http://192.168.2.113/index12.html?id=13&title=%E6%B5%8B%E8%AF%9543333","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B","teacher_link_one":"http://192.168.2.113/index11.html?id=68&title=%E6%9D%8E%E8%80%81%E5%B8%88","teacher_link_two":"http://192.168.2.113/index11.html?id=68&title=%E6%9D%8E%E8%80%81%E5%B8%88"},{"teacher_name":"老王","teacher_id":62,"teacher_photo_url":"http://ps70o9d2f.bkt.clouddn.com/FscPYo_fSZ6zHz1ExL6ONLe9l1jy","course_id":32,"course_name":"三年级语文","total_class":120,"price":20,"grade_stage_id":1,"remaining":30,"course_link":"http://192.168.2.113/index12.html?id=32&title=%E4%B8%89%E5%B9%B4%E7%BA%A7%E8%AF%AD%E6%96%87","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B"},{"teacher_name":"老王","teacher_id":62,"teacher_photo_url":"http://ps70o9d2f.bkt.clouddn.com/FscPYo_fSZ6zHz1ExL6ONLe9l1jy","course_id":33,"course_name":"三年级数学","total_class":100,"price":20,"grade_stage_id":1,"r_teacher_id_one":"30","r_teacher_name_one":"SiterZzz","r_teacher_photo_url_one":"http://ps70o9d2f.bkt.clouddn.com/Fpg3xemgW_QfrY7zS9UzDHN8hu_5","remaining":20,"course_link":"http://192.168.2.113/index12.html?id=33&title=%E4%B8%89%E5%B9%B4%E7%BA%A7%E6%95%B0%E5%AD%A6","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B","teacher_link_one":"http://192.168.2.113/index11.html?id=30&title=SiterZzz"}]},{"stage_id":2,"name":"初中","course":[]},{"stage_id":3,"name":"高中","course":[]}],"link":{"ec_click_page":"http://192.168.2.113/index7.html","oto_click_page":"http://192.168.2.113/index3.html","otm_more_course":"http://192.168.2.113/index6.html"},"carousel":[{"id":23,"type":1,"group":"OPTIMAL_CAROUSEL","code":"","text":"","hash":"http://ps70o9d2f.bkt.clouddn.com/FjGvXI8Y_n82x1M_3IedA_-7DMBo","remark":"优选首页轮播图"},{"id":24,"type":1,"group":"OPTIMAL_CAROUSEL","code":"","text":"","hash":"http://ps70o9d2f.bkt.clouddn.com/FhWC0Sd-Dxpj9XITTy1p_ChxUp9S","remark":"优选首页轮播图"},{"id":25,"type":1,"group":"OPTIMAL_CAROUSEL","code":"","text":"","hash":"http://ps70o9d2f.bkt.clouddn.com/FuVKASAQPX6riKk7G1JAzLsc5jjM","remark":"优选首页轮播图"}],"oto_course":[{"course_id":1,"name":"初升高衔接全面成长计划","remark":"帮助孩子全面掌握知识结构","link":"http://192.168.2.113/index4.html"},{"course_id":2,"name":"小升初衔接全面成长计划","remark":"帮助孩子全面掌握知识结构","link":"http://192.168.2.113/index4.html"}]}
+     * obj : {"evening_course":[{"id":14,"name":"啦啦啦","start_date":"00:00","end_date":"00:00","icon":"http://ps70o9d2f.bkt.clouddn.com/Fqc1z6pvib-GTJvGK5iq7fsOJKB1","subject_id":1,"link":"http://192.168.2.113/index.html?id=14&title=%E5%95%A6%E5%95%A6%E5%95%A6"},{"id":17,"name":"二年级数学","start_date":"19:00","end_date":"20:00","icon":"http://ps70o9d2f.bkt.clouddn.com/FiiGrcUHIRoOF12XG4z9sOnckqlj","subject_id":2,"link":"http://192.168.2.113/index.html?id=17&title=%E4%BA%8C%E5%B9%B4%E7%BA%A7%E6%95%B0%E5%AD%A6"},{"id":18,"name":"三年级英语","start_date":"20:00","end_date":"22:00","icon":"http://ps70o9d2f.bkt.clouddn.com/Fqc1z6pvib-GTJvGK5iq7fsOJKB1","subject_id":3,"link":"http://192.168.2.113/index.html?id=18&title=%E4%B8%89%E5%B9%B4%E7%BA%A7%E8%8B%B1%E8%AF%AD"},{"id":19,"name":"一年级语文","start_date":"08:00","end_date":"09:00","icon":"http://ps70o9d2f.bkt.clouddn.com/FiiGrcUHIRoOF12XG4z9sOnckqlj","subject_id":1,"link":"http://192.168.2.113/index.html?id=19&title=%E4%B8%80%E5%B9%B4%E7%BA%A7%E8%AF%AD%E6%96%87"}],"stage":[{"stage_id":1,"name":"小学","course":[{"course_id":12,"course_name":"测试3","total_class":20,"price":20,"cutoff_date":"2019-06-03","course_type":"","grade_stage_id":1,"remaining":20,"course_link":"http://192.168.2.113/index12.html?id=12&title=%E6%B5%8B%E8%AF%953","teacher_info":[{"teacher_name":"老王","teacher_id":62,"stage_name":"小学老师","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B"}]},{"course_id":13,"course_name":"测试43333","total_class":110,"price":50,"cutoff_date":"2019-06-03","course_type":0,"grade_stage_id":1,"remaining":200,"course_link":"http://192.168.2.113/index12.html?id=13&title=%E6%B5%8B%E8%AF%9543333","teacher_info":[{"teacher_name":"老王","teacher_id":62,"stage_name":"小学老师","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B"},{"teacher_name":"李老师","teacher_id":"68","stage_name":"小学老师","teacher_link":"http://192.168.2.113/index11.html?id=68&title=%E6%9D%8E%E8%80%81%E5%B8%88"}]},{"course_id":32,"course_name":"三年级语文","total_class":120,"price":20,"cutoff_date":"2019-06-04","course_type":1,"grade_stage_id":1,"remaining":30,"course_link":"http://192.168.2.113/index12.html?id=32&title=%E4%B8%89%E5%B9%B4%E7%BA%A7%E8%AF%AD%E6%96%87","teacher_info":[{"teacher_name":"老王","teacher_id":62,"stage_name":"小学老师","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B"}]},{"course_id":33,"course_name":"三年级数学","total_class":100,"price":20,"cutoff_date":"2019-06-25","course_type":1,"grade_stage_id":1,"remaining":20,"course_link":"http://192.168.2.113/index12.html?id=33&title=%E4%B8%89%E5%B9%B4%E7%BA%A7%E6%95%B0%E5%AD%A6","teacher_info":[{"teacher_name":"教师13540354597","teacher_id":29,"stage_name":"小学老师","teacher_link":"http://192.168.2.113/index11.html?id=29&title=%E6%95%99%E5%B8%8813540354597"}]}]},{"stage_id":2,"name":"初中","course":[]},{"stage_id":3,"name":"高中","course":[]}],"link":{"ec_click_page":"http://192.168.2.113/index7.html","oto_click_page":"http://192.168.2.113/index3.html","otm_more_course":"http://192.168.2.113/index6.html"},"carousel":[{"id":23,"type":1,"group":"OPTIMAL_CAROUSEL","code":"","text":"","hash":"http://ps70o9d2f.bkt.clouddn.com/FjGvXI8Y_n82x1M_3IedA_-7DMBo","remark":"优选首页轮播图"},{"id":24,"type":1,"group":"OPTIMAL_CAROUSEL","code":"","text":"","hash":"http://ps70o9d2f.bkt.clouddn.com/FhWC0Sd-Dxpj9XITTy1p_ChxUp9S","remark":"优选首页轮播图"},{"id":25,"type":1,"group":"OPTIMAL_CAROUSEL","code":"","text":"","hash":"http://ps70o9d2f.bkt.clouddn.com/FuVKASAQPX6riKk7G1JAzLsc5jjM","remark":"优选首页轮播图"}],"oto_course":[{"course_id":1,"name":"初升高衔接全面成长计划","remark":"帮助孩子全面掌握知识结构","link_evaluation":"http://192.168.2.113/index4.html","link_detail":"http://192.168.2.113/index3.html&title=%E5%88%9D%E5%8D%87%E9%AB%98%E8%A1%94%E6%8E%A5%E5%85%A8%E9%9D%A2%E6%88%90%E9%95%BF%E8%AE%A1%E5%88%92"},{"course_id":2,"name":"小升初衔接全面成长计划","remark":"帮助孩子全面掌握知识结构","link_evaluation":"http://192.168.2.113/index4.html","link_detail":"http://192.168.2.113/index3.html&title=%E5%B0%8F%E5%8D%87%E5%88%9D%E8%A1%94%E6%8E%A5%E5%85%A8%E9%9D%A2%E6%88%90%E9%95%BF%E8%AE%A1%E5%88%92"}]}
      * msg : 请求成功
      * seccess : true
      */
@@ -52,10 +52,10 @@ public class YouXuanBean {
     public static class ObjBean {
         /**
          * evening_course : [{"id":14,"name":"啦啦啦","start_date":"00:00","end_date":"00:00","icon":"http://ps70o9d2f.bkt.clouddn.com/Fqc1z6pvib-GTJvGK5iq7fsOJKB1","subject_id":1,"link":"http://192.168.2.113/index.html?id=14&title=%E5%95%A6%E5%95%A6%E5%95%A6"},{"id":17,"name":"二年级数学","start_date":"19:00","end_date":"20:00","icon":"http://ps70o9d2f.bkt.clouddn.com/FiiGrcUHIRoOF12XG4z9sOnckqlj","subject_id":2,"link":"http://192.168.2.113/index.html?id=17&title=%E4%BA%8C%E5%B9%B4%E7%BA%A7%E6%95%B0%E5%AD%A6"},{"id":18,"name":"三年级英语","start_date":"20:00","end_date":"22:00","icon":"http://ps70o9d2f.bkt.clouddn.com/Fqc1z6pvib-GTJvGK5iq7fsOJKB1","subject_id":3,"link":"http://192.168.2.113/index.html?id=18&title=%E4%B8%89%E5%B9%B4%E7%BA%A7%E8%8B%B1%E8%AF%AD"},{"id":19,"name":"一年级语文","start_date":"08:00","end_date":"09:00","icon":"http://ps70o9d2f.bkt.clouddn.com/FiiGrcUHIRoOF12XG4z9sOnckqlj","subject_id":1,"link":"http://192.168.2.113/index.html?id=19&title=%E4%B8%80%E5%B9%B4%E7%BA%A7%E8%AF%AD%E6%96%87"}]
-         * stage : [{"stage_id":1,"name":"小学","course":[{"teacher_name":"老王","teacher_id":62,"teacher_photo_url":"http://ps70o9d2f.bkt.clouddn.com/FscPYo_fSZ6zHz1ExL6ONLe9l1jy","course_id":12,"course_name":"测试3","total_class":20,"price":20,"grade_stage_id":1,"remaining":20,"course_link":"http://192.168.2.113/index12.html?id=12&title=%E6%B5%8B%E8%AF%953","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B"},{"teacher_name":"老王","teacher_id":62,"teacher_photo_url":"http://ps70o9d2f.bkt.clouddn.com/FscPYo_fSZ6zHz1ExL6ONLe9l1jy","course_id":13,"course_name":"测试43333","total_class":110,"price":50,"grade_stage_id":1,"r_teacher_id_one":"68","r_teacher_name_one":"李老师","r_teacher_photo_url_one":"http://ps70o9d2f.bkt.clouddn.com/FscPYo_fSZ6zHz1ExL6ONLe9l1jy","r_teacher_id_two":"68","r_teacher_name_two":"李老师","r_teacher_photo_url_two":"http://ps70o9d2f.bkt.clouddn.com/FscPYo_fSZ6zHz1ExL6ONLe9l1jy","remaining":200,"course_link":"http://192.168.2.113/index12.html?id=13&title=%E6%B5%8B%E8%AF%9543333","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B","teacher_link_one":"http://192.168.2.113/index11.html?id=68&title=%E6%9D%8E%E8%80%81%E5%B8%88","teacher_link_two":"http://192.168.2.113/index11.html?id=68&title=%E6%9D%8E%E8%80%81%E5%B8%88"},{"teacher_name":"老王","teacher_id":62,"teacher_photo_url":"http://ps70o9d2f.bkt.clouddn.com/FscPYo_fSZ6zHz1ExL6ONLe9l1jy","course_id":32,"course_name":"三年级语文","total_class":120,"price":20,"grade_stage_id":1,"remaining":30,"course_link":"http://192.168.2.113/index12.html?id=32&title=%E4%B8%89%E5%B9%B4%E7%BA%A7%E8%AF%AD%E6%96%87","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B"},{"teacher_name":"老王","teacher_id":62,"teacher_photo_url":"http://ps70o9d2f.bkt.clouddn.com/FscPYo_fSZ6zHz1ExL6ONLe9l1jy","course_id":33,"course_name":"三年级数学","total_class":100,"price":20,"grade_stage_id":1,"r_teacher_id_one":"30","r_teacher_name_one":"SiterZzz","r_teacher_photo_url_one":"http://ps70o9d2f.bkt.clouddn.com/Fpg3xemgW_QfrY7zS9UzDHN8hu_5","remaining":20,"course_link":"http://192.168.2.113/index12.html?id=33&title=%E4%B8%89%E5%B9%B4%E7%BA%A7%E6%95%B0%E5%AD%A6","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B","teacher_link_one":"http://192.168.2.113/index11.html?id=30&title=SiterZzz"}]},{"stage_id":2,"name":"初中","course":[]},{"stage_id":3,"name":"高中","course":[]}]
+         * stage : [{"stage_id":1,"name":"小学","course":[{"course_id":12,"course_name":"测试3","total_class":20,"price":20,"cutoff_date":"2019-06-03","course_type":"","grade_stage_id":1,"remaining":20,"course_link":"http://192.168.2.113/index12.html?id=12&title=%E6%B5%8B%E8%AF%953","teacher_info":[{"teacher_name":"老王","teacher_id":62,"stage_name":"小学老师","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B"}]},{"course_id":13,"course_name":"测试43333","total_class":110,"price":50,"cutoff_date":"2019-06-03","course_type":0,"grade_stage_id":1,"remaining":200,"course_link":"http://192.168.2.113/index12.html?id=13&title=%E6%B5%8B%E8%AF%9543333","teacher_info":[{"teacher_name":"老王","teacher_id":62,"stage_name":"小学老师","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B"},{"teacher_name":"李老师","teacher_id":"68","stage_name":"小学老师","teacher_link":"http://192.168.2.113/index11.html?id=68&title=%E6%9D%8E%E8%80%81%E5%B8%88"}]},{"course_id":32,"course_name":"三年级语文","total_class":120,"price":20,"cutoff_date":"2019-06-04","course_type":1,"grade_stage_id":1,"remaining":30,"course_link":"http://192.168.2.113/index12.html?id=32&title=%E4%B8%89%E5%B9%B4%E7%BA%A7%E8%AF%AD%E6%96%87","teacher_info":[{"teacher_name":"老王","teacher_id":62,"stage_name":"小学老师","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B"}]},{"course_id":33,"course_name":"三年级数学","total_class":100,"price":20,"cutoff_date":"2019-06-25","course_type":1,"grade_stage_id":1,"remaining":20,"course_link":"http://192.168.2.113/index12.html?id=33&title=%E4%B8%89%E5%B9%B4%E7%BA%A7%E6%95%B0%E5%AD%A6","teacher_info":[{"teacher_name":"教师13540354597","teacher_id":29,"stage_name":"小学老师","teacher_link":"http://192.168.2.113/index11.html?id=29&title=%E6%95%99%E5%B8%8813540354597"}]}]},{"stage_id":2,"name":"初中","course":[]},{"stage_id":3,"name":"高中","course":[]}]
          * link : {"ec_click_page":"http://192.168.2.113/index7.html","oto_click_page":"http://192.168.2.113/index3.html","otm_more_course":"http://192.168.2.113/index6.html"}
          * carousel : [{"id":23,"type":1,"group":"OPTIMAL_CAROUSEL","code":"","text":"","hash":"http://ps70o9d2f.bkt.clouddn.com/FjGvXI8Y_n82x1M_3IedA_-7DMBo","remark":"优选首页轮播图"},{"id":24,"type":1,"group":"OPTIMAL_CAROUSEL","code":"","text":"","hash":"http://ps70o9d2f.bkt.clouddn.com/FhWC0Sd-Dxpj9XITTy1p_ChxUp9S","remark":"优选首页轮播图"},{"id":25,"type":1,"group":"OPTIMAL_CAROUSEL","code":"","text":"","hash":"http://ps70o9d2f.bkt.clouddn.com/FuVKASAQPX6riKk7G1JAzLsc5jjM","remark":"优选首页轮播图"}]
-         * oto_course : [{"course_id":1,"name":"初升高衔接全面成长计划","remark":"帮助孩子全面掌握知识结构","link":"http://192.168.2.113/index4.html"},{"course_id":2,"name":"小升初衔接全面成长计划","remark":"帮助孩子全面掌握知识结构","link":"http://192.168.2.113/index4.html"}]
+         * oto_course : [{"course_id":1,"name":"初升高衔接全面成长计划","remark":"帮助孩子全面掌握知识结构","link_evaluation":"http://192.168.2.113/index4.html","link_detail":"http://192.168.2.113/index3.html&title=%E5%88%9D%E5%8D%87%E9%AB%98%E8%A1%94%E6%8E%A5%E5%85%A8%E9%9D%A2%E6%88%90%E9%95%BF%E8%AE%A1%E5%88%92"},{"course_id":2,"name":"小升初衔接全面成长计划","remark":"帮助孩子全面掌握知识结构","link_evaluation":"http://192.168.2.113/index4.html","link_detail":"http://192.168.2.113/index3.html&title=%E5%B0%8F%E5%8D%87%E5%88%9D%E8%A1%94%E6%8E%A5%E5%85%A8%E9%9D%A2%E6%88%90%E9%95%BF%E8%AE%A1%E5%88%92"}]
          */
 
         private LinkBean link;
@@ -220,7 +220,7 @@ public class YouXuanBean {
             /**
              * stage_id : 1
              * name : 小学
-             * course : [{"teacher_name":"老王","teacher_id":62,"teacher_photo_url":"http://ps70o9d2f.bkt.clouddn.com/FscPYo_fSZ6zHz1ExL6ONLe9l1jy","course_id":12,"course_name":"测试3","total_class":20,"price":20,"grade_stage_id":1,"remaining":20,"course_link":"http://192.168.2.113/index12.html?id=12&title=%E6%B5%8B%E8%AF%953","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B"},{"teacher_name":"老王","teacher_id":62,"teacher_photo_url":"http://ps70o9d2f.bkt.clouddn.com/FscPYo_fSZ6zHz1ExL6ONLe9l1jy","course_id":13,"course_name":"测试43333","total_class":110,"price":50,"grade_stage_id":1,"r_teacher_id_one":"68","r_teacher_name_one":"李老师","r_teacher_photo_url_one":"http://ps70o9d2f.bkt.clouddn.com/FscPYo_fSZ6zHz1ExL6ONLe9l1jy","r_teacher_id_two":"68","r_teacher_name_two":"李老师","r_teacher_photo_url_two":"http://ps70o9d2f.bkt.clouddn.com/FscPYo_fSZ6zHz1ExL6ONLe9l1jy","remaining":200,"course_link":"http://192.168.2.113/index12.html?id=13&title=%E6%B5%8B%E8%AF%9543333","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B","teacher_link_one":"http://192.168.2.113/index11.html?id=68&title=%E6%9D%8E%E8%80%81%E5%B8%88","teacher_link_two":"http://192.168.2.113/index11.html?id=68&title=%E6%9D%8E%E8%80%81%E5%B8%88"},{"teacher_name":"老王","teacher_id":62,"teacher_photo_url":"http://ps70o9d2f.bkt.clouddn.com/FscPYo_fSZ6zHz1ExL6ONLe9l1jy","course_id":32,"course_name":"三年级语文","total_class":120,"price":20,"grade_stage_id":1,"remaining":30,"course_link":"http://192.168.2.113/index12.html?id=32&title=%E4%B8%89%E5%B9%B4%E7%BA%A7%E8%AF%AD%E6%96%87","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B"},{"teacher_name":"老王","teacher_id":62,"teacher_photo_url":"http://ps70o9d2f.bkt.clouddn.com/FscPYo_fSZ6zHz1ExL6ONLe9l1jy","course_id":33,"course_name":"三年级数学","total_class":100,"price":20,"grade_stage_id":1,"r_teacher_id_one":"30","r_teacher_name_one":"SiterZzz","r_teacher_photo_url_one":"http://ps70o9d2f.bkt.clouddn.com/Fpg3xemgW_QfrY7zS9UzDHN8hu_5","remaining":20,"course_link":"http://192.168.2.113/index12.html?id=33&title=%E4%B8%89%E5%B9%B4%E7%BA%A7%E6%95%B0%E5%AD%A6","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B","teacher_link_one":"http://192.168.2.113/index11.html?id=30&title=SiterZzz"}]
+             * course : [{"course_id":12,"course_name":"测试3","total_class":20,"price":20,"cutoff_date":"2019-06-03","course_type":"","grade_stage_id":1,"remaining":20,"course_link":"http://192.168.2.113/index12.html?id=12&title=%E6%B5%8B%E8%AF%953","teacher_info":[{"teacher_name":"老王","teacher_id":62,"stage_name":"小学老师","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B"}]},{"course_id":13,"course_name":"测试43333","total_class":110,"price":50,"cutoff_date":"2019-06-03","course_type":0,"grade_stage_id":1,"remaining":200,"course_link":"http://192.168.2.113/index12.html?id=13&title=%E6%B5%8B%E8%AF%9543333","teacher_info":[{"teacher_name":"老王","teacher_id":62,"stage_name":"小学老师","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B"},{"teacher_name":"李老师","teacher_id":"68","stage_name":"小学老师","teacher_link":"http://192.168.2.113/index11.html?id=68&title=%E6%9D%8E%E8%80%81%E5%B8%88"}]},{"course_id":32,"course_name":"三年级语文","total_class":120,"price":20,"cutoff_date":"2019-06-04","course_type":1,"grade_stage_id":1,"remaining":30,"course_link":"http://192.168.2.113/index12.html?id=32&title=%E4%B8%89%E5%B9%B4%E7%BA%A7%E8%AF%AD%E6%96%87","teacher_info":[{"teacher_name":"老王","teacher_id":62,"stage_name":"小学老师","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B"}]},{"course_id":33,"course_name":"三年级数学","total_class":100,"price":20,"cutoff_date":"2019-06-25","course_type":1,"grade_stage_id":1,"remaining":20,"course_link":"http://192.168.2.113/index12.html?id=33&title=%E4%B8%89%E5%B9%B4%E7%BA%A7%E6%95%B0%E5%AD%A6","teacher_info":[{"teacher_name":"教师13540354597","teacher_id":29,"stage_name":"小学老师","teacher_link":"http://192.168.2.113/index11.html?id=29&title=%E6%95%99%E5%B8%8813540354597"}]}]
              */
 
             private int stage_id;
@@ -253,70 +253,39 @@ public class YouXuanBean {
 
             public static class CourseBean {
                 /**
-                 * teacher_name : 老王
-                 * teacher_id : 62
-                 * teacher_photo_url : http://ps70o9d2f.bkt.clouddn.com/FscPYo_fSZ6zHz1ExL6ONLe9l1jy
                  * course_id : 12
                  * course_name : 测试3
                  * total_class : 20
                  * price : 20
+                 * cutoff_date : 2019-06-03
+                 * course_type :
                  * grade_stage_id : 1
                  * remaining : 20
                  * course_link : http://192.168.2.113/index12.html?id=12&title=%E6%B5%8B%E8%AF%953
-                 * teacher_link : http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B
-                 * r_teacher_id_one : 68
-                 * r_teacher_name_one : 李老师
-                 * r_teacher_photo_url_one : http://ps70o9d2f.bkt.clouddn.com/FscPYo_fSZ6zHz1ExL6ONLe9l1jy
-                 * r_teacher_id_two : 68
-                 * r_teacher_name_two : 李老师
-                 * r_teacher_photo_url_two : http://ps70o9d2f.bkt.clouddn.com/FscPYo_fSZ6zHz1ExL6ONLe9l1jy
-                 * teacher_link_one : http://192.168.2.113/index11.html?id=68&title=%E6%9D%8E%E8%80%81%E5%B8%88
-                 * teacher_link_two : http://192.168.2.113/index11.html?id=68&title=%E6%9D%8E%E8%80%81%E5%B8%88
+                 * teacher_info : [{"teacher_name":"老王","teacher_id":62,"stage_name":"小学老师","teacher_link":"http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B"}]
                  */
 
-                private String teacher_name;
-                private int teacher_id;
-                private String teacher_photo_url;
                 private int course_id;
                 private String course_name;
                 private int total_class;
                 private int price;
+                private String cutoff_date;
+                private String course_type;
                 private int grade_stage_id;
                 private int remaining;
+
+                private String remainTime;
                 private String course_link;
-                private String teacher_link;
-                private String r_teacher_id_one;
-                private String r_teacher_name_one;
-                private String r_teacher_photo_url_one;
-                private String r_teacher_id_two;
-                private String r_teacher_name_two;
-                private String r_teacher_photo_url_two;
-                private String teacher_link_one;
-                private String teacher_link_two;
 
-                public String getTeacher_name() {
-                    return teacher_name;
+                public String getRemainTime() {
+                    return remainTime;
                 }
 
-                public void setTeacher_name(String teacher_name) {
-                    this.teacher_name = teacher_name;
+                public void setRemainTime(String remainTime) {
+                    this.remainTime = remainTime;
                 }
 
-                public int getTeacher_id() {
-                    return teacher_id;
-                }
-
-                public void setTeacher_id(int teacher_id) {
-                    this.teacher_id = teacher_id;
-                }
-
-                public String getTeacher_photo_url() {
-                    return teacher_photo_url;
-                }
-
-                public void setTeacher_photo_url(String teacher_photo_url) {
-                    this.teacher_photo_url = teacher_photo_url;
-                }
+                private List<TeacherInfoBean> teacher_info;
 
                 public int getCourse_id() {
                     return course_id;
@@ -350,6 +319,22 @@ public class YouXuanBean {
                     this.price = price;
                 }
 
+                public String getCutoff_date() {
+                    return cutoff_date;
+                }
+
+                public void setCutoff_date(String cutoff_date) {
+                    this.cutoff_date = cutoff_date;
+                }
+
+                public String getCourse_type() {
+                    return course_type;
+                }
+
+                public void setCourse_type(String course_type) {
+                    this.course_type = course_type;
+                }
+
                 public int getGrade_stage_id() {
                     return grade_stage_id;
                 }
@@ -374,76 +359,58 @@ public class YouXuanBean {
                     this.course_link = course_link;
                 }
 
-                public String getTeacher_link() {
-                    return teacher_link;
+                public List<TeacherInfoBean> getTeacher_info() {
+                    return teacher_info;
                 }
 
-                public void setTeacher_link(String teacher_link) {
-                    this.teacher_link = teacher_link;
+                public void setTeacher_info(List<TeacherInfoBean> teacher_info) {
+                    this.teacher_info = teacher_info;
                 }
 
-                public String getR_teacher_id_one() {
-                    return r_teacher_id_one;
-                }
+                public static class TeacherInfoBean {
+                    /**
+                     * teacher_name : 老王
+                     * teacher_id : 62
+                     * stage_name : 小学老师
+                     * teacher_link : http://192.168.2.113/index11.html?id=62&title=%E8%80%81%E7%8E%8B
+                     */
 
-                public void setR_teacher_id_one(String r_teacher_id_one) {
-                    this.r_teacher_id_one = r_teacher_id_one;
-                }
+                    private String teacher_name;
+                    private int teacher_id;
+                    private String stage_name;
+                    private String teacher_link;
 
-                public String getR_teacher_name_one() {
-                    return r_teacher_name_one;
-                }
+                    public String getTeacher_name() {
+                        return teacher_name;
+                    }
 
-                public void setR_teacher_name_one(String r_teacher_name_one) {
-                    this.r_teacher_name_one = r_teacher_name_one;
-                }
+                    public void setTeacher_name(String teacher_name) {
+                        this.teacher_name = teacher_name;
+                    }
 
-                public String getR_teacher_photo_url_one() {
-                    return r_teacher_photo_url_one;
-                }
+                    public int getTeacher_id() {
+                        return teacher_id;
+                    }
 
-                public void setR_teacher_photo_url_one(String r_teacher_photo_url_one) {
-                    this.r_teacher_photo_url_one = r_teacher_photo_url_one;
-                }
+                    public void setTeacher_id(int teacher_id) {
+                        this.teacher_id = teacher_id;
+                    }
 
-                public String getR_teacher_id_two() {
-                    return r_teacher_id_two;
-                }
+                    public String getStage_name() {
+                        return stage_name;
+                    }
 
-                public void setR_teacher_id_two(String r_teacher_id_two) {
-                    this.r_teacher_id_two = r_teacher_id_two;
-                }
+                    public void setStage_name(String stage_name) {
+                        this.stage_name = stage_name;
+                    }
 
-                public String getR_teacher_name_two() {
-                    return r_teacher_name_two;
-                }
+                    public String getTeacher_link() {
+                        return teacher_link;
+                    }
 
-                public void setR_teacher_name_two(String r_teacher_name_two) {
-                    this.r_teacher_name_two = r_teacher_name_two;
-                }
-
-                public String getR_teacher_photo_url_two() {
-                    return r_teacher_photo_url_two;
-                }
-
-                public void setR_teacher_photo_url_two(String r_teacher_photo_url_two) {
-                    this.r_teacher_photo_url_two = r_teacher_photo_url_two;
-                }
-
-                public String getTeacher_link_one() {
-                    return teacher_link_one;
-                }
-
-                public void setTeacher_link_one(String teacher_link_one) {
-                    this.teacher_link_one = teacher_link_one;
-                }
-
-                public String getTeacher_link_two() {
-                    return teacher_link_two;
-                }
-
-                public void setTeacher_link_two(String teacher_link_two) {
-                    this.teacher_link_two = teacher_link_two;
+                    public void setTeacher_link(String teacher_link) {
+                        this.teacher_link = teacher_link;
+                    }
                 }
             }
         }
@@ -529,13 +496,15 @@ public class YouXuanBean {
              * course_id : 1
              * name : 初升高衔接全面成长计划
              * remark : 帮助孩子全面掌握知识结构
-             * link : http://192.168.2.113/index4.html
+             * link_evaluation : http://192.168.2.113/index4.html
+             * link_detail : http://192.168.2.113/index3.html&title=%E5%88%9D%E5%8D%87%E9%AB%98%E8%A1%94%E6%8E%A5%E5%85%A8%E9%9D%A2%E6%88%90%E9%95%BF%E8%AE%A1%E5%88%92
              */
 
             private int course_id;
             private String name;
             private String remark;
-            private String link;
+            private String link_evaluation;
+            private String link_detail;
 
             public int getCourse_id() {
                 return course_id;
@@ -561,12 +530,20 @@ public class YouXuanBean {
                 this.remark = remark;
             }
 
-            public String getLink() {
-                return link;
+            public String getLink_evaluation() {
+                return link_evaluation;
             }
 
-            public void setLink(String link) {
-                this.link = link;
+            public void setLink_evaluation(String link_evaluation) {
+                this.link_evaluation = link_evaluation;
+            }
+
+            public String getLink_detail() {
+                return link_detail;
+            }
+
+            public void setLink_detail(String link_detail) {
+                this.link_detail = link_detail;
             }
         }
     }

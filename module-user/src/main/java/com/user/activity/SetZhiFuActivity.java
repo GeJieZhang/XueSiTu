@@ -3,16 +3,24 @@ package com.user.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.lib.app.ARouterPathUtils;
+import com.lib.app.CodeUtil;
+import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
+import com.lib.fastkit.http.ok.HttpUtils;
+import com.lib.fastkit.utils.share.tool.StringUtil;
+import com.lib.fastkit.utils.string_deal.regex.RegexUtils;
 import com.lib.fastkit.utils.timer_countdown.CountDownTimer;
+import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.view.navigationbar.NomalNavigationBar;
 import com.user.R;
 import com.user.R2;
+import com.user.bean.BaseBean;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,9 +30,19 @@ import butterknife.OnClick;
 public class SetZhiFuActivity extends BaseAppActivity {
 
 
-    private final int SET_PASSWORD = 1;
-    private final int CHANGE_PASSWORD = 2;
-    private final int FORGET_PASSWORD = 3;
+    public static final int SET_PASSWORD = 1;
+    public static final int CHANGE_PASSWORD = 2;
+    public static final int FORGET_PASSWORD = 3;
+    @BindView(R2.id.et_phone)
+    EditText etPhone;
+    @BindView(R2.id.et_code)
+    EditText etCode;
+    @BindView(R2.id.et_old_password)
+    EditText etOldPassword;
+    @BindView(R2.id.et_new_password)
+    EditText etNewPassword;
+    @BindView(R2.id.et_again_password)
+    EditText etAgainPassword;
 
     private int NOW_TYPE = 1;
     @BindView(R2.id.lin_phone)
@@ -45,9 +63,15 @@ public class SetZhiFuActivity extends BaseAppActivity {
     Button btnLogin;
     private NomalNavigationBar navigationBar;
 
+    private String token;
+
     @Override
     protected void onCreateView() {
-        NOW_TYPE = FORGET_PASSWORD;
+        NOW_TYPE = getIntent().getIntExtra("NOW_TYPE", SET_PASSWORD);
+
+        token = SharedPreferenceManager.getInstance(this).getUserCache().getUserToken();
+
+
         initTitleAndView();
 
 
@@ -128,7 +152,6 @@ public class SetZhiFuActivity extends BaseAppActivity {
         navigationBar = new
                 NomalNavigationBar.Builder(this)
                 .setTitle("设置密码")
-                .setRightIcon(R.mipmap.nav_share)
                 .setRightClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -181,12 +204,160 @@ public class SetZhiFuActivity extends BaseAppActivity {
 
         } else if (i == R.id.btn_login) {
 
+
+            switch (NOW_TYPE) {
+                case SET_PASSWORD: {
+
+                    requestSetPassword();
+
+
+                    break;
+                }
+
+                case CHANGE_PASSWORD: {
+
+                    requestChangePassword();
+                    break;
+                }
+
+                case FORGET_PASSWORD: {
+
+
+                    break;
+                }
+
+
+            }
+
+
         }
     }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         timer.cancel();
+    }
+
+
+    //--------------------------------------------------------------------------------设置支付密码
+
+    private void requestSetPassword() {
+        String newPassword = etNewPassword.getText().toString().trim();
+        String againPassword = etAgainPassword.getText().toString().trim();
+
+
+        if (newPassword.equals("")) {
+            showToast("请输入密码!");
+
+            return;
+        }
+
+        if (againPassword.equals("")) {
+            showToast("请再次输入密码!");
+            return;
+        }
+
+        if (!newPassword.equals(againPassword)) {
+            showToast("两次密码不一致请检查密码!");
+            return;
+        }
+
+        if (!RegexUtils.checkPassWord(newPassword)) {
+            showToast("密码必须是6位的数字、字符组合!");
+
+            return;
+        }
+
+
+        HttpUtils.with(this).post()
+                .addParam("requestType", "ACCOUNT_SET_PASSWORD")
+                .addParam("token", token)
+                .addParam("pay_password", newPassword)
+                .execute(new HttpDialogCallBack<BaseBean>() {
+                    @Override
+                    public void onSuccess(BaseBean result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+
+                            showToast(result.getMsg());
+                            finish();
+                        } else {
+                            showToast(result.getMsg());
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
+    }
+
+
+    //--------------------------------------------------------------------------------修改支付密码
+
+
+    private void requestChangePassword() {
+
+        String oldPassword = etOldPassword.getText().toString().trim();
+        String newPassword = etNewPassword.getText().toString().trim();
+        String againPassword = etAgainPassword.getText().toString().trim();
+
+        if (oldPassword.equals("")) {
+            showToast("请输入原密码!");
+
+            return;
+        }
+        if (newPassword.equals("")) {
+            showToast("请输入密码!");
+
+            return;
+        }
+
+        if (againPassword.equals("")) {
+            showToast("请再次输入密码!");
+            return;
+        }
+
+        if (!newPassword.equals(againPassword)) {
+            showToast("两次密码不一致请检查密码!");
+            return;
+        }
+
+        if (!RegexUtils.checkPassWord(newPassword)) {
+            showToast("密码必须是6位的数字、字符组合!");
+
+            return;
+        }
+
+
+        HttpUtils.with(this).post()
+                .addParam("requestType", "ACCOUNT_UPDATE_PASSWORD")
+                .addParam("token", token)
+                .addParam("pay_password", oldPassword)
+
+                .addParam("new_pay_password", newPassword)
+                .execute(new HttpDialogCallBack<BaseBean>() {
+                    @Override
+                    public void onSuccess(BaseBean result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+
+                            showToast(result.getMsg());
+                            finish();
+                        } else {
+                            showToast(result.getMsg());
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
     }
 }

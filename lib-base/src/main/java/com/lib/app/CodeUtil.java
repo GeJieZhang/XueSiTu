@@ -11,4 +11,9 @@ public class CodeUtil {
      * 用户不存在
      */
     public static final int CODE_402 = 402;
+
+    /**
+     * 未设置支付密码
+     */
+    public static final int CODE_407 = 407;
 }

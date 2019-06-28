@@ -411,58 +411,68 @@ public class MainActivity extends BaseAppActivity {
     }
 
     private void menuHide() {
-        linPersonal.setVisibility(View.GONE);
+        if (linPersonal.getVisibility() == View.VISIBLE) {
+
+            linPersonal.setVisibility(View.GONE);
+
+            AnimationSet animationSet = new AnimationSet(true);
+            animationSet.addAnimation(AnimationUtil.leftToView());
+            animationSet.addAnimation(AnimationUtil.Alpha1To0());
+            linPersonal.startAnimation(animationSet);
+
+            animationSet.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    linPersonal.setBackgroundResource(R.color.alpha_black100);
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
 
 
-        AnimationSet animationSet = new AnimationSet(true);
-        animationSet.addAnimation(AnimationUtil.leftToView());
-        animationSet.addAnimation(AnimationUtil.Alpha1To0());
-        linPersonal.startAnimation(animationSet);
+                }
 
-        animationSet.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                linPersonal.setBackgroundResource(R.color.alpha_black100);
-            }
+                @Override
+                public void onAnimationRepeat(Animation animation) {
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
+                }
+            });
+        }
 
 
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
     }
 
     private void menuShow() {
-        linPersonal.setVisibility(View.VISIBLE);
+
+        if (linPersonal.getVisibility() == View.GONE) {
 
 
-        AnimationSet animationSet = new AnimationSet(true);
-        animationSet.addAnimation(AnimationUtil.rightToView());
-        animationSet.addAnimation(AnimationUtil.Alpha0To1());
-        linPersonal.startAnimation(animationSet);
-        animationSet.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
+            linPersonal.setVisibility(View.VISIBLE);
 
-            }
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
+            AnimationSet animationSet = new AnimationSet(true);
+            animationSet.addAnimation(AnimationUtil.rightToView());
+            animationSet.addAnimation(AnimationUtil.Alpha0To1());
+            linPersonal.startAnimation(animationSet);
+            animationSet.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
 
-                linPersonal.setBackgroundResource(R.color.alpha_black60);
-            }
+                }
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {
+                @Override
+                public void onAnimationEnd(Animation animation) {
 
-            }
-        });
+                    linPersonal.setBackgroundResource(R.color.alpha_black60);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+
+        }
     }
 
     private void requestQiniuToken() {
