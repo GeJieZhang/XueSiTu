@@ -14,9 +14,10 @@
         android:id="@+id/left_text"
         style="@style/base_title_bar_button"
         android:layout_centerVertical="true"
+
         android:layout_toEndOf="@+id/back"
-        android:visibility="gone"
-        android:text="关闭 " />
+
+        android:text="" />
 
     <TextView
         android:id="@+id/title"
@@ -28,8 +29,11 @@
         android:layout_marginLeft="75.0dip"
         android:layout_marginRight="75.0dip"
         android:ellipsize="end"
+        android:paddingLeft="8dp"
+
+        android:paddingRight="8dp"
         android:singleLine="true"
-        android:text="设置"
+        android:text=""
         android:textStyle="bold" />
 
     <TextView

@@ -17,9 +17,7 @@
             android:id="@+id/f_whiteboard"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
-            >
-        </FrameLayout>
+            android:visibility="gone"></FrameLayout>
 
 
         <LinearLayout
@@ -69,6 +67,7 @@
 
         <FrameLayout
             android:id="@+id/f_controller"
+
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

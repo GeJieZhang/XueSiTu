@@ -8,9 +8,16 @@ public class RoomControlBean {
     private boolean default_camera = true;
     private boolean default_rotate = true;
     private boolean default_menu = true;
-
+    private boolean default_board = true;
     private boolean default_class=true;
 
+    public boolean isDefault_board() {
+        return default_board;
+    }
+
+    public void setDefault_board(boolean default_board) {
+        this.default_board = default_board;
+    }
 
     private int default_quality = 0;
 

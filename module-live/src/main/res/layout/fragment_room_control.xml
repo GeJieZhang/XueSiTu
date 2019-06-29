@@ -94,7 +94,7 @@
         <ImageView
             android:id="@+id/iv_class"
             style="@style/image_live"
-            android:src="@mipmap/icon_class_off1" />
+            android:src="@mipmap/icon_class_off2" />
 
         <ImageView
             android:id="@+id/iv_chat"

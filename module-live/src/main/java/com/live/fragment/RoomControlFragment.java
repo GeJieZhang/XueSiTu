@@ -93,7 +93,7 @@ public class RoomControlFragment extends BaseAppFragment {
         ivCamera.setImageResource(roomControlBean.isDefault_camera() ? R.mipmap.icon_camera_on : R.mipmap.icon_camera_off);
         ivVoice.setImageResource(roomControlBean.isDefault_voice() ? R.mipmap.icon_voice_on : R.mipmap.icon_voice_off);
         ivRotate.setImageResource(roomControlBean.isDefault_rotate() ? R.mipmap.icon_rotate_h : R.mipmap.icon_rotate_w);
-        ivClass.setImageResource(roomControlBean.isDefault_class() ? R.mipmap.icon_class_off1 : R.mipmap.icon_class_on1);
+        ivClass.setImageResource(roomControlBean.isDefault_class() ? R.mipmap.icon_class_off2 : R.mipmap.icon_class_on2);
 
     }
 

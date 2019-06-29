@@ -32,15 +32,15 @@
                 <com.qiniu.droid.rtc.QNSurfaceView
                     android:id="@+id/local_surface_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+
+                    />
 
                 <FrameLayout
                     android:id="@+id/f_whiteboard"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="gone"
-                    >
-                </FrameLayout>
+                    android:visibility="gone"></FrameLayout>
 
             </FrameLayout>
 

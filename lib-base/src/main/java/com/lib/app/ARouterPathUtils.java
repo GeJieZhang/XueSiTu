@@ -55,4 +55,6 @@ public class ARouterPathUtils {
 
     public static final String Live_MainRoomActivity = "/live/MainRoomActivity";
 
+    public static final String Live_BoardTestActivity = "/live/BoardTestActivity";
+
 }

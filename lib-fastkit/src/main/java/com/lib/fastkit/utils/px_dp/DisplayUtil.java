@@ -1,6 +1,7 @@
 package com.lib.fastkit.utils.px_dp;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
 
 /**
  * dp,sp 和 px 转换的辅助类
@@ -30,7 +31,7 @@ public class DisplayUtil {
         return (int) (dipValue * scale + 0.5f);
     }
 
-    public static int dip2px(Context context,int dipValue) {
+    public static int dip2px(Context context, int dipValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
     }
@@ -51,5 +52,22 @@ public class DisplayUtil {
     public static int sp2px(Context context, float spValue) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
+    }
+
+
+    public static int getScreenWidth(Context context) {
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+
+
+        return dm.widthPixels;
+
+    }
+
+    public static int getScreenHeight(Context context) {
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+
+
+        return dm.heightPixels;
+
     }
 }

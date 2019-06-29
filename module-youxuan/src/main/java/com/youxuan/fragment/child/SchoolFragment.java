@@ -240,7 +240,11 @@ public class SchoolFragment extends BaseAppFragment {
 
 
     public void updateRemainingTime() {
-        homeAdapter.notifyDataSetChanged();
+
+        if (homeAdapter != null) {
+            homeAdapter.notifyDataSetChanged();
+        }
+
 
         showLog("刷新活动结束日期!");
     }

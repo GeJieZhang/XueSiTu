@@ -116,7 +116,6 @@ public class WhiteBoardUtils {
                     }
                 });
 
-
         whiteSdk.joinRoom(new RoomParams(uuid, roomToken), new AbstractRoomCallbacks() {
             @Override
             public void onPhaseChanged(RoomPhase phase) {

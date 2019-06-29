@@ -26,7 +26,8 @@ public class JianKeFragment extends BaseAppFragment {
     Button btnToken2;
     @BindView(R2.id.btn_token3)
     Button btnToken3;
-
+    @BindView(R2.id.btn_token4)
+    Button btnToken4;
     String roomToken1 = "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:NYlOOUeEW-mWFqo53hykVsFSe4g=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoiNTEyMyIsInVzZXJJZCI6InRva2VuMSIsImV4cGlyZUF0IjoxNTYxNDMyMTczLCJwZXJtaXNzaW9uIjoidXNlciJ9";
     String roomToken2 = "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:f6uXJpcu0f0EChgjSKFwD-Rj6gg=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoiNTEyMyIsInVzZXJJZCI6InRva2VuMiIsImV4cGlyZUF0IjoxNTYxNDMyMTczLCJwZXJtaXNzaW9uIjoidXNlciJ9";
     String roomToken3 = "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:F8Xcg7OybYvOPlWKmIl9ik4gTVY=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoiNTEyMyIsInVzZXJJZCI6InRva2VuMyIsImV4cGlyZUF0IjoxNTYxNDMyMTczLCJwZXJtaXNzaW9uIjoidXNlciJ9";
@@ -43,7 +44,7 @@ public class JianKeFragment extends BaseAppFragment {
     }
 
 
-    @OnClick({R2.id.btn_token1, R2.id.btn_token2, R2.id.btn_token3})
+    @OnClick({R2.id.btn_token1, R2.id.btn_token2, R2.id.btn_token3, R2.id.btn_token4})
     public void onViewClicked(View view) {
         int i = view.getId();
         if (i == R.id.btn_token1) {
@@ -104,6 +105,11 @@ public class JianKeFragment extends BaseAppFragment {
 
                 }
             });
+        } else if (i == R.id.btn_token4) {
+            ARouter.getInstance()
+                    .build(ARouterPathUtils.Live_BoardTestActivity)
+
+                    .navigation();
         }
     }
 }

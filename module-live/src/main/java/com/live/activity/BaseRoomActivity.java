@@ -2,7 +2,11 @@ package com.live.activity;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -55,6 +59,13 @@ public class BaseRoomActivity extends AppCompatActivity {
         return super.dispatchTouchEvent(ev);
     }
 
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+       // setTransparentBar();
+    }
 
     /**
      * Judge what situation hide the soft keyboard,click EditText view should show soft keyboard
@@ -158,6 +169,25 @@ public class BaseRoomActivity extends AppCompatActivity {
     public static void showLog(final String msg) {
 
         Log.e("调试日志======", msg);
+    }
+
+
+    public void setTransparentBar() {
+        /**
+         * 设置透明状态栏
+         */
+        // 代表 5.0 及以上
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            View decorView = this.getWindow().getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+            decorView.setSystemUiVisibility(option);
+            this.getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
+
+        // versionCode > 4.4  and versionCode < 5.0
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
     }
 
 }

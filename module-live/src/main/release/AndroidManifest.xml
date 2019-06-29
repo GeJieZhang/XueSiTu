@@ -11,5 +11,6 @@
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
             android:configChanges="orientation|keyboardHidden|keyboard|layoutDirection|screenSize"
             android:screenOrientation="portrait"></activity>
+        <activity android:name=".activity.BoardTestActivity" />
     </application>
 </manifest>

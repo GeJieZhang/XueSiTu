@@ -3,6 +3,7 @@ package com.live.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -105,7 +106,6 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         setContentView(R.layout.activity_main_room_vertical);
         ARouter.getInstance().inject(this);
 
-
         findView();
 
         initEngine();
@@ -114,7 +114,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         //聊天室处理
         initChat();
 
-        initWhiteBorad();
+        //initWhiteBorad();
 
         initFragment();
     }
@@ -193,9 +193,18 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     private void findView() {
 
         f_whiteboard = findViewById(R.id.f_whiteboard);
+
+        if (roomControlBean.isDefault_board()) {
+            f_whiteboard.setVisibility(View.GONE);
+        } else {
+            f_whiteboard.setVisibility(View.VISIBLE);
+        }
+
+
         localSurfaceView = findViewById(R.id.local_surface_view);
 
-
+        localSurfaceView.setZOrderOnTop(false);
+        localSurfaceView.setZOrderMediaOverlay(false);
         if (screenOrientation == Configuration.ORIENTATION_LANDSCAPE) {
             //横屏
 
@@ -461,8 +470,16 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
             if (f_whiteboard.getVisibility() == View.VISIBLE) {
                 f_whiteboard.setVisibility(View.GONE);
+
+                roomControlBean.setDefault_board(true);
+
+                localSurfaceView.setVisibility(View.VISIBLE);
             } else {
                 f_whiteboard.setVisibility(View.VISIBLE);
+                roomControlBean.setDefault_board(false);
+                localSurfaceView.setVisibility(View.GONE);
+
+
             }
 
         }
@@ -676,7 +693,6 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
 
     }
-
 
 
 }
