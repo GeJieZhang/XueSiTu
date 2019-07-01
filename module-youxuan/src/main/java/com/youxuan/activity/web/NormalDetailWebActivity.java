@@ -133,5 +133,4 @@ public class NormalDetailWebActivity extends BaseBusinessWebActivity {
         return R.layout.activity_company_class;
     }
 
-
 }

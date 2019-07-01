@@ -222,7 +222,7 @@ public class SchoolFragment extends BaseAppFragment {
         String timeCut = TimeUtils.getRemainingTime(carList.get(position).getCutoff_date(), TimeUtils.FORMAT_0);
 
 
-        showLog(timeCut);
+        //showLog(timeCut);
         if (!timeCut.equals("0")) {
             holder.setText(R.id.tv_time1, String.valueOf(timeCut.charAt(0)));
             holder.setText(R.id.tv_time2, String.valueOf(timeCut.charAt(1)));
@@ -246,6 +246,6 @@ public class SchoolFragment extends BaseAppFragment {
         }
 
 
-        showLog("刷新活动结束日期!");
+       // showLog("刷新活动结束日期!");
     }
 }

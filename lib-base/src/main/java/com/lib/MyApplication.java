@@ -19,7 +19,6 @@ import com.lib.fastkit.http.ok.OkHttpEngine;
 import com.lib.fastkit.utils.log.LogUtil;
 
 
-import com.lib.utls.bugly.BuglyUtil;
 import com.squareup.leakcanary.LeakCanary;
 import com.tencent.smtt.sdk.QbSdk;
 
@@ -55,7 +54,7 @@ public class MyApplication extends Application {
         initTimber();
 
 
-        BuglyUtil.init(this);
+       // BuglyUtil.init(this);
         //内存检测
         initLeakCanary();
 

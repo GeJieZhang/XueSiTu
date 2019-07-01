@@ -97,7 +97,7 @@ public abstract class BaseWebActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+
 
         if (webView.canGoBack()) {
             webView.goBack();

@@ -4,6 +4,16 @@ package com.live.bean.control;
 public class RoomControlBean {
 
 
+    private String roomId="";
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
+    }
+
     private boolean default_voice = true;
     private boolean default_camera = true;
     private boolean default_rotate = true;

@@ -19,7 +19,7 @@ import com.lib.fastkit.views.dialog.normal.NormalDialog;
 import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
-import com.lib.utls.bugly.BuglyUtil;
+
 import com.lib.view.navigationbar.NomalNavigationBar;
 import com.user.R;
 import com.user.R2;
@@ -177,16 +177,12 @@ public class SetActivity extends BaseAppActivity {
         } else if (i == R.id.lin_update) {
 
 
-            if (BuglyUtil.isVersionUpdate()) {
-                BuglyUtil.checkUpdateByClick();
-            } else {
-//                NormalDialog.getInstance()
-//                        .setTitle("更新检测")
-//                        .setContent("当前版本已是最新版本！")
-//                        .show(getSupportFragmentManager());
-
-                showToast("暂无更新");
-            }
+//            if (BuglyUtil.isVersionUpdate()) {
+//                BuglyUtil.checkUpdateByClick();
+//            } else {
+//
+//                showToast("暂无更新");
+//            }
 
 
         } else if (i == R.id.lin_help) {

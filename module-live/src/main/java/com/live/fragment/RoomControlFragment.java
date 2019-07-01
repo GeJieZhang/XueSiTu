@@ -15,10 +15,13 @@ import android.widget.PopupWindow;
 
 import com.lib.app.EventBusTagUtils;
 import com.lib.bean.Event;
+import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
+import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.dialog.arrow.TriangleDrawable;
 import com.lib.fastkit.views.dialog.normal.NormalDialog;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
+import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.ui.fragment.BaseAppFragment;
 import com.lib.utls.picture_select.PhotoUtil;
@@ -67,12 +70,17 @@ public class RoomControlFragment extends BaseAppFragment {
     ImageView ivQuality;
     @BindView(R2.id.f_quality)
     FrameLayout fQuality;
-
+    private String identity = "";
+    private String token = "";
 
     private RoomControlBean roomControlBean;
 
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
+
+
+        identity = SharedPreferenceManager.getInstance(getActivity()).getUserCache().getUserIdentity();
+        token = SharedPreferenceManager.getInstance(getActivity()).getUserCache().getUserToken();
         initQualityPopup();
         initUserListPopup();
         initCmmtPop();
@@ -104,22 +112,14 @@ public class RoomControlFragment extends BaseAppFragment {
 
 
     @OnClick({R2.id.iv_quality, R2.id.iv_quit, R2.id.iv_share, R2.id.iv_pen, R2.id.iv_ppt, R2.id.iv_list, R2.id.iv_class, R2.id.iv_chat, R2.id.iv_voice, R2.id.iv_camera, R2.id.iv_rotate, R2.id.iv_menu})
-    public void onViewClicked(View view) {
+    public void onViewClicked(final View view) {
         int i = view.getId();
         if (i == R.id.iv_quit) {
+            if (listener!=null){
+                listener.onLiveRoom();
+            }
 
-            NormalDialog.getInstance()
-                    .setContent("确认要退出直播间么？")
-                    .setWidth(DisplayUtil.dip2px(getContext(), 300))
-                    .setSureListener(new NormalDialog.SurelListener() {
-                        @Override
-                        public void onSure() {
 
-                            getActivity().finish();
-
-                        }
-                    })
-                    .show(getFragmentManager());
         } else if (i == R.id.iv_share) {
         } else if (i == R.id.iv_pen) {
         } else if (i == R.id.iv_ppt) {
@@ -197,6 +197,8 @@ public class RoomControlFragment extends BaseAppFragment {
 
         }
     }
+
+
 
     private void checkMeuState() {
         if (roomControlBean.isDefault_menu()) {
@@ -369,6 +371,9 @@ public class RoomControlFragment extends BaseAppFragment {
         void onCameraClick();
 
         void onVoiceClick();
+
+
+        void onLiveRoom();
 
     }
 

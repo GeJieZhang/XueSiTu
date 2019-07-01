@@ -155,7 +155,7 @@ public class PersonalFragment extends BaseAppFragment {
         } else if (i == R.id.lin_teacher_class) {
             //老师的课程订单
 
-
+            ARouter.getInstance().build(ARouterPathUtils.User_MyClassActivity).navigation();
         } else if (i == R.id.lin_question) {
 
             //学生我的提问

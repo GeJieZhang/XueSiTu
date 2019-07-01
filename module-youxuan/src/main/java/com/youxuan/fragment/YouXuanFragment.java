@@ -631,7 +631,7 @@ public class YouXuanFragment extends BaseAppFragment {
             }
 
 
-            showLog("刷新剩余时间");
+           // showLog("刷新剩余时间");
             handler.postDelayed(cutTimeRunnable, CUT_TIME);
 
         }

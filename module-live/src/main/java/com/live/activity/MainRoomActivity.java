@@ -25,11 +25,15 @@ import com.lib.app.ARouterPathUtils;
 import com.lib.app.EventBusTagUtils;
 import com.lib.app.FragmentTag;
 import com.lib.bean.Event;
+import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
+import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.fragment_deal.FragmentCustomUtils;
 import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.utils.status_bar.QMUI.QMUIStatusBarHelper;
 import com.lib.fastkit.utils.status_bar.StatusBarUtil;
+import com.lib.fastkit.views.dialog.normal.NormalDialog;
+import com.lib.http.call_back.HttpDialogCallBack;
 import com.live.R;
 import com.live.bean.control.RoomControlBean;
 import com.live.fragment.ChatFragment;
@@ -71,8 +75,25 @@ import static com.live.utils.config.LiveConfig.DEFAULT_RESOLUTION;
 public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEventListener, View.OnClickListener {
     @Autowired(name = "roomToken")
     String roomToken;
-    @Autowired(name = "name")
-    String hx_username;
+
+    @Autowired(name = "teacherPhone")
+    String teacherPhone;
+
+
+    @Autowired(name = "userId")
+    String userId;
+
+    @Autowired(name = "roomName")
+    String roomName;
+
+//    @Autowired(name = "name")
+//    String hx_username;
+
+
+    private String identity = "";
+    private String token = "";
+
+
     QNSurfaceView localSurfaceView;
 
     private QNRTCEngine mEngine;
@@ -106,6 +127,11 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         setContentView(R.layout.activity_main_room_vertical);
         ARouter.getInstance().inject(this);
 
+
+        identity = SharedPreferenceManager.getInstance(this).getUserCache().getUserIdentity();
+        token = SharedPreferenceManager.getInstance(this).getUserCache().getUserToken();
+
+
         findView();
 
         initEngine();
@@ -124,7 +150,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
      * 初始化聊天
      */
     private void initChat() {
-        HXChatUtils.signIn(hx_username, "123456", this);
+        HXChatUtils.signIn("token1", "123456", this);
     }
 
 
@@ -355,7 +381,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
             if (track.getTrackKind().equals(QNTrackKind.VIDEO)) {
 
 
-                trackInfoMap.put(track.getUserId(), track, track.getUserId().equals("token1"));
+                trackInfoMap.put(track.getUserId(), track, track.getUserId().equals(teacherPhone));
             }
         }
 
@@ -536,6 +562,11 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
         }
 
+        @Override
+        public void onLiveRoom() {
+            liveRoom();
+        }
+
 
     };
 
@@ -694,5 +725,64 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
     }
 
+    //-----------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------房间相关
+    //------------------------------------------------------------------------------------------
 
+
+    @Override
+    public void onBackPressed() {
+
+
+        liveRoom();
+
+
+    }
+
+
+    /**
+     * 离开房间
+     */
+    private void liveRoom() {
+
+
+        NormalDialog.getInstance()
+                .setContent("确认要退出直播间么？")
+                .setWidth(DisplayUtil.dip2px(this, 300))
+                .setSureListener(new NormalDialog.SurelListener() {
+                    @Override
+                    public void onSure() {
+
+                        String consume_class = "";
+
+                        if (identity.equals("1")) {
+                            consume_class = "20";
+                        } else {
+
+                        }
+
+                        HttpUtils.with(MainRoomActivity.this)
+                                .addParam("requestType", "LIVE_CLOSE_ROOM")
+                                .addParam("room_name", roomName)
+                                .addParam("consume_class", consume_class)
+                                .addParam("token", token)
+                                .execute(new HttpDialogCallBack<String>() {
+                                    @Override
+                                    public void onSuccess(String result) {
+
+
+                                    }
+
+                                    @Override
+                                    public void onError(String e) {
+
+                                    }
+                                });
+
+
+                    }
+                })
+                .show(getSupportFragmentManager());
+
+    }
 }

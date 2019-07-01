@@ -131,9 +131,10 @@ dependencies {
      * 日志统计
      * 应用更新
      */
-    api 'com.tencent.bugly:crashreport_upgrade:latest.release'
-    api 'com.tencent.bugly:nativecrashreport:latest.release'
 
+//
+//    api 'com.tencent.bugly:crashreport_upgrade:latest.release'
+//    api 'com.tencent.bugly:nativecrashreport:latest.release'
     /**
      * 弹出成层
      */

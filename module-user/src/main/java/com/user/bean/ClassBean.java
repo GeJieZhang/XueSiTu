@@ -7,7 +7,7 @@ public class ClassBean {
 
     /**
      * code : 200
-     * obj : {"total":1,"limit":10,"size":0,"rows":[{"id":33,"name":"三年级数学","type":2,"consume_class":0,"live_room":100,"live_status":0,"pay_status":0}]}
+     * obj : {"total":3,"limit":10,"page":0,"rows":[{"id":1,"name":"晚间陪伴课","type":0,"consume_class":0,"pay_status":0,"live_status":1,"live_room":[{"course_id":"14","course_name":"啦啦啦"},{"course_id":"17","course_name":"二年级数学"},{"course_id":"18","course_name":"三年级英语"},{"course_id":"19","course_name":"一年级语文"}],"pay_url":"http://192.168.0.105/index10.html?id=1&r=0"},{"id":8,"name":"","type":2,"consume_class":0,"pay_status":0,"live_status":0,"live_room":[],"pay_url":"http://192.168.0.105/index10.html?id=8&r=2"},{"id":9,"name":"测试1,测试2","type":2,"consume_class":0,"pay_status":0,"live_status":0,"live_room":[{"course_id":"11","course_name":"测试2"}],"pay_url":"http://192.168.0.105/index10.html?id=9&r=2"}]}
      * msg : 请求成功
      * seccess : true
      */
@@ -51,15 +51,15 @@ public class ClassBean {
 
     public static class ObjBean {
         /**
-         * total : 1
+         * total : 3
          * limit : 10
-         * size : 0
-         * rows : [{"id":33,"name":"三年级数学","type":2,"consume_class":0,"live_room":100,"live_status":0,"pay_status":0}]
+         * page : 0
+         * rows : [{"id":1,"name":"晚间陪伴课","type":0,"consume_class":0,"pay_status":0,"live_status":1,"live_room":[{"course_id":"14","course_name":"啦啦啦"},{"course_id":"17","course_name":"二年级数学"},{"course_id":"18","course_name":"三年级英语"},{"course_id":"19","course_name":"一年级语文"}],"pay_url":"http://192.168.0.105/index10.html?id=1&r=0"},{"id":8,"name":"","type":2,"consume_class":0,"pay_status":0,"live_status":0,"live_room":[],"pay_url":"http://192.168.0.105/index10.html?id=8&r=2"},{"id":9,"name":"测试1,测试2","type":2,"consume_class":0,"pay_status":0,"live_status":0,"live_room":[{"course_id":"11","course_name":"测试2"}],"pay_url":"http://192.168.0.105/index10.html?id=9&r=2"}]
          */
 
         private int total;
         private int limit;
-        private int size;
+        private int page;
         private List<RowsBean> rows;
 
         public int getTotal() {
@@ -78,12 +78,12 @@ public class ClassBean {
             this.limit = limit;
         }
 
-        public int getSize() {
-            return size;
+        public int getPage() {
+            return page;
         }
 
-        public void setSize(int size) {
-            this.size = size;
+        public void setPage(int page) {
+            this.page = page;
         }
 
         public List<RowsBean> getRows() {
@@ -96,22 +96,24 @@ public class ClassBean {
 
         public static class RowsBean {
             /**
-             * id : 33
-             * name : 三年级数学
-             * type : 2
+             * id : 1
+             * name : 晚间陪伴课
+             * type : 0
              * consume_class : 0
-             * live_room : 100
-             * live_status : 0
              * pay_status : 0
+             * live_status : 1
+             * live_room : [{"course_id":"14","course_name":"啦啦啦"},{"course_id":"17","course_name":"二年级数学"},{"course_id":"18","course_name":"三年级英语"},{"course_id":"19","course_name":"一年级语文"}]
+             * pay_url : http://192.168.0.105/index10.html?id=1&r=0
              */
 
             private int id;
             private String name;
             private int type;
             private int consume_class;
-            private int live_room;
-            private int live_status;
             private int pay_status;
+            private int live_status;
+            private String pay_url;
+            private List<LiveRoomBean> live_room;
 
             public int getId() {
                 return id;
@@ -145,12 +147,12 @@ public class ClassBean {
                 this.consume_class = consume_class;
             }
 
-            public int getLive_room() {
-                return live_room;
+            public int getPay_status() {
+                return pay_status;
             }
 
-            public void setLive_room(int live_room) {
-                this.live_room = live_room;
+            public void setPay_status(int pay_status) {
+                this.pay_status = pay_status;
             }
 
             public int getLive_status() {
@@ -161,12 +163,46 @@ public class ClassBean {
                 this.live_status = live_status;
             }
 
-            public int getPay_status() {
-                return pay_status;
+            public String getPay_url() {
+                return pay_url;
             }
 
-            public void setPay_status(int pay_status) {
-                this.pay_status = pay_status;
+            public void setPay_url(String pay_url) {
+                this.pay_url = pay_url;
+            }
+
+            public List<LiveRoomBean> getLive_room() {
+                return live_room;
+            }
+
+            public void setLive_room(List<LiveRoomBean> live_room) {
+                this.live_room = live_room;
+            }
+
+            public static class LiveRoomBean {
+                /**
+                 * course_id : 14
+                 * course_name : 啦啦啦
+                 */
+
+                private String course_id;
+                private String course_name;
+
+                public String getCourse_id() {
+                    return course_id;
+                }
+
+                public void setCourse_id(String course_id) {
+                    this.course_id = course_id;
+                }
+
+                public String getCourse_name() {
+                    return course_name;
+                }
+
+                public void setCourse_name(String course_name) {
+                    this.course_name = course_name;
+                }
             }
         }
     }

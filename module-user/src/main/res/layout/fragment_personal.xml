@@ -45,6 +45,13 @@
                     android:layout_weight="1"></View>
 
                 <ImageView
+                    android:id="@+id/iv_msg"
+                    android:layout_width="20dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="16dp"
+                    android:src="@mipmap/icon_news_default" />
+
+                <ImageView
                     android:id="@+id/iv_setting"
                     android:layout_width="20dp"
                     android:layout_height="30dp"

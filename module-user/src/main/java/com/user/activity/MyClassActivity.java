@@ -8,9 +8,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.lib.app.ARouterPathUtils;
+import com.lib.app.CodeUtil;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
@@ -24,6 +26,7 @@ import com.lib.view.navigationbar.NomalNavigationBar;
 import com.user.R;
 import com.user.R2;
 import com.user.bean.ClassBean;
+import com.user.bean.ToLiveBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +48,9 @@ public class MyClassActivity extends BaseAppActivity {
 
     private String token = "";
 
+    private String identity = "";
+
+
     private int PAY_STATE_N = 0;//未支付
     private int PAY_STATE_Y = 1;//已支付
 
@@ -59,7 +65,7 @@ public class MyClassActivity extends BaseAppActivity {
     @Override
     protected void onCreateView() {
         token = SharedPreferenceManager.getInstance(this).getUserCache().getUserToken();
-
+        identity = SharedPreferenceManager.getInstance(this).getUserCache().getUserIdentity();
 
         initTitle();
         homeAdapter = new HomeAdapter(this, mData);
@@ -158,65 +164,143 @@ public class MyClassActivity extends BaseAppActivity {
         @Override
         protected void toBindViewHolder(ViewHolder holder, final int position, final List<ClassBean.ObjBean.RowsBean> mData) {
 
-
             holder.setText(R.id.tv_title, mData.get(position).getName());
-
-            holder.setText(R.id.tv_class, "剩余课次:" + mData.get(position).getConsume_class());
-
-
-            TextView tv_state = holder.getView(R.id.tv_state);
-            ImageView iv_sate = holder.getView(R.id.iv_state);
-            if (mData.get(position).getLive_status() == LIVE_STATE_Y) {
-
-                tv_state.setText("正在开课");
-                tv_state.setTextColor(getResources().getColor(R.color.base_purple));
-                iv_sate.setImageResource(R.mipmap.icon_class_on1);
-
-            } else {
-                tv_state.setText("未开课");
-
-                tv_state.setTextColor(getResources().getColor(R.color.base_gray));
-                iv_sate.setImageResource(R.mipmap.icon_class_off1);
-            }
-
-
             Button btn_go_class = holder.getView(R.id.btn_go_class);
-            if (mData.get(position).getPay_status() == PAY_STATE_Y) {
+            if (identity.equals("1")) {
+
+                //老师
 
                 btn_go_class.setBackgroundResource(R.drawable.bg_part_circle1);
                 btn_go_class.setText("去上课");
 
+                btn_go_class.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        goToClass(mData, position);
+                    }
+                });
+
             } else {
 
-                btn_go_class.setBackgroundResource(R.drawable.bg_part_circle1_red);
-                btn_go_class.setText("待支付");
-            }
+                //学生
 
-            btn_go_class.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mData.get(position).getPay_status() == PAY_STATE_Y) {
-
-                        //支付了去上课
+                holder.setText(R.id.tv_class, "剩余课次:" + mData.get(position).getConsume_class());
 
 
-                    } else {
-                        //没有支付跳转网页支付
+                TextView tv_state = holder.getView(R.id.tv_state);
+                ImageView iv_sate = holder.getView(R.id.iv_state);
+                if (mData.get(position).getLive_status() == LIVE_STATE_Y) {
 
-                    }
+                    tv_state.setText("正在开课");
+                    tv_state.setTextColor(getResources().getColor(R.color.base_purple));
+                    iv_sate.setImageResource(R.mipmap.icon_class_on1);
+
+                } else {
+                    tv_state.setText("未开课");
+
+                    tv_state.setTextColor(getResources().getColor(R.color.base_gray));
+                    iv_sate.setImageResource(R.mipmap.icon_class_off1);
                 }
-            });
+
+
+                if (mData.get(position).getPay_status() == PAY_STATE_Y) {
+
+                    btn_go_class.setBackgroundResource(R.drawable.bg_part_circle1);
+                    btn_go_class.setText("去上课");
+
+                } else {
+
+                    btn_go_class.setBackgroundResource(R.drawable.bg_part_circle1_red);
+                    btn_go_class.setText("待支付");
+
+                    holder.getView(R.id.iv_state).setVisibility(View.GONE);
+                    holder.getView(R.id.tv_state).setVisibility(View.GONE);
+                }
+
+                btn_go_class.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                        if (mData.get(position).getPay_status() == PAY_STATE_Y) {
+
+                            goToClass(mData, position);
+
+
+                        } else {
+                            //没有支付跳转网页支付
+
+
+                            ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+                                    .withString("urlPath", mData.get(position).getPay_url())
+                                    .navigation();
+
+                        }
+                    }
+                });
+            }
 
 
             holder.getView(R.id.btn_detail).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    ARouter.getInstance().build(ARouterPathUtils.User_MyClassDetailActivity).navigation();
+                    ARouter.getInstance().build(ARouterPathUtils.User_MyClassDetailActivity)
+                            .withString("id", mData.get(position).getId() + "")
+                            .withString("type", mData.get(position).getType() + "")
+                            .navigation();
 
                 }
             });
         }
+    }
+
+    private void goToClass(final List<ClassBean.ObjBean.RowsBean> mData, final int position) {
+        String course_id = "";
+
+
+        if (identity.equals("1")) {
+            course_id = mData.get(position).getId() + "";
+        } else {
+            course_id = mData.get(position).getLive_room().get(0).getCourse_id();
+        }
+
+        //支付了去上课
+
+        final String finalRoomId = course_id;
+        HttpUtils.with(getApplicationContext())
+                .addParam("requestType", "TO_CLASS")
+                .addParam("course_type", mData.get(position).getType())
+                .addParam("course_id", course_id)
+                .addParam("token", token)
+                .execute(new HttpNormalCallBack<ToLiveBean>() {
+                    @Override
+                    public void onSuccess(ToLiveBean result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+
+
+                            String roomToken = result.getObj().getToken();
+                            String teacherPhone = result.getObj().getPhoen();
+                            String userId = result.getObj().getUserid();
+
+                            ARouter.getInstance().build(ARouterPathUtils.Live_MainRoomActivity)
+                                    .withString("roomToken", roomToken)
+                                    .withString("teacherPhone", teacherPhone)
+                                    .withString("userId", userId)
+                                    .withString("roomName", result.getObj().getRoomname())
+                                    .navigation();
+
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
     }
 
 
