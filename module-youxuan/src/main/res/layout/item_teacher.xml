@@ -17,7 +17,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            android:src="@mipmap/ic_new_logo" />
+             />
 
         <ImageView
             android:id="@+id/iv_king"
@@ -31,14 +31,11 @@
 
 
     <TextView
-        android:id="@+id/tv_grade"
-        style="@style/text_style4"
-        android:layout_marginTop="4dp"
-        android:text="小学老师" />
-
-    <TextView
         android:id="@+id/tv_name"
         style="@style/text_style4"
         android:layout_marginTop="4dp"
-        android:text="曹老师" />
+        android:ellipsize="end"
+        android:maxEms="3"
+        android:text="曹老师"
+        android:textSize="10sp" />
 </LinearLayout>

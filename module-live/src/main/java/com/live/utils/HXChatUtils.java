@@ -177,13 +177,13 @@ public class HXChatUtils {
             public void onSuccess(EMChatRoom value) {
                 EMLog.d(TAG, "join room success");
 
-                Log.e("======", "加入房间成功!");
+                Log.e("======", "加入环信房间成功!");
             }
 
             @Override
             public void onError(final int error, String errorMsg) {
                 EMLog.d(TAG, "join room failure : " + error);
-                Log.e("======", "加入房间失败!");
+                Log.e("======", "加入环信房间失败!");
             }
         });
     }

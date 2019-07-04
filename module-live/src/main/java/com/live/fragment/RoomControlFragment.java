@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.lib.app.EventBusTagUtils;
@@ -31,6 +32,7 @@ import com.live.activity.MainRoomActivity;
 import com.live.bean.control.RoomControlBean;
 import com.live.view.CmmtPopup;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.qiniu.droid.rtc.QNRTCUser;
 import com.zyyoona7.popup.EasyPopup;
 import com.zyyoona7.popup.XGravity;
 import com.zyyoona7.popup.YGravity;
@@ -81,12 +83,13 @@ public class RoomControlFragment extends BaseAppFragment {
 
         identity = SharedPreferenceManager.getInstance(getActivity()).getUserCache().getUserIdentity();
         token = SharedPreferenceManager.getInstance(getActivity()).getUserCache().getUserToken();
+        roomControlBean = MainRoomActivity.roomControlBean;
         initQualityPopup();
         initUserListPopup();
         initCmmtPop();
         initIconState();
 
-
+        initSharePopup();
     }
 
     @Override
@@ -97,7 +100,7 @@ public class RoomControlFragment extends BaseAppFragment {
     }
 
     private void initIconState() {
-        roomControlBean = MainRoomActivity.roomControlBean;
+
         ivCamera.setImageResource(roomControlBean.isDefault_camera() ? R.mipmap.icon_camera_on : R.mipmap.icon_camera_off);
         ivVoice.setImageResource(roomControlBean.isDefault_voice() ? R.mipmap.icon_voice_on : R.mipmap.icon_voice_off);
         ivRotate.setImageResource(roomControlBean.isDefault_rotate() ? R.mipmap.icon_rotate_h : R.mipmap.icon_rotate_w);
@@ -115,16 +118,27 @@ public class RoomControlFragment extends BaseAppFragment {
     public void onViewClicked(final View view) {
         int i = view.getId();
         if (i == R.id.iv_quit) {
-            if (listener!=null){
+            if (listener != null) {
                 listener.onLiveRoom();
             }
 
 
         } else if (i == R.id.iv_share) {
+
+            showSharePopup(view);
+
         } else if (i == R.id.iv_pen) {
         } else if (i == R.id.iv_ppt) {
         } else if (i == R.id.iv_list) {
-            showUserListPopup(view);
+
+            updateUserInfo();
+            if (userList.size() > 0) {
+                showUserListPopup(view);
+            } else {
+                showToast("用户为空");
+            }
+
+
         } else if (i == R.id.iv_class) {
 
 
@@ -167,6 +181,8 @@ public class RoomControlFragment extends BaseAppFragment {
             }
 
         } else if (i == R.id.iv_quality) {
+
+
             showQualityPopup(view);
 
         } else if (i == R.id.iv_rotate) {
@@ -198,6 +214,17 @@ public class RoomControlFragment extends BaseAppFragment {
         }
     }
 
+
+    /**
+     * 更新用户数据
+     */
+    public void updateUserInfo() {
+        userList.clear();
+        userList.addAll(MainRoomActivity.getEngine().getUserList());
+        userListAdapter.notifyDataSetChanged();
+
+
+    }
 
 
     private void checkMeuState() {
@@ -252,6 +279,33 @@ public class RoomControlFragment extends BaseAppFragment {
     }
 
 
+    //--------------------------------------------------------------------------------清晰度切换弹出层
+    private EasyPopup sharePopu;
+
+    private void initSharePopup() {
+        sharePopu = EasyPopup.create()
+                .setContext(getContext())
+                .setContentView(R.layout.popup_share)
+
+                .setOnViewListener(new EasyPopup.OnViewListener() {
+                    @Override
+                    public void initViews(View view, EasyPopup basePopup) {
+                        View arrowView = view.findViewById(R.id.v_arrow);
+                        arrowView.setBackground(new TriangleDrawable(TriangleDrawable.TOP, Color.parseColor("#ffffff")));
+                    }
+                })
+                .setFocusAndOutsideEnable(true)
+                .apply();
+
+    }
+
+    private void showSharePopup(View view) {
+        int offsetX = 0;
+        int offsetY = 0;
+        sharePopu.showAtAnchorView(view, YGravity.BELOW, XGravity.ALIGN_RIGHT, offsetX, offsetY);
+    }
+
+
     //--------------------------------------------------------------------------------用户列表弹出层
     private EasyPopup userListPopup;
 
@@ -278,28 +332,30 @@ public class RoomControlFragment extends BaseAppFragment {
 
 
     private void showUserListPopup(View view) {
+
+
         int offsetX = 0;
         int offsetY = 0;
         userListPopup.showAtAnchorView(view, YGravity.ABOVE, XGravity.ALIGN_RIGHT, offsetX, offsetY);
     }
 
 
-    List<String> list = new ArrayList<>();
+    List<QNRTCUser> userList = new ArrayList<>();
+
+    private UserListAdapter userListAdapter;
 
     private void initUserList(View view) {
 
-        list.add("sdf");
-        list.add("sdff");
         RecyclerView recyclerView = view.findViewById(R.id.rv_user_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        UserListAdapter userListAdapter = new UserListAdapter(getContext(), list);
+        userListAdapter = new UserListAdapter(getContext(), userList);
         recyclerView.setAdapter(userListAdapter);
 
     }
 
-    class UserListAdapter extends BaseAdapter<String> {
+    class UserListAdapter extends BaseAdapter<QNRTCUser> {
 
-        public UserListAdapter(Context context, List<String> mData) {
+        public UserListAdapter(Context context, List<QNRTCUser> mData) {
             super(context, mData);
         }
 
@@ -309,7 +365,47 @@ public class RoomControlFragment extends BaseAppFragment {
         }
 
         @Override
-        protected void toBindViewHolder(ViewHolder holder, int position, List<String> mData) {
+        protected void toBindViewHolder(final ViewHolder holder, final int position, final List<QNRTCUser> mData) {
+
+            final LinearLayout lin_menu = holder.getView(R.id.lin_menu);
+            holder.setText(R.id.tv_userName, mData.get(position).getUserId());
+
+            holder.getView(R.id.iv_more).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (lin_menu.getVisibility() == View.VISIBLE) {
+                        lin_menu.setVisibility(View.GONE);
+                    } else {
+                        lin_menu.setVisibility(View.VISIBLE);
+                    }
+
+
+                }
+            });
+
+
+            holder.getView(R.id.iv_voice).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (listener != null) {
+                        listener.closeUserVoice(mData.get(position).getUserId());
+                    }
+
+
+                }
+            });
+
+            holder.getView(R.id.iv_camera).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        listener.closeUserCamera(mData.get(position).getUserId());
+                    }
+                }
+            });
 
         }
     }
@@ -372,9 +468,12 @@ public class RoomControlFragment extends BaseAppFragment {
 
         void onVoiceClick();
 
-
         void onLiveRoom();
 
+
+        void closeUserCamera(String userId);
+
+        void closeUserVoice(String userId);
     }
 
 

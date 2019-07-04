@@ -10,6 +10,7 @@ import com.lib.fastkit.http.ok.EngineCallBack;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.http.ok.err.ResponseErrorListenerImpl;
 import com.google.gson.Gson;
+import com.lib.fastkit.utils.json_deal.lib_mgson.MGson;
 import com.lib.fastkit.utils.log.LogUtil;
 
 import org.json.JSONException;
@@ -72,13 +73,18 @@ public abstract class HttpNormalCallBack<T> implements EngineCallBack {
                 return;
             }
 
-            Gson gson = new Gson();
-            T objResult = (T) gson.fromJson(result,
-                    HttpUtils.analysisClazzInfo(this));
+//            Gson gson = new Gson();
+//            T objResult = (T) gson.fromJson(result,
+//                    HttpUtils.analysisClazzInfo(this));
+
+            T objResult = (T) MGson.newGson().fromJson(result, HttpUtils.analysisClazzInfo(this));
+
             onSuccess(objResult);
 
         } catch (Exception e) {
             responseErrorListener.handleResponseError(context, e);
+
+            LogUtil.e(e.getMessage());
 
         }
 
@@ -91,6 +97,8 @@ public abstract class HttpNormalCallBack<T> implements EngineCallBack {
     public void onError(Exception e) {
         //统一异常处理类
         responseErrorListener.handleResponseError(context, e);
+
+        LogUtil.e(e.getMessage());
         onError(e.getMessage());
 
         //Toast.makeText(context, "请求超时", Toast.LENGTH_SHORT).show();

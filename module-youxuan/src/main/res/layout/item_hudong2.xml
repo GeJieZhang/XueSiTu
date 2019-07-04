@@ -104,6 +104,11 @@
                             style="@style/text_style5"
                             android:layout_marginLeft="16dp"
                             android:text="￥754" />
+
+                        <TextView
+                            style="@style/text_style5"
+                            android:textSize="14sp"
+                            android:text="兔币" />
                     </LinearLayout>
 
                     <include

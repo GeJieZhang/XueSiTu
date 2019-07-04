@@ -8,7 +8,7 @@
 
     <TextView
         style="@style/text_style4"
-        android:text="加载失败"
+        android:text="数据为空"
         android:textSize="16sp" />
 
 </LinearLayout>

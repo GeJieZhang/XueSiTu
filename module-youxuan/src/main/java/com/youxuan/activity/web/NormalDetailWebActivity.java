@@ -46,46 +46,15 @@ public class NormalDetailWebActivity extends BaseBusinessWebActivity {
 
     private void initWebView(WebView webView) {
 
-
-        webView.setWebViewClient(client);
     }
 
     private void initView() {
         initTitle();
 
-
     }
 
 
-    private WebViewClient client = new WebViewClient() {
-
-
-        @Override
-        public void onPageStarted(WebView webView, String s, Bitmap bitmap) {
-            super.onPageStarted(webView, s, bitmap);
-
-
-        }
-
-        /**
-         * 防止加载网页时调起系统浏览器
-         */
-        public boolean shouldOverrideUrlLoading(WebView webView, String url) {
-            webView.loadUrl(url);
-
-            return true;
-        }
-
-
-        @Override
-        public void onPageFinished(WebView webView, String s) {
-            super.onPageFinished(webView, s);
-
-            title.setText(webView.getTitle());
-
-
-        }
-    };
+    private TextView colse;
 
     protected void initTitle() {
         NomalNavigationBar navigationBar = new
@@ -124,7 +93,9 @@ public class NormalDetailWebActivity extends BaseBusinessWebActivity {
 
 
         title = navigationBar.getTitleTextView();
+        colse = (TextView) navigationBar.getView(R.id.left_text);
 
+        colse.setVisibility(View.GONE);
     }
 
 
@@ -132,5 +103,27 @@ public class NormalDetailWebActivity extends BaseBusinessWebActivity {
     protected int getWebLayoutId() {
         return R.layout.activity_company_class;
     }
+
+    @Override
+    protected void myOnPageStarted(WebView webView, String s, Bitmap bitmap) {
+
+    }
+
+    @Override
+    protected void myShouldOverrideUrlLoading(WebView webView, String url) {
+
+    }
+
+    @Override
+    protected void myOnPageFinished(WebView webView, String s) {
+        title.setText(webView.getTitle());
+
+
+        if (webView.canGoBack()) {
+            colse.setVisibility(View.VISIBLE);
+        }
+
+    }
+
 
 }

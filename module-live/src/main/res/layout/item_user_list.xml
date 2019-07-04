@@ -20,19 +20,22 @@
             android:src="@mipmap/icon_ppt" />
 
         <TextView
+            android:id="@+id/tv_userName"
             style="@style/text_style11"
             android:layout_marginLeft="8dp"
             android:text="小明同学" />
 
         <ImageView
+            android:id="@+id/iv_more"
             android:layout_width="25dp"
             android:layout_height="10dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="32dp"
             android:src="@mipmap/icon_point" />
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lin_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -45,11 +48,13 @@
         android:visibility="gone">
 
         <ImageView
+            android:id="@+id/iv_voice"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:src="@mipmap/icon_voice_on" />
 
         <ImageView
+            android:id="@+id/iv_camera"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginLeft="32dp"

@@ -159,6 +159,7 @@ public class PermissionUtil {
         );
     }
 
+
     private static void onRequestPermissionFailure(List<String> strings) {
 
 
@@ -170,6 +171,24 @@ public class PermissionUtil {
 
 
                     Toast.makeText(mactivity, "禁止访问存储权限，部分功能将无法使用！", Toast.LENGTH_SHORT).show();
+
+
+                    break;
+                }
+
+                case "android.permission.CAMERA": {
+
+
+                    Toast.makeText(mactivity, "禁止访问摄像头，部分功能将无法使用！", Toast.LENGTH_SHORT).show();
+
+
+                    break;
+                }
+
+                case "android.permission.RECORD_AUDIO": {
+
+
+                    Toast.makeText(mactivity, "禁止访问录音，部分功能将无法使用！", Toast.LENGTH_SHORT).show();
 
 
                     break;

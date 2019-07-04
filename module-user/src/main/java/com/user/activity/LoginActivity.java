@@ -300,7 +300,9 @@ public class LoginActivity extends BaseAppActivity {
                             userCacheInterface.setUserName(result.getObj().getName());
                             userCacheInterface.setUserHeadUrl(result.getObj().getPhoto_url());
                             userCacheInterface.setUserPhone(result.getObj().getPhone());
-                            ARouter.getInstance().build(ARouterPathUtils.App_MainActivity).navigation();
+
+
+                            finish();
 
 
                         }

@@ -109,7 +109,7 @@ public class ClassBean {
             private int id;
             private String name;
             private int type;
-            private int consume_class;
+            private String consume_class;
             private int pay_status;
             private int live_status;
             private String pay_url;
@@ -139,11 +139,11 @@ public class ClassBean {
                 this.type = type;
             }
 
-            public int getConsume_class() {
+            public String getConsume_class() {
                 return consume_class;
             }
 
-            public void setConsume_class(int consume_class) {
+            public void setConsume_class(String consume_class) {
                 this.consume_class = consume_class;
             }
 

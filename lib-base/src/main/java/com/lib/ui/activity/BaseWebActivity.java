@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
@@ -28,6 +29,7 @@ public abstract class BaseWebActivity extends BaseActivity {
     private LinearLayout lin_web;
     private ProgressBar p_bar;
     private X5WebView webView;
+    private FrameLayout.LayoutParams params;
 
     private Handler handler = new Handler();
 
@@ -38,6 +40,8 @@ public abstract class BaseWebActivity extends BaseActivity {
         lin_web = findViewById(R.id.lin_web);
         p_bar = findViewById(R.id.p_bar);
         webView = new X5WebView(this);
+        params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        webView.setLayoutParams(params);
         lin_web.addView(webView);
         setWebView();
         onCreateView(webView);

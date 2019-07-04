@@ -1,10 +1,22 @@
 package com.live.bean.control;
 
 
+import com.qiniu.droid.rtc.QNRTCUser;
+
+import java.util.List;
+
 public class RoomControlBean {
 
 
-    private String roomId="";
+    private String roomId = "";
+
+    private int default_quality = 0;
+    private boolean default_voice = true;
+    private boolean default_camera = true;
+    private boolean default_rotate = true;
+    private boolean default_menu = true;
+    private boolean default_board = true;
+    private boolean default_class = true;
 
     public String getRoomId() {
         return roomId;
@@ -14,12 +26,6 @@ public class RoomControlBean {
         this.roomId = roomId;
     }
 
-    private boolean default_voice = true;
-    private boolean default_camera = true;
-    private boolean default_rotate = true;
-    private boolean default_menu = true;
-    private boolean default_board = true;
-    private boolean default_class=true;
 
     public boolean isDefault_board() {
         return default_board;
@@ -29,7 +35,7 @@ public class RoomControlBean {
         this.default_board = default_board;
     }
 
-    private int default_quality = 0;
+
 
     public boolean isDefault_voice() {
         return default_voice;

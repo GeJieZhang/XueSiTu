@@ -34,13 +34,23 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <fragment
-            android:id="@+id/f_personal"
-            android:name="com.user.fragment.PersonalFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <!--<fragment-->
+            <!--android:id="@+id/f_personal"-->
+            <!--android:name="com.user.fragment.PersonalFragment"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
 
-        </fragment>
+        <!--</fragment>-->
+
+
+        <FrameLayout
+            android:id="@+id/f_personal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></FrameLayout>
+
+
+
+
     </LinearLayout>
 
 

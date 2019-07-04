@@ -43,6 +43,13 @@ public class RegexUtils {
         return Pattern.matches(regex, password);
     }
 
+    public static boolean checkNumPassWord(String password) {
+
+        String regex = "[0-9a-zA-Z]{6}";
+
+
+        return Pattern.matches(regex, password);
+    }
 
     /**
      * 验证Email

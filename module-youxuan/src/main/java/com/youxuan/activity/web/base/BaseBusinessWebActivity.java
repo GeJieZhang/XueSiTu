@@ -6,6 +6,7 @@ import android.webkit.JavascriptInterface;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.lib.app.ARouterPathUtils;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
+import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.ui.activity.BaseWebActivity;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
@@ -13,16 +14,20 @@ import com.tencent.smtt.sdk.WebViewClient;
 public abstract class BaseBusinessWebActivity extends BaseWebActivity {
 
     //修改支付密码
-    public static final int CHANGE_PASSWORD = 2;
+    public static final int SET_PASSWORD = 1;
 
 
     public String token = "";
 
+    private WebView webView;
+
     @Override
     protected void onCreateView(WebView webView) {
-        token = SharedPreferenceManager.getInstance(getApplicationContext()).getUserCache().getUserToken();
+
         webView.addJavascriptInterface(javaScriptFunction, "AndroidInterface");
         webView.setWebViewClient(client);
+
+        this.webView = webView;
 
 
     }
@@ -35,13 +40,20 @@ public abstract class BaseBusinessWebActivity extends BaseWebActivity {
 
     protected abstract int getWebLayoutId();
 
+
+    protected abstract void myOnPageStarted(WebView webView, String s, Bitmap bitmap);
+
+    protected abstract void myShouldOverrideUrlLoading(WebView webView, String url);
+
+    protected abstract void myOnPageFinished(WebView webView, String s);
+
     private WebViewClient client = new WebViewClient() {
 
 
         @Override
         public void onPageStarted(WebView webView, String s, Bitmap bitmap) {
             super.onPageStarted(webView, s, bitmap);
-
+            myOnPageStarted(webView, s, bitmap);
 
         }
 
@@ -50,6 +62,8 @@ public abstract class BaseBusinessWebActivity extends BaseWebActivity {
          */
         public boolean shouldOverrideUrlLoading(WebView webView, String url) {
             webView.loadUrl(url);
+
+            myShouldOverrideUrlLoading(webView, url);
 
             return true;
         }
@@ -61,6 +75,9 @@ public abstract class BaseBusinessWebActivity extends BaseWebActivity {
 
 
             webView.loadUrl("javascript:hideheader()");
+
+            myOnPageFinished(webView, s);
+
         }
     };
 
@@ -84,7 +101,13 @@ public abstract class BaseBusinessWebActivity extends BaseWebActivity {
         void appPushSetPayPass(String userToken);
 
         //进入直播间
-        void appPushLiveRoom(String liveToken, String roomId, String teacherPhone, String userToken);
+        void appPushLiveRoom(String roomToken, String teacherPhone, String userToken, String roomName);
+
+
+        //隐藏当前WebView
+
+        void appHiddenController();
+
     }
 
 
@@ -97,8 +120,6 @@ public abstract class BaseBusinessWebActivity extends BaseWebActivity {
 
         @JavascriptInterface
         public String appGetToken() {
-
-
 
 
             return token;
@@ -119,15 +140,49 @@ public abstract class BaseBusinessWebActivity extends BaseWebActivity {
             if (checkToken(userToken)) return;
 
             ARouter.getInstance().build(ARouterPathUtils.User_SetZhiFuActivity)
-                    .withInt("NOW_TYPE", CHANGE_PASSWORD)
+                    .withInt("NOW_TYPE", SET_PASSWORD)
                     .navigation();
         }
 
         @JavascriptInterface
-        public void appPushLiveRoom(String liveToken, String roomId, String teacherPhone, String userToken) {
+        public void appPushLiveRoom(String roomToken, String teacherPhone, String userToken, String roomName) {
+
+
             if (checkToken(userToken)) return;
+
+
+            toRoom(roomToken, teacherPhone, roomName);
+
         }
+
+        @JavascriptInterface
+        public void appHiddenController() {
+
+            finish();
+
+        }
+
+
     };
+
+    private void toRoom(final String roomToken, final String teacherPhone, final String roomName) {
+        PermissionUtil.getInstance(BaseBusinessWebActivity.this).externalZhiBo(new PermissionUtil.RequestPermission() {
+            @Override
+            public void onRequestPermissionSuccess() {
+
+                ARouter.getInstance().build(ARouterPathUtils.Live_MainRoomActivity)
+                        .withString("roomToken", roomToken)
+                        .withString("teacherPhone", teacherPhone)
+                        .withString("roomName", roomName)
+                        .navigation();
+            }
+
+            @Override
+            public void onRequestPermissionFailure() {
+
+            }
+        });
+    }
 
     private boolean checkToken(String userToken) {
         if (!token.equals(userToken)) {
@@ -139,6 +194,16 @@ public abstract class BaseBusinessWebActivity extends BaseWebActivity {
         return false;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
 
+        if (webView != null) {
+            token = SharedPreferenceManager.getInstance(getApplicationContext()).getUserCache().getUserToken();
+            webView.loadUrl("javascript:appOrderRefresh(" + token + ")");
+
+        }
+
+    }
 }

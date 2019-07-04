@@ -8,6 +8,8 @@ import com.lib.bean.Event;
 import com.lib.fastkit.http.ok.EngineCallBack;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.http.ok.err.ResponseErrorListenerImpl;
+import com.lib.fastkit.utils.json_deal.lib_mgson.MGson;
+import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.views.dialog.http.DialogUtils;
 
 import org.json.JSONObject;
@@ -76,15 +78,19 @@ public abstract class HttpDialogCallBack<T> implements EngineCallBack {
                 EventBus.getDefault().post(new Event<String>(1, "Token失效！"), EventBusTagUtils.HttpCallBack);
                 return;
             }
-            Gson gson = new Gson();
-            T objResult = (T) gson.fromJson(result,
-                    HttpUtils.analysisClazzInfo(this));
+//            Gson gson = new Gson();
+//            T objResult = (T) gson.fromJson(result,
+//                    HttpUtils.analysisClazzInfo(this));
+
+            T objResult = (T) MGson.newGson().fromJson(result, HttpUtils.analysisClazzInfo(this));
 
             onSuccess(objResult);
 
             onSuccessHide();
         } catch (Exception e) {
             responseErrorListener.handleResponseError(context, e);
+            LogUtil.e(e.getMessage());
+        } finally {
             onSuccessHide();
         }
 
@@ -96,10 +102,21 @@ public abstract class HttpDialogCallBack<T> implements EngineCallBack {
 
     @Override
     public void onError(Exception e) {
-        responseErrorListener.handleResponseError(context, e);
 
-        onError(e.getMessage());
-        onErrorHide();
+        try {
+            responseErrorListener.handleResponseError(context, e);
+
+            LogUtil.e(e.getMessage());
+            onError(e.getMessage());
+            onErrorHide();
+        } catch (Exception ex) {
+            responseErrorListener.handleResponseError(context, ex);
+            LogUtil.e(ex.getMessage());
+        } finally {
+            onError("finally");
+            onErrorHide();
+        }
+
     }
 
     public abstract void onError(String e);

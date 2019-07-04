@@ -450,7 +450,10 @@ public class YouXuanFragment extends BaseAppFragment {
         lastPosition2 = 0;
         //下方ViewPager
         fragments.clear();
+
+
         for (YouXuanBean.ObjBean.StageBean stageBean : schoolList) {
+
             fragments.add(new SchoolFragment(stageBean.getCourse()));
         }
 
@@ -631,7 +634,7 @@ public class YouXuanFragment extends BaseAppFragment {
             }
 
 
-           // showLog("刷新剩余时间");
+            // showLog("刷新剩余时间");
             handler.postDelayed(cutTimeRunnable, CUT_TIME);
 
         }

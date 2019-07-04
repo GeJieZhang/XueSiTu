@@ -28,9 +28,9 @@ public class JianKeFragment extends BaseAppFragment {
     Button btnToken3;
     @BindView(R2.id.btn_token4)
     Button btnToken4;
-    String roomToken1 = "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:NYlOOUeEW-mWFqo53hykVsFSe4g=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoiNTEyMyIsInVzZXJJZCI6InRva2VuMSIsImV4cGlyZUF0IjoxNTYxNDMyMTczLCJwZXJtaXNzaW9uIjoidXNlciJ9";
-    String roomToken2 = "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:f6uXJpcu0f0EChgjSKFwD-Rj6gg=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoiNTEyMyIsInVzZXJJZCI6InRva2VuMiIsImV4cGlyZUF0IjoxNTYxNDMyMTczLCJwZXJtaXNzaW9uIjoidXNlciJ9";
-    String roomToken3 = "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:F8Xcg7OybYvOPlWKmIl9ik4gTVY=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoiNTEyMyIsInVzZXJJZCI6InRva2VuMyIsImV4cGlyZUF0IjoxNTYxNDMyMTczLCJwZXJtaXNzaW9uIjoidXNlciJ9";
+    String roomToken1 = "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:5ugP-WbuM66BYO9I24HVMhhlYeQ=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoicm9vbTUxMjMiLCJ1c2VySWQiOiIxMzU0MDM1NDU5NyIsImV4cGlyZUF0IjoxNTYyNDY5NDMwLCJwZXJtaXNzaW9uIjoidXNlciJ9";
+    String roomToken2 = "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:9YrKiLh8Cb6SOLIyYQpTP4pqHAI=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoicm9vbTUxMjMiLCJ1c2VySWQiOiIxMzU0MDM1NDU5NiIsImV4cGlyZUF0IjoxNTYyNDY5NDMwLCJwZXJtaXNzaW9uIjoidXNlciJ9";
+    String roomToken3 = "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:xf1jHmvqJIHP5apXYOFtKI7G4Pw=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoicm9vbTUxMjMiLCJ1c2VySWQiOiIxMzU0MDM1NDU5NSIsImV4cGlyZUF0IjoxNTYyNDY5NDMwLCJwZXJtaXNzaW9uIjoidXNlciJ9";
 
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
@@ -54,10 +54,12 @@ public class JianKeFragment extends BaseAppFragment {
                 @Override
                 public void onRequestPermissionSuccess() {
 
-                    ARouter.getInstance()
-                            .build(ARouterPathUtils.Live_MainRoomActivity)
+                    ARouter.getInstance().build(ARouterPathUtils.Live_MainRoomActivity)
                             .withString("roomToken", roomToken1)
-                            .withString("name", "token1")
+                            .withString("teacherPhone", "13540354597")
+                            .withString("roomName", "room5123")
+                            .withString("userPhone", "13540354597")
+
                             .navigation();
 
                 }
@@ -73,10 +75,11 @@ public class JianKeFragment extends BaseAppFragment {
                 @Override
                 public void onRequestPermissionSuccess() {
 
-                    ARouter.getInstance()
-                            .build(ARouterPathUtils.Live_MainRoomActivity)
+                    ARouter.getInstance().build(ARouterPathUtils.Live_MainRoomActivity)
                             .withString("roomToken", roomToken2)
-                            .withString("name", "token2")
+                            .withString("teacherPhone", "13540354597")
+                            .withString("roomName", "room5123")
+                            .withString("userPhone", "13540354596")
                             .navigation();
 
                 }
@@ -92,10 +95,11 @@ public class JianKeFragment extends BaseAppFragment {
                 @Override
                 public void onRequestPermissionSuccess() {
 
-                    ARouter.getInstance()
-                            .build(ARouterPathUtils.Live_MainRoomActivity)
+                    ARouter.getInstance().build(ARouterPathUtils.Live_MainRoomActivity)
                             .withString("roomToken", roomToken3)
-                            .withString("name", "token3")
+                            .withString("teacherPhone", "13540354597")
+                            .withString("roomName", "room5123")
+                            .withString("userPhone", "13540354595")
                             .navigation();
 
                 }

@@ -95,9 +95,15 @@ public class IdentityActivity extends BaseAppActivity {
         studentChooseFragment = (StudentChooseFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_teacher);
         studentChooseFragment.setGradeChooseListener(new StudentChooseFragment.GradeChooseListener() {
             @Override
+            public void onSure() {
+                finish();
+            }
+
+            @Override
             public void onGradeChoose(String str) {
 
                 //showToast(str);
+
 
             }
         });
@@ -105,7 +111,7 @@ public class IdentityActivity extends BaseAppActivity {
     }
 
     private void showTeacher() {
-        AlertDialog dialog = new AlertDialog.Builder(this)
+        final AlertDialog dialog = new AlertDialog.Builder(this)
                 .setContentView(R.layout.dialog_teacher)
 
                 .setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -129,8 +135,15 @@ public class IdentityActivity extends BaseAppActivity {
         teacherChooseFragment = (TeacherChooseFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_teacher);
         teacherChooseFragment.setGradeChooseListener(new TeacherChooseFragment.GradeChooseListener() {
             @Override
+            public void onSure() {
+                dialog.dismiss();
+                finish();
+            }
+
+            @Override
             public void onGradeChoose(String str) {
                 //showToast(str);
+
             }
         });
 

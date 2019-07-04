@@ -66,6 +66,12 @@ public class StudentChooseFragment extends BaseAppFragment {
             @Override
             public void onClick(View v) {
                 EventBus.getDefault().post(new Event<IdentityUserBean>(1, identityUserBean), EventBusTagUtils.TeacherStudentChooseFragment);
+
+
+                if (gradeChooseListener != null) {
+                    gradeChooseListener.onSure();
+                }
+
             }
         });
     }
@@ -111,14 +117,11 @@ public class StudentChooseFragment extends BaseAppFragment {
                 public void onClick(View v) {
 
                     initGradeButton();
-
-                    btn_text.setBackgroundResource(R.drawable.bg_circle_red_r22_1);
+                    btn_text.setBackgroundResource(R.drawable.bg_circle_bule_r22_1);
                     btn_text.setTextColor(getResources().getColor(R.color.white));
 
 
-                    if (gradeChooseListener != null) {
-                        gradeChooseListener.onGradeChoose(grade[position]);
-                    }
+
 
 
                     int id = position + 1;
@@ -127,7 +130,9 @@ public class StudentChooseFragment extends BaseAppFragment {
                     identityUserBean = new IdentityUserBean();
                     identityUserBean.setType("2");
                     identityUserBean.setGrade_id(id + "");
-
+                    if (gradeChooseListener != null) {
+                        gradeChooseListener.onGradeChoose(grade[position]);
+                    }
 
                 }
 
@@ -148,6 +153,8 @@ public class StudentChooseFragment extends BaseAppFragment {
 
     public interface GradeChooseListener {
 
+
+        void onSure();
         void onGradeChoose(String str);
     }
 

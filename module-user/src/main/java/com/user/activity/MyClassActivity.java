@@ -15,10 +15,12 @@ import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
+import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.fastkit.views.spring_refresh.container.DefaultFooter;
 import com.lib.fastkit.views.spring_refresh.container.DefaultHeader;
 import com.lib.fastkit.views.spring_refresh.widget.SpringView;
+import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.ui.adapter.BaseAdapter;
@@ -50,6 +52,8 @@ public class MyClassActivity extends BaseAppActivity {
 
     private String identity = "";
 
+    private String userPhone = "";
+
 
     private int PAY_STATE_N = 0;//未支付
     private int PAY_STATE_Y = 1;//已支付
@@ -66,7 +70,7 @@ public class MyClassActivity extends BaseAppActivity {
     protected void onCreateView() {
         token = SharedPreferenceManager.getInstance(this).getUserCache().getUserToken();
         identity = SharedPreferenceManager.getInstance(this).getUserCache().getUserIdentity();
-
+        userPhone = SharedPreferenceManager.getInstance(this).getUserCache().getUserPhone();
         initTitle();
         homeAdapter = new HomeAdapter(this, mData);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -165,11 +169,15 @@ public class MyClassActivity extends BaseAppActivity {
         protected void toBindViewHolder(ViewHolder holder, final int position, final List<ClassBean.ObjBean.RowsBean> mData) {
 
             holder.setText(R.id.tv_title, mData.get(position).getName());
+
+            TextView tv_state = holder.getView(R.id.tv_state);
+            ImageView iv_sate = holder.getView(R.id.iv_state);
             Button btn_go_class = holder.getView(R.id.btn_go_class);
             if (identity.equals("1")) {
 
                 //老师
-
+                tv_state.setVisibility(View.GONE);
+                iv_sate.setVisibility(View.GONE);
                 btn_go_class.setBackgroundResource(R.drawable.bg_part_circle1);
                 btn_go_class.setText("去上课");
 
@@ -187,8 +195,6 @@ public class MyClassActivity extends BaseAppActivity {
                 holder.setText(R.id.tv_class, "剩余课次:" + mData.get(position).getConsume_class());
 
 
-                TextView tv_state = holder.getView(R.id.tv_state);
-                ImageView iv_sate = holder.getView(R.id.iv_state);
                 if (mData.get(position).getLive_status() == LIVE_STATE_Y) {
 
                     tv_state.setText("正在开课");
@@ -224,6 +230,7 @@ public class MyClassActivity extends BaseAppActivity {
 
                         if (mData.get(position).getPay_status() == PAY_STATE_Y) {
 
+
                             goToClass(mData, position);
 
 
@@ -256,51 +263,67 @@ public class MyClassActivity extends BaseAppActivity {
     }
 
     private void goToClass(final List<ClassBean.ObjBean.RowsBean> mData, final int position) {
-        String course_id = "";
 
 
-        if (identity.equals("1")) {
-            course_id = mData.get(position).getId() + "";
-        } else {
-            course_id = mData.get(position).getLive_room().get(0).getCourse_id();
-        }
-
-        //支付了去上课
-
-        final String finalRoomId = course_id;
-        HttpUtils.with(getApplicationContext())
-                .addParam("requestType", "TO_CLASS")
-                .addParam("course_type", mData.get(position).getType())
-                .addParam("course_id", course_id)
-                .addParam("token", token)
-                .execute(new HttpNormalCallBack<ToLiveBean>() {
-                    @Override
-                    public void onSuccess(ToLiveBean result) {
-
-                        if (result.getCode() == CodeUtil.CODE_200) {
+        PermissionUtil.getInstance(MyClassActivity.this).externalZhiBo(new PermissionUtil.RequestPermission() {
+            @Override
+            public void onRequestPermissionSuccess() {
+                String course_id = "";
 
 
-                            String roomToken = result.getObj().getToken();
-                            String teacherPhone = result.getObj().getPhoen();
-                            String userId = result.getObj().getUserid();
+                if (identity.equals("1")) {
+                    course_id = mData.get(position).getId() + "";
+                } else {
+                    course_id = mData.get(position).getLive_room().get(0).getCourse_id();
+                }
 
-                            ARouter.getInstance().build(ARouterPathUtils.Live_MainRoomActivity)
-                                    .withString("roomToken", roomToken)
-                                    .withString("teacherPhone", teacherPhone)
-                                    .withString("userId", userId)
-                                    .withString("roomName", result.getObj().getRoomname())
-                                    .navigation();
+                //支付了去上课
+
+                final String finalRoomId = course_id;
+                HttpUtils.with(MyClassActivity.this)
+                        .addParam("requestType", "TO_CLASS")
+                        .addParam("course_type", mData.get(position).getType())
+                        .addParam("course_id", course_id)
+                        .addParam("token", token)
+                        .execute(new HttpDialogCallBack<ToLiveBean>() {
+                            @Override
+                            public void onSuccess(final ToLiveBean result) {
+
+                                if (result.getCode() == CodeUtil.CODE_200) {
 
 
-                        }
+                                    String roomToken = result.getObj().getToken();
+                                    String teacherPhone = result.getObj().getPhoen();
+                                    ARouter.getInstance().build(ARouterPathUtils.Live_MainRoomActivity)
+                                            .withString("roomToken", roomToken)
+                                            .withString("teacherPhone", teacherPhone)
+                                            .withString("roomName", result.getObj().getRoomname())
 
-                    }
+                                            .withString("userPhone", userPhone)
+                                            .navigation();
 
-                    @Override
-                    public void onError(String e) {
 
-                    }
-                });
+                                } else {
+                                    showToast(result.getMsg());
+                                }
+
+                            }
+
+                            @Override
+                            public void onError(String e) {
+
+                            }
+                        });
+
+
+            }
+
+            @Override
+            public void onRequestPermissionFailure() {
+
+            }
+        });
+
     }
 
 

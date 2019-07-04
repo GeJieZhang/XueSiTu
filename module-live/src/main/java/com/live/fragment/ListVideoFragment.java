@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
@@ -17,6 +18,7 @@ import com.lib.ui.fragment.BaseAppFragment;
 import com.live.R;
 import com.live.R2;
 import com.live.activity.MainRoomActivity;
+import com.live.bean.live.MyTrackInfo;
 import com.qiniu.droid.rtc.QNSurfaceView;
 import com.qiniu.droid.rtc.QNTrackInfo;
 
@@ -39,6 +41,8 @@ public class ListVideoFragment extends BaseAppFragment {
     LinearLayout linPpt;
     @BindView(R2.id.rv_list_video)
     RecyclerView rvListVideo;
+    @BindView(R2.id.lin_parent)
+    LinearLayout lin_parent;
 
 
     private HomeAdapter homeAdapter;
@@ -46,7 +50,7 @@ public class ListVideoFragment extends BaseAppFragment {
     private LinearLayoutManager linearLayoutManager;
 
 
-    private List<QNTrackInfo> list = new ArrayList<>();
+    private List<MyTrackInfo> list = new ArrayList<>();
 
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
@@ -61,18 +65,25 @@ public class ListVideoFragment extends BaseAppFragment {
     public void onResume() {
         super.onResume();
 
-//        if (MainRoomActivity.screenOrientation == screenVertical) {
-//            ViewGroup.LayoutParams params = hScrollView.getLayoutParams();
+        if (MainRoomActivity.screenOrientation == screenVertical) {
+//            ViewGroup.LayoutParams params = rvListVideo.getLayoutParams();
 //            params.width = ViewGroup.LayoutParams.MATCH_PARENT;
 //            params.height = ViewGroup.LayoutParams.MATCH_PARENT;
-//            hScrollView.setLayoutParams(params);
-//        } else {
-//            ViewGroup.LayoutParams params = hScrollView.getLayoutParams();
+//            rvListVideo.setLayoutParams(params);
+//
+//            lin_parent.setOrientation(LinearLayout.HORIZONTAL);
+
+            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+
+        } else {
+//            ViewGroup.LayoutParams params = rvListVideo.getLayoutParams();
 //            params.width = DisplayUtil.dip2px(getActivity(), 290);
 //            params.height = ViewGroup.LayoutParams.MATCH_PARENT;
-//            hScrollView.setLayoutParams(params);
-//
-//        }
+//            rvListVideo.setLayoutParams(params);
+//            lin_parent.setOrientation(LinearLayout.VERTICAL);
+            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        }
 
 
         setQNSurfaceView();
@@ -92,7 +103,10 @@ public class ListVideoFragment extends BaseAppFragment {
 
             homeAdapter = new HomeAdapter(getActivity(), list);
             linearLayoutManager = new LinearLayoutManager(getActivity());
+
+
             linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+
             rvListVideo.setLayoutManager(linearLayoutManager);
             rvListVideo.setAdapter(homeAdapter);
         }
@@ -102,7 +116,16 @@ public class ListVideoFragment extends BaseAppFragment {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_list_video;
+
+        if (MainRoomActivity.screenOrientation == screenVertical) {
+
+            return R.layout.item_horizontal;
+
+        } else {
+            return R.layout.item_vertical;
+        }
+
+        //return R.layout.fragment_list_video;
     }
 
     @OnClick({R2.id.lin_ppt, R2.id.lin_whiteboard})
@@ -124,30 +147,34 @@ public class ListVideoFragment extends BaseAppFragment {
     }
 
 
-    //private List<QNSurfaceView> qnSurfaceViewList = new ArrayList<>();
+    private List<QNSurfaceView> qnSurfaceViewList = new ArrayList<>();
 
-    public class HomeAdapter extends BaseAdapter<QNTrackInfo> {
+    public class HomeAdapter extends BaseAdapter<MyTrackInfo> {
 
-        public HomeAdapter(Context context, List<QNTrackInfo> mData) {
+        public HomeAdapter(Context context, List<MyTrackInfo> mData) {
             super(context, mData);
+
+
         }
 
         @Override
         public int getLayoutId() {
+
+
             return R.layout.item_list_video;
         }
 
         @Override
-        protected void toBindViewHolder(final ViewHolder holder, final int position, List<QNTrackInfo> mData) {
+        protected void toBindViewHolder(final ViewHolder holder, final int position, List<MyTrackInfo> mData) {
 
 
             //setParentSize(holder);
 
             final QNSurfaceView qn_video = holder.getView(R.id.qn_video);
+            qn_video.setZOrderOnTop(false);
+            qn_video.setZOrderMediaOverlay(false);
 
-            qn_video.setZOrderOnTop(true);      // 这句不能少
-            qn_video.setZOrderMediaOverlay(true);
-            qn_video.getHolder().setFormat(PixelFormat.TRANSPARENT);
+            qnSurfaceViewList.add(qn_video);
 
 
             if (position == 0) {
@@ -205,7 +232,7 @@ public class ListVideoFragment extends BaseAppFragment {
     }
 
 
-    public void setTrackInfo(List<QNTrackInfo> trackInfoList) {
+    public void setTrackInfo(List<MyTrackInfo> trackInfoList) {
 
         list.clear();
         list.addAll(trackInfoList);
@@ -218,12 +245,12 @@ public class ListVideoFragment extends BaseAppFragment {
 
     public interface ListVideoFragmentListener {
 
-        void onFindAdmin(QNTrackInfo trackInfo);
+        void onFindAdmin(MyTrackInfo trackInfo);
 
 
-        void onSetQNSurfaceView(QNTrackInfo trackInfo, QNSurfaceView qnSurfaceView);
+        void onSetQNSurfaceView(MyTrackInfo trackInfo, QNSurfaceView qnSurfaceView);
 
-        void onChangeQNSurfaceView(QNTrackInfo trackInfo, QNSurfaceView qnSurfaceView);
+        void onChangeQNSurfaceView(MyTrackInfo trackInfo, QNSurfaceView qnSurfaceView);
 
 
         void onWhiteBoradClick();
@@ -246,5 +273,27 @@ public class ListVideoFragment extends BaseAppFragment {
         //LogUtil.e("onPause");
     }
 
+
+    public void setQnSurfaceViewTop(boolean b) {
+
+        for (QNSurfaceView qnSurfaceView : qnSurfaceViewList) {
+            qnSurfaceView.setZOrderOnTop(b);
+            qnSurfaceView.setZOrderMediaOverlay(b);
+        }
+
+
+    }
+
+    public void hideVideoList(boolean b){
+
+        if (b){
+            rvListVideo.removeAllViews();
+            //rvListVideo.setVisibility(View.GONE);
+
+        }else {
+           // rvListVideo.setVisibility(View.VISIBLE);
+        }
+
+    }
 
 }

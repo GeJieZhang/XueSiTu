@@ -118,6 +118,8 @@ public class SetActivity extends BaseAppActivity {
                         @Override
                         public void onSure() {
                             ClearDataUtils.clearAllCache(SetActivity.this);
+
+                            SharedPreferenceManager.getInstance(SetActivity.this).getUserCache().setUserToken("");
                             setCache();
 
 

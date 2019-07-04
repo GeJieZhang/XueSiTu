@@ -73,23 +73,22 @@ public class PersonalFragment extends BaseAppFragment {
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
 
-        identity = SharedPreferenceManager.getInstance(getContext()).getUserCache().getUserIdentity();
-        initView();
 
+        initView();
+        initUserInfo();
     }
 
     private void initView() {
 
 
-
     }
 
 
-    private void initUserInfo() {
+    public void initUserInfo() {
 
 
         UserCacheInterface userCacheInterface = SharedPreferenceManager.getInstance(getContext()).getUserCache();
-
+        identity = userCacheInterface.getUserIdentity();
 
         tvName.setText(userCacheInterface.getUserName());
 
@@ -113,14 +112,12 @@ public class PersonalFragment extends BaseAppFragment {
         }
 
 
-
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        initUserInfo();
+
 
     }
 
@@ -167,11 +164,18 @@ public class PersonalFragment extends BaseAppFragment {
 
         } else if (i == R.id.lin_teacher) {
             //我的老师
-
+            ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+                    .withString("urlPath", "http://192.168.0.103/index9.html")
+                    .navigation();
 
         } else if (i == R.id.lin_study) {
 
             //学习历程
+
+
+            ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+                    .withString("urlPath", "http://192.168.0.103/index8.html")
+                    .navigation();
         } else if (i == R.id.lin_sign) {
             //签到有礼
         } else if (i == R.id.lin_userInfo) {

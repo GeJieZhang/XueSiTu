@@ -5,72 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:id="@+id/lin_whiteboard"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginLeft="8dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="#686868" />
-
-                <TextView
-                    style="@style/text_style3"
-                    android:layout_marginTop="4dp"
-                    android:text="白板" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lin_ppt"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginLeft="8dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="#686868" />
-
-                <TextView
-                    style="@style/text_style3"
-                    android:layout_marginTop="4dp"
-                    android:text="PPT" />
-
-            </LinearLayout>
-
-
-            <android.support.v7.widget.RecyclerView
-
-                android:id="@+id/rv_list_video"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-            </android.support.v7.widget.RecyclerView>
-
-        </LinearLayout>
-
-    </HorizontalScrollView>
+    <include layout="@layout/item_horizontal"></include>
 
 
 </LinearLayout>

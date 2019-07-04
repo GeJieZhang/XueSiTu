@@ -36,7 +36,7 @@ public class WhiteBoardUtils {
 
     /*和 iOS 名字一致*/
     final String EVENT_NAME = "WhiteCommandCustomEvent";
-    private String TEST_UUID = "b63e8b7eee3045f6afbedf53364a17b9";
+    private String TEST_UUID = "4db0932b57f64d22970a4ef5a83e0cd6";
     DemoAPI demoAPI;
     Gson gson;
     Room room;
@@ -119,7 +119,7 @@ public class WhiteBoardUtils {
         whiteSdk.joinRoom(new RoomParams(uuid, roomToken), new AbstractRoomCallbacks() {
             @Override
             public void onPhaseChanged(RoomPhase phase) {
-                showLog(phase.name());
+                //showLog(phase.name());
 
 
             }
@@ -127,7 +127,7 @@ public class WhiteBoardUtils {
             @Override
             public void onRoomStateChanged(RoomState modifyState) {
 
-                showLog(gson.toJson(modifyState));
+               // showLog(gson.toJson(modifyState));
 
             }
         }, new Promise<Room>() {

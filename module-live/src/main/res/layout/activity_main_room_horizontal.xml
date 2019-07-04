@@ -8,10 +8,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <com.qiniu.droid.rtc.QNSurfaceView
             android:id="@+id/local_surface_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
 
         <FrameLayout
             android:id="@+id/f_whiteboard"
@@ -28,33 +30,60 @@
 
             <LinearLayout
                 android:id="@+id/lin_chat"
-                android:layout_width="354dp"
+                android:layout_width="364dp"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_part_circle_live1"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
                 <FrameLayout
                     android:id="@+id/list_video"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="100dp"
-
-                    android:paddingBottom="8dp"
-                    android:paddingTop="8dp"></FrameLayout>
+                    android:layout_width="110dp"
+                    android:layout_height="match_parent"
+                    android:minWidth="100dp"></FrameLayout>
 
                 <View
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="16dp"
                     android:background="@drawable/line_circle" />
 
                 <FrameLayout
                     android:id="@+id/f_chat"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"></FrameLayout>
             </LinearLayout>
+            <!--<LinearLayout-->
+            <!--android:id="@+id/lin_chat"-->
+            <!--android:layout_width="354dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="@drawable/bg_part_circle_live1"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<FrameLayout-->
+            <!--android:id="@+id/list_video"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:minHeight="100dp"-->
+
+            <!--android:paddingBottom="8dp"-->
+            <!--android:paddingTop="8dp"></FrameLayout>-->
+
+            <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="5dp"-->
+            <!--android:layout_marginLeft="16dp"-->
+            <!--android:layout_marginRight="16dp"-->
+            <!--android:background="@drawable/line_circle" />-->
+
+            <!--<FrameLayout-->
+            <!--android:id="@+id/f_chat"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"></FrameLayout>-->
+            <!--</LinearLayout>-->
 
             <ImageView
                 android:id="@+id/iv_chat_control"

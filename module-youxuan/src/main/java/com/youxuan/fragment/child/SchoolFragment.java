@@ -44,10 +44,12 @@ public class SchoolFragment extends BaseAppFragment {
     private List<YouXuanBean.ObjBean.StageBean.CourseBean> carList = new ArrayList<>();
 
     @SuppressLint("ValidFragment")
-    public SchoolFragment(List<YouXuanBean.ObjBean.StageBean.CourseBean> carList) {
+    public SchoolFragment(List<YouXuanBean.ObjBean.StageBean.CourseBean> list) {
 
-        this.carList.clear();
-        this.carList = carList;
+        carList.clear();
+        carList.addAll(list);
+
+
     }
 
     @Override
@@ -95,6 +97,7 @@ public class SchoolFragment extends BaseAppFragment {
         @Override
         public void onBindViewHolder(ViewHolder holder, final int position) {
 
+
             if (getItemViewType(position) == VIEW_TYPE) {
                 return;
             } else {
@@ -114,7 +117,7 @@ public class SchoolFragment extends BaseAppFragment {
                 holder.setText(R.id.tv_remaining, "剩余名额:" + carList.get(position).getRemaining());
 
                 holder.setText(R.id.tv_ks, "课时数:" + carList.get(position).getTotal_class());
-                holder.setText(R.id.tv_money, carList.get(position).getPrice() + "兔币");
+                holder.setText(R.id.tv_money, carList.get(position).getPrice() + "");
                 setIconType(holder, position);
 
 
@@ -124,6 +127,8 @@ public class SchoolFragment extends BaseAppFragment {
                 LinearLayout lin_head = holder.getView(R.id.lin_head);
                 lin_head.removeAllViews();
                 final List<YouXuanBean.ObjBean.StageBean.CourseBean.TeacherInfoBean> teacherInfoBeanList = carList.get(position).getTeacher_info();
+
+
                 for (int i = 0; i < teacherInfoBeanList.size(); i++) {
 
                     View view = LayoutInflater.from(getActivity()).inflate(R.layout.item_teacher, null);
@@ -136,8 +141,7 @@ public class SchoolFragment extends BaseAppFragment {
                     }
 
                     final TextView tv_name = view.findViewById(R.id.tv_name);
-                    final TextView tv_grade = view.findViewById(R.id.tv_grade);
-                    tv_grade.setText(teacherInfoBeanList.get(i).getStage_name());
+
                     tv_name.setText(teacherInfoBeanList.get(i).getTeacher_name());
 
                     final ImageView iv_head = view.findViewById(R.id.iv_head);
@@ -152,7 +156,6 @@ public class SchoolFragment extends BaseAppFragment {
                         }
                     });
 
-                    tv_name.setText(carList.get(i).getCourse_name());
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT);
                     params.setMargins(0, 0, DisplayUtil.dip2px(getActivity(), 16), 0);
@@ -160,7 +163,7 @@ public class SchoolFragment extends BaseAppFragment {
                     lin_head.addView(view);
 
                     Glide.with(getActivity())
-                            .load(teacherInfoBeanList.get(i).getTeacher_link())
+                            .load(teacherInfoBeanList.get(i).getTeacher_photo_url())
                             .apply(GlideConfig.getCircleOptions())
                             .into(iv_head);
 
@@ -246,6 +249,6 @@ public class SchoolFragment extends BaseAppFragment {
         }
 
 
-       // showLog("刷新活动结束日期!");
+        // showLog("刷新活动结束日期!");
     }
 }

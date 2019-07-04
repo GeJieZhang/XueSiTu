@@ -19,16 +19,19 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
 import com.lib.app.EventBusTagUtils;
+import com.lib.app.FragmentTag;
 import com.lib.app.FragmentUtils;
 import com.lib.bean.Event;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.animation_deal.AnimationUtil;
+import com.lib.fastkit.utils.fragment_deal.FragmentCustomUtils;
 import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.fastkit.views.viewpager.my.MyViewPager;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.live.activity.MainRoomActivity;
+import com.user.fragment.PersonalFragment;
 import com.xuesitu.R;
 import com.xuesitu.bean.CheckTokenBean;
 import com.xuesitu.bean.QiNiuBean;
@@ -120,6 +123,17 @@ public class MainActivity extends BaseAppActivity {
         fragments.add(FragmentUtils.getFengXiangFragment());
 
 
+        initPersonalFragment();
+
+
+    }
+
+    private PersonalFragment personalFragment;
+
+    private void initPersonalFragment() {
+
+        personalFragment = new PersonalFragment();
+        FragmentCustomUtils.setFragment(this, R.id.f_personal, personalFragment, FragmentTag.PersonalFragment);
     }
 
 
@@ -471,6 +485,8 @@ public class MainActivity extends BaseAppActivity {
 
                 }
             });
+
+            personalFragment.initUserInfo();
 
         }
     }

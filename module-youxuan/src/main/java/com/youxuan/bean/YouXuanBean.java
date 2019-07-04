@@ -377,7 +377,7 @@ public class YouXuanBean {
 
                     private String teacher_name;
                     private int teacher_id;
-                    private String stage_name;
+                    private String teacher_photo_url;
                     private String teacher_link;
 
                     public String getTeacher_name() {
@@ -396,12 +396,12 @@ public class YouXuanBean {
                         this.teacher_id = teacher_id;
                     }
 
-                    public String getStage_name() {
-                        return stage_name;
+                    public String getTeacher_photo_url() {
+                        return teacher_photo_url;
                     }
 
-                    public void setStage_name(String stage_name) {
-                        this.stage_name = stage_name;
+                    public void setTeacher_photo_url(String teacher_photo_url) {
+                        this.teacher_photo_url = teacher_photo_url;
                     }
 
                     public String getTeacher_link() {

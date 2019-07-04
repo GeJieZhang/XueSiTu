@@ -54,9 +54,9 @@ public class MyApplication extends Application {
         initTimber();
 
 
-       // BuglyUtil.init(this);
+        // BuglyUtil.init(this);
         //内存检测
-        initLeakCanary();
+        //initLeakCanary();
 
         initEasemob(this);
         //X5内核

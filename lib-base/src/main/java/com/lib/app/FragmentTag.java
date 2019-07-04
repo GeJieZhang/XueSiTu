@@ -12,4 +12,6 @@ public class FragmentTag {
     public static final String Chat_Fragment = "Chat_Fragment";
     public static final String WhiteBoardFragment = "WhiteBoardFragment";
 
+    public static final String PersonalFragment = "PersonalFragment";
+
 }

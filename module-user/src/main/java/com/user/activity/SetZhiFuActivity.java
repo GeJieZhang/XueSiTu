@@ -264,8 +264,8 @@ public class SetZhiFuActivity extends BaseAppActivity {
             return;
         }
 
-        if (!RegexUtils.checkPassWord(newPassword)) {
-            showToast("密码必须是6位的数字、字符组合!");
+        if (!RegexUtils.checkNumPassWord(newPassword)) {
+            showToast("密码必须是6位纯数字!");
 
             return;
         }
@@ -327,8 +327,8 @@ public class SetZhiFuActivity extends BaseAppActivity {
             return;
         }
 
-        if (!RegexUtils.checkPassWord(newPassword)) {
-            showToast("密码必须是6位的数字、字符组合!");
+        if (!RegexUtils.checkNumPassWord(newPassword)) {
+            showToast("密码必须是6位纯数字!");
 
             return;
         }
