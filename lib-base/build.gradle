@@ -150,5 +150,10 @@ dependencies {
      */
     api 'com.github.duty-os:white-sdk-android:2.0.0'
 
+    /**
+     * 颜色选择器
+     */
+    api 'com.smart.colorview:colorview:1.1.1'
+
 
 }

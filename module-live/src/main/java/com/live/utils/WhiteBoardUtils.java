@@ -36,14 +36,18 @@ public class WhiteBoardUtils {
 
     /*和 iOS 名字一致*/
     final String EVENT_NAME = "WhiteCommandCustomEvent";
-    private String TEST_UUID = "4db0932b57f64d22970a4ef5a83e0cd6";
-    DemoAPI demoAPI;
-    Gson gson;
-    Room room;
+    private String TEST_UUID = "b6069f9e3d8a4f46838c9eaba164498f";
+
+    private String ROOM_TOKEN = "WHITEcGFydG5lcl9pZD11QjFvMVhqUjNZa2RxaFpxMWNHTjlNbktBcGNudEtSRWFzNGwmc2lnPTQ4NTI5NGRmZGE2NjNjZWRmMDhmMDYzYjdlOTBmYWJhMjM4MWZlY2M6YWRtaW5JZD0yNzEmcm9vbUlkPWI2MDY5ZjllM2Q4YTRmNDY4MzhjOWVhYmExNjQ0OThmJnRlYW1JZD0zOTYmcm9sZT1yb29tJmV4cGlyZV90aW1lPTE1OTM4NzkxMDkmYWs9dUIxbzFYalIzWWtkcWhacTFjR045TW5LQXBjbnRLUkVhczRsJmNyZWF0ZV90aW1lPTE1NjIzMjIxNTcmbm9uY2U9MTU2MjMyMjE1NjYwNzAw";
+    private DemoAPI demoAPI;
+    private Gson gson;
+    private Room room;
 
     private WhiteBroadView whiteBroadView;
 
     private Activity activity;
+
+    private static WhiteBoardUtils instance;
 
     public WhiteBoardUtils() {
 
@@ -51,53 +55,58 @@ public class WhiteBoardUtils {
         gson = new Gson();
     }
 
-    public static WhiteBoardUtils getInstance() {
+    public static synchronized WhiteBoardUtils getInstance() {
 
-        return new WhiteBoardUtils();
+        if (instance == null) {
+            instance = new WhiteBoardUtils();
+        }
+        return instance;
     }
 
 
-    public Room joinToRoom(Activity activity, WhiteBroadView broadView) {
+    public WhiteBoardUtils joinToRoom(Activity activity, WhiteBroadView broadView) {
         this.activity = activity;
         this.whiteBroadView = broadView;
 
-        return getRoomToken(TEST_UUID);
+        joinRoom(TEST_UUID, ROOM_TOKEN);
+
+        return instance;
 
     }
 
-    private Room getRoomToken(final String uuid) {
-        final Room[] room1 = new Room[1];
+//    private Room getRoomToken(final String uuid) {
+//        final Room[] room1 = new Room[1];
+//
+//        demoAPI.getRoomToken(uuid, new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                showLog("获取房间 token 请求失败:" + e.toString());
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) {
+//                try {
+//
+//                    if (response.code() == 200) {
+//                        JsonObject room = gson.fromJson(response.body().string(), JsonObject.class);
+//                        String roomToken = room.getAsJsonObject("msg").get("roomToken").getAsString();
+//
+//                        room1[0] = joinRoom(uuid, roomToken);
+//
+//                    } else {
+//                        showLog("获取房间 token 失败" + response.body().string());
+//                    }
+//                } catch (Throwable e) {
+//                    showLog("获取房间 token 失败" + e.toString());
+//                }
+//            }
+//        });
+//
+//        return room1[0];
+//    }
 
-        demoAPI.getRoomToken(uuid, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                showLog("获取房间 token 请求失败:" + e.toString());
-            }
 
-            @Override
-            public void onResponse(Call call, Response response) {
-                try {
-
-                    if (response.code() == 200) {
-                        JsonObject room = gson.fromJson(response.body().string(), JsonObject.class);
-                        String roomToken = room.getAsJsonObject("msg").get("roomToken").getAsString();
-
-                        room1[0] = joinRoom(uuid, roomToken);
-
-                    } else {
-                        showLog("获取房间 token 失败" + response.body().string());
-                    }
-                } catch (Throwable e) {
-                    showLog("获取房间 token 失败" + e.toString());
-                }
-            }
-        });
-
-        return room1[0];
-    }
-
-
-    private Room joinRoom(String uuid, String roomToken) {
+    private void joinRoom(String uuid, String roomToken) {
 
 
         WhiteSdkConfiguration sdkConfiguration = new WhiteSdkConfiguration(DeviceType.touch, 10, 0.1, true);
@@ -119,7 +128,7 @@ public class WhiteBoardUtils {
         whiteSdk.joinRoom(new RoomParams(uuid, roomToken), new AbstractRoomCallbacks() {
             @Override
             public void onPhaseChanged(RoomPhase phase) {
-                //showLog(phase.name());
+                showLog(phase.name());
 
 
             }
@@ -127,7 +136,7 @@ public class WhiteBoardUtils {
             @Override
             public void onRoomStateChanged(RoomState modifyState) {
 
-               // showLog(gson.toJson(modifyState));
+                showLog(gson.toJson(modifyState));
 
             }
         }, new Promise<Room>() {
@@ -137,8 +146,12 @@ public class WhiteBoardUtils {
 
                 showLog("加入画板房间成功!");
 
-                System.out.print("加入画板房间成功!");
                 room = wRoom;
+
+                if (listener != null) {
+                    listener.onJoinRoomSucess(room);
+                }
+
                 addCustomEventListener();
                 getPencil();
 
@@ -152,7 +165,7 @@ public class WhiteBoardUtils {
             }
         });
 
-        return room;
+
     }
 
     private void addCustomEventListener() {
@@ -192,5 +205,21 @@ public class WhiteBoardUtils {
 
         showLog("设置铅笔");
     }
+
+
+    public interface WhiteBoardListener {
+
+        void onJoinRoomSucess(Room room);
+
+    }
+
+    private WhiteBoardListener listener;
+
+    public void setWhiteBoardListener(WhiteBoardListener whiteBoardListener) {
+
+        this.listener = whiteBoardListener;
+
+    }
+
 
 }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lin_p"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <com.smart.colorview.normal.CircleColorView xmlns:circle="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/circleColorView"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        circle:circleColor="#000000"
+        circle:innerStrokeDividerWidth="6dp"
+        circle:innerStrokeWidth="0dp"
+        circle:innerType="inner"
+        circle:outlineStrokeColor="#000000"
+        circle:outlineStrokeWidth="4dp"
+        circle:selectUseFrame="false"
+        circle:selectUseOutline="true" />
+</LinearLayout>

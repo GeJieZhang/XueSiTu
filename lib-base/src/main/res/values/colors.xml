@@ -51,4 +51,18 @@
         <item>@color/cyanBlue</item>
     </integer-array>
 
+
+    //------------------------------------------------颜色选择器
+
+
+    <color name="c1">#000000</color>
+    <color name="c2">#686868</color>
+    <color name="c3">#989898</color>
+    <color name="c4">#c47eff</color>
+    <color name="c5">#68c4ff</color>
+    <color name="c6">#34e867</color>
+    <color name="c7">#ffe000</color>
+    <color name="c8">#ff4a5a</color>
+
+
 </resources>

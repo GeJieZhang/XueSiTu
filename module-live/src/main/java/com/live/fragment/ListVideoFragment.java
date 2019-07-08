@@ -65,30 +65,22 @@ public class ListVideoFragment extends BaseAppFragment {
     public void onResume() {
         super.onResume();
 
-        if (MainRoomActivity.screenOrientation == screenVertical) {
-//            ViewGroup.LayoutParams params = rvListVideo.getLayoutParams();
-//            params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-//            params.height = ViewGroup.LayoutParams.MATCH_PARENT;
-//            rvListVideo.setLayoutParams(params);
-//
-//            lin_parent.setOrientation(LinearLayout.HORIZONTAL);
-
-            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-
-
-        } else {
-//            ViewGroup.LayoutParams params = rvListVideo.getLayoutParams();
-//            params.width = DisplayUtil.dip2px(getActivity(), 290);
-//            params.height = ViewGroup.LayoutParams.MATCH_PARENT;
-//            rvListVideo.setLayoutParams(params);
-//            lin_parent.setOrientation(LinearLayout.VERTICAL);
-            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        }
+        refreshLinearLayoutManager();
 
 
         setQNSurfaceView();
 
 
+    }
+
+    private void refreshLinearLayoutManager() {
+        if (MainRoomActivity.screenOrientation == screenVertical) {
+            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+        } else {
+
+            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        }
     }
 
     private void setQNSurfaceView() {
@@ -105,7 +97,7 @@ public class ListVideoFragment extends BaseAppFragment {
             linearLayoutManager = new LinearLayoutManager(getActivity());
 
 
-            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            refreshLinearLayoutManager();
 
             rvListVideo.setLayoutManager(linearLayoutManager);
             rvListVideo.setAdapter(homeAdapter);
@@ -284,14 +276,14 @@ public class ListVideoFragment extends BaseAppFragment {
 
     }
 
-    public void hideVideoList(boolean b){
+    public void hideVideoList(boolean b) {
 
-        if (b){
+        if (b) {
             rvListVideo.removeAllViews();
             //rvListVideo.setVisibility(View.GONE);
 
-        }else {
-           // rvListVideo.setVisibility(View.VISIBLE);
+        } else {
+            // rvListVideo.setVisibility(View.VISIBLE);
         }
 
     }

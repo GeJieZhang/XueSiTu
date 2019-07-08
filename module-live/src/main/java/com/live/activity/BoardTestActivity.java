@@ -10,14 +10,12 @@ import com.herewhite.sdk.WhiteBroadView;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.FragmentTag;
 import com.lib.fastkit.utils.fragment_deal.FragmentCustomUtils;
-import com.lib.ui.activity.BaseAppActivity;
 import com.live.R;
 import com.live.R2;
 import com.live.fragment.WhiteBoardFragment;
 import com.live.utils.WhiteBoardUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 @Route(path = ARouterPathUtils.Live_BoardTestActivity)
@@ -69,7 +67,7 @@ public class BoardTestActivity extends BaseRoomActivity {
     private void initWhiteBorad() {
 
         whiteBroadView = new WhiteBroadView(this);
-        whiteBoardRoom = WhiteBoardUtils.getInstance().joinToRoom(this, whiteBroadView);
+        WhiteBoardUtils.getInstance().joinToRoom(this, whiteBroadView);
 
 
     }

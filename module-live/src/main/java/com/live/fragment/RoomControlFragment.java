@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -18,6 +19,7 @@ import com.lib.app.EventBusTagUtils;
 import com.lib.bean.Event;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
+import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.dialog.arrow.TriangleDrawable;
 import com.lib.fastkit.views.dialog.normal.NormalDialog;
@@ -33,6 +35,7 @@ import com.live.bean.control.RoomControlBean;
 import com.live.view.CmmtPopup;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.qiniu.droid.rtc.QNRTCUser;
+import com.smart.colorview.normal.CircleColorView;
 import com.zyyoona7.popup.EasyPopup;
 import com.zyyoona7.popup.XGravity;
 import com.zyyoona7.popup.YGravity;
@@ -77,6 +80,10 @@ public class RoomControlFragment extends BaseAppFragment {
 
     private RoomControlBean roomControlBean;
 
+
+    int colors[] = {R.color.c1, R.color.c2, R.color.c3, R.color.c4
+            , R.color.c5, R.color.c6, R.color.c7, R.color.c8};
+
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
 
@@ -90,6 +97,8 @@ public class RoomControlFragment extends BaseAppFragment {
         initIconState();
 
         initSharePopup();
+
+        initToolPopup();
     }
 
     @Override
@@ -128,6 +137,8 @@ public class RoomControlFragment extends BaseAppFragment {
             showSharePopup(view);
 
         } else if (i == R.id.iv_pen) {
+
+            showToolPopup(view);
         } else if (i == R.id.iv_ppt) {
         } else if (i == R.id.iv_list) {
 
@@ -205,6 +216,10 @@ public class RoomControlFragment extends BaseAppFragment {
             }
 
 
+            if (listener!=null){
+                listener.onChangeRotate();
+            }
+
         } else if (i == R.id.iv_menu) {
 
 
@@ -229,7 +244,7 @@ public class RoomControlFragment extends BaseAppFragment {
 
     private void checkMeuState() {
         if (roomControlBean.isDefault_menu()) {
-            ivPen.setVisibility(View.GONE);
+            //ivPen.setVisibility(View.GONE);
             ivPpt.setVisibility(View.GONE);
             ivList.setVisibility(View.GONE);
             fQuality.setVisibility(View.GONE);
@@ -239,7 +254,7 @@ public class RoomControlFragment extends BaseAppFragment {
             ivMenu.setImageResource(R.mipmap.icon_menu_open);
             roomControlBean.setDefault_menu(false);
         } else {
-            ivPen.setVisibility(View.VISIBLE);
+            // ivPen.setVisibility(View.VISIBLE);
             ivPpt.setVisibility(View.VISIBLE);
             ivList.setVisibility(View.VISIBLE);
             fQuality.setVisibility(View.VISIBLE);
@@ -279,7 +294,7 @@ public class RoomControlFragment extends BaseAppFragment {
     }
 
 
-    //--------------------------------------------------------------------------------清晰度切换弹出层
+    //--------------------------------------------------------------------------------分享
     private EasyPopup sharePopu;
 
     private void initSharePopup() {
@@ -303,6 +318,99 @@ public class RoomControlFragment extends BaseAppFragment {
         int offsetX = 0;
         int offsetY = 0;
         sharePopu.showAtAnchorView(view, YGravity.BELOW, XGravity.ALIGN_RIGHT, offsetX, offsetY);
+    }
+
+
+    //--------------------------------------------------------------------------------画笔工具
+    private EasyPopup toolPopu;
+
+    private void initToolPopup() {
+        //https://blog.csdn.net/lixpjita39/article/details/77800521
+
+        colorList.clear();
+        for (int color : colors) {
+            colorList.add(color);
+        }
+
+
+        toolPopu = EasyPopup.create()
+                .setContext(getContext())
+                .setContentView(R.layout.popup_tool)
+
+                .setOnViewListener(new EasyPopup.OnViewListener() {
+                    @Override
+                    public void initViews(View view, EasyPopup basePopup) {
+                        View arrowView = view.findViewById(R.id.v_arrow);
+                        arrowView.setBackground(new TriangleDrawable(TriangleDrawable.RIGHT, Color.parseColor("#ffffff")));
+
+                        initToolView(view);
+                    }
+
+
+                })
+                .setFocusAndOutsideEnable(true)
+                .apply();
+
+
+    }
+
+
+    private ToolAdapter toolAdapter;
+
+    private List<Integer> colorList = new ArrayList<>();
+
+    private RecyclerView toolRecyclerView;
+
+    private void initToolView(View view) {
+
+        //LinearLayout lin_content=view.findViewById(R.id.lin_content);
+        toolRecyclerView = view.findViewById(R.id.rv_color);
+        toolRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
+
+        toolAdapter = new ToolAdapter(getContext(), colorList);
+        toolRecyclerView.setAdapter(toolAdapter);
+    }
+
+    private void showToolPopup(View view) {
+        int offsetX = 0;
+        int offsetY = DisplayUtil.dip2px(getActivity(), -40);
+        toolPopu.showAtAnchorView(view, YGravity.ALIGN_TOP, XGravity.LEFT, offsetX, offsetY);
+    }
+
+
+    private class ToolAdapter extends BaseAdapter<Integer> {
+
+        public ToolAdapter(Context context, List<Integer> mData) {
+            super(context, mData);
+        }
+
+        @Override
+        public int getLayoutId() {
+            return R.layout.item_popup_tool;
+        }
+
+        @Override
+        protected void toBindViewHolder(ViewHolder holder, int position, List<Integer> mData) {
+
+
+//            LinearLayout lin_p = holder.getView(R.id.lin_p);
+//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(itemWidth, itemWidth);
+//            lin_p.setLayoutParams(params);
+            final CircleColorView circleColorView = holder.getView(R.id.circleColorView);
+
+            circleColorView.setCircleColor(getResources().getColor(mData.get(position)));
+            circleColorView.setOutlineStrokeColor(getResources().getColor(mData.get(position)));
+            circleColorView.setCircleSelected(false);
+
+            circleColorView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    circleColorView.setCircleSelected(true);
+                }
+            });
+
+
+        }
     }
 
 
@@ -474,6 +582,8 @@ public class RoomControlFragment extends BaseAppFragment {
         void closeUserCamera(String userId);
 
         void closeUserVoice(String userId);
+
+        void onChangeRotate();
     }
 
 

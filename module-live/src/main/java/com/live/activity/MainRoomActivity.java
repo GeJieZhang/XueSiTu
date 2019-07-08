@@ -142,7 +142,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         //聊天室处理
         initChat();
 
-        //initWhiteBorad();
+        initWhiteBorad();
 
         initFragment();
     }
@@ -552,20 +552,18 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
                 roomControlBean.setDefault_board(true);
 
                 localSurfaceView.setVisibility(View.VISIBLE);
+                localSurfaceView.setZOrderOnTop(false);
+                localSurfaceView.setZOrderMediaOverlay(false);
 
-//                localSurfaceView.setZOrderOnTop(true);
-//                localSurfaceView.setZOrderMediaOverlay(true);
-//
-//                listVideoFragment.setQnSurfaceViewTop(true);
 
             } else {
                 //显示白板
                 f_whiteboard.setVisibility(View.VISIBLE);
                 roomControlBean.setDefault_board(false);
                 localSurfaceView.setVisibility(View.GONE);
-//                localSurfaceView.setZOrderOnTop(false);
-//                localSurfaceView.setZOrderMediaOverlay(false);
-//                listVideoFragment.setQnSurfaceViewTop(false);
+                localSurfaceView.setZOrderOnTop(false);
+                localSurfaceView.setZOrderMediaOverlay(false);
+
             }
 
         }
@@ -653,6 +651,16 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
             }
             mEngine.muteTracks(Arrays.asList(qnTrackInfo));
 
+        }
+
+        @Override
+        public void onChangeRotate() {
+
+
+//            if (whiteBoardRoom != null) {
+//                whiteBoardRoom.refreshViewSize();
+//                showLog("刷新白板");
+//            }
         }
 
 
@@ -808,7 +816,11 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     //------------------------------------------------------------------------------------------
 
 
-    WhiteBroadView whiteBroadView;
+    private WhiteBroadView whiteBroadView;
+
+
+    private WhiteBoardUtils whiteBoardUtils;
+
 
     private Room whiteBoardRoom;
 
@@ -818,7 +830,19 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     private void initWhiteBorad() {
 
         whiteBroadView = new WhiteBroadView(this);
-        whiteBoardRoom = WhiteBoardUtils.getInstance().joinToRoom(this, whiteBroadView);
+        whiteBoardUtils = WhiteBoardUtils.getInstance().joinToRoom(this, whiteBroadView);
+
+        whiteBoardUtils.setWhiteBoardListener(new WhiteBoardUtils.WhiteBoardListener() {
+            @Override
+            public void onJoinRoomSucess(Room room) {
+                if (whiteBoardFragment != null) {
+                    whiteBoardFragment.setRoom(room);
+                    whiteBoardRoom = room;
+                    showLog("room回调");
+
+                }
+            }
+        });
 
 
     }
