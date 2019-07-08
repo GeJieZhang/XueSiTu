@@ -14,17 +14,21 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
+import com.herewhite.sdk.Room;
+import com.herewhite.sdk.domain.Appliance;
+import com.herewhite.sdk.domain.ImageInformationWithUrl;
+import com.herewhite.sdk.domain.MemberState;
+import com.herewhite.sdk.domain.Scene;
 import com.lib.app.EventBusTagUtils;
 import com.lib.bean.Event;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
-import com.lib.fastkit.http.ok.HttpUtils;
-import com.lib.fastkit.utils.log.LogUtil;
+import com.lib.fastkit.utils.color.ColorUtil;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.dialog.arrow.TriangleDrawable;
-import com.lib.fastkit.views.dialog.normal.NormalDialog;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
-import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.ui.fragment.BaseAppFragment;
 import com.lib.utls.picture_select.PhotoUtil;
@@ -47,6 +51,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.live.activity.MainRoomActivity.screenOrientation;
 
 public class RoomControlFragment extends BaseAppFragment {
     @BindView(R2.id.iv_quit)
@@ -216,7 +222,7 @@ public class RoomControlFragment extends BaseAppFragment {
             }
 
 
-            if (listener!=null){
+            if (listener != null) {
                 listener.onChangeRotate();
             }
 
@@ -332,7 +338,6 @@ public class RoomControlFragment extends BaseAppFragment {
             colorList.add(color);
         }
 
-
         toolPopu = EasyPopup.create()
                 .setContext(getContext())
                 .setContentView(R.layout.popup_tool)
@@ -342,7 +347,6 @@ public class RoomControlFragment extends BaseAppFragment {
                     public void initViews(View view, EasyPopup basePopup) {
                         View arrowView = view.findViewById(R.id.v_arrow);
                         arrowView.setBackground(new TriangleDrawable(TriangleDrawable.RIGHT, Color.parseColor("#ffffff")));
-
                         initToolView(view);
                     }
 
@@ -358,20 +362,154 @@ public class RoomControlFragment extends BaseAppFragment {
     private ToolAdapter toolAdapter;
 
     private List<Integer> colorList = new ArrayList<>();
-
+    private List<CircleColorView> colorViewList = new ArrayList<>();
     private RecyclerView toolRecyclerView;
+    private SeekBar seekBar;
+
+    private TextView tv_size;
+
+    private LinearLayout lin_pen;
+
 
     private void initToolView(View view) {
 
-        //LinearLayout lin_content=view.findViewById(R.id.lin_content);
+
         toolRecyclerView = view.findViewById(R.id.rv_color);
+
+
         toolRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
+        toolRecyclerView.setNestedScrollingEnabled(false);//禁止滑动
 
         toolAdapter = new ToolAdapter(getContext(), colorList);
         toolRecyclerView.setAdapter(toolAdapter);
+        lin_pen = view.findViewById(R.id.lin_pen);
+        seekBar = view.findViewById(R.id.seek_bar);
+        seekBar.setProgress(5);
+        tv_size = view.findViewById(R.id.tv_size);
+        tv_size.setText("5");
+
+        view.findViewById(R.id.lin_pen).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //画笔
+
+                toolName = Appliance.PENCIL;
+                setTool();
+
+
+            }
+        });
+
+        view.findViewById(R.id.lin_eraser).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //橡皮
+                toolName = Appliance.ERASER;
+                setTool();
+            }
+        });
+        view.findViewById(R.id.lin_clear).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //清屏
+                MainRoomActivity.getwhiteBoardRoom().cleanScene(true);
+
+            }
+        });
+
+        view.findViewById(R.id.lin_rectangle).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //矩形
+                toolName = Appliance.RECTANGLE;
+                setTool();
+
+            }
+        });
+
+        view.findViewById(R.id.lin_move).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //移动工具
+                toolName = Appliance.SELECTOR;
+                setTool();
+
+            }
+        });
+
+
+        view.findViewById(R.id.lin_image).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (screenOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    //横屏
+                } else {
+
+                    double width = DisplayUtil.getScreenWidth(getContext());
+                    double height = DisplayUtil.getScreenHeight(getContext()) / 3;
+
+
+                    showLog(width + "-" + height);
+
+                    //竖屏
+                    MainRoomActivity.getwhiteBoardRoom().insertImage(new ImageInformationWithUrl(0d, 0d, 200d, 100d, "https://white-pan.oss-cn-shanghai.aliyuncs.com/40/image/mask.jpg"));
+                }
+
+            }
+        });
+        view.findViewById(R.id.lin_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                if (listener != null) {
+
+                    listener.onWihteBoradAdd();
+
+                }
+
+
+            }
+        });
+
+
+        view.findViewById(R.id.lin_circle).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                toolName = Appliance.ELLIPSE;
+                setTool();
+            }
+        });
+
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                tv_size.setText(progress + "");
+
+                toolStrokeWidth = progress;
+                setTool();
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
     }
 
     private void showToolPopup(View view) {
+
         int offsetX = 0;
         int offsetY = DisplayUtil.dip2px(getActivity(), -40);
         toolPopu.showAtAnchorView(view, YGravity.ALIGN_TOP, XGravity.LEFT, offsetX, offsetY);
@@ -390,14 +528,10 @@ public class RoomControlFragment extends BaseAppFragment {
         }
 
         @Override
-        protected void toBindViewHolder(ViewHolder holder, int position, List<Integer> mData) {
+        protected void toBindViewHolder(ViewHolder holder, final int position, final List<Integer> mData) {
 
-
-//            LinearLayout lin_p = holder.getView(R.id.lin_p);
-//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(itemWidth, itemWidth);
-//            lin_p.setLayoutParams(params);
             final CircleColorView circleColorView = holder.getView(R.id.circleColorView);
-
+            colorViewList.add(circleColorView);
             circleColorView.setCircleColor(getResources().getColor(mData.get(position)));
             circleColorView.setOutlineStrokeColor(getResources().getColor(mData.get(position)));
             circleColorView.setCircleSelected(false);
@@ -405,12 +539,54 @@ public class RoomControlFragment extends BaseAppFragment {
             circleColorView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    initColorViewState();
                     circleColorView.setCircleSelected(true);
+
+                    toolColor = mData.get(position);
+                    setTool();
+
                 }
             });
 
 
         }
+    }
+
+    /**
+     * 复位所选颜色
+     */
+    private void initColorViewState() {
+        for (CircleColorView circleColorView : colorViewList) {
+            circleColorView.setCircleSelected(false);
+        }
+    }
+
+
+    //------------------------------------------------------------------------------------API
+
+    private int toolStrokeWidth = 5;
+
+    private int toolTextSize = 5;
+
+    private String toolName = Appliance.PENCIL;
+
+    private int toolColor = R.color.base_money;
+
+    public void setTool() {
+
+        Room room = MainRoomActivity.getwhiteBoardRoom();
+        MemberState memberState = new MemberState();
+        memberState.setStrokeColor(ColorUtil.int2Rgb(getResources().getColor(toolColor)));
+        memberState.setCurrentApplianceName(toolName);
+        memberState.setStrokeWidth(toolStrokeWidth);
+        memberState.setTextSize(toolTextSize);
+
+        if (room != null) {
+            room.setMemberState(memberState);
+        }
+
+
+        showLog("设置铅笔");
     }
 
 
@@ -584,6 +760,11 @@ public class RoomControlFragment extends BaseAppFragment {
         void closeUserVoice(String userId);
 
         void onChangeRotate();
+
+
+        void onWihteBoradAdd();
+
+
     }
 
 

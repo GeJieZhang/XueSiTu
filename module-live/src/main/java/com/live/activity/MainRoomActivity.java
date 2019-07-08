@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -17,10 +18,15 @@ import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.google.gson.Gson;
 import com.herewhite.sdk.Room;
 import com.herewhite.sdk.WhiteBroadView;
 import com.herewhite.sdk.domain.Appliance;
 import com.herewhite.sdk.domain.MemberState;
+import com.herewhite.sdk.domain.Promise;
+import com.herewhite.sdk.domain.SDKError;
+import com.herewhite.sdk.domain.Scene;
+import com.herewhite.sdk.domain.SceneState;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
 import com.lib.app.EventBusTagUtils;
@@ -33,6 +39,7 @@ import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.utils.status_bar.QMUI.QMUIStatusBarHelper;
 import com.lib.fastkit.utils.status_bar.StatusBarUtil;
+import com.lib.fastkit.utils.system.SystemUtil;
 import com.lib.fastkit.views.dialog.normal.NormalDialog;
 import com.lib.http.call_back.HttpDialogCallBack;
 import com.live.R;
@@ -68,6 +75,7 @@ import com.qiniu.droid.rtc.model.QNAudioDevice;
 
 import org.simple.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -105,6 +113,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     private MyTrackInfo playingTrack;
 
 
+    private FrameLayout f_p;//父布局
     private FrameLayout f_whiteboard;
 
 
@@ -189,6 +198,8 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
         whiteBoardFragment = new WhiteBoardFragment(whiteBroadView, whiteBoardRoom);
 
+        whiteBoardFragment.setWhiteBoardFragmentListener(whiteBoardFragmentListener);
+
 
         FragmentCustomUtils.setFragment(this, R.id.list_video, listVideoFragment, FragmentTag.List_Video);
         FragmentCustomUtils.setFragment(this, R.id.f_controller, roomControlFragment, FragmentTag.Room_Controller);
@@ -252,6 +263,14 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
         } else {
             //竖屏
+
+            f_p = findViewById(R.id.f_p);
+
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) f_p.getLayoutParams();
+
+            params.width = LinearLayout.LayoutParams.MATCH_PARENT;
+            params.height = DisplayUtil.getScreenHeight(this) / 3;
+            f_p.setLayoutParams(params);
         }
 
 
@@ -544,6 +563,14 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         @Override
         public void onWhiteBoradClick() {
 
+
+            if (whiteBoardRoom == null) {
+
+                showLog("白板正在初始化中!");
+                return;
+            }
+
+
             if (f_whiteboard.getVisibility() == View.VISIBLE) {
 
                 //隐藏白板
@@ -563,6 +590,12 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
                 localSurfaceView.setVisibility(View.GONE);
                 localSurfaceView.setZOrderOnTop(false);
                 localSurfaceView.setZOrderMediaOverlay(false);
+
+
+                if (whiteBoardFragment != null) {
+                    whiteBoardFragment.refreshRoom();
+                }
+
 
             }
 
@@ -661,6 +694,19 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 //                whiteBoardRoom.refreshViewSize();
 //                showLog("刷新白板");
 //            }
+        }
+
+        @Override
+        public void onWihteBoradAdd() {
+            whiteBoardRoom.putScenes(SCENE_DIR, new Scene[]{
+                    new Scene("page" + maxSize)}, +maxSize);
+            whiteBoardRoom.setScenePath(SCENE_DIR + "/page" + maxSize);
+
+            //  maxSize++;
+
+            //showLog("白板的数量1:" + maxSize);
+
+            getScenesSize();
         }
 
 
@@ -822,7 +868,10 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     private WhiteBoardUtils whiteBoardUtils;
 
 
-    private Room whiteBoardRoom;
+    private static Room whiteBoardRoom;
+    final String SCENE_DIR = "/dir";
+    private int pageIndex = 1;//记录当前页面位置
+    private int maxSize = 1;//当前页面的总大小
 
     /**
      * 初始化白板
@@ -836,16 +885,93 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
             @Override
             public void onJoinRoomSucess(Room room) {
                 if (whiteBoardFragment != null) {
-                    whiteBoardFragment.setRoom(room);
                     whiteBoardRoom = room;
+                    whiteBoardFragment.setRoom(room);
+
+                    getScenesSize();
                     showLog("room回调");
 
                 }
             }
         });
+    }
+
+    public static Room getwhiteBoardRoom() {
+
+
+        return whiteBoardRoom;
+    }
+
+
+    private WhiteBoardFragment.WhiteBoardFragmentListener whiteBoardFragmentListener = new WhiteBoardFragment.WhiteBoardFragmentListener() {
+        @Override
+        public void onWihteBoradFont() {
+
+            if (pageIndex > 0) {
+                pageIndex--;
+                whiteBoardRoom.setScenePath(SCENE_DIR + "/" + sceneList.get(pageIndex).getName());
+
+            } else {
+                showToast("没有更多了");
+            }
+
+            if (whiteBoardFragment != null) {
+                whiteBoardFragment.updatePage((pageIndex + 1) + "/" + maxSize);
+            }
+
+
+            showLog("当前页码:" + pageIndex);
+
+
+        }
+
+        @Override
+        public void onWihteBoradNext() {
+
+            if (pageIndex < maxSize - 1) {
+                pageIndex++;
+                whiteBoardRoom.setScenePath(SCENE_DIR + "/" + sceneList.get(pageIndex).getName());
+            } else {
+                showToast("没有更多了");
+            }
+            if (whiteBoardFragment != null) {
+                whiteBoardFragment.updatePage((pageIndex + 1) + "/" + maxSize);
+            }
+            showLog("当前页码:" + pageIndex);
+        }
+    };
+
+
+    private List<Scene> sceneList = new ArrayList<>();
+
+    public void getScenesSize() {
+        whiteBoardRoom.getSceneState(new Promise<SceneState>() {
+            @Override
+            public void then(SceneState sceneState) {
+                maxSize = sceneState.getScenes().length;
+                pageIndex = sceneState.getIndex();
+
+                sceneList.clear();
+                for (Scene scene : sceneState.getScenes()) {
+                    sceneList.add(scene);
+                }
+
+                if (whiteBoardFragment != null) {
+                    whiteBoardFragment.updatePage((pageIndex + 1) + "/" + maxSize);
+                }
+                showLog("白板总数量:" + maxSize);
+
+            }
+
+            @Override
+            public void catchEx(SDKError sdkError) {
+
+            }
+        });
 
 
     }
+
 
     //-----------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------房间相关
