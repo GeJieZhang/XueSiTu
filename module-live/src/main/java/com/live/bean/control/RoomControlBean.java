@@ -85,4 +85,6 @@ public class RoomControlBean {
     public void setDefault_class(boolean default_class) {
         this.default_class = default_class;
     }
+
+
 }

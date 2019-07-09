@@ -45,6 +45,7 @@ import com.lib.http.call_back.HttpDialogCallBack;
 import com.live.R;
 import com.live.bean.CloseRoomBean;
 import com.live.bean.control.RoomControlBean;
+import com.live.bean.control.WhiteBoradBean;
 import com.live.bean.live.MyTrackInfo;
 import com.live.fragment.ChatFragment;
 import com.live.fragment.ListVideoFragment;
@@ -54,6 +55,7 @@ import com.live.utils.WhiteBoardUtils;
 import com.live.utils.config.LiveConfig;
 import com.live.utils.HXChatUtils;
 import com.live.utils.MyHashMap;
+import com.live.utils.socket.IMSocketUtils;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.entity.LocalMedia;
@@ -96,12 +98,17 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     @Autowired(name = "userPhone")
     String userPhone;
 
+    @Autowired(name = "uuid")
+    String uuid;
+    @Autowired(name = "whitetoken")
+    String whitetoken;
+
 //    @Autowired(name = "name")
 //    String hx_username;
 
 
     private String identity = "";
-    private String token = "";
+    private String userToken = "";
 
 
     private QNSurfaceView localSurfaceView;
@@ -122,6 +129,10 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     //控制页面的状态管理
     public static RoomControlBean roomControlBean;
 
+    public static WhiteBoradBean whiteBoradBean;
+
+    //聊天室长连接
+    public static IMSocketUtils imSocketUtils;
     //横屏聊天按钮控制
     private ImageView iv_chat_control;
     //横屏聊天菜单
@@ -135,14 +146,18 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         StatusBarUtil.statusBarTintColor(this, getResources().getColor(R.color.black));
 
-
+        screenOrientation = screenVertical;
         setContentView(R.layout.activity_main_room_vertical);
         ARouter.getInstance().inject(this);
 
 
         identity = SharedPreferenceManager.getInstance(this).getUserCache().getUserIdentity();
-        token = SharedPreferenceManager.getInstance(this).getUserCache().getUserToken();
+        userToken = SharedPreferenceManager.getInstance(this).getUserCache().getUserToken();
+
+
         roomControlBean = new RoomControlBean();
+        whiteBoradBean = new WhiteBoradBean();
+
 
         findView();
 
@@ -161,7 +176,11 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
      * 初始化聊天
      */
     private void initChat() {
-        HXChatUtils.signIn("token1", "123456", this);
+        //HXChatUtils.signIn("token1", "123456", this);
+
+
+        imSocketUtils = IMSocketUtils.getInstance().start(roomName, userToken);
+
     }
 
 
@@ -193,7 +212,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         roomControlFragment.setRoomControlFragmentListener(roomControlFragmentListener);
 
 
-        chatFragment = new ChatFragment();
+        chatFragment = new ChatFragment(roomName);
 
 
         whiteBoardFragment = new WhiteBoardFragment(whiteBroadView, whiteBoardRoom);
@@ -879,7 +898,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     private void initWhiteBorad() {
 
         whiteBroadView = new WhiteBroadView(this);
-        whiteBoardUtils = WhiteBoardUtils.getInstance().joinToRoom(this, whiteBroadView);
+        whiteBoardUtils = WhiteBoardUtils.getInstance().joinToRoom(this, whiteBroadView, uuid, whitetoken);
 
         whiteBoardUtils.setWhiteBoardListener(new WhiteBoardUtils.WhiteBoardListener() {
             @Override
@@ -1013,7 +1032,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
                                 .addParam("requestType", "LIVE_DROPOTU_ROOM")
                                 .addParam("room_name", roomName)
                                 .addParam("consume_class", consume_class)
-                                .addParam("token", token)
+                                .addParam("token", userToken)
                                 .execute(new HttpDialogCallBack<CloseRoomBean>() {
                                     @Override
                                     public void onSuccess(CloseRoomBean result) {

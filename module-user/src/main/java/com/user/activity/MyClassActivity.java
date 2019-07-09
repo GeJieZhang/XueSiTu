@@ -292,14 +292,16 @@ public class MyClassActivity extends BaseAppActivity {
                                 if (result.getCode() == CodeUtil.CODE_200) {
 
 
-                                    String roomToken = result.getObj().getToken();
+                                    String roomToken = result.getObj().getRoomtoken();
                                     String teacherPhone = result.getObj().getPhoen();
                                     ARouter.getInstance().build(ARouterPathUtils.Live_MainRoomActivity)
                                             .withString("roomToken", roomToken)
                                             .withString("teacherPhone", teacherPhone)
                                             .withString("roomName", result.getObj().getRoomname())
-
                                             .withString("userPhone", userPhone)
+                                            .withString("uuid", result.getObj().getUuid())
+                                            .withString("whitetoken", result.getObj().getWhitetoken())
+
                                             .navigation();
 
 

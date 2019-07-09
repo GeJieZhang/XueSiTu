@@ -1,11 +1,13 @@
 package com.live.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.util.Log;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
@@ -22,15 +25,22 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.lib.app.EventBusTagUtils;
 import com.lib.bean.Event;
+import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
+import com.lib.fastkit.http.ok.HttpUtils;
+import com.lib.fastkit.utils.json_deal.lib_mgson.MGson;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
+import com.lib.fastkit.utils.time_deal.TimeUtils;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.ui.fragment.BaseAppFragment;
 import com.lib.utls.glide.GlideConfig;
 import com.live.R;
 import com.live.R2;
+import com.live.activity.MainRoomActivity;
+import com.live.bean.control.IMBean;
 import com.live.utils.HXChatUtils;
 import com.live.utils.hx.HXTextUtils;
+import com.live.utils.socket.IMSocketUtils;
 
 
 import org.simple.eventbus.Subscriber;
@@ -40,23 +50,58 @@ import java.util.List;
 
 import butterknife.BindView;
 
+@SuppressLint("ValidFragment")
 public class ChatFragment extends BaseAppFragment {
 
 
     @BindView(R2.id.rv_chat)
     RecyclerView rvChat;
-
     private ChatAdapter chatAdapter;
-
-    //private List<ChatBean> chatList = new ArrayList<>();
-    List<EMMessage> messageList = new ArrayList<>();
+    private List<IMBean> messageList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
+    private IMBean imBean;
+
+    private String roomName;
+
+    private String userName;
+
+    private String userIcon;
+    private Gson gson;
+    //发送接收消息
+    private final int ACTION_TYPE1 = 1;
+    //学生申请语音
+    private final int ACTION_TYPE2 = 2;
+    //学生申请视频
+    private final int ACTION_TYPE3 = 3;
+    //老师对申请进行操作(语音，视频)
+    private final int ACTION_TYPE4 = 4;
+    //学生加入
+    private final int ACTION_TYPE5 = 5;
+    //学生离开
+    private final int ACTION_TYPE6 = 6;
+    //直播间用户列表
+    private final int ACTION_TYPE7 = 7;
+    //学生取消视频，语音
+    private final int ACTION_TYPE8 = 8;
+
+    //文字
+    private final int MESSAGE_TYPE1 = 1;
+    //图片
+    private final int MESSAGE_TYPE2 = 2;
+
+    @SuppressLint("ValidFragment")
+    public ChatFragment(String roomName) {
+
+        this.roomName = roomName;
+    }
+
 
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
-
+        userName = SharedPreferenceManager.getInstance(getActivity()).getUserCache().getUserName();
+        userIcon = SharedPreferenceManager.getInstance(getActivity()).getUserCache().getUserHeadUrl();
         chatAdapter = new ChatAdapter(getContext(), messageList);
-
+        gson = new Gson();
         linearLayoutManager = new LinearLayoutManager(getContext());
         //linearLayoutManager.setStackFromEnd(true);
         rvChat.setLayoutManager(linearLayoutManager);
@@ -68,20 +113,26 @@ public class ChatFragment extends BaseAppFragment {
         }
 
 
+        //IMSocketUtils.getInstance().setIMSocketListener(null).start("");
+
+
+        MainRoomActivity.imSocketUtils.setIMSocketListener(imSocketListener);
+
+
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-        EMClient.getInstance().chatManager().addMessageListener(msgListener);
+        //EMClient.getInstance().chatManager().addMessageListener(msgListener);
     }
 
 
     @Override
     public void onStop() {
         super.onStop();
-        EMClient.getInstance().chatManager().removeMessageListener(msgListener);
+        //EMClient.getInstance().chatManager().removeMessageListener(msgListener);
     }
 
     @Override
@@ -89,79 +140,120 @@ public class ChatFragment extends BaseAppFragment {
         return R.layout.fragment_chat;
     }
 
+
     //-----------------------------------------------------------------------------消息监听
+    IMSocketUtils.IMSocketListener imSocketListener = new IMSocketUtils.IMSocketListener() {
+        @Override
+        public void onOpen() {
 
-
-    EMMessageListener msgListener = new EMMessageListener() {
+        }
 
         @Override
-        public void onMessageReceived(List<EMMessage> messages) {
-            //收到消息
+        public void onMessage(String json) {
+            imBean = MGson.newGson().fromJson(json, IMBean.class);
 
 
-            showLog("收到消息");
-            messageList.addAll(messages);
+            int type = imBean.getActionType();
 
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    chatAdapter.notifyDataSetChanged();
+            switch (type) {
+                case ACTION_TYPE1: {
+                    //发送接收消息
+                    messageList.add(imBean);
+                    notifyAdapter();
 
-                    if (chatAdapter.getItemCount() > 0) {
-                        rvChat.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
-                    }
+
+                    break;
                 }
-            });
+
+                case ACTION_TYPE2: {
+                    //学生申请语音
 
 
-            // EMImageMessageBody messageBody= (EMImageMessageBody) messages.get(0).getBody();
+                    break;
+                }
+
+                case ACTION_TYPE3: {
+                    //学生申请视频
+
+
+                    break;
+                }
+                case ACTION_TYPE4: {
+                    //老师对申请进行操作(语音，视频)
+
+
+                    break;
+                }
+
+                case ACTION_TYPE5: {
+                    //学生加入
+
+
+                    break;
+                }
+
+                case ACTION_TYPE6: {
+                    //学生离开
+
+
+                    break;
+                }
+
+                case ACTION_TYPE7: {
+                    //直播间用户列表
+
+
+                    break;
+                }
+
+                case ACTION_TYPE8: {
+                    //学生取消视频，语音
+
+
+                    break;
+                }
+
+            }
+
+
+        }
+
+
+        @Override
+        public void onClosed() {
 
         }
 
         @Override
-        public void onCmdMessageReceived(List<EMMessage> messages) {
-            //收到透传消息
+        public void onClosing() {
 
-
-            showLog("收到透传消息");
         }
 
         @Override
-        public void onMessageRead(List<EMMessage> messages) {
-            //收到已读回执
-            showLog("收到已读回执");
-
-            //messageList.indexOf(messages);
-        }
-
-        @Override
-        public void onMessageDelivered(List<EMMessage> message) {
-            //收到已送达回执
-
-            showLog("收到已送达回执");
-        }
-
-        @Override
-        public void onMessageRecalled(List<EMMessage> messages) {
-            //消息被撤回
-
-            showLog("消息被撤回");
-        }
-
-        @Override
-        public void onMessageChanged(EMMessage message, Object change) {
-            //消息状态变动
-            showLog("消息状态变动");
+        public void onFailure() {
 
         }
     };
 
+    private void notifyAdapter() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                chatAdapter.notifyDataSetChanged();
+
+                if (chatAdapter.getItemCount() > 0) {
+                    rvChat.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
+                }
+            }
+        });
+    }
+
 
     //-----------------------------------------------------------------------------适配器
 
-    public class ChatAdapter extends BaseAdapter<EMMessage> {
+    public class ChatAdapter extends BaseAdapter<IMBean> {
 
-        public ChatAdapter(Context context, List<EMMessage> mData) {
+        public ChatAdapter(Context context, List<IMBean> mData) {
             super(context, mData);
         }
 
@@ -171,132 +263,58 @@ public class ChatFragment extends BaseAppFragment {
         }
 
         @Override
-        protected void toBindViewHolder(final ViewHolder holder, int position, List<EMMessage> mData) {
+        protected void toBindViewHolder(final ViewHolder holder, int position, List<IMBean> mData) {
+            ImageView iv_image = holder.getView(R.id.iv_image);
 
-            final ProgressBar pb = holder.getView(R.id.pb);
-            final TextView tv_progress = holder.getView(R.id.tv_progress);
-            final View v_bg = holder.getView(R.id.v_bg);
-
-            final ImageView iv_err = holder.getView(R.id.iv_err);
-            EMMessage message = mData.get(position);
-            holder.setText(R.id.tv_name, message.getFrom());
+            ImageView iv_head = holder.getView(R.id.iv_head);
 
 
-            if (message.getType() == EMMessage.Type.TXT) {
+            IMBean.ObjectBean objectBean = mData.get(position).getObject();
+            int messageType = objectBean.getType();
+            if (messageType == MESSAGE_TYPE1) {
                 //纯文本
-
                 holder.getView(R.id.tv_msg).setVisibility(View.VISIBLE);
                 holder.getView(R.id.f_image).setVisibility(View.GONE);
-
                 TextView textView = holder.getView(R.id.tv_msg);
-                Spannable span = HXTextUtils.getSmiledText(getContext(), message);
-                textView.setText(span, TextView.BufferType.SPANNABLE);
+                textView.setText(objectBean.getMessage());
 
-
-                if (message.direct() == EMMessage.Direct.SEND) {
-                    switch (message.status()) {
-                        case SUCCESS:
-
-
-                            pb.setVisibility(View.GONE);
-                            break;
-                        case FAIL:
-                            pb.setVisibility(View.GONE);
-
-                            iv_err.setVisibility(View.VISIBLE);
-
-                            break;
-                        case CREATE:
-                            break;
-                        case INPROGRESS:
-                            break;
-                    }
-
-
-                    Log.e("===", message.status() + "");
-                    Log.e("===", message.progress() + "");
-
-                }
-
-
-                if (message.direct() == EMMessage.Direct.RECEIVE) {
-
-                    pb.setVisibility(View.GONE);
-
-                }
             }
 
 
-            if (message.getType() == EMMessage.Type.IMAGE) {
-
-                EMImageMessageBody emImageMessageBody = (EMImageMessageBody) message.getBody();
-                //纯文本
+            if (messageType == MESSAGE_TYPE2) {
                 holder.getView(R.id.tv_msg).setVisibility(View.GONE);
                 holder.getView(R.id.f_image).setVisibility(View.VISIBLE);
-                ImageView imageView = holder.getView(R.id.iv_image);
 
-                tv_progress.setText(message.progress() + "%");
-                if (message.direct() == EMMessage.Direct.SEND) {
-
-
-                    switch (message.status()) {
-                        case SUCCESS:
-
-
-                            pb.setVisibility(View.GONE);
-                            tv_progress.setVisibility(View.GONE);
-                            v_bg.setVisibility(View.GONE);
-                            pb.setVisibility(View.GONE);
-                            break;
-                        case FAIL:
-                            pb.setVisibility(View.GONE);
-                            tv_progress.setVisibility(View.GONE);
-                            v_bg.setVisibility(View.GONE);
-                            pb.setVisibility(View.GONE);
-
-                            iv_err.setVisibility(View.VISIBLE);
-
-                            break;
-                        case CREATE:
-                            break;
-                        case INPROGRESS:
-                            break;
-                    }
-
-
-                    Glide.with(getContext())
-                            .load(emImageMessageBody.getLocalUrl())
-                            .apply(GlideConfig.getRectangleOptions())
-                            .into(imageView);
-                }
-
-
-                if (message.direct() == EMMessage.Direct.RECEIVE) {
-
-
-                    pb.setVisibility(View.GONE);
-                    tv_progress.setVisibility(View.GONE);
-                    v_bg.setVisibility(View.GONE);
-
-                    Glide.with(getContext())
-                            .load(emImageMessageBody.getRemoteUrl())
-                            .apply(GlideConfig.getRectangleOptions())
-                            .into(imageView);
-                }
+                Glide.with(getContext())
+                        .load(objectBean.getMessage())
+                        .apply(GlideConfig.getRectangleOptions())
+                        .into(iv_image);
             }
 
+            holder.setText(R.id.tv_userName, objectBean.getUserName());
+
+
+            Glide.with(getContext())
+                    .load(objectBean.getUserIcon())
+                    .apply(GlideConfig.getCircleOptions())
+                    .into(iv_head);
+  
 
             /**
              * 设置最后一条消息距离底部的距离
              */
             LinearLayout linearLayout = holder.getView(R.id.lin_item);
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) linearLayout.getLayoutParams();
-            if (position > 0 && position == messageList.size() - 1) {
+            if (position > 0 && position == messageList.size() - 1)
+
+            {
 
 
                 params.bottomMargin = DisplayUtil.dip2px(getContext(), 40);
 
-            } else {
+            } else
+
+            {
 
                 params.bottomMargin = DisplayUtil.dip2px(getContext(), 0);
             }
@@ -308,6 +326,7 @@ public class ChatFragment extends BaseAppFragment {
         public int getEmptyLayoutId() {
             return R.layout.chat_empty;
         }
+
     }
 
 
@@ -320,41 +339,25 @@ public class ChatFragment extends BaseAppFragment {
                 String content = (String) event.getData();
 
 
-                EMMessage message = HXChatUtils.sendMessage(content, chatAdapter, getActivity());
-
-
-                messageList.add(message);
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        chatAdapter.notifyDataSetChanged();
-
-                        if (chatAdapter.getItemCount() > 0) {
-                            rvChat.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
-                        }
-                    }
-                });
-
-
+                IMBean imBean = new IMBean();
+                imBean.setActionType(ACTION_TYPE1);
+                IMBean.ObjectBean objectBean = new IMBean.ObjectBean();
+                objectBean.setMessageId(TimeUtils.getNowTimestamp() + "");
+                objectBean.setUserIcon(userIcon);
+                objectBean.setRoomName(roomName);
+                objectBean.setType(MESSAGE_TYPE1);
+                objectBean.setMessage(content);
+                objectBean.setUserName(userName);
+                imBean.setObject(objectBean);
+                String json = MGson.newGson().toJson(imBean);
+                showLog(json);
+                MainRoomActivity.imSocketUtils.sendMessage(json);
                 break;
             }
             case 2: {
                 String imagePath = (String) event.getData();
 
-                EMMessage message = HXChatUtils.sendImageMessage(imagePath, chatAdapter, getActivity());
 
-                messageList.add(message);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        chatAdapter.notifyDataSetChanged();
-
-                        if (chatAdapter.getItemCount() > 0) {
-                            rvChat.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
-                        }
-                    }
-                });
                 break;
             }
         }

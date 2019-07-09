@@ -23,7 +23,9 @@ import com.herewhite.sdk.domain.RoomState;
 import com.herewhite.sdk.domain.SDKError;
 import com.herewhite.sdk.domain.UrlInterrupter;
 import com.herewhite.sdk.domain.ViewMode;
+import com.lib.fastkit.utils.color.ColorUtil;
 import com.lib.fastkit.views.dialog.normal.NormalDialog;
+import com.live.R;
 import com.live.utils.white_board.DemoAPI;
 
 import java.io.IOException;
@@ -36,9 +38,8 @@ public class WhiteBoardUtils {
 
     /*和 iOS 名字一致*/
     final String EVENT_NAME = "WhiteCommandCustomEvent";
-    private String TEST_UUID = "b6069f9e3d8a4f46838c9eaba164498f";
-
-    private String ROOM_TOKEN = "WHITEcGFydG5lcl9pZD11QjFvMVhqUjNZa2RxaFpxMWNHTjlNbktBcGNudEtSRWFzNGwmc2lnPTQ4NTI5NGRmZGE2NjNjZWRmMDhmMDYzYjdlOTBmYWJhMjM4MWZlY2M6YWRtaW5JZD0yNzEmcm9vbUlkPWI2MDY5ZjllM2Q4YTRmNDY4MzhjOWVhYmExNjQ0OThmJnRlYW1JZD0zOTYmcm9sZT1yb29tJmV4cGlyZV90aW1lPTE1OTM4NzkxMDkmYWs9dUIxbzFYalIzWWtkcWhacTFjR045TW5LQXBjbnRLUkVhczRsJmNyZWF0ZV90aW1lPTE1NjIzMjIxNTcmbm9uY2U9MTU2MjMyMjE1NjYwNzAw";
+    //private String TEST_UUID = "b6069f9e3d8a4f46838c9eaba164498f";
+    // private String ROOM_TOKEN = "WHITEcGFydG5lcl9pZD11QjFvMVhqUjNZa2RxaFpxMWNHTjlNbktBcGNudEtSRWFzNGwmc2lnPTQ4NTI5NGRmZGE2NjNjZWRmMDhmMDYzYjdlOTBmYWJhMjM4MWZlY2M6YWRtaW5JZD0yNzEmcm9vbUlkPWI2MDY5ZjllM2Q4YTRmNDY4MzhjOWVhYmExNjQ0OThmJnRlYW1JZD0zOTYmcm9sZT1yb29tJmV4cGlyZV90aW1lPTE1OTM4NzkxMDkmYWs9dUIxbzFYalIzWWtkcWhacTFjR045TW5LQXBjbnRLUkVhczRsJmNyZWF0ZV90aW1lPTE1NjIzMjIxNTcmbm9uY2U9MTU2MjMyMjE1NjYwNzAw";
     private DemoAPI demoAPI;
     private Gson gson;
     private Room room;
@@ -64,11 +65,11 @@ public class WhiteBoardUtils {
     }
 
 
-    public WhiteBoardUtils joinToRoom(Activity activity, WhiteBroadView broadView) {
+    public WhiteBoardUtils joinToRoom(Activity activity, WhiteBroadView broadView, String uuid, String token) {
         this.activity = activity;
         this.whiteBroadView = broadView;
 
-        joinRoom(TEST_UUID, ROOM_TOKEN);
+        joinRoom(uuid, token);
 
         return instance;
 
@@ -147,13 +148,13 @@ public class WhiteBoardUtils {
                 showLog("加入画板房间成功!");
 
                 room = wRoom;
-
+                setTool(room);
                 if (listener != null) {
                     listener.onJoinRoomSucess(room);
                 }
 
                 addCustomEventListener();
-                getPencil();
+
 
             }
 
@@ -188,22 +189,18 @@ public class WhiteBoardUtils {
         Log.e("调试日志======", msg);
     }
 
-    public void getPencil() {
+    public void setTool(Room room) {
 
         MemberState memberState = new MemberState();
-        memberState.setStrokeColor(new int[]{99, 99, 99});
+        memberState.setStrokeColor(ColorUtil.int2Rgb(activity.getResources().getColor(R.color.c1)));
         memberState.setCurrentApplianceName(Appliance.PENCIL);
-        memberState.setStrokeWidth(10);
-        memberState.setTextSize(10);
+        memberState.setStrokeWidth(5);
+        memberState.setTextSize(5);
 
+        if (room != null) {
+            room.setMemberState(memberState);
+        }
 
-        room.setMemberState(memberState);
-
-        room.setViewMode(ViewMode.Broadcaster);
-
-        room.zoomChange(1);
-
-        showLog("设置铅笔");
     }
 
 

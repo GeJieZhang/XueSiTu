@@ -72,6 +72,8 @@ dependencies {
      * 网络请求 OkHttp
      */
     api "com.squareup.okhttp3:okhttp:$var.okhttp"
+
+    api "com.squareup.okhttp3:mockwebserver:$var.okhttp"
     api "com.squareup.okhttp3:logging-interceptor:$var.logging_interceptor"
 
     //api "com.orhanobut:logger:$var.logger"

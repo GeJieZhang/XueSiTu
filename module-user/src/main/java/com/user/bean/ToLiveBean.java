@@ -5,7 +5,7 @@ public class ToLiveBean {
 
     /**
      * code : 200
-     * obj : {"roomname":"otm_33","permission":"admin","phoen":"13540354597","userid":"13540354597","token":"3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:205AA2Fu1GpfF3upHv4or8CmpwE=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoib3RtXzMzIiwidXNlcklkIjoiMTM1NDAzNTQ1OTciLCJleHBpcmVBdCI6MTU2MjIzMjM0OCwicGVybWlzc2lvbiI6ImFkbWluIn0="}
+     * obj : {"roomname":"oto_2","roomtoken":"3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:DIBgb1bMiz5KJpbR28xUDRLLYiM=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoib3RvXzIiLCJ1c2VySWQiOiIxMzI1NjU2MDAwMCIsImV4cGlyZUF0IjoxNTYyOTE0MTYxLCJwZXJtaXNzaW9uIjoidXNlciJ9","permission":"user","phoen":"13126815573","userid":"13256560000","uuid":"cfe6f40259a245f89395cdc5f5519fc7","whitetoken":"WHITEcGFydG5lcl9pZD11QjFvMVhqUjNZa2RxaFpxMWNHTjlNbktBcGNudEtSRWFzNGwmc2lnPTM0Y2QwOTYwM2YxODhjOTcxNmNjMTMxMmZjNGY0MGE2ZTFiOTRiYjU6YWRtaW5JZD0yNzEmcm9vbUlkPWNmZTZmNDAyNTlhMjQ1Zjg5Mzk1Y2RjNWY1NTE5ZmM3JnRlYW1JZD0zOTYmcm9sZT1yb29tJmV4cGlyZV90aW1lPTE1OTQyMTE5MDAmYWs9dUIxbzFYalIzWWtkcWhacTFjR045TW5LQXBjbnRLUkVhczRsJmNyZWF0ZV90aW1lPTE1NjI2NTQ5NDgmbm9uY2U9MTU2MjY1NDk0ODQwNDAw"}
      * msg : 获取直播token成功
      * seccess : true
      */
@@ -49,18 +49,22 @@ public class ToLiveBean {
 
     public static class ObjBean {
         /**
-         * roomname : otm_33
-         * permission : admin
-         * phoen : 13540354597
-         * userid : 13540354597
-         * token : 3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:205AA2Fu1GpfF3upHv4or8CmpwE=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoib3RtXzMzIiwidXNlcklkIjoiMTM1NDAzNTQ1OTciLCJleHBpcmVBdCI6MTU2MjIzMjM0OCwicGVybWlzc2lvbiI6ImFkbWluIn0=
+         * roomname : oto_2
+         * roomtoken : 3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:DIBgb1bMiz5KJpbR28xUDRLLYiM=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoib3RvXzIiLCJ1c2VySWQiOiIxMzI1NjU2MDAwMCIsImV4cGlyZUF0IjoxNTYyOTE0MTYxLCJwZXJtaXNzaW9uIjoidXNlciJ9
+         * permission : user
+         * phoen : 13126815573
+         * userid : 13256560000
+         * uuid : cfe6f40259a245f89395cdc5f5519fc7
+         * whitetoken : WHITEcGFydG5lcl9pZD11QjFvMVhqUjNZa2RxaFpxMWNHTjlNbktBcGNudEtSRWFzNGwmc2lnPTM0Y2QwOTYwM2YxODhjOTcxNmNjMTMxMmZjNGY0MGE2ZTFiOTRiYjU6YWRtaW5JZD0yNzEmcm9vbUlkPWNmZTZmNDAyNTlhMjQ1Zjg5Mzk1Y2RjNWY1NTE5ZmM3JnRlYW1JZD0zOTYmcm9sZT1yb29tJmV4cGlyZV90aW1lPTE1OTQyMTE5MDAmYWs9dUIxbzFYalIzWWtkcWhacTFjR045TW5LQXBjbnRLUkVhczRsJmNyZWF0ZV90aW1lPTE1NjI2NTQ5NDgmbm9uY2U9MTU2MjY1NDk0ODQwNDAw
          */
 
         private String roomname;
+        private String roomtoken;
         private String permission;
         private String phoen;
         private String userid;
-        private String token;
+        private String uuid;
+        private String whitetoken;
 
         public String getRoomname() {
             return roomname;
@@ -68,6 +72,14 @@ public class ToLiveBean {
 
         public void setRoomname(String roomname) {
             this.roomname = roomname;
+        }
+
+        public String getRoomtoken() {
+            return roomtoken;
+        }
+
+        public void setRoomtoken(String roomtoken) {
+            this.roomtoken = roomtoken;
         }
 
         public String getPermission() {
@@ -94,12 +106,22 @@ public class ToLiveBean {
             this.userid = userid;
         }
 
-        public String getToken() {
-            return token;
+        public String getUuid() {
+            return uuid;
         }
 
-        public void setToken(String token) {
-            this.token = token;
+        public void setUuid(String uuid) {
+            this.uuid = uuid;
+        }
+
+        public String getWhitetoken() {
+            return whitetoken;
+        }
+
+        public void setWhitetoken(String whitetoken) {
+            this.whitetoken = whitetoken;
         }
     }
+
+
 }

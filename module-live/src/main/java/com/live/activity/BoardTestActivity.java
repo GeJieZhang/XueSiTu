@@ -67,7 +67,7 @@ public class BoardTestActivity extends BaseRoomActivity {
     private void initWhiteBorad() {
 
         whiteBroadView = new WhiteBroadView(this);
-        WhiteBoardUtils.getInstance().joinToRoom(this, whiteBroadView);
+        //WhiteBoardUtils.getInstance().joinToRoom(this, whiteBroadView);
 
 
     }

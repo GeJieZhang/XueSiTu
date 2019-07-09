@@ -36,10 +36,12 @@ import com.live.R;
 import com.live.R2;
 import com.live.activity.MainRoomActivity;
 import com.live.bean.control.RoomControlBean;
+import com.live.bean.control.WhiteBoradBean;
 import com.live.view.CmmtPopup;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.qiniu.droid.rtc.QNRTCUser;
 import com.smart.colorview.normal.CircleColorView;
+import com.squareup.haha.perflib.Main;
 import com.zyyoona7.popup.EasyPopup;
 import com.zyyoona7.popup.XGravity;
 import com.zyyoona7.popup.YGravity;
@@ -217,8 +219,14 @@ public class RoomControlFragment extends BaseAppFragment {
             //判断当前是否为横屏,判断是否旋转
             if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                 getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+                MainRoomActivity.screenOrientation = MainRoomActivity.screenHorization;
+
+
             } else {
                 getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                MainRoomActivity.screenOrientation = MainRoomActivity.screenVertical;
+
             }
 
 
@@ -365,37 +373,72 @@ public class RoomControlFragment extends BaseAppFragment {
     private List<CircleColorView> colorViewList = new ArrayList<>();
     private RecyclerView toolRecyclerView;
     private SeekBar seekBar;
-
     private TextView tv_size;
 
-    private LinearLayout lin_pen;
 
+    private ImageView iv_pencil;
+    private ImageView iv_eraser;
+    private ImageView iv_rectangle;
+    private ImageView iv_circle;
+
+
+    private void initToolIcon() {
+        iv_pencil.setImageResource(R.mipmap.icon_color_default);
+        iv_eraser.setImageResource(R.mipmap.icon_eraser_default);
+        iv_rectangle.setImageResource(R.mipmap.icon_rectangle_default);
+        iv_circle.setImageResource(R.mipmap.icon_size_default);
+
+        WhiteBoradBean whiteBoradBean = MainRoomActivity.whiteBoradBean;
+
+        if (whiteBoradBean.isPen()) {
+            iv_pencil.setImageResource(R.mipmap.icon_color_selected);
+        }
+
+        if (whiteBoradBean.isCirle()) {
+            iv_circle.setImageResource(R.mipmap.icon_size_selected);
+        }
+        if (whiteBoradBean.isEraser()) {
+            iv_eraser.setImageResource(R.mipmap.icon_eraser_selected);
+        }
+        if (whiteBoradBean.isRectangular()) {
+            iv_rectangle.setImageResource(R.mipmap.icon_rectangle_selected);
+        }
+
+
+    }
 
     private void initToolView(View view) {
+        iv_pencil = view.findViewById(R.id.iv_pencil);
+        iv_eraser = view.findViewById(R.id.iv_eraser);
+        iv_rectangle = view.findViewById(R.id.iv_rectangle);
+        iv_circle = view.findViewById(R.id.iv_circle);
+
+        initToolIcon();
 
 
         toolRecyclerView = view.findViewById(R.id.rv_color);
-
-
         toolRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
         toolRecyclerView.setNestedScrollingEnabled(false);//禁止滑动
-
         toolAdapter = new ToolAdapter(getContext(), colorList);
         toolRecyclerView.setAdapter(toolAdapter);
-        lin_pen = view.findViewById(R.id.lin_pen);
         seekBar = view.findViewById(R.id.seek_bar);
-        seekBar.setProgress(5);
+
+        seekBar.setProgress(MainRoomActivity.whiteBoradBean.getPenSize());
         tv_size = view.findViewById(R.id.tv_size);
         tv_size.setText("5");
 
-        view.findViewById(R.id.lin_pen).setOnClickListener(new View.OnClickListener() {
+
+        view.findViewById(R.id.lin_pencil).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //画笔
 
                 toolName = Appliance.PENCIL;
                 setTool();
+                MainRoomActivity.whiteBoradBean.initValue();
+                MainRoomActivity.whiteBoradBean.setPen(true);
 
+                initToolIcon();
 
             }
         });
@@ -406,6 +449,9 @@ public class RoomControlFragment extends BaseAppFragment {
                 //橡皮
                 toolName = Appliance.ERASER;
                 setTool();
+                MainRoomActivity.whiteBoradBean.initValue();
+                MainRoomActivity.whiteBoradBean.setEraser(true);
+                initToolIcon();
             }
         });
         view.findViewById(R.id.lin_clear).setOnClickListener(new View.OnClickListener() {
@@ -424,6 +470,10 @@ public class RoomControlFragment extends BaseAppFragment {
                 toolName = Appliance.RECTANGLE;
                 setTool();
 
+
+                MainRoomActivity.whiteBoradBean.initValue();
+                MainRoomActivity.whiteBoradBean.setRectangular(true);
+                initToolIcon();
             }
         });
 
@@ -480,6 +530,10 @@ public class RoomControlFragment extends BaseAppFragment {
 
                 toolName = Appliance.ELLIPSE;
                 setTool();
+
+                MainRoomActivity.whiteBoradBean.initValue();
+                MainRoomActivity.whiteBoradBean.setCirle(true);
+                initToolIcon();
             }
         });
 
@@ -492,6 +546,8 @@ public class RoomControlFragment extends BaseAppFragment {
 
                 toolStrokeWidth = progress;
                 setTool();
+
+                MainRoomActivity.whiteBoradBean.setPenSize(progress);
 
             }
 
@@ -507,6 +563,7 @@ public class RoomControlFragment extends BaseAppFragment {
         });
 
     }
+
 
     private void showToolPopup(View view) {
 
@@ -534,17 +591,23 @@ public class RoomControlFragment extends BaseAppFragment {
             colorViewList.add(circleColorView);
             circleColorView.setCircleColor(getResources().getColor(mData.get(position)));
             circleColorView.setOutlineStrokeColor(getResources().getColor(mData.get(position)));
+
             circleColorView.setCircleSelected(false);
+            if (MainRoomActivity.whiteBoradBean.getCirlerIndex() == position) {
+                circleColorView.setCircleSelected(true);
+            }
+
 
             circleColorView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     initColorViewState();
-                    circleColorView.setCircleSelected(true);
 
+
+                    circleColorView.setCircleSelected(true);
                     toolColor = mData.get(position);
                     setTool();
-
+                    MainRoomActivity.whiteBoradBean.setCirlerIndex(position);
                 }
             });
 

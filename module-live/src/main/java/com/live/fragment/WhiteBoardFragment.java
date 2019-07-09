@@ -108,24 +108,12 @@ public class WhiteBoardFragment extends BaseAppFragment {
     public void setRoom(Room room) {
         this.room = room;
 
-        setTool(room);
+
         refreshRoom();
     }
 
 
-    public void setTool(Room room) {
 
-        MemberState memberState = new MemberState();
-        memberState.setStrokeColor(ColorUtil.int2Rgb(getResources().getColor(R.color.base_money)));
-        memberState.setCurrentApplianceName(Appliance.PENCIL);
-        memberState.setStrokeWidth(5);
-        memberState.setTextSize(5);
-
-        if (room != null) {
-            room.setMemberState(memberState);
-        }
-
-    }
 
 
     @OnClick({R2.id.iv_font, R2.id.iv_next})
