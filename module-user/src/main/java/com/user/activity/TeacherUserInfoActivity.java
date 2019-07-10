@@ -24,6 +24,7 @@ import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.lib.app.ARouterPathUtils;
+import com.lib.app.ApiUtils;
 import com.lib.app.CodeUtil;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
@@ -995,7 +996,7 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
 
 
     //-------------------------------------------------------------------------------------------上传头像
-    String uploadToken = "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:8H1MtKDGgiN5SNFbWL2eCe3bDUU=:eyJzY29wZSI6Inh1ZXNpdHUiLCJkZWFkbGluZSI6MTU1OTgxMDk3M30=";
+    String uploadToken = ApiUtils.QN_UPLOAD_TOKEN;
 
     private void uploadHead(String compressPath) {
         QiNiuUploadTask qiNiuUploadTask = new QiNiuUploadTask();

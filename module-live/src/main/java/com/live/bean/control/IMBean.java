@@ -56,7 +56,36 @@ public class IMBean {
         private String roomName;
         private String message;
         private String userName;
+
+        private String userPhone;
+        private String actionTag;
+
+        private String action;
         private int type;
+
+        public String getAction() {
+            return action;
+        }
+
+        public void setAction(String action) {
+            this.action = action;
+        }
+
+        public String getUserPhone() {
+            return userPhone;
+        }
+
+        public void setUserPhone(String userPhone) {
+            this.userPhone = userPhone;
+        }
+
+        public String getActionTag() {
+            return actionTag;
+        }
+
+        public void setActionTag(String actionTag) {
+            this.actionTag = actionTag;
+        }
 
         public String getUserName() {
             return userName;

@@ -35,15 +35,18 @@ import com.lib.bean.Event;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.fragment_deal.FragmentCustomUtils;
+import com.lib.fastkit.utils.json_deal.lib_mgson.MGson;
 import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.utils.status_bar.QMUI.QMUIStatusBarHelper;
 import com.lib.fastkit.utils.status_bar.StatusBarUtil;
 import com.lib.fastkit.utils.system.SystemUtil;
+import com.lib.fastkit.utils.time_deal.TimeUtils;
 import com.lib.fastkit.views.dialog.normal.NormalDialog;
 import com.lib.http.call_back.HttpDialogCallBack;
 import com.live.R;
 import com.live.bean.CloseRoomBean;
+import com.live.bean.control.IMBean;
 import com.live.bean.control.RoomControlBean;
 import com.live.bean.control.WhiteBoradBean;
 import com.live.bean.live.MyTrackInfo;
@@ -81,6 +84,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.live.fragment.ChatFragment.ACTION_TYPE1;
+import static com.live.fragment.ChatFragment.ACTION_TYPE2;
+import static com.live.fragment.ChatFragment.MESSAGE_TYPE1;
 import static com.live.utils.config.LiveConfig.DEFAULT_BITRATE;
 import static com.live.utils.config.LiveConfig.DEFAULT_FPS;
 import static com.live.utils.config.LiveConfig.DEFAULT_RESOLUTION;
@@ -138,6 +144,9 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     //横屏聊天菜单
     private LinearLayout lin_chat;
 
+    private String userIcon;
+    private String userName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,9 +162,18 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
         identity = SharedPreferenceManager.getInstance(this).getUserCache().getUserIdentity();
         userToken = SharedPreferenceManager.getInstance(this).getUserCache().getUserToken();
-
-
+        userIcon = SharedPreferenceManager.getInstance(this).getUserCache().getUserHeadUrl();
+        userName = SharedPreferenceManager.getInstance(this).getUserCache().getUserName();
         roomControlBean = new RoomControlBean();
+        if (identity.equals("1")) {
+            roomControlBean.setDefault_camera(true);
+            roomControlBean.setDefault_voice(true);
+        } else {
+            roomControlBean.setDefault_camera(false);
+            roomControlBean.setDefault_voice(false);
+        }
+
+
         whiteBoradBean = new WhiteBoradBean();
 
 
@@ -177,9 +195,15 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
      */
     private void initChat() {
         //HXChatUtils.signIn("token1", "123456", this);
-
-
         imSocketUtils = IMSocketUtils.getInstance().start(roomName, userToken);
+
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        }).start();
+
 
     }
 
@@ -187,13 +211,13 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     //---------------------------------------------------------------------------------Fragment
 
     //视频菜单
-    private ListVideoFragment listVideoFragment;
+    public static ListVideoFragment listVideoFragment;
     //控制页面
-    private RoomControlFragment roomControlFragment;
+    public static RoomControlFragment roomControlFragment;
     //聊天
-    private ChatFragment chatFragment;
+    public static ChatFragment chatFragment;
     //白板
-    private WhiteBoardFragment whiteBoardFragment;
+    public static WhiteBoardFragment whiteBoardFragment;
 
 
     /**
@@ -366,7 +390,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     }
 
 
-    //--------------------------------------------------------------QNRTCEngineEventListener
+    //--------------------------------------------------------------直播间回调
 
 
     /**
@@ -387,7 +411,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
                 break;
             case CONNECTED:
                 //连接成功
-                mEngine.publishTracks(Arrays.asList(localVideoTrack, localAudioTrack));
+                toTeacherPublishTrack();
 
 
                 showLog("连接直播房间成功");
@@ -404,12 +428,25 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
     }
 
+    /**
+     * 推送流
+     */
+    private void toTeacherPublishTrack() {
+
+        if (identity.equals("1")) {
+            mEngine.publishTracks(Arrays.asList(localVideoTrack, localAudioTrack));
+        }
+
+    }
+
 
     @Override
     public void onRemoteUserJoined(String s, String s1) {
         LogUtil.e("onRemoteUserJoined用户加入:" + s + "消息:" + s1);
+        MyTrackInfo myTrackInfo = new MyTrackInfo();
+        myTrackInfo.setUserId(s);
 
-
+        trackInfoMap.put(s, myTrackInfo);
     }
 
     @Override
@@ -544,7 +581,8 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         }
     }
 
-    //--------------------------------------------------------------视频列表
+
+    //--------------------------------------------------------------视频列表回调
 
 
     private ListVideoFragment.ListVideoFragmentListener listVideoFragmentListener = new ListVideoFragment.ListVideoFragmentListener() {
@@ -628,47 +666,76 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
     };
 
-
+    //--------------------------------------------------------------控制页回调
     private RoomControlFragment.RoomControlFragmentListener roomControlFragmentListener = new RoomControlFragment.RoomControlFragmentListener() {
+
+
         @Override
-        public void onCameraClick() {
+        public void onCameraClick(int type) {
+            switch (type) {
+
+                case 0: {
+                    //关闭
+
+                    localVideoTrack.setMuted(true);
+                    mEngine.muteTracks(Arrays.asList(localVideoTrack));
 
 
-            if (localVideoTrack.isMuted()) {
-                localVideoTrack.setMuted(false);
-                playingTrack.getVideoTrack().setMuted(false);
-            } else {
-                localVideoTrack.setMuted(true);
-                playingTrack.getVideoTrack().setMuted(true);
+                    break;
+                }
+
+                case 1: {
+                    //打开
+
+                    if (identity.equals("1")) {
+                        localVideoTrack.setMuted(false);
+                        mEngine.muteTracks(Arrays.asList(localVideoTrack));
+                    } else {
+
+                        if (chatFragment != null) {
+                            chatFragment.requestOpenCamera();
+                        }
+                    }
+                    break;
+                }
             }
-
-            mEngine.muteTracks(Arrays.asList(playingTrack.getVideoTrack(), localVideoTrack));
-
-
-//            if (trackInfoMap.get("token2") != null) {
-//
-//                QNTrackInfo qnTrackInfo = trackInfoMap.get("token2");
-//                qnTrackInfo.setMuted(true);
-//                mEngine.muteTracks(Arrays.asList(qnTrackInfo));
-//
-//            }
-
         }
 
         @Override
-        public void onVoiceClick() {
+        public void onVoiceClick(int type) {
 
-            if (localAudioTrack.isMuted()) {
-                localAudioTrack.setMuted(false);
-            } else {
-                localAudioTrack.setMuted(true);
+
+            switch (type) {
+
+                case 0: {
+                    //关闭
+
+                    localAudioTrack.setMuted(true);
+                    mEngine.muteTracks(Arrays.asList(localAudioTrack));
+
+
+                    break;
+                }
+
+                case 1: {
+                    //打开
+
+                    if (identity.equals("1")) {
+                        localAudioTrack.setMuted(false);
+                        mEngine.muteTracks(Arrays.asList(localAudioTrack));
+                    } else {
+
+                        if (chatFragment != null) {
+                            chatFragment.requestOpenVoice();
+                        }
+                    }
+                    break;
+                }
             }
 
 
-            mEngine.muteTracks(Arrays.asList(localAudioTrack));
-
-
         }
+
 
         @Override
         public void onLiveRoom() {
@@ -730,27 +797,6 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
 
     };
-
-    //--------------------------------------------------------------控制回调
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mEngine != null) {
-            mEngine.leaveRoom();
-            mEngine.destroy();
-            mEngine = null;
-        }
-
-        //清空控制页面数据
-        roomControlBean = null;
-
-        HXChatUtils.signOut();
-        HXChatUtils.leaveChatRoom();
-
-        LogUtil.e("onDestroy");
-    }
 
 
     //--------------------------------------------------------------屏幕切换控制
@@ -915,6 +961,11 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         });
     }
 
+    /**
+     * 获取白板房间
+     *
+     * @return
+     */
     public static Room getwhiteBoardRoom() {
 
 
@@ -1000,12 +1051,32 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     @Override
     public void onBackPressed() {
 
-        super.onBackPressed();
-        // liveRoom();
+
+        liveRoom();
 
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mEngine != null) {
+            mEngine.leaveRoom();
+            mEngine.destroy();
+            mEngine = null;
+        }
+
+        //清空控制页面数据
+        roomControlBean = null;
+
+        //HXChatUtils.signOut();
+        //HXChatUtils.leaveChatRoom();
+
+        imSocketUtils.closeSocket();
+
+
+        LogUtil.e("onDestroy");
+    }
 
     /**
      * 离开房间
@@ -1023,7 +1094,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
                         String consume_class = "";
 
                         if (identity.equals("1")) {
-                            consume_class = "20";
+                            consume_class = "0";
                         } else {
 
                         }
@@ -1058,4 +1129,6 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
                 .show(getSupportFragmentManager());
 
     }
+
+
 }

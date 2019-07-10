@@ -23,6 +23,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMImageMessageBody;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
+import com.lib.app.ApiUtils;
 import com.lib.app.EventBusTagUtils;
 import com.lib.bean.Event;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
@@ -34,6 +35,8 @@ import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.ui.fragment.BaseAppFragment;
 import com.lib.utls.glide.GlideConfig;
+import com.lib.utls.upload.QiNiuUploadTask;
+import com.lib.utls.upload.initerface.FileUploadListener;
 import com.live.R;
 import com.live.R2;
 import com.live.activity.MainRoomActivity;
@@ -65,29 +68,31 @@ public class ChatFragment extends BaseAppFragment {
 
     private String userName;
 
+    private String userPhone;
+
     private String userIcon;
     private Gson gson;
     //发送接收消息
-    private final int ACTION_TYPE1 = 1;
+    public static final int ACTION_TYPE1 = 1;
     //学生申请语音
-    private final int ACTION_TYPE2 = 2;
+    public static final int ACTION_TYPE2 = 2;
     //学生申请视频
-    private final int ACTION_TYPE3 = 3;
+    public static final int ACTION_TYPE3 = 3;
     //老师对申请进行操作(语音，视频)
-    private final int ACTION_TYPE4 = 4;
+    public static final int ACTION_TYPE4 = 4;
     //学生加入
-    private final int ACTION_TYPE5 = 5;
+    public static final int ACTION_TYPE5 = 5;
     //学生离开
-    private final int ACTION_TYPE6 = 6;
+    public static final int ACTION_TYPE6 = 6;
     //直播间用户列表
-    private final int ACTION_TYPE7 = 7;
+    public static final int ACTION_TYPE7 = 7;
     //学生取消视频，语音
-    private final int ACTION_TYPE8 = 8;
+    public static final int ACTION_TYPE8 = 8;
 
     //文字
-    private final int MESSAGE_TYPE1 = 1;
+    public static final int MESSAGE_TYPE1 = 1;
     //图片
-    private final int MESSAGE_TYPE2 = 2;
+    public static final int MESSAGE_TYPE2 = 2;
 
     @SuppressLint("ValidFragment")
     public ChatFragment(String roomName) {
@@ -100,6 +105,8 @@ public class ChatFragment extends BaseAppFragment {
     protected void onCreateView(View view, Bundle savedInstanceState) {
         userName = SharedPreferenceManager.getInstance(getActivity()).getUserCache().getUserName();
         userIcon = SharedPreferenceManager.getInstance(getActivity()).getUserCache().getUserHeadUrl();
+
+        userPhone = SharedPreferenceManager.getInstance(getActivity()).getUserCache().getUserPhone();
         chatAdapter = new ChatAdapter(getContext(), messageList);
         gson = new Gson();
         linearLayoutManager = new LinearLayoutManager(getContext());
@@ -150,7 +157,14 @@ public class ChatFragment extends BaseAppFragment {
 
         @Override
         public void onMessage(String json) {
-            imBean = MGson.newGson().fromJson(json, IMBean.class);
+
+            try {
+                imBean = MGson.newGson().fromJson(json, IMBean.class);
+            } catch (Exception e) {
+
+                showLog(e.getMessage());
+
+            }
 
 
             int type = imBean.getActionType();
@@ -168,13 +182,17 @@ public class ChatFragment extends BaseAppFragment {
                 case ACTION_TYPE2: {
                     //学生申请语音
 
+                    MainRoomActivity.roomControlFragment.addRequest(imBean);
+                    MainRoomActivity.roomControlFragment.showRequestPopu();
+
 
                     break;
                 }
 
                 case ACTION_TYPE3: {
                     //学生申请视频
-
+                    MainRoomActivity.roomControlFragment.addRequest(imBean);
+                    MainRoomActivity.roomControlFragment.showRequestPopu();
 
                     break;
                 }
@@ -298,7 +316,7 @@ public class ChatFragment extends BaseAppFragment {
                     .load(objectBean.getUserIcon())
                     .apply(GlideConfig.getCircleOptions())
                     .into(iv_head);
-  
+
 
             /**
              * 设置最后一条消息距离底部的距离
@@ -357,10 +375,133 @@ public class ChatFragment extends BaseAppFragment {
             case 2: {
                 String imagePath = (String) event.getData();
 
-
+                requestUploadImage(imagePath);
                 break;
             }
         }
+
+    }
+
+
+    //-----------------------------------------------------------------------------音视频控制
+
+
+    /**
+     * 学生请求打开麦克风
+     */
+    public void requestOpenVoice() {
+        IMBean imBean = new IMBean();
+        imBean.setActionType(ACTION_TYPE2);
+        IMBean.ObjectBean objectBean = new IMBean.ObjectBean();
+        objectBean.setActionTag(TimeUtils.getNowTimestamp() + "");
+        objectBean.setUserName(userName);
+        objectBean.setUserIcon(userIcon);
+        objectBean.setRoomName(roomName);
+        objectBean.setUserPhone(userPhone);
+        imBean.setObject(objectBean);
+        String json = MGson.newGson().toJson(imBean);
+        showLog(json);
+        MainRoomActivity.imSocketUtils.sendMessage(json);
+    }
+
+    /**
+     * 学生请求打开摄像头
+     */
+    public void requestOpenCamera() {
+        IMBean imBean = new IMBean();
+        imBean.setActionType(ACTION_TYPE3);
+        IMBean.ObjectBean objectBean = new IMBean.ObjectBean();
+        objectBean.setActionTag(TimeUtils.getNowTimestamp() + "");
+        objectBean.setUserName(userName);
+        objectBean.setUserIcon(userIcon);
+        objectBean.setRoomName(roomName);
+        objectBean.setUserPhone(userPhone);
+        imBean.setObject(objectBean);
+        String json = MGson.newGson().toJson(imBean);
+        showLog(json);
+        MainRoomActivity.imSocketUtils.sendMessage(json);
+    }
+
+    /**
+     * 老师处理是否打开麦克风
+     */
+    public void requestBackOpenVoice(boolean b, String studentPhone) {
+        IMBean imBean = new IMBean();
+        imBean.setActionType(ACTION_TYPE4);
+        IMBean.ObjectBean objectBean = new IMBean.ObjectBean();
+
+        objectBean.setUserPhone(studentPhone);
+        objectBean.setType(2);
+        if (b) {
+            objectBean.setAction("1");
+        } else {
+            objectBean.setAction("0");
+        }
+
+        objectBean.setRoomName(roomName);
+        imBean.setObject(objectBean);
+        String json = MGson.newGson().toJson(imBean);
+        showLog(json);
+        MainRoomActivity.imSocketUtils.sendMessage(json);
+    }
+
+    /**
+     * 老师处理是否打开摄像头
+     */
+    public void requestBackOpenCamera(boolean b, String studentPhone) {
+        IMBean imBean = new IMBean();
+        imBean.setActionType(ACTION_TYPE4);
+        IMBean.ObjectBean objectBean = new IMBean.ObjectBean();
+
+        objectBean.setUserPhone(studentPhone);
+        objectBean.setType(3);
+        if (b) {
+            objectBean.setAction("1");
+        } else {
+            objectBean.setAction("0");
+        }
+
+        objectBean.setRoomName(roomName);
+        imBean.setObject(objectBean);
+        String json = MGson.newGson().toJson(imBean);
+        showLog(json);
+        MainRoomActivity.imSocketUtils.sendMessage(json);
+    }
+
+
+    private void requestUploadImage(String compressPath) {
+        QiNiuUploadTask qiNiuUploadTask = new QiNiuUploadTask();
+        qiNiuUploadTask.setFileUploadListener(new FileUploadListener() {
+            @Override
+            public void onProgress(int progress) {
+
+
+            }
+
+            @Override
+            public void onSuccess(String s) {
+                IMBean imBean = new IMBean();
+                imBean.setActionType(ACTION_TYPE1);
+                IMBean.ObjectBean objectBean = new IMBean.ObjectBean();
+                objectBean.setMessageId(TimeUtils.getNowTimestamp() + "");
+                objectBean.setUserIcon(userIcon);
+                objectBean.setRoomName(roomName);
+                objectBean.setType(MESSAGE_TYPE2);
+                objectBean.setMessage(s);
+                objectBean.setUserName(userName);
+                imBean.setObject(objectBean);
+                String json = MGson.newGson().toJson(imBean);
+                showLog(json);
+                MainRoomActivity.imSocketUtils.sendMessage(json);
+            }
+
+            @Override
+            public void onError(String e) {
+
+            }
+        });
+        qiNiuUploadTask.execute(compressPath, ApiUtils.QN_UPLOAD_TOKEN);
+
 
     }
 

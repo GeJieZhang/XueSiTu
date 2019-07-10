@@ -1,5 +1,8 @@
 package com.live.utils.socket;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.google.gson.Gson;
 import com.lib.fastkit.utils.log.LogUtil;
 import com.live.utils.WhiteBoardUtils;
@@ -22,8 +25,13 @@ public class IMSocketUtils {
 
     private WebSocket mSocket;
 
+    private boolean isClose = false;
+    private boolean isReallyClose = false;
 
-    private final String socketPath = "ws://192.168.0.10:8081/websocket/";
+    private final String socketPath = "ws://192.168.0.116:8081/websocket/";
+
+    private String path;
+
 
     public IMSocketUtils() {
 
@@ -39,22 +47,26 @@ public class IMSocketUtils {
 
 
     public IMSocketUtils start(String roomName, String token) {
+        path = socketPath + roomName + "/" + token;
+
+        LogUtil.e("长连接" + path);
+
+        startConnection();
+
+        return instance;
+    }
+
+    private void startConnection() {
         OkHttpClient mOkHttpClient = new OkHttpClient.Builder()
                 .readTimeout(3, TimeUnit.SECONDS)//设置读取超时时间
                 .writeTimeout(3, TimeUnit.SECONDS)//设置写的超时时间
                 .connectTimeout(3, TimeUnit.SECONDS)//设置连接超时时间
                 .build();
 
-        String path = socketPath + roomName + "/" + token;
-
-        LogUtil.e("长连接" + path);
-
         Request request = new Request.Builder().url(path).build();
         EchoWebSocketListener socketListener = new EchoWebSocketListener();
         mOkHttpClient.newWebSocket(request, socketListener);
         mOkHttpClient.dispatcher().executorService().shutdown();
-
-        return instance;
     }
 
     private final class EchoWebSocketListener extends WebSocketListener {
@@ -62,7 +74,9 @@ public class IMSocketUtils {
         @Override
         public void onOpen(WebSocket webSocket, Response response) {
             super.onOpen(webSocket, response);
+
             mSocket = webSocket;
+            isClose = false;
             LogUtil.e("长连接-连接成功！");
 
 
@@ -79,6 +93,7 @@ public class IMSocketUtils {
         @Override
         public void onMessage(WebSocket webSocket, ByteString bytes) {
             super.onMessage(webSocket, bytes);
+            isClose = false;
             //LogUtil.e("长连接-receive bytes:" + bytes.hex());
         }
 
@@ -86,7 +101,9 @@ public class IMSocketUtils {
         public void onMessage(WebSocket webSocket, String text) {
             super.onMessage(webSocket, text);
             LogUtil.e("长连接-receive text:" + text);
+            LogUtil.e("长连接-onMessage线程" + isMainThread());
 
+            isClose = false;
             if (listener != null) {
                 listener.onMessage(text);
             }
@@ -99,6 +116,11 @@ public class IMSocketUtils {
             super.onClosed(webSocket, code, reason);
             LogUtil.e("长连接-closed:" + reason);
 
+            if (!isReallyClose){
+                isClose = true;
+            }
+
+            handler.postDelayed(runnable, 500);
             if (listener != null) {
                 listener.onClosed();
             }
@@ -108,7 +130,10 @@ public class IMSocketUtils {
         public void onClosing(WebSocket webSocket, int code, String reason) {
             super.onClosing(webSocket, code, reason);
             LogUtil.e("长连接-closing:" + reason);
-
+            if (!isReallyClose){
+                isClose = true;
+            }
+            handler.postDelayed(runnable, 500);
             if (listener != null) {
                 listener.onClosing();
             }
@@ -119,6 +144,10 @@ public class IMSocketUtils {
             super.onFailure(webSocket, t, response);
             LogUtil.e("长连接-failure:" + t.getMessage());
 
+            if (!isReallyClose){
+                isClose = true;
+            }
+            handler.postDelayed(runnable, 500);
             if (listener != null) {
                 listener.onFailure();
             }
@@ -126,16 +155,45 @@ public class IMSocketUtils {
     }
 
     //--------------------------------------------------------------------------------------发送消息
+
+    private Handler handler = new Handler();
+
     private void heartMessage() {
-        final String message = "";
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                mSocket.send(message);
-            }
-        }, 25000);
+
+        handler.postDelayed(runnable, 1000);
+
     }
+
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (isClose) {
+                startConnection();
+            }
+            mSocket.send("");
+            LogUtil.e("心跳包");
+            handler.postDelayed(runnable, 25000);
+
+
+        }
+    };
+
+    public boolean isMainThread() {
+        return Looper.getMainLooper() == Looper.myLooper();
+    }
+
+//    private void heartMessage() {
+//        final String message = "";
+//        Timer timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                mSocket.send(message);
+//
+//                LogUtil.e("心跳包");
+//            }
+//        }, 1000);
+//    }
 
     public void sendMessage(String message) {
         mSocket.send(message);
@@ -167,5 +225,16 @@ public class IMSocketUtils {
 
     }
 
+
+
+
+    public void closeSocket() {
+        mSocket.close(1000, "断开IMSocket");
+
+        isReallyClose=true;
+
+        handler.removeCallbacks(runnable);
+
+    }
 
 }

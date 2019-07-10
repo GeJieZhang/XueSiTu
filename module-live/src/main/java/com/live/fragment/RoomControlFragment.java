@@ -28,6 +28,7 @@ import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.utils.color.ColorUtil;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.dialog.arrow.TriangleDrawable;
+import com.lib.fastkit.views.dialog.normal.NormalDialog;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.ui.fragment.BaseAppFragment;
@@ -35,6 +36,7 @@ import com.lib.utls.picture_select.PhotoUtil;
 import com.live.R;
 import com.live.R2;
 import com.live.activity.MainRoomActivity;
+import com.live.bean.control.IMBean;
 import com.live.bean.control.RoomControlBean;
 import com.live.bean.control.WhiteBoradBean;
 import com.live.view.CmmtPopup;
@@ -55,6 +57,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.live.activity.MainRoomActivity.screenOrientation;
+import static com.live.fragment.ChatFragment.ACTION_TYPE2;
+import static com.live.fragment.ChatFragment.ACTION_TYPE3;
 
 public class RoomControlFragment extends BaseAppFragment {
     @BindView(R2.id.iv_quit)
@@ -88,6 +92,8 @@ public class RoomControlFragment extends BaseAppFragment {
 
     private RoomControlBean roomControlBean;
 
+    private View root;
+
 
     int colors[] = {R.color.c1, R.color.c2, R.color.c3, R.color.c4
             , R.color.c5, R.color.c6, R.color.c7, R.color.c8};
@@ -95,17 +101,19 @@ public class RoomControlFragment extends BaseAppFragment {
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
 
-
+        root = view;
         identity = SharedPreferenceManager.getInstance(getActivity()).getUserCache().getUserIdentity();
         token = SharedPreferenceManager.getInstance(getActivity()).getUserCache().getUserToken();
         roomControlBean = MainRoomActivity.roomControlBean;
+
+
         initQualityPopup();
         initUserListPopup();
         initCmmtPop();
         initIconState();
 
         initSharePopup();
-
+        initRequestPopu();
         initToolPopup();
     }
 
@@ -118,8 +126,11 @@ public class RoomControlFragment extends BaseAppFragment {
 
     private void initIconState() {
 
+
         ivCamera.setImageResource(roomControlBean.isDefault_camera() ? R.mipmap.icon_camera_on : R.mipmap.icon_camera_off);
         ivVoice.setImageResource(roomControlBean.isDefault_voice() ? R.mipmap.icon_voice_on : R.mipmap.icon_voice_off);
+
+
         ivRotate.setImageResource(roomControlBean.isDefault_rotate() ? R.mipmap.icon_rotate_h : R.mipmap.icon_rotate_w);
         ivClass.setImageResource(roomControlBean.isDefault_class() ? R.mipmap.icon_class_off2 : R.mipmap.icon_class_on2);
 
@@ -167,6 +178,8 @@ public class RoomControlFragment extends BaseAppFragment {
                 roomControlBean.setDefault_class(true);
             }
 
+            showRequestPopu();
+
 
         } else if (i == R.id.iv_chat) {
             showCmmtPop(view);
@@ -174,30 +187,38 @@ public class RoomControlFragment extends BaseAppFragment {
 
 
             if (roomControlBean.isDefault_voice()) {
-                roomControlBean.setDefault_voice(false);
+
+                requestCloseVoice();
+
             } else {
-                roomControlBean.setDefault_voice(true);
+
+                requestOpenVoice();
+
             }
 
-            initIconState();
-
-
-            if (listener != null) {
-                listener.onVoiceClick();
-            }
 
         } else if (i == R.id.iv_camera) {
 
-            if (roomControlBean.isDefault_camera()) {
-                roomControlBean.setDefault_camera(false);
+            if (roomControlBean.isDefault_voice()) {
+
+                requestCloseCamera();
+
             } else {
-                roomControlBean.setDefault_camera(true);
+
+                requestOpenCamera();
+
             }
 
-            initIconState();
-            if (listener != null) {
-                listener.onCameraClick();
-            }
+//            if (roomControlBean.isDefault_camera()) {
+//                roomControlBean.setDefault_camera(false);
+//            } else {
+//                roomControlBean.setDefault_camera(true);
+//            }
+//
+//            initIconState();
+//            if (listener != null) {
+//                listener.onCameraClick();
+//            }
 
         } else if (i == R.id.iv_quality) {
 
@@ -332,6 +353,110 @@ public class RoomControlFragment extends BaseAppFragment {
         int offsetX = 0;
         int offsetY = 0;
         sharePopu.showAtAnchorView(view, YGravity.BELOW, XGravity.ALIGN_RIGHT, offsetX, offsetY);
+    }
+
+
+    //--------------------------------------------------------------------------------分享
+    private EasyPopup requestPopu;
+
+    private void initRequestPopu() {
+        requestPopu = EasyPopup.create()
+                .setContext(getContext())
+                .setContentView(R.layout.popup_request)
+
+                .setOnViewListener(new EasyPopup.OnViewListener() {
+                    @Override
+                    public void initViews(View view, EasyPopup basePopup) {
+                        //View arrowView = view.findViewById(R.id.v_arrow);
+                        //arrowView.setBackground(new TriangleDrawable(TriangleDrawable.TOP, Color.parseColor("#ffffff")));
+                        initRequestView(view);
+
+                    }
+
+
+                })
+                .setFocusAndOutsideEnable(true)
+                .apply();
+
+    }
+
+    public void showRequestPopu() {
+        // int offsetX = 0;
+        // int offsetY = 0;
+        //requestPopu.showAtAnchorView(view, YGravity.CENTER, XGravity.CENTER, offsetX, offsetY);
+
+        requestPopu.showAtLocation(root, Gravity.CENTER, 0, 0);
+    }
+
+
+    private List<IMBean> mRequestList = new ArrayList<>();
+
+    private RequestAdapter requestAdapter;
+
+    private void initRequestView(View view) {
+        RecyclerView rv_request = view.findViewById(R.id.rv_request);
+        requestAdapter = new RequestAdapter(getActivity(), mRequestList);
+        rv_request.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rv_request.setAdapter(requestAdapter);
+
+    }
+
+    public void addRequest(IMBean imBean) {
+        mRequestList.add(imBean);
+        requestAdapter.notifyDataSetChanged();
+    }
+
+
+    private class RequestAdapter extends BaseAdapter<IMBean> {
+
+        public RequestAdapter(Context context, List<IMBean> mData) {
+            super(context, mData);
+        }
+
+        @Override
+        public int getLayoutId() {
+            return R.layout.item_request;
+        }
+
+        @Override
+        protected void toBindViewHolder(ViewHolder holder, final int position, final List<IMBean> mData) {
+
+            holder.getView(R.id.btn_yes).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    int actionType = mData.get(position).getActionType();
+
+                    if (actionType == ACTION_TYPE2) {
+                        MainRoomActivity.chatFragment.requestBackOpenVoice(true, mData.get(position).getObject().getUserPhone());
+                    }
+
+                    if (actionType == ACTION_TYPE3) {
+                        MainRoomActivity.chatFragment.requestBackOpenCamera(true, mData.get(position).getObject().getUserPhone());
+                    }
+
+                }
+            });
+
+            holder.getView(R.id.btn_no).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    int actionType = mData.get(position).getActionType();
+
+                    if (actionType == ACTION_TYPE2) {
+                        MainRoomActivity.chatFragment.requestBackOpenVoice(false, mData.get(position).getObject().getUserPhone());
+                    }
+
+                    if (actionType == ACTION_TYPE3) {
+                        MainRoomActivity.chatFragment.requestBackOpenCamera(false, mData.get(position).getObject().getUserPhone());
+                    }
+
+                }
+            });
+
+
+        }
     }
 
 
@@ -811,9 +936,9 @@ public class RoomControlFragment extends BaseAppFragment {
 
     public interface RoomControlFragmentListener {
 
-        void onCameraClick();
+        void onCameraClick(int type);
 
-        void onVoiceClick();
+        void onVoiceClick(int type);
 
         void onLiveRoom();
 
@@ -844,6 +969,100 @@ public class RoomControlFragment extends BaseAppFragment {
     //==============================================================================图片选择=======
     //=============================================================================================
     List<LocalMedia> listImage = new ArrayList<>();
+
+
+    /**
+     * 学生请求打开麦克风
+     */
+    private void requestOpenVoice() {
+
+
+        NormalDialog.getInstance()
+                .setContent("是否向老师申请打开麦克风？")
+                .setWidth(DisplayUtil.dip2px(getActivity(), 300))
+                .setSureListener(new NormalDialog.SurelListener() {
+                    @Override
+                    public void onSure() {
+
+                        if (listener != null) {
+                            listener.onVoiceClick(1);
+                        }
+
+
+                    }
+                })
+                .show(getFragmentManager());
+
+    }
+
+
+    /**
+     * 请求关闭麦克风
+     */
+    private void requestCloseVoice() {
+
+
+        NormalDialog.getInstance()
+                .setContent("是否关闭麦克风？")
+                .setWidth(DisplayUtil.dip2px(getActivity(), 300))
+                .setSureListener(new NormalDialog.SurelListener() {
+                    @Override
+                    public void onSure() {
+                        if (listener != null) {
+                            listener.onVoiceClick(0);
+                        }
+                    }
+                })
+                .show(getFragmentManager());
+
+    }
+
+
+    /**
+     * 学生请求打开摄像头
+     */
+    private void requestOpenCamera() {
+
+
+        NormalDialog.getInstance()
+                .setContent("是否向老师申请打开摄像头？")
+                .setWidth(DisplayUtil.dip2px(getActivity(), 300))
+                .setSureListener(new NormalDialog.SurelListener() {
+                    @Override
+                    public void onSure() {
+
+                        if (listener != null) {
+                            listener.onCameraClick(1);
+                        }
+
+
+                    }
+                })
+                .show(getFragmentManager());
+
+    }
+
+
+    /**
+     * 请求关闭摄像头
+     */
+    private void requestCloseCamera() {
+
+
+        NormalDialog.getInstance()
+                .setContent("是否关闭摄像头？")
+                .setWidth(DisplayUtil.dip2px(getActivity(), 300))
+                .setSureListener(new NormalDialog.SurelListener() {
+                    @Override
+                    public void onSure() {
+                        if (listener != null) {
+                            listener.onCameraClick(0);
+                        }
+                    }
+                })
+                .show(getFragmentManager());
+
+    }
 
 
 }
