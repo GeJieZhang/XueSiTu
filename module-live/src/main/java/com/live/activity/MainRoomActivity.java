@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,7 +131,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     private FrameLayout f_whiteboard;
 
 
-    private MyHashMap<String, MyTrackInfo> trackInfoMap = new MyHashMap<>();
+    public static MyHashMap<String, MyTrackInfo> trackInfoMap = new MyHashMap<>();
 
     //控制页面的状态管理
     public static RoomControlBean roomControlBean;
@@ -179,14 +180,31 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
         findView();
 
-        initEngine();
 
-        //聊天室处理
+        /**
+         * 聊天
+         */
+        initChatFragment();
         initChat();
 
-        initWhiteBorad();
 
-        initFragment();
+        /**
+         * 直播
+         */
+        initEngine();
+        initListVideoFragment();
+
+        /**
+         * 控制
+         */
+        initRoomControlFragment();
+
+
+        /**
+         * 白板
+         */
+        initWhiteBorad();
+        initWitheBoardFragment();
     }
 
 
@@ -194,15 +212,8 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
      * 初始化聊天
      */
     private void initChat() {
-        //HXChatUtils.signIn("token1", "123456", this);
-        imSocketUtils = IMSocketUtils.getInstance().start(roomName, userToken);
 
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        }).start();
+        imSocketUtils = IMSocketUtils.getInstance().start(roomName, userToken);
 
 
     }
@@ -225,31 +236,38 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
      */
     private void initFragment() {
 
-
-        listVideoFragment = new ListVideoFragment();
-
-        listVideoFragment.setListVideoFragmentListener(listVideoFragmentListener);
-
-        updateVideoFragment();
-
-        roomControlFragment = new RoomControlFragment();
-        roomControlFragment.setRoomControlFragmentListener(roomControlFragmentListener);
+        initChatFragment();
+        initListVideoFragment();
+        initRoomControlFragment();
+        initWitheBoardFragment();
 
 
-        chatFragment = new ChatFragment(roomName);
+    }
 
-
+    private void initWitheBoardFragment() {
         whiteBoardFragment = new WhiteBoardFragment(whiteBroadView, whiteBoardRoom);
-
         whiteBoardFragment.setWhiteBoardFragmentListener(whiteBoardFragmentListener);
 
-
-        FragmentCustomUtils.setFragment(this, R.id.list_video, listVideoFragment, FragmentTag.List_Video);
-        FragmentCustomUtils.setFragment(this, R.id.f_controller, roomControlFragment, FragmentTag.Room_Controller);
-        FragmentCustomUtils.setFragment(this, R.id.f_chat, chatFragment, FragmentTag.Chat_Fragment);
         FragmentCustomUtils.setFragment(this, R.id.f_whiteboard, whiteBoardFragment, FragmentTag.WhiteBoardFragment);
+    }
 
+    private void initChatFragment() {
+        chatFragment = new ChatFragment(roomName);
+        chatFragment.setChatFragmentListener(chatFragmentListener);
+        FragmentCustomUtils.setFragment(this, R.id.f_chat, chatFragment, FragmentTag.Chat_Fragment);
+    }
 
+    private void initRoomControlFragment() {
+        roomControlFragment = new RoomControlFragment();
+        roomControlFragment.setRoomControlFragmentListener(roomControlFragmentListener);
+        FragmentCustomUtils.setFragment(this, R.id.f_controller, roomControlFragment, FragmentTag.Room_Controller);
+    }
+
+    private void initListVideoFragment() {
+        listVideoFragment = new ListVideoFragment();
+        listVideoFragment.setListVideoFragmentListener(listVideoFragmentListener);
+        updateVideoFragment();
+        FragmentCustomUtils.setFragment(this, R.id.list_video, listVideoFragment, FragmentTag.List_Video);
     }
 
     private void removeFragment() {
@@ -264,6 +282,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
      * 更新直播列表
      */
     private void updateVideoFragment() {
+
 
         if (listVideoFragment != null) {
             listVideoFragment.setTrackInfo(trackInfoMap.getOrderedValues());
@@ -367,7 +386,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 //        playingScreenAudioTrack=localAudioTrack;
 
 
-        MyTrackInfo myTrackInfo = new MyTrackInfo(userPhone, localVideoTrack, localAudioTrack);
+        MyTrackInfo myTrackInfo = new MyTrackInfo(userPhone, null, null);
         trackInfoMap.put(userPhone, myTrackInfo);
         playingTrack = myTrackInfo;
 
@@ -435,6 +454,9 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
         if (identity.equals("1")) {
             mEngine.publishTracks(Arrays.asList(localVideoTrack, localAudioTrack));
+            MyTrackInfo myTrackInfo = new MyTrackInfo(userPhone, localVideoTrack, localAudioTrack);
+            trackInfoMap.put(userPhone, myTrackInfo);
+            updateVideoFragment();
         }
 
     }
@@ -442,16 +464,19 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
     @Override
     public void onRemoteUserJoined(String s, String s1) {
-        LogUtil.e("onRemoteUserJoined用户加入:" + s + "消息:" + s1);
-        MyTrackInfo myTrackInfo = new MyTrackInfo();
+        LogUtil.e("直播-onRemoteUserJoined用户加入:" + s + "消息:" + s1);
+        MyTrackInfo myTrackInfo = trackInfoMap.get(s);
+        if (myTrackInfo == null) {
+            myTrackInfo = new MyTrackInfo();
+        }
         myTrackInfo.setUserId(s);
-
-        trackInfoMap.put(s, myTrackInfo);
+        trackInfoMap.put(s, myTrackInfo, s.equals(teacherPhone));
+        updateVideoFragment();
     }
 
     @Override
     public void onRemoteUserLeft(String s) {
-        LogUtil.e("onRemoteUserLeft用户离开:" + s);
+        LogUtil.e("直播-onRemoteUserLeft用户离开:" + s);
 
         trackInfoMap.remove(s);
 
@@ -461,7 +486,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
     @Override
     public void onLocalPublished(List<QNTrackInfo> list) {
-        LogUtil.e("onLocalPublished数据大小:" + list.size());
+        LogUtil.e("直播-onLocalPublished数据大小:" + list.size());
     }
 
     private void logQNTrackInfo(List<QNTrackInfo> list) {
@@ -477,29 +502,32 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     public void onRemotePublished(String s, List<QNTrackInfo> list) {
 
 
-        LogUtil.e("onRemotePublished数据大小:" + list.size());
+        LogUtil.e("直播-onRemotePublished数据大小:" + list.size());
         logQNTrackInfo(list);
 
-        MyTrackInfo myTrackInfo = new MyTrackInfo();
+        MyTrackInfo myTrackInfo = null;
 
 
         for (QNTrackInfo track : list) {
 
-            myTrackInfo.setUserId(track.getUserId());
 
+            myTrackInfo = trackInfoMap.get(track.getUserId());
+            if (myTrackInfo == null) {
+                myTrackInfo = new MyTrackInfo();
+            }
+            myTrackInfo.setUserId(track.getUserId());
             if (track.getTrackKind().equals(QNTrackKind.VIDEO)) {
                 myTrackInfo.setVideoTrack(track);
 
             } else {
                 myTrackInfo.setAudioTrack(track);
             }
-        }
 
-        showLog(myTrackInfo.getUserId());
+        }
 
 
         trackInfoMap.put(myTrackInfo.getUserId(), myTrackInfo, myTrackInfo.getUserId().equals(teacherPhone));
-        showLog(myTrackInfo.getUserId());
+
         updateVideoFragment();
 
 
@@ -507,8 +535,8 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
     @Override
     public void onRemoteUnpublished(String s, List<QNTrackInfo> list) {
-        LogUtil.e("onRemoteUnpublished数据大小:" + list.size());
-        logQNTrackInfo(list);
+        LogUtil.e("直播-onRemoteUnpublished数据大小:" + list.size());
+        //logQNTrackInfo(list);
 
 
         for (QNTrackInfo track : list) {
@@ -528,13 +556,13 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
     @Override
     public void onRemoteUserMuted(String s, List<QNTrackInfo> list) {
-        LogUtil.e("onRemoteUserMuted人数:" + list.size());
+        LogUtil.e("直播-onRemoteUserMuted人数:" + list.size());
 
     }
 
     @Override
     public void onSubscribed(String s, List<QNTrackInfo> list) {
-        LogUtil.e("onSubscribed人数:" + list.size());
+        LogUtil.e("直播-onSubscribed人数:" + list.size());
 
 
     }
@@ -546,18 +574,18 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
     @Override
     public void onStatisticsUpdated(QNStatisticsReport qnStatisticsReport) {
-        LogUtil.e("onStatisticsUpdated");
+        LogUtil.e("直播-onStatisticsUpdated");
     }
 
 
     @Override
     public void onAudioRouteChanged(QNAudioDevice qnAudioDevice) {
-        LogUtil.e("onAudioRouteChanged");
+        LogUtil.e("直播-onAudioRouteChanged");
     }
 
     @Override
     public void onCreateMergeJobSuccess(String s) {
-        LogUtil.e("onCreateMergeJobSuccess");
+        LogUtil.e("直播-onCreateMergeJobSuccess");
     }
 
     @Override
@@ -666,6 +694,94 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
     };
 
+
+    //--------------------------------------------------------------ChatFragment
+
+    private ChatFragment.ChatFragmentListener chatFragmentListener = new ChatFragment.ChatFragmentListener() {
+        @Override
+        public void onRequestVoiceSuccess() {
+            requestVoiceSuccess();
+
+
+            roomControlFragment.isOpenVoiceUI(true);
+
+
+        }
+
+        @Override
+        public void onRequestCameraSuccess() {
+            requestCameraSuccess();
+
+            roomControlFragment.isOpenCameraUI(true);
+
+
+        }
+
+        @Override
+        public void onGetUserList(List<IMBean.UserListBean> userList) {
+
+
+            for (IMBean.UserListBean userListBean : userList) {
+                MyTrackInfo myTrackInfo = trackInfoMap.get(userListBean.getUserPhone());
+                if (myTrackInfo == null) {
+                    myTrackInfo = new MyTrackInfo();
+                }
+                myTrackInfo.setUserId(userListBean.getUserPhone());
+                myTrackInfo.setUserIcon(userListBean.getUserIcon());
+                myTrackInfo.setUserName(userListBean.getUserName());
+                trackInfoMap.put(userListBean.getUserPhone(), myTrackInfo, userListBean.getUserPhone().equals(teacherPhone));
+
+            }
+
+            updateVideoFragment();
+
+
+        }
+
+        @Override
+        public void onUserJoinRoom(IMBean.ObjectBean user) {
+
+
+            MyTrackInfo myTrackInfo = trackInfoMap.get(user.getUserPhone());
+            if (myTrackInfo == null) {
+                myTrackInfo = new MyTrackInfo();
+            }
+            myTrackInfo.setUserId(user.getUserPhone());
+            myTrackInfo.setUserIcon(user.getUserIcon());
+            myTrackInfo.setUserName(user.getUserName());
+            trackInfoMap.put(user.getUserPhone(), myTrackInfo, user.getUserPhone().equals(teacherPhone));
+
+            updateVideoFragment();
+
+        }
+
+        @Override
+        public void onUserLeftRoom(IMBean.ObjectBean user) {
+
+            trackInfoMap.remove(user.getUserPhone());
+
+            updateVideoFragment();
+
+        }
+
+        @Override
+        public void onUpdateUserInfo(IMBean.ObjectBean user) {
+            MyTrackInfo myTrackInfo = trackInfoMap.get(user.getUserPhone());
+            if (myTrackInfo == null) {
+                myTrackInfo = new MyTrackInfo();
+            }
+
+            myTrackInfo.setUserId(user.getUserPhone());
+            myTrackInfo.setUserIcon(user.getUserIcon());
+            myTrackInfo.setUserName(user.getUserName());
+            trackInfoMap.put(user.getUserPhone(), myTrackInfo, user.getUserPhone().equals(teacherPhone));
+
+            updateVideoFragment();
+
+        }
+    };
+
+
     //--------------------------------------------------------------控制页回调
     private RoomControlFragment.RoomControlFragmentListener roomControlFragmentListener = new RoomControlFragment.RoomControlFragmentListener() {
 
@@ -680,7 +796,15 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
                     localVideoTrack.setMuted(true);
                     mEngine.muteTracks(Arrays.asList(localVideoTrack));
 
+                    if (!identity.equals("1")) {
+                        if (chatFragment != null) {
+                            chatFragment.requestClocseCamera();
+                        }
 
+                    }
+                    if (roomControlFragment != null) {
+                        roomControlFragment.isOpenCameraUI(false);
+                    }
                     break;
                 }
 
@@ -690,6 +814,9 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
                     if (identity.equals("1")) {
                         localVideoTrack.setMuted(false);
                         mEngine.muteTracks(Arrays.asList(localVideoTrack));
+                        if (roomControlFragment != null) {
+                            roomControlFragment.isOpenCameraUI(true);
+                        }
                     } else {
 
                         if (chatFragment != null) {
@@ -710,8 +837,19 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
                 case 0: {
                     //关闭
 
+
                     localAudioTrack.setMuted(true);
                     mEngine.muteTracks(Arrays.asList(localAudioTrack));
+                    if (!identity.equals("1")) {
+                        if (chatFragment != null) {
+                            chatFragment.requestCloseVoice();
+                        }
+
+                    }
+
+                    if (roomControlFragment != null) {
+                        roomControlFragment.isOpenVoiceUI(false);
+                    }
 
 
                     break;
@@ -723,6 +861,10 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
                     if (identity.equals("1")) {
                         localAudioTrack.setMuted(false);
                         mEngine.muteTracks(Arrays.asList(localAudioTrack));
+
+                        if (roomControlFragment != null) {
+                            roomControlFragment.isOpenVoiceUI(true);
+                        }
                     } else {
 
                         if (chatFragment != null) {
@@ -742,35 +884,35 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
             liveRoom();
         }
 
-        @Override
-        public void closeUserCamera(String userId) {
-
-            QNTrackInfo qnTrackInfo = trackInfoMap.get(userId).getVideoTrack();
-
-            if (qnTrackInfo.isMuted()) {
-                qnTrackInfo.setMuted(false);
-
-            } else {
-                qnTrackInfo.setMuted(true);
-            }
-            mEngine.muteTracks(Arrays.asList(qnTrackInfo));
-
-
-        }
-
-        @Override
-        public void closeUserVoice(String userId) {
-            QNTrackInfo qnTrackInfo = trackInfoMap.get(userId).getAudioTrack();
-
-            if (qnTrackInfo.isMuted()) {
-                qnTrackInfo.setMuted(false);
-
-            } else {
-                qnTrackInfo.setMuted(true);
-            }
-            mEngine.muteTracks(Arrays.asList(qnTrackInfo));
-
-        }
+//        @Override
+//        public void closeUserCamera(String userId) {
+//
+//            QNTrackInfo qnTrackInfo = trackInfoMap.get(userId).getVideoTrack();
+//
+//            if (qnTrackInfo.isMuted()) {
+//                qnTrackInfo.setMuted(false);
+//
+//            } else {
+//                qnTrackInfo.setMuted(true);
+//            }
+//            mEngine.muteTracks(Arrays.asList(qnTrackInfo));
+//
+//
+//        }
+//
+//        @Override
+//        public void closeUserVoice(String userId) {
+//            QNTrackInfo qnTrackInfo = trackInfoMap.get(userId).getAudioTrack();
+//
+//            if (qnTrackInfo.isMuted()) {
+//                qnTrackInfo.setMuted(false);
+//
+//            } else {
+//                qnTrackInfo.setMuted(true);
+//            }
+//            mEngine.muteTracks(Arrays.asList(qnTrackInfo));
+//
+//        }
 
         @Override
         public void onChangeRotate() {
@@ -822,7 +964,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
             initFragment();
 
 
-            mEngine.setRenderWindow(localVideoTrack, localSurfaceView);
+            //mEngine.setRenderWindow(localVideoTrack, localSurfaceView);
 
 
         } else {
@@ -834,7 +976,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
             removeFragment();
             initFragment();
-            mEngine.setRenderWindow(localVideoTrack, localSurfaceView);
+            //mEngine.setRenderWindow(localVideoTrack, localSurfaceView);
 
 
         }
@@ -1128,6 +1270,35 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
                 })
                 .show(getSupportFragmentManager());
 
+    }
+
+
+    /**
+     * 学生申请麦克风成功
+     */
+    public void requestVoiceSuccess() {
+
+
+        mEngine.publishTracks(Arrays.asList(localAudioTrack));
+
+        QNTrackInfo video = trackInfoMap.get(userPhone).getVideoTrack();
+
+        MyTrackInfo myTrackInfo = new MyTrackInfo(userPhone, video, localAudioTrack);
+        trackInfoMap.put(userPhone, myTrackInfo);
+        updateVideoFragment();
+    }
+
+
+    /**
+     * 学生申请摄像头成功
+     */
+    public void requestCameraSuccess() {
+
+        mEngine.publishTracks(Arrays.asList(localVideoTrack));
+        QNTrackInfo audio = trackInfoMap.get(userPhone).getAudioTrack();
+        MyTrackInfo myTrackInfo = new MyTrackInfo(userPhone, localVideoTrack, audio);
+        trackInfoMap.put(userPhone, myTrackInfo);
+        updateVideoFragment();
     }
 
 

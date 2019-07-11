@@ -17,6 +17,7 @@ import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.herewhite.sdk.Room;
 import com.herewhite.sdk.domain.Appliance;
 import com.herewhite.sdk.domain.ImageInformationWithUrl;
@@ -32,6 +33,7 @@ import com.lib.fastkit.views.dialog.normal.NormalDialog;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.ui.fragment.BaseAppFragment;
+import com.lib.utls.glide.GlideConfig;
 import com.lib.utls.picture_select.PhotoUtil;
 import com.live.R;
 import com.live.R2;
@@ -39,6 +41,7 @@ import com.live.activity.MainRoomActivity;
 import com.live.bean.control.IMBean;
 import com.live.bean.control.RoomControlBean;
 import com.live.bean.control.WhiteBoradBean;
+import com.live.bean.live.MyTrackInfo;
 import com.live.view.CmmtPopup;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.qiniu.droid.rtc.QNRTCUser;
@@ -57,6 +60,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.live.activity.MainRoomActivity.screenOrientation;
+import static com.live.activity.MainRoomActivity.trackInfoMap;
 import static com.live.fragment.ChatFragment.ACTION_TYPE2;
 import static com.live.fragment.ChatFragment.ACTION_TYPE3;
 
@@ -190,6 +194,7 @@ public class RoomControlFragment extends BaseAppFragment {
 
                 requestCloseVoice();
 
+
             } else {
 
                 requestOpenVoice();
@@ -199,7 +204,7 @@ public class RoomControlFragment extends BaseAppFragment {
 
         } else if (i == R.id.iv_camera) {
 
-            if (roomControlBean.isDefault_voice()) {
+            if (roomControlBean.isDefault_camera()) {
 
                 requestCloseCamera();
 
@@ -270,9 +275,8 @@ public class RoomControlFragment extends BaseAppFragment {
      */
     public void updateUserInfo() {
         userList.clear();
-        userList.addAll(MainRoomActivity.getEngine().getUserList());
+        userList.addAll(MainRoomActivity.trackInfoMap.getOrderedValues());
         userListAdapter.notifyDataSetChanged();
-
 
     }
 
@@ -419,6 +423,14 @@ public class RoomControlFragment extends BaseAppFragment {
         }
 
         @Override
+        protected void toBindEmptyViewHolder() {
+            super.toBindEmptyViewHolder();
+            requestPopu.dismiss();
+
+
+        }
+
+        @Override
         protected void toBindViewHolder(ViewHolder holder, final int position, final List<IMBean> mData) {
 
             holder.getView(R.id.btn_yes).setOnClickListener(new View.OnClickListener() {
@@ -429,10 +441,14 @@ public class RoomControlFragment extends BaseAppFragment {
 
                     if (actionType == ACTION_TYPE2) {
                         MainRoomActivity.chatFragment.requestBackOpenVoice(true, mData.get(position).getObject().getUserPhone());
+                        mRequestList.remove(position);
+                        notifyDataSetChanged();
                     }
 
                     if (actionType == ACTION_TYPE3) {
                         MainRoomActivity.chatFragment.requestBackOpenCamera(true, mData.get(position).getObject().getUserPhone());
+                        mRequestList.remove(position);
+                        notifyDataSetChanged();
                     }
 
                 }
@@ -446,10 +462,14 @@ public class RoomControlFragment extends BaseAppFragment {
 
                     if (actionType == ACTION_TYPE2) {
                         MainRoomActivity.chatFragment.requestBackOpenVoice(false, mData.get(position).getObject().getUserPhone());
+                        mRequestList.remove(position);
+                        notifyDataSetChanged();
                     }
 
                     if (actionType == ACTION_TYPE3) {
                         MainRoomActivity.chatFragment.requestBackOpenCamera(false, mData.get(position).getObject().getUserPhone());
+                        mRequestList.remove(position);
+                        notifyDataSetChanged();
                     }
 
                 }
@@ -812,7 +832,7 @@ public class RoomControlFragment extends BaseAppFragment {
     }
 
 
-    List<QNRTCUser> userList = new ArrayList<>();
+    List<MyTrackInfo> userList = new ArrayList<>();
 
     private UserListAdapter userListAdapter;
 
@@ -825,9 +845,9 @@ public class RoomControlFragment extends BaseAppFragment {
 
     }
 
-    class UserListAdapter extends BaseAdapter<QNRTCUser> {
+    class UserListAdapter extends BaseAdapter<MyTrackInfo> {
 
-        public UserListAdapter(Context context, List<QNRTCUser> mData) {
+        public UserListAdapter(Context context, List<MyTrackInfo> mData) {
             super(context, mData);
         }
 
@@ -837,10 +857,18 @@ public class RoomControlFragment extends BaseAppFragment {
         }
 
         @Override
-        protected void toBindViewHolder(final ViewHolder holder, final int position, final List<QNRTCUser> mData) {
+        protected void toBindViewHolder(final ViewHolder holder, final int position, final List<MyTrackInfo> mData) {
 
             final LinearLayout lin_menu = holder.getView(R.id.lin_menu);
-            holder.setText(R.id.tv_userName, mData.get(position).getUserId());
+
+            ImageView iv_head = holder.getView(R.id.iv_head);
+
+
+            Glide.with(getActivity())
+                    .load(mData.get(position).getUserIcon())
+                    .apply(GlideConfig.getCircleOptions())
+                    .into(iv_head);
+            holder.setText(R.id.tv_userName, mData.get(position).getUserName());
 
             holder.getView(R.id.iv_more).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -857,24 +885,42 @@ public class RoomControlFragment extends BaseAppFragment {
             });
 
 
-            holder.getView(R.id.iv_voice).setOnClickListener(new View.OnClickListener() {
+            final int voice = mData.get(position).getVoice();
+            final int camera = mData.get(position).getCamera();
+
+
+            ImageView iv_voice = holder.getView(R.id.iv_voice);
+            ImageView iv_camera = holder.getView(R.id.iv_camera);
+
+            iv_camera.setImageResource(camera == 1 ? R.mipmap.icon_camera_on : R.mipmap.icon_camera_off);
+            iv_voice.setImageResource(voice == 1 ? R.mipmap.icon_voice_on : R.mipmap.icon_voice_off);
+
+
+            iv_voice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
+                    if (voice == 1) {
+                        //如果是打开那么去关闭
 
-                    if (listener != null) {
-                        listener.closeUserVoice(mData.get(position).getUserId());
+                        // MainRoomActivity.chatFragment.requestBackOpenVoice(false, mData.get(position).getUserId());
+                    } else {
+                        // MainRoomActivity.chatFragment.requestBackOpenVoice(true, mData.get(position).getUserId());
                     }
 
 
                 }
             });
 
-            holder.getView(R.id.iv_camera).setOnClickListener(new View.OnClickListener() {
+            iv_camera.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (listener != null) {
-                        listener.closeUserCamera(mData.get(position).getUserId());
+                    if (camera == 1) {
+                        //如果是打开那么去关闭
+
+                        //MainRoomActivity.chatFragment.requestBackOpenCamera(false, mData.get(position).getUserId());
+                    } else {
+                        // MainRoomActivity.chatFragment.requestBackOpenCamera(true, mData.get(position).getUserId());
                     }
                 }
             });
@@ -943,9 +989,9 @@ public class RoomControlFragment extends BaseAppFragment {
         void onLiveRoom();
 
 
-        void closeUserCamera(String userId);
-
-        void closeUserVoice(String userId);
+//        void closeUserCamera(String userId);
+//
+//        void closeUserVoice(String userId);
 
         void onChangeRotate();
 
@@ -977,8 +1023,13 @@ public class RoomControlFragment extends BaseAppFragment {
     private void requestOpenVoice() {
 
 
+        String title = "是否向老师申请打开麦克风？";
+        if (identity.equals("1")) {
+            title = "是否关闭麦克风?";
+        }
+
         NormalDialog.getInstance()
-                .setContent("是否向老师申请打开麦克风？")
+                .setContent(title)
                 .setWidth(DisplayUtil.dip2px(getActivity(), 300))
                 .setSureListener(new NormalDialog.SurelListener() {
                     @Override
@@ -1023,9 +1074,12 @@ public class RoomControlFragment extends BaseAppFragment {
      */
     private void requestOpenCamera() {
 
-
+        String title = "是否向老师申请打开摄像头？";
+        if (identity.equals("1")) {
+            title = "是否打开摄像头?";
+        }
         NormalDialog.getInstance()
-                .setContent("是否向老师申请打开摄像头？")
+                .setContent(title)
                 .setWidth(DisplayUtil.dip2px(getActivity(), 300))
                 .setSureListener(new NormalDialog.SurelListener() {
                     @Override
@@ -1064,5 +1118,32 @@ public class RoomControlFragment extends BaseAppFragment {
 
     }
 
+    /**
+     * 修改麦克风UI
+     */
+    public void isOpenVoiceUI(boolean b) {
 
+        if (b) {
+            roomControlBean.setDefault_voice(true);
+        } else {
+            roomControlBean.setDefault_voice(false);
+        }
+
+        initIconState();
+    }
+
+
+    /**
+     * 修摄像头UI
+     */
+    public void isOpenCameraUI(boolean b) {
+
+        if (b) {
+            roomControlBean.setDefault_camera(true);
+        } else {
+            roomControlBean.setDefault_camera(false);
+        }
+
+        initIconState();
+    }
 }

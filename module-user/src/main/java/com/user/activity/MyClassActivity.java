@@ -274,7 +274,13 @@ public class MyClassActivity extends BaseAppActivity {
                 if (identity.equals("1")) {
                     course_id = mData.get(position).getId() + "";
                 } else {
-                    course_id = mData.get(position).getLive_room().get(0).getCourse_id();
+
+                    if (mData.get(position).getLive_room().size() > 0) {
+                        course_id = mData.get(position).getLive_room().get(0).getCourse_id();
+                    } else {
+                        return;
+                    }
+
                 }
 
                 //支付了去上课

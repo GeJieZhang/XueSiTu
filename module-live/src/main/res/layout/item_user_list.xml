@@ -15,6 +15,7 @@
         android:paddingRight="16dp">
 
         <ImageView
+            android:id="@+id/iv_head"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:src="@mipmap/icon_ppt" />

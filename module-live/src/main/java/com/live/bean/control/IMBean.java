@@ -62,9 +62,18 @@ public class IMBean {
 
         private String action;
         private int type;
+        private List<UserListBean> userList;
 
         public String getAction() {
             return action;
+        }
+
+        public List<UserListBean> getUserList() {
+            return userList;
+        }
+
+        public void setUserList(List<UserListBean> userList) {
+            this.userList = userList;
         }
 
         public void setAction(String action) {
@@ -226,6 +235,93 @@ public class IMBean {
                     ", userName='" + userName + '\'' +
                     ", type=" + type +
                     '}';
+        }
+    }
+
+
+    public static class UserListBean {
+        /**
+         * voice : 0
+         * user_id : 29
+         * identity : 1
+         * userPhone : 13540354597
+         * sessionId : 16
+         * userIcon : http://pu00k0ssj.bkt.clouddn.com/FvzNv6N9uLHXezqN7RPW_5_lqXao
+         * userName : 教师
+         * camera : 0
+         */
+
+        private int voice;
+        private String user_id;
+        private String identity;
+        private String userPhone;
+        private String sessionId;
+        private String userIcon;
+        private String userName;
+        private int camera;
+
+        public int getVoice() {
+            return voice;
+        }
+
+        public void setVoice(int voice) {
+            this.voice = voice;
+        }
+
+        public String getUser_id() {
+            return user_id;
+        }
+
+        public void setUser_id(String user_id) {
+            this.user_id = user_id;
+        }
+
+        public String getIdentity() {
+            return identity;
+        }
+
+        public void setIdentity(String identity) {
+            this.identity = identity;
+        }
+
+        public String getUserPhone() {
+            return userPhone;
+        }
+
+        public void setUserPhone(String userPhone) {
+            this.userPhone = userPhone;
+        }
+
+        public String getSessionId() {
+            return sessionId;
+        }
+
+        public void setSessionId(String sessionId) {
+            this.sessionId = sessionId;
+        }
+
+        public String getUserIcon() {
+            return userIcon;
+        }
+
+        public void setUserIcon(String userIcon) {
+            this.userIcon = userIcon;
+        }
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
+
+        public int getCamera() {
+            return camera;
+        }
+
+        public void setCamera(int camera) {
+            this.camera = camera;
         }
     }
 

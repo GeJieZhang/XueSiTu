@@ -3,6 +3,9 @@ package com.live.fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -72,22 +75,26 @@ public class ChatFragment extends BaseAppFragment {
 
     private String userIcon;
     private Gson gson;
-    //发送接收消息
+    //发送接收消息(所有人)
     public static final int ACTION_TYPE1 = 1;
-    //学生申请语音
+    //学生申请语音(老师)
     public static final int ACTION_TYPE2 = 2;
-    //学生申请视频
+    //学生申请视频(老师)
     public static final int ACTION_TYPE3 = 3;
-    //老师对申请进行操作(语音，视频)
+    //老师对申请进行操作(语音，视频)(指定学生)
     public static final int ACTION_TYPE4 = 4;
-    //学生加入
+    //学生加入(所有人)
     public static final int ACTION_TYPE5 = 5;
-    //学生离开
+    //学生离开(所有人)
     public static final int ACTION_TYPE6 = 6;
-    //直播间用户列表
+    //直播间用户列表(所有人)
     public static final int ACTION_TYPE7 = 7;
-    //学生取消视频，语音
+    //学生取消视频，语音(系统)
     public static final int ACTION_TYPE8 = 8;
+    //更新聊天室用户信息(所有人)
+    public static final int ACTION_TYPE9 = 9;
+    //手动获取直播间列表(系统)
+    public static final int ACTION_TYPE10 = 10;
 
     //文字
     public static final int MESSAGE_TYPE1 = 1;
@@ -120,26 +127,25 @@ public class ChatFragment extends BaseAppFragment {
         }
 
 
-        //IMSocketUtils.getInstance().setIMSocketListener(null).start("");
-
+        showLog("===============监听长连接");
 
         MainRoomActivity.imSocketUtils.setIMSocketListener(imSocketListener);
 
-
+        requestUserList();
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-        //EMClient.getInstance().chatManager().addMessageListener(msgListener);
+
     }
 
 
     @Override
     public void onStop() {
         super.onStop();
-        //EMClient.getInstance().chatManager().removeMessageListener(msgListener);
+
     }
 
     @Override
@@ -167,71 +173,12 @@ public class ChatFragment extends BaseAppFragment {
             }
 
 
-            int type = imBean.getActionType();
-
-            switch (type) {
-                case ACTION_TYPE1: {
-                    //发送接收消息
-                    messageList.add(imBean);
-                    notifyAdapter();
-
-
-                    break;
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    dealMessage();
                 }
-
-                case ACTION_TYPE2: {
-                    //学生申请语音
-
-                    MainRoomActivity.roomControlFragment.addRequest(imBean);
-                    MainRoomActivity.roomControlFragment.showRequestPopu();
-
-
-                    break;
-                }
-
-                case ACTION_TYPE3: {
-                    //学生申请视频
-                    MainRoomActivity.roomControlFragment.addRequest(imBean);
-                    MainRoomActivity.roomControlFragment.showRequestPopu();
-
-                    break;
-                }
-                case ACTION_TYPE4: {
-                    //老师对申请进行操作(语音，视频)
-
-
-                    break;
-                }
-
-                case ACTION_TYPE5: {
-                    //学生加入
-
-
-                    break;
-                }
-
-                case ACTION_TYPE6: {
-                    //学生离开
-
-
-                    break;
-                }
-
-                case ACTION_TYPE7: {
-                    //直播间用户列表
-
-
-                    break;
-                }
-
-                case ACTION_TYPE8: {
-                    //学生取消视频，语音
-
-
-                    break;
-                }
-
-            }
+            });
 
 
         }
@@ -252,6 +199,145 @@ public class ChatFragment extends BaseAppFragment {
 
         }
     };
+
+    private void dealMessage() {
+        int type = imBean.getActionType();
+        switch (type) {
+            case ACTION_TYPE1: {
+                //发送接收消息
+
+
+                messageList.add(imBean);
+                notifyAdapter();
+
+
+                break;
+            }
+
+            case ACTION_TYPE2: {
+                //学生申请语音
+
+
+                MainRoomActivity.roomControlFragment.addRequest(imBean);
+                MainRoomActivity.roomControlFragment.showRequestPopu();
+
+
+                break;
+            }
+
+            case ACTION_TYPE3: {
+                //学生申请视频
+
+                MainRoomActivity.roomControlFragment.addRequest(imBean);
+                MainRoomActivity.roomControlFragment.showRequestPopu();
+
+
+                break;
+            }
+            case ACTION_TYPE4: {
+                //老师对申请进行操作(语音，视频)
+
+                int type4 = imBean.getObject().getType();
+
+                if (type4 == 2) {
+                    //语音
+
+                    String action = imBean.getObject().getAction();
+
+                    if (action.equals("1")) {
+                        //同意
+                        showToast("申请成功！");
+
+                        if (listener != null) {
+                            listener.onRequestVoiceSuccess();
+                        }
+
+
+                    }
+                    if (action.equals("0")) {
+                        //不同意
+                        showToast("申请失败！");
+
+
+                    }
+
+                }
+
+                if (type4 == 3) {
+                    //视频
+                    String action = imBean.getObject().getAction();
+
+                    if (action.equals("1")) {
+                        //同意
+                        showToast("申请成功！");
+                        if (listener != null) {
+                            listener.onRequestCameraSuccess();
+                        }
+
+                    }
+                    if (action.equals("0")) {
+                        //不同意
+                        showToast("申请失败！");
+                    }
+                }
+
+                break;
+            }
+
+            case ACTION_TYPE5: {
+                //学生加入
+
+                if (listener != null) {
+                    listener.onUserJoinRoom(imBean.getObject());
+                }
+
+
+                break;
+            }
+
+            case ACTION_TYPE6: {
+                //学生离开
+                if (listener != null) {
+                    listener.onUserLeftRoom(imBean.getObject());
+                }
+
+                break;
+            }
+
+            case ACTION_TYPE7: {
+                //直播间用户列表
+
+
+                if (listener != null) {
+                    listener.onGetUserList(imBean.getObject().getUserList());
+                }
+
+
+                break;
+            }
+
+            case ACTION_TYPE8: {
+                //学生取消视频，语音
+
+
+                break;
+            }
+
+
+            case ACTION_TYPE9: {
+                //更新聊天室
+
+                if (listener != null) {
+                    listener.onUpdateUserInfo(imBean.getObject());
+                }
+
+
+                break;
+            }
+
+
+        }
+    }
 
     private void notifyAdapter() {
         getActivity().runOnUiThread(new Runnable() {
@@ -387,6 +473,23 @@ public class ChatFragment extends BaseAppFragment {
 
 
     /**
+     * 请求用户列表
+     */
+    public void requestUserList() {
+        IMBean imBean = new IMBean();
+        imBean.setActionType(ACTION_TYPE10);
+        IMBean.ObjectBean objectBean = new IMBean.ObjectBean();
+        objectBean.setRoomName(roomName);
+        objectBean.setUserPhone(userPhone);
+        imBean.setObject(objectBean);
+        String json = MGson.newGson().toJson(imBean);
+        showLog(json);
+
+
+        MainRoomActivity.imSocketUtils.sendMessage(json);
+    }
+
+    /**
      * 学生请求打开麦克风
      */
     public void requestOpenVoice() {
@@ -401,6 +504,28 @@ public class ChatFragment extends BaseAppFragment {
         imBean.setObject(objectBean);
         String json = MGson.newGson().toJson(imBean);
         showLog(json);
+
+
+        MainRoomActivity.imSocketUtils.sendMessage(json);
+    }
+
+
+    /**
+     * 学生关闭麦克风
+     */
+    public void requestCloseVoice() {
+        IMBean imBean = new IMBean();
+        imBean.setActionType(ACTION_TYPE8);
+        IMBean.ObjectBean objectBean = new IMBean.ObjectBean();
+        objectBean.setUserName(userName);
+        objectBean.setRoomName(roomName);
+        objectBean.setUserPhone(userPhone);
+        objectBean.setType(2);
+        imBean.setObject(objectBean);
+        String json = MGson.newGson().toJson(imBean);
+        showLog(json);
+
+
         MainRoomActivity.imSocketUtils.sendMessage(json);
     }
 
@@ -419,6 +544,26 @@ public class ChatFragment extends BaseAppFragment {
         imBean.setObject(objectBean);
         String json = MGson.newGson().toJson(imBean);
         showLog(json);
+        MainRoomActivity.imSocketUtils.sendMessage(json);
+    }
+
+
+    /**
+     * 学生关闭麦克风
+     */
+    public void requestClocseCamera() {
+        IMBean imBean = new IMBean();
+        imBean.setActionType(ACTION_TYPE8);
+        IMBean.ObjectBean objectBean = new IMBean.ObjectBean();
+        objectBean.setUserName(userName);
+        objectBean.setRoomName(roomName);
+        objectBean.setUserPhone(userPhone);
+        objectBean.setType(3);
+        imBean.setObject(objectBean);
+        String json = MGson.newGson().toJson(imBean);
+        showLog(json);
+
+
         MainRoomActivity.imSocketUtils.sendMessage(json);
     }
 
@@ -501,6 +646,32 @@ public class ChatFragment extends BaseAppFragment {
             }
         });
         qiNiuUploadTask.execute(compressPath, ApiUtils.QN_UPLOAD_TOKEN);
+
+
+    }
+
+    private ChatFragmentListener listener;
+
+    public void setChatFragmentListener(ChatFragmentListener chatFragmentListener) {
+
+        this.listener = chatFragmentListener;
+
+    }
+
+    public interface ChatFragmentListener {
+        void onRequestVoiceSuccess();
+
+        void onRequestCameraSuccess();
+
+
+        void onGetUserList(List<IMBean.UserListBean> userList);
+
+
+        void onUserJoinRoom(IMBean.ObjectBean user);
+
+        void onUserLeftRoom(IMBean.ObjectBean user);
+
+        void onUpdateUserInfo(IMBean.ObjectBean user);
 
 
     }

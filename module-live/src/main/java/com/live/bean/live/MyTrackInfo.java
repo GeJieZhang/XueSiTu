@@ -8,6 +8,43 @@ public class MyTrackInfo {
     private QNTrackInfo videoTrack;
     private QNTrackInfo audioTrack;
 
+    private int voice=0;
+    private int camera=0;
+    private String userName;
+    private String userIcon;
+
+    public int getVoice() {
+        return voice;
+    }
+
+    public void setVoice(int voice) {
+        this.voice = voice;
+    }
+
+    public int getCamera() {
+        return camera;
+    }
+
+    public void setCamera(int camera) {
+        this.camera = camera;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserIcon() {
+        return userIcon;
+    }
+
+    public void setUserIcon(String userIcon) {
+        this.userIcon = userIcon;
+    }
+
     public MyTrackInfo() {
     }
 

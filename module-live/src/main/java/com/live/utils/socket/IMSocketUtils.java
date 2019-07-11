@@ -98,12 +98,13 @@ public class IMSocketUtils {
         }
 
         @Override
-        public void onMessage(WebSocket webSocket, String text) {
+        public void onMessage(WebSocket webSocket, final String text) {
             super.onMessage(webSocket, text);
             LogUtil.e("长连接-receive text:" + text);
-            LogUtil.e("长连接-onMessage线程" + isMainThread());
 
             isClose = false;
+
+
             if (listener != null) {
                 listener.onMessage(text);
             }
@@ -116,11 +117,11 @@ public class IMSocketUtils {
             super.onClosed(webSocket, code, reason);
             LogUtil.e("长连接-closed:" + reason);
 
-            if (!isReallyClose){
+            if (!isReallyClose) {
                 isClose = true;
             }
 
-            handler.postDelayed(runnable, 500);
+            handler.postDelayed(runnable, 3000);
             if (listener != null) {
                 listener.onClosed();
             }
@@ -130,10 +131,10 @@ public class IMSocketUtils {
         public void onClosing(WebSocket webSocket, int code, String reason) {
             super.onClosing(webSocket, code, reason);
             LogUtil.e("长连接-closing:" + reason);
-            if (!isReallyClose){
+            if (!isReallyClose) {
                 isClose = true;
             }
-            handler.postDelayed(runnable, 500);
+            handler.postDelayed(runnable, 3000);
             if (listener != null) {
                 listener.onClosing();
             }
@@ -144,10 +145,10 @@ public class IMSocketUtils {
             super.onFailure(webSocket, t, response);
             LogUtil.e("长连接-failure:" + t.getMessage());
 
-            if (!isReallyClose){
+            if (!isReallyClose) {
                 isClose = true;
             }
-            handler.postDelayed(runnable, 500);
+            handler.postDelayed(runnable, 3000);
             if (listener != null) {
                 listener.onFailure();
             }
@@ -159,20 +160,29 @@ public class IMSocketUtils {
     private Handler handler = new Handler();
 
     private void heartMessage() {
-
+        count = 0;
         handler.postDelayed(runnable, 1000);
 
     }
 
+
+    private int count = 0;
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
             if (isClose) {
-                startConnection();
+
+                if (count <= 3) {
+                    startConnection();
+                    LogUtil.e("重新连接");
+                    count++;
+                }
+
+                return;
             }
             mSocket.send("");
             LogUtil.e("心跳包");
-            handler.postDelayed(runnable, 25000);
+            handler.postDelayed(runnable, 1000 * 60 * 5);
 
 
         }
@@ -226,12 +236,10 @@ public class IMSocketUtils {
     }
 
 
-
-
     public void closeSocket() {
         mSocket.close(1000, "断开IMSocket");
 
-        isReallyClose=true;
+        isReallyClose = true;
 
         handler.removeCallbacks(runnable);
 

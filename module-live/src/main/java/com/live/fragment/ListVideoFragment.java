@@ -160,7 +160,9 @@ public class ListVideoFragment extends BaseAppFragment {
         protected void toBindViewHolder(final ViewHolder holder, final int position, List<MyTrackInfo> mData) {
 
 
-            //setParentSize(holder);
+            setParentSize(holder);
+
+            holder.setText(R.id.tv_userName, mData.get(position).getUserName());
 
             final QNSurfaceView qn_video = holder.getView(R.id.qn_video);
             qn_video.setZOrderOnTop(false);
@@ -208,15 +210,14 @@ public class ListVideoFragment extends BaseAppFragment {
          */
         private void setParentSize(ViewHolder holder) {
             LinearLayout linearLayout = holder.getView(R.id.item_parent);
-            ViewGroup.LayoutParams params = linearLayout.getLayoutParams();
+            RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) linearLayout.getLayoutParams();
             if (MainRoomActivity.screenOrientation == screenVertical) {
-                params.width = DisplayUtil.dip2px(getActivity(), 100);
-                params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                int margin = DisplayUtil.dip2px(getActivity(), 4);
+                params.setMargins(margin, 0, margin, 0);
 
 
             } else {
-                params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-                params.height = DisplayUtil.dip2px(getActivity(), 100);
+
             }
 
             linearLayout.setLayoutParams(params);
@@ -225,6 +226,7 @@ public class ListVideoFragment extends BaseAppFragment {
 
 
     public void setTrackInfo(List<MyTrackInfo> trackInfoList) {
+
 
         list.clear();
         list.addAll(trackInfoList);
