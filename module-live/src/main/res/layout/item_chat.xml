@@ -76,15 +76,13 @@
                         android:id="@+id/v_bg"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#80000000"
-                        android:visibility="gone" />
+                        android:background="#80000000" />
 
                     <TextView
                         android:id="@+id/tv_progress"
                         style="@style/text_style13"
                         android:layout_gravity="center"
-                        android:text="99%"
-                        android:visibility="gone" />
+                        android:text="99%" />
                 </FrameLayout>
 
 

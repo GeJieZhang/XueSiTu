@@ -778,6 +778,11 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
             updateVideoFragment();
 
+
+            if (roomControlFragment != null) {
+                roomControlFragment.updateUserInfo();
+            }
+
         }
     };
 

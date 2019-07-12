@@ -39,9 +39,10 @@ public class QiNiuUploadTask extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        if (fileUploadListener != null) {
-            fileUploadListener.onSuccess(s);
-        }
+//        if (fileUploadListener != null) {
+//            fileUploadListener.onSuccess(s);
+//            LogUtil.e("onSuccess2");
+//        }
         //LogUtil.e("上传结果:" + s);
     }
 
@@ -104,6 +105,8 @@ public class QiNiuUploadTask extends AsyncTask<String, Integer, String> {
                         if (fileUploadListener != null) {
 
                             fileUploadListener.onSuccess(path);
+
+                            LogUtil.e("onSuccess1");
 
                         }
                     } else {

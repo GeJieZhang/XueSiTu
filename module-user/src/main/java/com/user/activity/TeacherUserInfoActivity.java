@@ -996,7 +996,7 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
 
 
     //-------------------------------------------------------------------------------------------上传头像
-    String uploadToken = ApiUtils.QN_UPLOAD_TOKEN;
+    String uploadToken = SharedPreferenceManager.getInstance(this).getUserCache().getQiNiuToken();
 
     private void uploadHead(String compressPath) {
         QiNiuUploadTask qiNiuUploadTask = new QiNiuUploadTask();

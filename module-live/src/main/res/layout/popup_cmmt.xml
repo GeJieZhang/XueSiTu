@@ -12,6 +12,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="8dp"
+        android:padding="4dp"
         android:src="@mipmap/icon_messg_camera" />
 
     <LinearLayout

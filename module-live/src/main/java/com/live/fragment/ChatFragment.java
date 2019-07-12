@@ -52,7 +52,9 @@ import com.live.utils.socket.IMSocketUtils;
 import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 
@@ -368,6 +370,8 @@ public class ChatFragment extends BaseAppFragment {
 
         @Override
         protected void toBindViewHolder(final ViewHolder holder, int position, List<IMBean> mData) {
+
+
             ImageView iv_image = holder.getView(R.id.iv_image);
 
             ImageView iv_head = holder.getView(R.id.iv_head);
@@ -388,11 +392,44 @@ public class ChatFragment extends BaseAppFragment {
             if (messageType == MESSAGE_TYPE2) {
                 holder.getView(R.id.tv_msg).setVisibility(View.GONE);
                 holder.getView(R.id.f_image).setVisibility(View.VISIBLE);
+                String path = mData.get(position).getObject().getMessage();
 
-                Glide.with(getContext())
-                        .load(objectBean.getMessage())
-                        .apply(GlideConfig.getRectangleOptions())
-                        .into(iv_image);
+                View v_bg = holder.getView(R.id.v_bg);
+
+                TextView tv_progress = holder.getView(R.id.tv_progress);
+
+                if (uploadMap.get(path) == null) {
+
+                    v_bg.setVisibility(View.GONE);
+                    tv_progress.setVisibility(View.GONE);
+
+                    Glide.with(getContext())
+                            .load(objectBean.getMessage())
+                            .apply(GlideConfig.getRectangleOptions())
+                            .into(iv_image);
+
+                } else {
+
+
+                    v_bg.setVisibility(View.VISIBLE);
+                    tv_progress.setVisibility(View.VISIBLE);
+                    uploadMap.put(objectBean.getMessage(), tv_progress);
+                    Glide.with(getContext())
+                            .load(objectBean.getMessage())
+                            .apply(GlideConfig.getRectangleOptions())
+                            .into(iv_image);
+                    //图片正在上传中
+
+                }
+
+
+//                for (Map.Entry<String, String> entry : uploadMap.entrySet()) {
+//                    String mapKey = entry.getKey();
+//                    String mapValue = entry.getValue();
+//
+//                }
+
+
             }
 
             holder.setText(R.id.tv_userName, objectBean.getUserName());
@@ -436,6 +473,9 @@ public class ChatFragment extends BaseAppFragment {
 
     //------------------------------------------------------------------------------EventBus消息
 
+    private Map<String, TextView> uploadMap = new HashMap<>();
+
+
     @Subscriber(tag = EventBusTagUtils.RoomControlFragment)
     public void fromRoomControlFragment(Event event) {
         switch (event.getEventCode()) {
@@ -459,7 +499,26 @@ public class ChatFragment extends BaseAppFragment {
                 break;
             }
             case 2: {
+
+                /**
+                 * 发送一条假的消息先占个位置
+                 */
                 String imagePath = (String) event.getData();
+                IMBean imBean = new IMBean();
+                imBean.setActionType(ACTION_TYPE1);
+                IMBean.ObjectBean objectBean = new IMBean.ObjectBean();
+                objectBean.setMessageId(TimeUtils.getNowTimestamp() + "");
+                objectBean.setUserIcon(userIcon);
+                objectBean.setRoomName(roomName);
+                objectBean.setType(MESSAGE_TYPE2);
+                objectBean.setMessage(imagePath);
+                objectBean.setUserName(userName);
+                imBean.setObject(objectBean);
+                messageList.add(imBean);
+
+
+                uploadMap.put(imagePath, new TextView(getActivity()));
+                notifyAdapter();
 
                 requestUploadImage(imagePath);
                 break;
@@ -614,17 +673,27 @@ public class ChatFragment extends BaseAppFragment {
     }
 
 
-    private void requestUploadImage(String compressPath) {
+    private void requestUploadImage(final String compressPath) {
+
+
         QiNiuUploadTask qiNiuUploadTask = new QiNiuUploadTask();
         qiNiuUploadTask.setFileUploadListener(new FileUploadListener() {
             @Override
             public void onProgress(int progress) {
+
+                TextView tv_progress = uploadMap.get(compressPath);
+
+                if (tv_progress != null) {
+                    tv_progress.setText(progress + "%");
+                }
 
 
             }
 
             @Override
             public void onSuccess(String s) {
+
+
                 IMBean imBean = new IMBean();
                 imBean.setActionType(ACTION_TYPE1);
                 IMBean.ObjectBean objectBean = new IMBean.ObjectBean();
@@ -638,14 +707,20 @@ public class ChatFragment extends BaseAppFragment {
                 String json = MGson.newGson().toJson(imBean);
                 showLog(json);
                 MainRoomActivity.imSocketUtils.sendMessage(json);
+                uploadMap.remove(compressPath);
+
+                notifyAdapter();
+
+
             }
 
             @Override
             public void onError(String e) {
 
+
             }
         });
-        qiNiuUploadTask.execute(compressPath, ApiUtils.QN_UPLOAD_TOKEN);
+        qiNiuUploadTask.execute(compressPath, SharedPreferenceManager.getInstance(getActivity()).getUserCache().getQiNiuToken());
 
 
     }

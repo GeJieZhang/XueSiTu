@@ -433,6 +433,27 @@ public class RoomControlFragment extends BaseAppFragment {
         @Override
         protected void toBindViewHolder(ViewHolder holder, final int position, final List<IMBean> mData) {
 
+            ImageView iv_head = holder.getView(R.id.iv_head);
+            TextView tv_name = holder.getView(R.id.tv_name);
+            TextView tv_action = holder.getView(R.id.tv_action);
+
+
+            tv_name.setText(mData.get(position).getObject().getUserName());
+
+
+            if (mData.get(position).getActionType() == 2) {
+                tv_action.setText("请求打开麦克风!");
+            }
+            if (mData.get(position).getActionType() == 3) {
+                tv_action.setText("请求打开摄像头!");
+            }
+
+            Glide.with(getActivity())
+                    .load(mData.get(position).getObject().getUserIcon())
+                    .apply(GlideConfig.getCircleOptions())
+                    .into(iv_head);
+
+
             holder.getView(R.id.btn_yes).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -870,17 +891,24 @@ public class RoomControlFragment extends BaseAppFragment {
                     .into(iv_head);
             holder.setText(R.id.tv_userName, mData.get(position).getUserName());
 
+            if (position == 0) {
+                holder.getView(R.id.iv_more).setVisibility(View.GONE);
+            }
+
             holder.getView(R.id.iv_more).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    if (lin_menu.getVisibility() == View.VISIBLE) {
-                        lin_menu.setVisibility(View.GONE);
-                    } else {
-                        lin_menu.setVisibility(View.VISIBLE);
+                    if (identity.equals("1")) {
+
+
+                        if (lin_menu.getVisibility() == View.VISIBLE) {
+                            lin_menu.setVisibility(View.GONE);
+                        } else {
+                            lin_menu.setVisibility(View.VISIBLE);
+                        }
+
                     }
-
-
                 }
             });
 
