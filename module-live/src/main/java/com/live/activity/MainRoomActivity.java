@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -45,6 +46,7 @@ import com.lib.fastkit.utils.system.SystemUtil;
 import com.lib.fastkit.utils.time_deal.TimeUtils;
 import com.lib.fastkit.views.dialog.normal.NormalDialog;
 import com.lib.http.call_back.HttpDialogCallBack;
+import com.lib.utls.picture_select.PhotoUtil;
 import com.live.R;
 import com.live.bean.CloseRoomBean;
 import com.live.bean.control.IMBean;
@@ -203,7 +205,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         /**
          * 白板
          */
-        initWhiteBorad();
+        initWhiteBorad(FIRST_INIT);
         initWitheBoardFragment();
     }
 
@@ -652,37 +654,13 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
             if (whiteBoardRoom == null) {
 
                 showLog("白板正在初始化中!");
+
+                initWhiteBorad(SECOND_INIT);
                 return;
             }
 
 
-            if (f_whiteboard.getVisibility() == View.VISIBLE) {
-
-                //隐藏白板
-                f_whiteboard.setVisibility(View.GONE);
-
-                roomControlBean.setDefault_board(true);
-
-                localSurfaceView.setVisibility(View.VISIBLE);
-                localSurfaceView.setZOrderOnTop(false);
-                localSurfaceView.setZOrderMediaOverlay(false);
-
-
-            } else {
-                //显示白板
-                f_whiteboard.setVisibility(View.VISIBLE);
-                roomControlBean.setDefault_board(false);
-                localSurfaceView.setVisibility(View.GONE);
-                localSurfaceView.setZOrderOnTop(false);
-                localSurfaceView.setZOrderMediaOverlay(false);
-
-
-                if (whiteBoardFragment != null) {
-                    whiteBoardFragment.refreshRoom();
-                }
-
-
-            }
+            initWhiteBoradStae();
 
         }
 
@@ -693,6 +671,36 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
 
     };
+
+    private void initWhiteBoradStae() {
+        if (f_whiteboard.getVisibility() == View.VISIBLE) {
+
+            //隐藏白板
+            f_whiteboard.setVisibility(View.GONE);
+
+            roomControlBean.setDefault_board(true);
+
+            localSurfaceView.setVisibility(View.VISIBLE);
+            localSurfaceView.setZOrderOnTop(false);
+            localSurfaceView.setZOrderMediaOverlay(false);
+
+
+        } else {
+            //显示白板
+            f_whiteboard.setVisibility(View.VISIBLE);
+            roomControlBean.setDefault_board(false);
+            localSurfaceView.setVisibility(View.GONE);
+            localSurfaceView.setZOrderOnTop(false);
+            localSurfaceView.setZOrderMediaOverlay(false);
+
+
+            if (whiteBoardFragment != null) {
+                whiteBoardFragment.refreshRoom();
+            }
+
+
+        }
+    }
 
 
     //--------------------------------------------------------------ChatFragment
@@ -734,6 +742,16 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
             }
 
             updateVideoFragment();
+
+
+//            MyTrackInfo myTrackInfo = trackInfoMap.get(userPhone);
+//
+//            int voice = myTrackInfo.getVoice();
+//            int camera = myTrackInfo.getCamera();
+//            if (voice==0){
+//                //当前用户没有开启麦克风
+//
+//            }
 
 
         }
@@ -783,6 +801,55 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
                 roomControlFragment.updateUserInfo();
             }
 
+        }
+
+        @Override
+        public void onUpdateStudentVoiceCameraInfo(IMBean.ObjectBean user) {
+
+            int type = user.getType();
+
+            String action = user.getAction();
+
+            if (type == 2) {
+                //麦克风
+
+                if (action.equals("1")) {
+                    //打开
+
+                    if (roomControlFragment != null) {
+                        roomControlFragment.isOpenVoiceUI(true);
+                    }
+
+
+                } else if (action.equals("0")) {
+                    //关闭
+                    if (roomControlFragment != null) {
+                        roomControlFragment.isOpenVoiceUI(false);
+                    }
+                }
+
+
+            } else if (type == 3) {
+                //摄像头
+
+                if (action.equals("1")) {
+                    //打开
+                    if (roomControlFragment != null) {
+                        roomControlFragment.isOpenCameraUI(true);
+                    }
+
+                } else if (action.equals("0")) {
+                    //关闭
+                    if (roomControlFragment != null) {
+                        roomControlFragment.isOpenCameraUI(false);
+                    }
+
+                }
+
+            }
+
+
+            roomControlFragment.isOpenCameraUI(true);
         }
     };
 
@@ -931,8 +998,12 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
         @Override
         public void onWihteBoradAdd() {
+
+            showLog("MaxSize:" + maxSize);
+            maxSize++;
+
             whiteBoardRoom.putScenes(SCENE_DIR, new Scene[]{
-                    new Scene("page" + maxSize)}, +maxSize);
+                    new Scene("page" + maxSize)}, maxSize - 1);
             whiteBoardRoom.setScenePath(SCENE_DIR + "/page" + maxSize);
 
             //  maxSize++;
@@ -940,6 +1011,16 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
             //showLog("白板的数量1:" + maxSize);
 
             getScenesSize();
+        }
+
+        @Override
+        public void onTeacherCloseClass() {
+
+            if (chatFragment != null) {
+                chatFragment.requestOverClass();
+
+            }
+
         }
 
 
@@ -1036,7 +1117,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case PictureConfig.CHOOSE_REQUEST:
+                case PhotoUtil.MESSAGE_IMAGE:
                     // 图片、视频、音频选择结果回调
                     List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
 
@@ -1054,13 +1135,38 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
                         showToast("选择成功");
 
 
-                        EventBus.getDefault().post(new Event<>(2, compressPath), EventBusTagUtils.RoomControlFragment);
+                        MainRoomActivity.chatFragment.sendImageMessage(compressPath);
 
 
                     }
 
                     break;
 
+                case PhotoUtil.WHITE_BORAD_IMAGE:
+
+                    // 图片、视频、音频选择结果回调
+                    List<LocalMedia> boardSelectList = PictureSelector.obtainMultipleResult(data);
+
+                    LocalMedia boardMedia = boardSelectList.get(0);
+                    // 例如 LocalMedia 里面返回三种path
+                    // 1.media.getPath(); 为原图path
+                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true  注意：音视频除外
+                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
+                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
+
+                    if (boardMedia.isCompressed()) {
+
+                        String compressPath = boardMedia.getCompressPath();
+
+                        if (whiteBoardFragment != null) {
+                            whiteBoardFragment.upLoadImage(compressPath);
+                        }
+
+
+                    }
+
+
+                    break;
 
             }
 
@@ -1085,10 +1191,13 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     private int pageIndex = 1;//记录当前页面位置
     private int maxSize = 1;//当前页面的总大小
 
+    private int FIRST_INIT = 1;//首次初始化
+    private int SECOND_INIT = 2;//首次初始化
+
     /**
      * 初始化白板
      */
-    private void initWhiteBorad() {
+    private void initWhiteBorad(final int type) {
 
         whiteBroadView = new WhiteBroadView(this);
         whiteBoardUtils = WhiteBoardUtils.getInstance().joinToRoom(this, whiteBroadView, uuid, whitetoken);
@@ -1102,6 +1211,10 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
                     getScenesSize();
                     showLog("room回调");
+
+                    if (type == SECOND_INIT) {
+                        initWhiteBoradStae();
+                    }
 
                 }
             }

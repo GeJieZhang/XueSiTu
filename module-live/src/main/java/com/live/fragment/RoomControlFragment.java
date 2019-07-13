@@ -133,11 +133,15 @@ public class RoomControlFragment extends BaseAppFragment {
 
         ivCamera.setImageResource(roomControlBean.isDefault_camera() ? R.mipmap.icon_camera_on : R.mipmap.icon_camera_off);
         ivVoice.setImageResource(roomControlBean.isDefault_voice() ? R.mipmap.icon_voice_on : R.mipmap.icon_voice_off);
-
-
         ivRotate.setImageResource(roomControlBean.isDefault_rotate() ? R.mipmap.icon_rotate_h : R.mipmap.icon_rotate_w);
-        ivClass.setImageResource(roomControlBean.isDefault_class() ? R.mipmap.icon_class_off2 : R.mipmap.icon_class_on2);
 
+        if (identity.equals("1")) {
+            //只有老师才显示
+            ivClass.setImageResource(roomControlBean.isDefault_class() ? R.mipmap.icon_class_off2 : R.mipmap.icon_class_on2);
+        } else {
+            //学生隐藏
+            ivClass.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -182,7 +186,8 @@ public class RoomControlFragment extends BaseAppFragment {
                 roomControlBean.setDefault_class(true);
             }
 
-            showRequestPopu();
+
+            requestOverClass();
 
 
         } else if (i == R.id.iv_chat) {
@@ -548,7 +553,7 @@ public class RoomControlFragment extends BaseAppFragment {
     private ImageView iv_circle;
 
 
-    private void initToolIcon() {
+    public void initToolIcon() {
         iv_pencil.setImageResource(R.mipmap.icon_color_default);
         iv_eraser.setImageResource(R.mipmap.icon_eraser_default);
         iv_rectangle.setImageResource(R.mipmap.icon_rectangle_default);
@@ -599,12 +604,9 @@ public class RoomControlFragment extends BaseAppFragment {
             public void onClick(View v) {
                 //画笔
 
-                toolName = Appliance.PENCIL;
-                setTool();
-                MainRoomActivity.whiteBoradBean.initValue();
-                MainRoomActivity.whiteBoradBean.setPen(true);
 
-                initToolIcon();
+                MainRoomActivity.whiteBoardFragment.setBoradTool(Appliance.PENCIL);
+
 
             }
         });
@@ -613,11 +615,9 @@ public class RoomControlFragment extends BaseAppFragment {
             @Override
             public void onClick(View v) {
                 //橡皮
-                toolName = Appliance.ERASER;
-                setTool();
-                MainRoomActivity.whiteBoradBean.initValue();
-                MainRoomActivity.whiteBoradBean.setEraser(true);
-                initToolIcon();
+
+                MainRoomActivity.whiteBoardFragment.setBoradTool(Appliance.ERASER);
+
             }
         });
         view.findViewById(R.id.lin_clear).setOnClickListener(new View.OnClickListener() {
@@ -633,13 +633,9 @@ public class RoomControlFragment extends BaseAppFragment {
             @Override
             public void onClick(View v) {
                 //矩形
-                toolName = Appliance.RECTANGLE;
-                setTool();
 
+                MainRoomActivity.whiteBoardFragment.setBoradTool(Appliance.RECTANGLE);
 
-                MainRoomActivity.whiteBoradBean.initValue();
-                MainRoomActivity.whiteBoradBean.setRectangular(true);
-                initToolIcon();
             }
         });
 
@@ -647,8 +643,9 @@ public class RoomControlFragment extends BaseAppFragment {
             @Override
             public void onClick(View v) {
                 //移动工具
-                toolName = Appliance.SELECTOR;
-                setTool();
+
+                MainRoomActivity.whiteBoardFragment.setBoradTool(Appliance.SELECTOR);
+
 
             }
         });
@@ -658,19 +655,22 @@ public class RoomControlFragment extends BaseAppFragment {
             @Override
             public void onClick(View v) {
 
-                if (screenOrientation == Configuration.ORIENTATION_LANDSCAPE) {
-                    //横屏
-                } else {
 
-                    double width = DisplayUtil.getScreenWidth(getContext());
-                    double height = DisplayUtil.getScreenHeight(getContext()) / 3;
+                MainRoomActivity.whiteBoardFragment.insertImage();
 
-
-                    showLog(width + "-" + height);
-
-                    //竖屏
-                    MainRoomActivity.getwhiteBoardRoom().insertImage(new ImageInformationWithUrl(0d, 0d, 200d, 100d, "https://white-pan.oss-cn-shanghai.aliyuncs.com/40/image/mask.jpg"));
-                }
+//                if (screenOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+//                    //横屏
+//                } else {
+//
+//                    double width = DisplayUtil.getScreenWidth(getContext());
+//                    double height = DisplayUtil.getScreenHeight(getContext()) / 3;
+//
+//
+//                    showLog(width + "-" + height);
+//
+//                    //竖屏
+//                    MainRoomActivity.getwhiteBoardRoom().insertImage(new ImageInformationWithUrl(0d, 0d, 200d, 100d, "https://white-pan.oss-cn-shanghai.aliyuncs.com/40/image/mask.jpg"));
+//                }
 
             }
         });
@@ -693,13 +693,8 @@ public class RoomControlFragment extends BaseAppFragment {
         view.findViewById(R.id.lin_circle).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainRoomActivity.whiteBoardFragment.setBoradTool(Appliance.SELECTOR);
 
-                toolName = Appliance.ELLIPSE;
-                setTool();
-
-                MainRoomActivity.whiteBoradBean.initValue();
-                MainRoomActivity.whiteBoradBean.setCirle(true);
-                initToolIcon();
             }
         });
 
@@ -710,10 +705,9 @@ public class RoomControlFragment extends BaseAppFragment {
 
                 tv_size.setText(progress + "");
 
-                toolStrokeWidth = progress;
-                setTool();
 
-                MainRoomActivity.whiteBoradBean.setPenSize(progress);
+                MainRoomActivity.whiteBoardFragment.setPenProgress(progress);
+
 
             }
 
@@ -768,12 +762,12 @@ public class RoomControlFragment extends BaseAppFragment {
                 @Override
                 public void onClick(View v) {
                     initColorViewState();
-
-
                     circleColorView.setCircleSelected(true);
-                    toolColor = mData.get(position);
-                    setTool();
-                    MainRoomActivity.whiteBoradBean.setCirlerIndex(position);
+
+
+                    MainRoomActivity.whiteBoardFragment.setPenColor(mData.get(position), position);
+
+
                 }
             });
 
@@ -792,31 +786,31 @@ public class RoomControlFragment extends BaseAppFragment {
 
 
     //------------------------------------------------------------------------------------API
-
-    private int toolStrokeWidth = 5;
-
-    private int toolTextSize = 5;
-
-    private String toolName = Appliance.PENCIL;
-
-    private int toolColor = R.color.base_money;
-
-    public void setTool() {
-
-        Room room = MainRoomActivity.getwhiteBoardRoom();
-        MemberState memberState = new MemberState();
-        memberState.setStrokeColor(ColorUtil.int2Rgb(getResources().getColor(toolColor)));
-        memberState.setCurrentApplianceName(toolName);
-        memberState.setStrokeWidth(toolStrokeWidth);
-        memberState.setTextSize(toolTextSize);
-
-        if (room != null) {
-            room.setMemberState(memberState);
-        }
-
-
-        showLog("设置铅笔");
-    }
+//
+//    private int toolStrokeWidth = 5;
+//
+//    private int toolTextSize = 5;
+//
+//    private String toolName = Appliance.PENCIL;
+//
+//    private int toolColor = R.color.base_money;
+//
+//    public void setTool() {
+//
+//        Room room = MainRoomActivity.getwhiteBoardRoom();
+//        MemberState memberState = new MemberState();
+//        memberState.setStrokeColor(ColorUtil.int2Rgb(getResources().getColor(toolColor)));
+//        memberState.setCurrentApplianceName(toolName);
+//        memberState.setStrokeWidth(toolStrokeWidth);
+//        memberState.setTextSize(toolTextSize);
+//
+//        if (room != null) {
+//            room.setMemberState(memberState);
+//        }
+//
+//
+//        showLog("设置铅笔");
+//    }
 
 
     //--------------------------------------------------------------------------------用户列表弹出层
@@ -931,9 +925,12 @@ public class RoomControlFragment extends BaseAppFragment {
                     if (voice == 1) {
                         //如果是打开那么去关闭
 
-                        // MainRoomActivity.chatFragment.requestBackOpenVoice(false, mData.get(position).getUserId());
+                        MainRoomActivity.chatFragment.requestCloseOpenCameraVoice(false, mData.get(position).getUserId(), 2);
+
                     } else {
-                        // MainRoomActivity.chatFragment.requestBackOpenVoice(true, mData.get(position).getUserId());
+
+                        MainRoomActivity.chatFragment.requestCloseOpenCameraVoice(true, mData.get(position).getUserId(), 2);
+
                     }
 
 
@@ -946,9 +943,10 @@ public class RoomControlFragment extends BaseAppFragment {
                     if (camera == 1) {
                         //如果是打开那么去关闭
 
-                        //MainRoomActivity.chatFragment.requestBackOpenCamera(false, mData.get(position).getUserId());
+                        MainRoomActivity.chatFragment.requestCloseOpenCameraVoice(false, mData.get(position).getUserId(), 3);
                     } else {
-                        // MainRoomActivity.chatFragment.requestBackOpenCamera(true, mData.get(position).getUserId());
+
+                        MainRoomActivity.chatFragment.requestCloseOpenCameraVoice(true, mData.get(position).getUserId(), 3);
                     }
                 }
             });
@@ -975,7 +973,9 @@ public class RoomControlFragment extends BaseAppFragment {
                         }
 
 
-                        EventBus.getDefault().post(new Event<>(1, content), EventBusTagUtils.RoomControlFragment);
+                        MainRoomActivity.chatFragment.sendTextMessage(content);
+
+
 
 
                     }
@@ -983,7 +983,7 @@ public class RoomControlFragment extends BaseAppFragment {
                     @Override
                     public void onCameraClick() {
 
-                        PhotoUtil.normalSelectPicture(getActivity(), listImage, 1);
+                        PhotoUtil.normalSelectPictureByCode(getActivity(), listImage, 1,PhotoUtil.MESSAGE_IMAGE);
 
                     }
 
@@ -1026,7 +1026,7 @@ public class RoomControlFragment extends BaseAppFragment {
 
         void onWihteBoradAdd();
 
-
+        void onTeacherCloseClass();
     }
 
 
@@ -1139,6 +1139,28 @@ public class RoomControlFragment extends BaseAppFragment {
                     public void onSure() {
                         if (listener != null) {
                             listener.onCameraClick(0);
+                        }
+                    }
+                })
+                .show(getFragmentManager());
+
+    }
+
+
+    /**
+     * 老师下课
+     */
+    private void requestOverClass() {
+
+
+        NormalDialog.getInstance()
+                .setContent("是否结束本次课程？")
+                .setWidth(DisplayUtil.dip2px(getActivity(), 300))
+                .setSureListener(new NormalDialog.SurelListener() {
+                    @Override
+                    public void onSure() {
+                        if (listener != null) {
+                            listener.onTeacherCloseClass();
                         }
                     }
                 })

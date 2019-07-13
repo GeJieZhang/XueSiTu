@@ -98,6 +98,12 @@ public class ChatFragment extends BaseAppFragment {
     //手动获取直播间列表(系统)
     public static final int ACTION_TYPE10 = 10;
 
+    //老师关闭学生的语音、视频(返回9、11)
+    public static final int ACTION_TYPE11 = 11;
+
+    //老师下课
+    public static final int ACTION_TYPE12 = 12;
+
     //文字
     public static final int MESSAGE_TYPE1 = 1;
     //图片
@@ -336,7 +342,16 @@ public class ChatFragment extends BaseAppFragment {
 
                 break;
             }
+            case ACTION_TYPE11: {
+                //更新指定学生的麦克风、摄像头状态
 
+                if (listener != null) {
+                    listener.onUpdateStudentVoiceCameraInfo(imBean.getObject());
+                }
+
+
+                break;
+            }
 
         }
     }
@@ -471,64 +486,67 @@ public class ChatFragment extends BaseAppFragment {
     }
 
 
-    //------------------------------------------------------------------------------EventBus消息
+    //------------------------------------------------------------------------------发送消息
+
 
     private Map<String, TextView> uploadMap = new HashMap<>();
 
 
-    @Subscriber(tag = EventBusTagUtils.RoomControlFragment)
-    public void fromRoomControlFragment(Event event) {
-        switch (event.getEventCode()) {
-            case 1: {
-                String content = (String) event.getData();
+    /**
+     * 发送图片消息
+     *
+     * @param compressPath
+     */
+    public void sendImageMessage(String compressPath) {
+        /**
+         * 发送一条假的消息先占个位置
+         */
+
+        IMBean imBean = new IMBean();
+        imBean.setActionType(ACTION_TYPE1);
+        IMBean.ObjectBean objectBean = new IMBean.ObjectBean();
+        objectBean.setMessageId(TimeUtils.getNowTimestamp() + "");
+        objectBean.setUserIcon(userIcon);
+        objectBean.setRoomName(roomName);
+        objectBean.setType(MESSAGE_TYPE2);
+        objectBean.setMessage(compressPath);
+        objectBean.setUserName(userName);
+        imBean.setObject(objectBean);
+        messageList.add(imBean);
 
 
-                IMBean imBean = new IMBean();
-                imBean.setActionType(ACTION_TYPE1);
-                IMBean.ObjectBean objectBean = new IMBean.ObjectBean();
-                objectBean.setMessageId(TimeUtils.getNowTimestamp() + "");
-                objectBean.setUserIcon(userIcon);
-                objectBean.setRoomName(roomName);
-                objectBean.setType(MESSAGE_TYPE1);
-                objectBean.setMessage(content);
-                objectBean.setUserName(userName);
-                imBean.setObject(objectBean);
-                String json = MGson.newGson().toJson(imBean);
-                showLog(json);
-                MainRoomActivity.imSocketUtils.sendMessage(json);
-                break;
-            }
-            case 2: {
+        uploadMap.put(compressPath, new TextView(getActivity()));
+        notifyAdapter();
 
-                /**
-                 * 发送一条假的消息先占个位置
-                 */
-                String imagePath = (String) event.getData();
-                IMBean imBean = new IMBean();
-                imBean.setActionType(ACTION_TYPE1);
-                IMBean.ObjectBean objectBean = new IMBean.ObjectBean();
-                objectBean.setMessageId(TimeUtils.getNowTimestamp() + "");
-                objectBean.setUserIcon(userIcon);
-                objectBean.setRoomName(roomName);
-                objectBean.setType(MESSAGE_TYPE2);
-                objectBean.setMessage(imagePath);
-                objectBean.setUserName(userName);
-                imBean.setObject(objectBean);
-                messageList.add(imBean);
-
-
-                uploadMap.put(imagePath, new TextView(getActivity()));
-                notifyAdapter();
-
-                requestUploadImage(imagePath);
-                break;
-            }
-        }
-
+        requestUploadImage(compressPath);
     }
 
 
-    //-----------------------------------------------------------------------------音视频控制
+    /**
+     * 发送文字消息
+     *
+     * @param content
+     */
+    public void sendTextMessage(String content) {
+
+
+        IMBean imBean = new IMBean();
+        imBean.setActionType(ACTION_TYPE1);
+        IMBean.ObjectBean objectBean = new IMBean.ObjectBean();
+        objectBean.setMessageId(TimeUtils.getNowTimestamp() + "");
+        objectBean.setUserIcon(userIcon);
+        objectBean.setRoomName(roomName);
+        objectBean.setType(MESSAGE_TYPE1);
+        objectBean.setMessage(content);
+        objectBean.setUserName(userName);
+        imBean.setObject(objectBean);
+        String json = MGson.newGson().toJson(imBean);
+        showLog(json);
+        MainRoomActivity.imSocketUtils.sendMessage(json);
+    }
+
+
+    //-----------------------------------------------------------------------------长连接控制
 
 
     /**
@@ -673,6 +691,51 @@ public class ChatFragment extends BaseAppFragment {
     }
 
 
+    /**
+     * @param b            true打开false关闭
+     * @param studentPhone
+     * @param type         2麦克风 3视频
+     */
+    public void requestCloseOpenCameraVoice(boolean b, String studentPhone, int type) {
+        IMBean imBean = new IMBean();
+        imBean.setActionType(ACTION_TYPE11);
+        IMBean.ObjectBean objectBean = new IMBean.ObjectBean();
+
+        objectBean.setUserPhone(studentPhone);
+        objectBean.setType(type);
+        if (b) {
+            objectBean.setAction("1");
+        } else {
+            objectBean.setAction("0");
+        }
+
+        objectBean.setRoomName(roomName);
+        imBean.setObject(objectBean);
+        String json = MGson.newGson().toJson(imBean);
+        showLog(json);
+        MainRoomActivity.imSocketUtils.sendMessage(json);
+    }
+
+
+    /**
+     * 老师下课
+     */
+    public void requestOverClass() {
+        IMBean imBean = new IMBean();
+        imBean.setActionType(ACTION_TYPE12);
+        IMBean.ObjectBean objectBean = new IMBean.ObjectBean();
+        objectBean.setRoomName(roomName);
+        imBean.setObject(objectBean);
+        String json = MGson.newGson().toJson(imBean);
+        showLog(json);
+        MainRoomActivity.imSocketUtils.sendMessage(json);
+    }
+
+    /**
+     * 上传图片
+     *
+     * @param compressPath
+     */
     private void requestUploadImage(final String compressPath) {
 
 
@@ -748,6 +811,7 @@ public class ChatFragment extends BaseAppFragment {
 
         void onUpdateUserInfo(IMBean.ObjectBean user);
 
+        void onUpdateStudentVoiceCameraInfo(IMBean.ObjectBean user);
 
     }
 

@@ -28,7 +28,7 @@ public class IMSocketUtils {
     private boolean isClose = false;
     private boolean isReallyClose = false;
 
-    private final String socketPath = "ws://192.168.0.116:8081/websocket/";
+    private final String socketPath = "ws://192.168.0.117:8081/websocket/";
 
     private String path;
 
@@ -206,7 +206,11 @@ public class IMSocketUtils {
 //    }
 
     public void sendMessage(String message) {
-        mSocket.send(message);
+
+        if (mSocket != null) {
+            mSocket.send(message);
+        }
+
 
     }
 
