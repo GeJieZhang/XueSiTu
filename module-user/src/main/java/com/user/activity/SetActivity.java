@@ -20,6 +20,7 @@ import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 
+import com.lib.utls.bugly.BuglyUtil;
 import com.lib.view.navigationbar.NomalNavigationBar;
 import com.user.R;
 import com.user.R2;
@@ -178,7 +179,7 @@ public class SetActivity extends BaseAppActivity {
 
         } else if (i == R.id.lin_update) {
 
-
+//
 //            if (BuglyUtil.isVersionUpdate()) {
 //                BuglyUtil.checkUpdateByClick();
 //            } else {

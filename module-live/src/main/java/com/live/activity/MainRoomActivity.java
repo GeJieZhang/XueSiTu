@@ -59,7 +59,6 @@ import com.live.fragment.RoomControlFragment;
 import com.live.fragment.WhiteBoardFragment;
 import com.live.utils.WhiteBoardUtils;
 import com.live.utils.config.LiveConfig;
-import com.live.utils.HXChatUtils;
 import com.live.utils.MyHashMap;
 import com.live.utils.socket.IMSocketUtils;
 import com.luck.picture.lib.PictureSelector;

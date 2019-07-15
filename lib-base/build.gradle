@@ -38,7 +38,7 @@ android {
     }
 
 }
-//
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation "junit:junit:$var.junit"
@@ -131,19 +131,12 @@ dependencies {
      * 日志统计
      * 应用更新
      */
-
-//
 //    api 'com.tencent.bugly:crashreport_upgrade:latest.release'
 //    api 'com.tencent.bugly:nativecrashreport:latest.release'
     /**
      * 弹出成层
      */
     api 'com.github.zyyoona7:EasyPopup:1.1.2'
-
-    /**
-     * 环信聊天
-     */
-    api files('libs/hyphenatechat_3.6.0.jar')
 
     /**
      * 互动白板
@@ -154,6 +147,11 @@ dependencies {
      * 颜色选择器
      */
     api 'com.smart.colorview:colorview:1.1.1'
+
+    /**
+     * 支付宝
+     */
+    api(name: 'alipaySdk-15.6.3-20190605142540', ext: 'aar')
 
 
 }

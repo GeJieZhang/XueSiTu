@@ -46,7 +46,6 @@ import com.live.view.CmmtPopup;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.qiniu.droid.rtc.QNRTCUser;
 import com.smart.colorview.normal.CircleColorView;
-import com.squareup.haha.perflib.Main;
 import com.zyyoona7.popup.EasyPopup;
 import com.zyyoona7.popup.XGravity;
 import com.zyyoona7.popup.YGravity;
@@ -693,7 +692,7 @@ public class RoomControlFragment extends BaseAppFragment {
         view.findViewById(R.id.lin_circle).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainRoomActivity.whiteBoardFragment.setBoradTool(Appliance.SELECTOR);
+                MainRoomActivity.whiteBoardFragment.setBoradTool(Appliance.ELLIPSE);
 
             }
         });

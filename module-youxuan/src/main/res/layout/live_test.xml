@@ -34,4 +34,10 @@
         android:layout_height="wrap_content"
 
         android:text="白板" />
+
+    <Button
+        android:id="@+id/btn_token5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="支付测试" />
 </LinearLayout>

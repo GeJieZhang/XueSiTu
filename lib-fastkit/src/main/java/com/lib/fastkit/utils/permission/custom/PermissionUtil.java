@@ -160,6 +160,19 @@ public class PermissionUtil {
     }
 
 
+    /**
+     * 支付
+     *
+     * @param requestPermission
+     */
+    public static void externalZhiFu(RequestPermission requestPermission) {
+        requestPermission(rxPermissions, requestPermission, Manifest.permission.READ_PHONE_STATE
+                , Manifest.permission.WRITE_EXTERNAL_STORAGE
+
+        );
+    }
+
+
     private static void onRequestPermissionFailure(List<String> strings) {
 
 

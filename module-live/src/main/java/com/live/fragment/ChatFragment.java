@@ -20,12 +20,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
-import com.hyphenate.EMCallBack;
-import com.hyphenate.EMMessageListener;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMImageMessageBody;
-import com.hyphenate.chat.EMMessage;
-import com.hyphenate.chat.EMTextMessageBody;
+
 import com.lib.app.ApiUtils;
 import com.lib.app.EventBusTagUtils;
 import com.lib.bean.Event;
@@ -44,8 +39,7 @@ import com.live.R;
 import com.live.R2;
 import com.live.activity.MainRoomActivity;
 import com.live.bean.control.IMBean;
-import com.live.utils.HXChatUtils;
-import com.live.utils.hx.HXTextUtils;
+
 import com.live.utils.socket.IMSocketUtils;
 
 

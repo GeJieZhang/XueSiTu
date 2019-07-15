@@ -63,11 +63,11 @@ android {
             // 不显示Log
             buildConfigField "boolean", "LOG_DEBUG", "false"
             //混淆
-            minifyEnabled false
+            minifyEnabled true
             //Zipalign优化,优化代码性能
-            zipAlignEnabled false
+            zipAlignEnabled true
             // 移除无用的resource文件
-            shrinkResources false
+            shrinkResources true
             //前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
@@ -101,7 +101,11 @@ android {
     }
 
 }
-
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation "junit:junit:$var.junit"
@@ -130,5 +134,11 @@ dependencies {
         api project(':module-dayi')
         api project(':module-live')
     }
+
+//    /**
+//     * 支付宝
+//     */
+//    api(name: 'alipaySdk-15.6.3-20190605142540', ext: 'aar')
+//
 
 }

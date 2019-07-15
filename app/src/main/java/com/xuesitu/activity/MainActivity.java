@@ -30,6 +30,7 @@ import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.fastkit.views.viewpager.my.MyViewPager;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
+import com.lib.utls.bugly.BuglyUtil;
 import com.live.activity.MainRoomActivity;
 import com.user.fragment.PersonalFragment;
 import com.xuesitu.R;
@@ -105,7 +106,7 @@ public class MainActivity extends BaseAppActivity {
 
         requestQiniuToken();
         requestCheckToken();
-        // BuglyUtil.checkUpdate();
+        //BuglyUtil.checkUpdate();
     }
 
     @Override
