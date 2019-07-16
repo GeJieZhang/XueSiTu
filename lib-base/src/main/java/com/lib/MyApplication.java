@@ -59,7 +59,7 @@ public class MyApplication extends Application {
 
         //BuglyUtil.init(this);
         //内存检测
-        initLeakCanary();
+        //initLeakCanary();
     }
 
     private void initX5() {

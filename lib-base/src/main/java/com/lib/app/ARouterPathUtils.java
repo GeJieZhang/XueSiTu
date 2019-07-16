@@ -6,11 +6,8 @@ package com.lib.app;
 
 public class ARouterPathUtils {
 
-    public static final String Dayi_DayiFragment = "/dayi/DayiFragment";
-    public static final String YouXuan_FengXiangFragment = "/youxuan/FengXiangFragment";
-    public static final String YouXuan_JianKeFragment = "/youxuan/JianKeFragment";
-    public static final String YouXuan_SiXueFragment = "/youxuan/SiXueFragment";
-    public static final String YouXuan_YouXuanFragment = "/youxuan/YouXuanFragment";
+
+
     //==============================================================================================
     //======================================================================================APP====
     //==============================================================================================
@@ -57,4 +54,18 @@ public class ARouterPathUtils {
 
     public static final String Live_BoardTestActivity = "/live/BoardTestActivity";
 
+    //==============================================================================================
+    //======================================================================================dayi====
+    //==============================================================================================
+    public static final String Dayi_DayiFragment = "/dayi/DayiFragment";
+
+
+    //==============================================================================================
+    //=================================================================================Fragment====
+    //==============================================================================================
+    public static final String Dayi_AskQuestionActivity = "/dayi/AskQuestionActivity";
+    public static final String YouXuan_FengXiangFragment = "/youxuan/FengXiangFragment";
+    public static final String YouXuan_JianKeFragment = "/youxuan/JianKeFragment";
+    public static final String YouXuan_SiXueFragment = "/youxuan/SiXueFragment";
+    public static final String YouXuan_YouXuanFragment = "/youxuan/YouXuanFragment";
 }

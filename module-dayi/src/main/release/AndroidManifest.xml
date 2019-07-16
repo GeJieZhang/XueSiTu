@@ -5,4 +5,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
 
+    <application>
+        <activity
+            android:name=".activity.AskQuestionActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|layoutDirection|screenSize"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+    </application>
 </manifest>

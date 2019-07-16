@@ -22,6 +22,10 @@ public class PhotoUtil {
     public static final int WHITE_BORAD_IMAGE = 337;
 
 
+    //问答
+    public static final int ASK_IMAGE = 338;
+
+
     /**
      * Code选择相册
      *

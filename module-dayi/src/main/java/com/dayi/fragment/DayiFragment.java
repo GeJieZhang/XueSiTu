@@ -5,21 +5,21 @@ import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.dayi.R;
 import com.dayi.R2;
 import com.dayi.fragment.banner.CustomViewHolder2;
-import com.lib.bean.CustomData;
 import com.lib.app.ARouterPathUtils;
+import com.lib.bean.CustomData;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.progress.circle_progress.CircleProgress;
 import com.lib.ui.fragment.BaseAppFragment;
-
-
 import com.ms.banner.Banner;
 import com.ms.banner.BannerConfig;
 import com.ms.banner.Transformer;
@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 
 @Route(path = ARouterPathUtils.Dayi_DayiFragment)
@@ -37,23 +38,24 @@ public class DayiFragment extends BaseAppFragment {
 
     @BindView(R2.id.circle_progress_bar2)
     CircleProgress circleProgressBar2;
-
+    @BindView(R2.id.lin_message)
+    LinearLayout linMessage;
+    @BindView(R2.id.btn_camera)
+    Button btnCamera;
+    @BindView(R2.id.btn_voice)
+    Button btnVoice;
+    @BindView(R2.id.btn_write)
+    Button btnWrite;
     @BindView(R2.id.lin_tuijian)
     LinearLayout linTuijian;
     @BindView(R2.id.lin_tuXun)
     LinearLayout linTuXun;
     @BindView(R2.id.banner)
     Banner banner;
-
     @BindView(R2.id.indicator)
     LinearLayout indicator;
-
     @BindView(R2.id.lin_video)
     LinearLayout linVideo;
-
-
-    @BindView(R2.id.lin_message)
-    LinearLayout linMessage;
     private String messge[] = {"推荐1", "推荐2", "推荐3"};
     private String tuJian[] = {"推荐1", "推荐2", "推荐3"};
 
@@ -232,4 +234,19 @@ public class DayiFragment extends BaseAppFragment {
     }
 
 
+    @OnClick({R2.id.btn_camera, R2.id.btn_voice, R2.id.btn_write})
+    public void onViewClicked(View view) {
+        int i = view.getId();
+        if (i == R.id.btn_camera) {
+            goAskQuestion();
+        } else if (i == R.id.btn_voice) {
+            goAskQuestion();
+        } else if (i == R.id.btn_write) {
+            goAskQuestion();
+        }
+    }
+
+    private void goAskQuestion() {
+        ARouter.getInstance().build(ARouterPathUtils.Dayi_AskQuestionActivity).navigation();
+    }
 }

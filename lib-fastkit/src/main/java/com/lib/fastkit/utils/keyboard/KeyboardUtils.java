@@ -1,4 +1,4 @@
-package com.live.utils;
+package com.lib.fastkit.utils.keyboard;
 
 import android.app.Activity;
 import android.content.Context;

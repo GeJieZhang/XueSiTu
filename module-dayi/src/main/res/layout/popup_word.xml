@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_part_circle_white"
+    android:orientation="vertical">
+
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/et_cmmt"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:background="#f6f6f6"
+        android:gravity="top|start"
+        android:hint="描述越详细，越方便老师为您解答哦~"
+        android:imeOptions="flagNoExtractUi"
+        android:padding="5dp"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
+
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_voice"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="15dp"
+            android:src="@mipmap/icon_voice_change" />
+
+        <View
+            android:layout_width="35dp"
+            android:layout_height="25dp"></View>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="0/500" />
+
+        <Button
+            android:id="@+id/btn_send"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/circle_button_blue_r5"
+            android:text="确定"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+
+</LinearLayout>

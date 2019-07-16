@@ -1,8 +1,6 @@
 package com.live.view;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -12,9 +10,8 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 
 
-import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.live.R;
-import com.live.utils.KeyboardUtils;
+import com.lib.fastkit.utils.keyboard.KeyboardUtils;
 import com.zyyoona7.popup.BasePopup;
 
 /**
@@ -97,27 +94,13 @@ public class CmmtPopup extends BasePopup<CmmtPopup> {
     }
 
     public CmmtPopup showSoftInput() {
-        if (et_message != null) {
-            et_message.post(new Runnable() {
-                @Override
-                public void run() {
-                    KeyboardUtils.showSoftInput(et_message, context);
-                }
-            });
-        }
+        KeyboardUtils.toggleSoftInput(context);
         return this;
     }
 
 
     public CmmtPopup hideSoftInput() {
-        if (et_message != null) {
-            et_message.post(new Runnable() {
-                @Override
-                public void run() {
-                    KeyboardUtils.hideSoftInput(et_message, context);
-                }
-            });
-        }
+        KeyboardUtils.toggleSoftInput(context);
         return this;
     }
 

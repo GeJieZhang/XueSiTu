@@ -975,14 +975,12 @@ public class RoomControlFragment extends BaseAppFragment {
                         MainRoomActivity.chatFragment.sendTextMessage(content);
 
 
-
-
                     }
 
                     @Override
                     public void onCameraClick() {
 
-                        PhotoUtil.normalSelectPictureByCode(getActivity(), listImage, 1,PhotoUtil.MESSAGE_IMAGE);
+                        PhotoUtil.normalSelectPictureByCode(getActivity(), listImage, 1, PhotoUtil.MESSAGE_IMAGE);
 
                     }
 
