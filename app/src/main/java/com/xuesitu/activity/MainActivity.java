@@ -503,7 +503,9 @@ public class MainActivity extends BaseAppActivity {
                     public void onSuccess(QiNiuBean result) {
 
                         if (result.getCode() == CodeUtil.CODE_200) {
-                            SharedPreferenceManager.getInstance(MainActivity.this).getUserCache().setQiNiuToken(result.getObj());
+                            SharedPreferenceManager.getInstance(MainActivity.this).getUserCache().setQiNiuToken(result.getObj().getToken());
+
+                            SharedPreferenceManager.getInstance(MainActivity.this).getUserCache().setQiNiuUrl(result.getObj().getBaseurl());
                         }
 
 

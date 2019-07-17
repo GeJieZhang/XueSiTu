@@ -17,6 +17,7 @@ import com.dayi.R2;
 import com.dayi.fragment.banner.CustomViewHolder2;
 import com.lib.app.ARouterPathUtils;
 import com.lib.bean.CustomData;
+import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.progress.circle_progress.CircleProgress;
 import com.lib.ui.fragment.BaseAppFragment;
@@ -247,6 +248,22 @@ public class DayiFragment extends BaseAppFragment {
     }
 
     private void goAskQuestion() {
-        ARouter.getInstance().build(ARouterPathUtils.Dayi_AskQuestionActivity).navigation();
+
+        PermissionUtil.getInstance(getActivity()).externalAudio(new PermissionUtil.RequestPermission() {
+            @Override
+            public void onRequestPermissionSuccess() {
+
+                ARouter.getInstance().build(ARouterPathUtils.Dayi_AskQuestionActivity).navigation();
+
+
+            }
+
+            @Override
+            public void onRequestPermissionFailure() {
+
+            }
+        });
+
+
     }
 }

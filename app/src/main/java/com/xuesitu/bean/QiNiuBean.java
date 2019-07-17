@@ -5,13 +5,13 @@ public class QiNiuBean {
 
     /**
      * code : 200
-     * obj : qiniu.accesskey:zKSPMJreai330JEVj99yHBnoEq0=:eyJzY29wZSI6InFpbml1LmJ1Y2tldCIsImRlYWRsaW5lIjoxNTU5ODAxNjg4fQ==
+     * obj : {"baseurl":"http://pu00k0ssj.bkt.clouddn.com/","token":"3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:IHtTOnhA4PwmqOLHY-DOR32SjH0=:eyJzY29wZSI6Inh1ZXNpdHVfdjIiLCJkZWFkbGluZSI6MTU2MzM2MjI3Nn0="}
      * msg : 请求成功
      * seccess : true
      */
 
     private int code;
-    private String obj;
+    private ObjBean obj;
     private String msg;
     private boolean seccess;
 
@@ -23,11 +23,11 @@ public class QiNiuBean {
         this.code = code;
     }
 
-    public String getObj() {
+    public ObjBean getObj() {
         return obj;
     }
 
-    public void setObj(String obj) {
+    public void setObj(ObjBean obj) {
         this.obj = obj;
     }
 
@@ -45,5 +45,31 @@ public class QiNiuBean {
 
     public void setSeccess(boolean seccess) {
         this.seccess = seccess;
+    }
+
+    public static class ObjBean {
+        /**
+         * baseurl : http://pu00k0ssj.bkt.clouddn.com/
+         * token : 3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:IHtTOnhA4PwmqOLHY-DOR32SjH0=:eyJzY29wZSI6Inh1ZXNpdHVfdjIiLCJkZWFkbGluZSI6MTU2MzM2MjI3Nn0=
+         */
+
+        private String baseurl;
+        private String token;
+
+        public String getBaseurl() {
+            return baseurl;
+        }
+
+        public void setBaseurl(String baseurl) {
+            this.baseurl = baseurl;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
     }
 }

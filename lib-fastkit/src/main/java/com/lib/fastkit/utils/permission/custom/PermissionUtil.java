@@ -173,6 +173,19 @@ public class PermissionUtil {
     }
 
 
+    /**
+     * 语音
+     * @param requestPermission
+     */
+
+    public static void externalAudio(RequestPermission requestPermission) {
+        requestPermission(rxPermissions, requestPermission, Manifest.permission.READ_EXTERNAL_STORAGE
+                , Manifest.permission.RECORD_AUDIO
+
+        );
+    }
+
+
     private static void onRequestPermissionFailure(List<String> strings) {
 
 

@@ -3,12 +3,15 @@ package com.dayi.view;
 import android.content.Context;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -31,6 +34,8 @@ public class CmmtWordPopup extends BasePopup<CmmtWordPopup> {
 
     Button btn_send;
     AppCompatEditText mEditText;
+
+    private TextView tv_num;
 
     public static CmmtWordPopup create(Context context) {
         return new CmmtWordPopup(context);
@@ -56,7 +61,7 @@ public class CmmtWordPopup extends BasePopup<CmmtWordPopup> {
 
     @Override
     protected void initViews(View view, CmmtWordPopup basePopup) {
-
+        tv_num = findViewById(R.id.tv_num);
         iv_voice = findViewById(R.id.iv_voice);
         iv_voice.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +72,26 @@ public class CmmtWordPopup extends BasePopup<CmmtWordPopup> {
             }
         });
         mEditText = findViewById(R.id.et_cmmt);
+
+
+        mEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                tv_num.setText(s.length() + "/" + 500);
+
+            }
+        });
         btn_send = findViewById(R.id.btn_send);
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +116,9 @@ public class CmmtWordPopup extends BasePopup<CmmtWordPopup> {
     public CmmtWordPopup showSoftInput() {
 
         KeyboardUtils.toggleSoftInput(context);
-
+        mEditText.setFocusable(true);
+        mEditText.setFocusableInTouchMode(true);
+        mEditText.requestFocus();
         return this;
     }
 
@@ -121,6 +148,13 @@ public class CmmtWordPopup extends BasePopup<CmmtWordPopup> {
 
         return this;
 
+    }
+
+
+    public void setText(String content){
+
+
+        mEditText.setText(content);
     }
 
 

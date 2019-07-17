@@ -41,4 +41,9 @@ public interface UserCacheInterface extends BaseCacheInterface {
     void setQiNiuToken(String phone);
 
     String getQiNiuToken();
+
+
+    void setQiNiuUrl(String url);
+
+    String getQiNiuUrl();
 }

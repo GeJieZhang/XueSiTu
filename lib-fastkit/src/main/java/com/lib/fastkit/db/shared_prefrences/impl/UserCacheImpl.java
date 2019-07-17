@@ -23,6 +23,7 @@ public class UserCacheImpl extends SharedPreferenceModel implements UserCacheInt
     private static final String Key_Url = "Url";
     private static final String Key_Phone = "Phone";
     private static final String Key_Qi_Niu_Token = "QiNiuToken";
+    private static final String Key_Qi_Niu_Url = "QiNiuUrl";
 
     public UserCacheImpl(Context context) {
         super(context, FILE_NAME, Context.MODE_PRIVATE);
@@ -101,5 +102,15 @@ public class UserCacheImpl extends SharedPreferenceModel implements UserCacheInt
     @Override
     public String getQiNiuToken() {
         return getString(Key_Qi_Niu_Token);
+    }
+
+    @Override
+    public void setQiNiuUrl(String url) {
+        put(Key_Qi_Niu_Url, url);
+    }
+
+    @Override
+    public String getQiNiuUrl() {
+        return getString(Key_Qi_Niu_Url);
     }
 }
