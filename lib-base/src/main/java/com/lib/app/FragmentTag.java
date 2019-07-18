@@ -13,5 +13,5 @@ public class FragmentTag {
     public static final String WhiteBoardFragment = "WhiteBoardFragment";
 
     public static final String PersonalFragment = "PersonalFragment";
-
+    public static final String QuestionFragment = "QuestionFragment";
 }

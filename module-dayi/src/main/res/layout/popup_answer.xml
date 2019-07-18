@@ -36,7 +36,7 @@
                     android:id="@+id/iv_voice"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@mipmap/icon_voice_q" />
+                    android:src="@mipmap/icon_video_choose" />
 
                 <TextView
                     style="@style/text_style11"
@@ -66,7 +66,7 @@
                     android:id="@+id/iv_write"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
-                    android:src="@mipmap/icon_words_q" />
+                    android:src="@mipmap/icon_voice_camera" />
 
                 <TextView
                     style="@style/text_style11"

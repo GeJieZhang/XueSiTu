@@ -14,7 +14,9 @@
         <activity android:name=".activity.AskQuestionFindActivity"></activity>
 
 
-        <activity android:name=".activity.QustionDetailActivity"></activity>
+        <activity android:name=".activity.TeacherQuestionDetailActivity"></activity>
 
+        <activity android:name=".activity.TeacherWriteAnswerActivity"></activity>
+        <activity android:name=".activity.StudentQuestionDetailActivity"></activity>
     </application>
 </manifest>

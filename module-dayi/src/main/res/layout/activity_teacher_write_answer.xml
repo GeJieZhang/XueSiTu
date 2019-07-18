@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+
+        <!--视频-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+
+                style="@style/text_style11"
+                android:layout_marginTop="24dp"
+                android:text="请上传解答视频"
+                android:textColor="@color/base_title"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageView
+
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginBottom="24dp"
+                android:layout_marginLeft="48dp"
+                android:layout_marginTop="24dp"
+                android:src="@mipmap/icon_camera_question" />
+
+
+            <TextView
+                style="@style/text_style11"
+                android:text="*请使用规范的语言进行讲解，并尽量保证视频的清晰度。"
+                android:textColor="@color/base_gray"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+
+        <!--图片语音-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!--图片-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+
+                    style="@style/text_style11"
+                    android:layout_marginTop="24dp"
+                    android:text="请上传解答图片"
+                    android:textColor="@color/base_title"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginLeft="48dp"
+                    android:layout_marginTop="24dp"
+                    android:src="@mipmap/icon_camera_question" />
+
+            </LinearLayout>
+
+
+            <!--语音-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+
+                    style="@style/text_style11"
+                    android:layout_marginTop="24dp"
+                    android:text="请添加语音描述"
+                    android:textColor="@color/base_title"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginLeft="48dp"
+                    android:layout_marginTop="24dp"
+                    android:src="@mipmap/icon_voice_q" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btn_sure"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/circle_button_blue_r10"
+            android:text="提交答案"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

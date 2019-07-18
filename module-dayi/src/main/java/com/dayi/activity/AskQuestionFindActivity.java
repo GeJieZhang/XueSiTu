@@ -112,12 +112,17 @@ public class AskQuestionFindActivity extends BaseAppActivity {
         }
 
         @Override
-        protected void toBindViewHolder(ViewHolder holder, int position, List<String> mData) {
+        protected void toBindViewHolder(ViewHolder holder, final int position, List<String> mData) {
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ARouter.getInstance().build(ARouterPathUtils.Dayi_QustionDetailActivity).navigation();
+                    if (position==0){
+                        ARouter.getInstance().build(ARouterPathUtils.Dayi_TeacherQuestionDetailActivity).navigation();
+                    }else {
+                        ARouter.getInstance().build(ARouterPathUtils.Dayi_StudentQuestionDetailActivity).navigation();
+                    }
+
                 }
             });
 
