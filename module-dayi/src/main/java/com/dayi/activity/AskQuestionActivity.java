@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.annotation.LongDef;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
@@ -24,25 +25,31 @@ import com.bumptech.glide.Glide;
 import com.dayi.R;
 import com.dayi.R2;
 import com.dayi.bean.AudioEntity;
+import com.dayi.bean.BaseHttpBean;
 import com.dayi.bean.UploadImage;
 import com.dayi.bean.UploadVoice;
 import com.dayi.view.CmmtWordPopup;
 import com.dayi.view.CommonSoundItemView;
 import com.dayi.view.MyRecordAudioView;
 import com.lib.app.ARouterPathUtils;
+import com.lib.app.CodeUtil;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
+import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.audio.AudioPlayManager;
 import com.lib.fastkit.utils.audio.AudioRecordManager;
 import com.lib.fastkit.utils.audio.IAudioPlayListener;
 import com.lib.fastkit.utils.audio.IAudioRecordListener;
+import com.lib.fastkit.utils.file.FileUtils;
 import com.lib.fastkit.utils.keyboard.KeyboardUtils;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.utils.time_deal.TimeUtils;
+import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.utls.glide.GlideConfig;
 import com.lib.utls.picture_select.PhotoUtil;
 import com.lib.utls.upload.QiNiuUploadTask;
 import com.lib.utls.upload.initerface.FileUploadListener;
+import com.lib.view.navigationbar.NomalNavigationBar;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.zyyoona7.popup.EasyPopup;
@@ -97,11 +104,20 @@ public class AskQuestionActivity extends BaseAppActivity {
     @Override
     protected void onCreateView() {
         mainHandler = new Handler();
-
+        initTitle();
         initView();
         initVoicePopu();
         initCmmtWordPop();
         initRecordManager();
+
+    }
+
+    protected void initTitle() {
+        NomalNavigationBar navigationBar = new
+                NomalNavigationBar.Builder(this)
+                .setTitle("")
+                .builder();
+
 
     }
 
@@ -206,7 +222,7 @@ public class AskQuestionActivity extends BaseAppActivity {
 
     private CmmtWordPopup cmmtWordPopup;
 
-    private String contentWord;
+    private String contentWord = "";
 
     private void initCmmtWordPop() {
 
@@ -230,6 +246,8 @@ public class AskQuestionActivity extends BaseAppActivity {
                         contentWord = content;
                         initWordUI();
                         cmmtWordPopup.dismiss();
+
+
                     }
                 })
 
@@ -245,13 +263,11 @@ public class AskQuestionActivity extends BaseAppActivity {
 
     private void initWirteAndVoiceUI() {
 
+        uploadVoiceMap.clear();
         linVoiceWrite.setVisibility(View.VISIBLE);
-
         ivVoice.setVisibility(View.VISIBLE);
         vLine.setVisibility(View.VISIBLE);
         ivWrite.setVisibility(View.VISIBLE);
-
-        audioBeanList.clear();
         linVoice.removeAllViews();
         linVoice.setVisibility(View.GONE);
         etCmmt.setText("");
@@ -297,6 +313,76 @@ public class AskQuestionActivity extends BaseAppActivity {
 
         } else if (i == R.id.btn_sure) {
 
+
+            if (uploadImageMap.size() <= 0) {
+                showToast("请附上问题图片！");
+
+                return;
+
+            }
+
+            if (uploadVoiceMap.size() <= 0 & contentWord.equals("")) {
+                showToast("请对问题进行文字和语音描述！");
+
+                return;
+
+            }
+
+
+            String image_description = "";
+            int imageI = 0;
+            for (Map.Entry<String, UploadImage> entry : uploadImageMap.entrySet()) {
+                if (imageI != 0) {
+                    image_description += ",";
+                }
+                image_description += entry.getValue().getUrl();
+                imageI++;
+            }
+
+
+            String voice_description = "";
+            int voiceI = 0;
+            for (Map.Entry<String, UploadVoice> entry : uploadVoiceMap.entrySet()) {
+                if (voiceI != 0) {
+                    voice_description += ",";
+                }
+                voice_description += entry.getValue().getUrl();
+                voiceI++;
+            }
+
+
+            HttpUtils.with(this)
+                    .post()
+                    .addParam("requestType", "QUESTION_INITIATE_QUESTION")
+                    .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
+
+                    .addParam("image_description", image_description)
+                    .addParam("voice_description", voice_description)
+
+                    .addParam("text_description", contentWord)
+                    .execute(new HttpDialogCallBack<BaseHttpBean>() {
+                        @Override
+                        public void onSuccess(BaseHttpBean result) {
+
+                            if (result.getCode() == CodeUtil.CODE_200) {
+
+                                finish();
+
+                            }
+
+                            showToast(result.getMsg());
+
+                            showLog(result.toString());
+
+                        }
+
+                        @Override
+                        public void onError(String e) {
+
+                        }
+                    });
+
+
         }
     }
 
@@ -335,23 +421,19 @@ public class AskQuestionActivity extends BaseAppActivity {
                     if (media.isCompressed()) {
 
                         final String compressPath = media.getCompressPath();
-                        //上传文件
-
-                        showLog("路径检测:" + compressPath);
-
-                        if (uploadImageMap.get(compressPath) == null) {
-                            uploadFile(compressPath, TYPE_IMAGE);
-                        }
 
 
                         //插入图片布局
                         instertImage(media, compressPath);
 
+                        updateImageUI();
+
+                        //上传文件
+
+                        uploadFile(compressPath, TYPE_IMAGE);
+
 
                     }
-
-
-                    updateImageUI();
 
 
                     break;
@@ -403,6 +485,7 @@ public class AskQuestionActivity extends BaseAppActivity {
 
         }
         uploadImage.setView(view);
+        uploadImage.setPath(compressPath);
         uploadImageMap.put(compressPath, uploadImage);
 
 
@@ -414,6 +497,10 @@ public class AskQuestionActivity extends BaseAppActivity {
                 .into(imageView);
     }
 
+
+    /**
+     * 刷新图片布局
+     */
     private void updateImageUI() {
 
 
@@ -465,7 +552,7 @@ public class AskQuestionActivity extends BaseAppActivity {
 
     //------------------------------------------------------------------------------------语音回调
 
-    private List<AudioEntity> audioBeanList = new ArrayList<>();
+    //private List<AudioEntity> audioBeanList = new ArrayList<>();
 
     private IAudioRecordListener iAudioRecordListener = new IAudioRecordListener() {
         @Override
@@ -512,32 +599,36 @@ public class AskQuestionActivity extends BaseAppActivity {
         @Override
         public void onFinish(final Uri audioPath, int duration) {
 
-            Log.e("======", "" + duration);
+            Log.e("======Vice时长", "" + duration);
 
-            uploadFile(audioPath.toString(), TYPE_VOICE);
+
+            String realPath = FileUtils.getRealFilePath(AskQuestionActivity.this, audioPath);
+            Log.e("======Vice路径", "" + realPath);
             //录制结束
             recordTotalTime = 0;
             mainHandler.removeCallbacks(runnable);
             tv_time.setText("00:00");
             voicePopu.dismiss();
+            UploadVoice uploadVoice = uploadVoiceMap.get(realPath);
 
-            AudioEntity audioEntity = new AudioEntity();
-            audioEntity.setDuration(duration * 1000);
-            audioEntity.setUrl(audioPath);
+            if (uploadVoice == null) {
+                uploadVoice = new UploadVoice();
+            }
+
+            uploadVoice.setDuration(duration * 1000);
+            uploadVoice.setPath(realPath);
             /**
              * 插入音频UI
              */
             final CommonSoundItemView commonSoundItemView = new CommonSoundItemView(AskQuestionActivity.this);
-            commonSoundItemView.setAudioEntity(audioEntity);
+            commonSoundItemView.setAudioEntity(uploadVoice);
             commonSoundItemView.setCommonSoundItemViewListener(new CommonSoundItemView.CommonSoundItemViewListener() {
                 @Override
-                public void onDelete(AudioEntity audioEntity) {
+                public void onDelete(UploadVoice audioEntity) {
                     linVoice.removeView(commonSoundItemView);
-                    audioBeanList.remove(audioEntity);
 
-
-                    uploadVoiceMap.remove(audioPath.toString());
-
+                    showLog("移除voice：" + audioEntity.getPath());
+                    uploadVoiceMap.remove(audioEntity.getPath());
                     initVoiceUI();
                 }
 
@@ -551,11 +642,12 @@ public class AskQuestionActivity extends BaseAppActivity {
             commonSoundItemView.setLayoutParams(params);
 
             linVoice.addView(commonSoundItemView);
-            audioBeanList.add(audioEntity);
-
+            uploadVoice.setView(commonSoundItemView);
+            uploadVoiceMap.put(realPath, uploadVoice);
             initVoiceUI();
 
 
+            uploadFile(realPath, TYPE_VOICE);
         }
 
         @Override
@@ -565,8 +657,13 @@ public class AskQuestionActivity extends BaseAppActivity {
         }
     };
 
+
+    /**
+     * 刷新音频布局
+     */
     private void initVoiceUI() {
-        if (audioBeanList.size() == 1) {
+        showLog("Map大小:" + uploadVoiceMap.size());
+        if (uploadVoiceMap.size() == 1) {
             vLine.setVisibility(View.GONE);
             ivWrite.setVisibility(View.GONE);
             ivVoice.setVisibility(View.VISIBLE);
@@ -574,7 +671,7 @@ public class AskQuestionActivity extends BaseAppActivity {
             linVoice.setVisibility(View.VISIBLE);
 
             linVoiceWrite.setVisibility(View.VISIBLE);
-        } else if (audioBeanList.size() == 2) {
+        } else if (uploadVoiceMap.size() == 2) {
             ivVoice.setVisibility(View.GONE);
             vLine.setVisibility(View.GONE);
             ivWrite.setVisibility(View.GONE);
@@ -614,10 +711,14 @@ public class AskQuestionActivity extends BaseAppActivity {
 
     private Map<String, UploadVoice> uploadVoiceMap = new HashMap<>();
 
+
     private final int TYPE_IMAGE = 1;
     private final int TYPE_VOICE = 2;
 
     private void uploadFile(final String compressPath, final int type) {
+
+        showLog("上传文件路径" + compressPath);
+
         QiNiuUploadTask qiNiuUploadTask = new QiNiuUploadTask();
         qiNiuUploadTask.setFileUploadListener(new FileUploadListener() {
             @Override
@@ -626,51 +727,92 @@ public class AskQuestionActivity extends BaseAppActivity {
             }
 
             @Override
-            public void onSuccess(String s) {
+            public void onSuccess(final String s) {
 
-                if (type == TYPE_IMAGE) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
 
-                    UploadImage uploadImage = uploadImageMap.get(compressPath);
-                    uploadImage.setUrl(s);
-                    uploadImageMap.put(compressPath, uploadImage);
 
-                    showLog("上传图片成功:" + s);
+                        if (type == TYPE_IMAGE) {
 
-                }
+                            UploadImage uploadImage = uploadImageMap.get(compressPath);
 
-                if (type == TYPE_VOICE) {
+                            if (uploadImage == null) {
+                                uploadImage = new UploadImage();
+                            }
+                            uploadImage.setUrl(s);
+                            uploadImageMap.put(compressPath, uploadImage);
 
-                    UploadVoice uploadVoice = uploadVoiceMap.get(compressPath);
+                            showLog("上传图片成功:" + s);
 
-                    if (uploadVoice == null) {
-                        uploadVoice = new UploadVoice();
+                        }
+
+                        if (type == TYPE_VOICE) {
+
+                            UploadVoice uploadVoice = uploadVoiceMap.get(compressPath);
+
+                            if (uploadVoice == null) {
+                                uploadVoice = new UploadVoice();
+                            }
+                            uploadVoice.setUrl(s);
+
+                            uploadVoiceMap.put(compressPath, uploadVoice);
+
+                            showLog("上传语音成功:" + s);
+                        }
+
                     }
-                    uploadVoice.setUrl(s);
-
-                    uploadVoiceMap.put(compressPath, uploadVoice);
-
-                    showLog("上传语音成功:" + s);
-                }
-
-
+                });
             }
 
             @Override
             public void onError(String e) {
 
-                if (type == TYPE_IMAGE) {
-                    UploadVoice uploadVoice = uploadVoiceMap.get(compressPath);
-                    linImage.removeView(uploadVoice.getView());
-                    uploadVoiceMap.remove(compressPath);
+                showLog("文件上传失败:" + e);
 
-                    updateImageUI();
 
-                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
 
-                if (type == TYPE_VOICE) {
 
-                }
+                        if (type == TYPE_IMAGE) {
+                            UploadImage uploadImage = uploadImageMap.get(compressPath);
 
+                            if (linImage.getChildCount() > 0 && uploadImage != null) {
+                                linImage.removeView(uploadImage.getView());
+                            }
+
+                            uploadVoiceMap.remove(compressPath);
+
+
+                            updateImageUI();
+                            showToast("选择图片失败！");
+
+
+                        }
+
+                        if (type == TYPE_VOICE) {
+
+                            UploadVoice uploadVoice = uploadVoiceMap.get(compressPath);
+
+
+                            if (linVoice.getChildCount() > 0 && uploadVoice != null) {
+                                linVoice.removeView(uploadVoice.getView());
+                            }
+
+                            uploadVoiceMap.remove(compressPath);
+
+
+                            initVoiceUI();
+
+                            showToast("录制语音失败！");
+
+
+                        }
+                    }
+                });
 
             }
         });

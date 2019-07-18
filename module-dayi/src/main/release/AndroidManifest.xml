@@ -10,5 +10,11 @@
             android:name=".activity.AskQuestionActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|layoutDirection|screenSize"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+
+        <activity android:name=".activity.AskQuestionFindActivity"></activity>
+
+
+        <activity android:name=".activity.QustionDetailActivity"></activity>
+
     </application>
 </manifest>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+
+            <TextView
+                android:id="@+id/tv_action"
+                style="@style/text_style11"
+                android:text="付费问题"
+                android:textColor="@color/base_title"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                style="@style/text_style11"
+                android:layout_marginLeft="16dp"
+                android:text="已付"
+                android:textColor="@color/base_gray"
+                android:textSize="14sp" />
+
+            <TextView
+                style="@style/text_style5"
+                android:layout_marginRight="24dp"
+                android:text="20兔币"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/icon_add_selected" />
+
+                <TextView
+                    style="@style/text_style11"
+                    android:layout_marginLeft="8dp"
+                    android:text="补充描述"
+                    android:textColor="@color/base_title"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            style="@style/text_style11"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="4dp"
+            android:text="1分钟前发布"
+            android:textColor="@color/base_gray"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:id="@+id/lin_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_voice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_word"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_cmmt"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginLeft="48dp"
+                android:layout_marginRight="48dp"
+                android:layout_marginTop="15dp"
+                android:background="#f6f6f6"
+                android:focusable="false"
+                android:gravity="top|start"
+                android:hint="描述越详细，越方便老师为您解答哦~"
+                android:imeOptions="flagNoExtractUi"
+                android:padding="5dp"
+                android:textColor="@color/base_title"
+                android:textSize="14sp" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_sure"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/circle_button_blue_r10"
+        android:text="开始讲解"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+</LinearLayout>

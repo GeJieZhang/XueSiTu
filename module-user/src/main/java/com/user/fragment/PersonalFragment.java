@@ -158,6 +158,8 @@ public class PersonalFragment extends BaseAppFragment {
             //学生我的提问
 
 
+            ARouter.getInstance().build(ARouterPathUtils.Dayi_AskQuestionFindActivity).navigation();
+
         } else if (i == R.id.lin_evaluation) {
             //学生我的测评
 

@@ -637,5 +637,5 @@ rx.internal.util.atomic.LinkedQueueNode consumerNode;
 -keep public class com.user.bean.**{*;}
 -keep public class com.xuesitu.bean.**{*;}
 -keep public class com.live.bean.**{*;}
-
+-keep public class com.dayi.bean.**{*;}
 

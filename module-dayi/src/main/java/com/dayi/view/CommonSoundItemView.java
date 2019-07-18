@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.dayi.R;
 import com.dayi.activity.AskQuestionActivity;
 import com.dayi.bean.AudioEntity;
+import com.dayi.bean.UploadVoice;
 import com.lib.fastkit.utils.audio.AudioPlayManager;
 import com.lib.fastkit.utils.audio.IAudioPlayListener;
 import com.lib.fastkit.utils.time_deal.TimeUtils;
@@ -49,7 +50,7 @@ public class CommonSoundItemView extends RelativeLayout {
 
     protected LinearLayout lin_delete;
 
-    protected AudioEntity audioInfo;
+    protected UploadVoice audioInfo;
     protected Context context;
     private int maxLength;
 
@@ -119,12 +120,15 @@ public class CommonSoundItemView extends RelativeLayout {
     private void playSound() {
 
         if (audioInfo != null) {
-            AudioPlayManager.getInstance().startPlay(context, audioInfo.getUrl(), iAudioPlayListener);
+
+
+            Uri uri = Uri.parse(audioInfo.getUrl());
+            AudioPlayManager.getInstance().startPlay(context, uri, iAudioPlayListener);
         }
 
     }
 
-    public void setAudioEntity(AudioEntity audioInfo) {
+    public void setAudioEntity(UploadVoice audioInfo) {
         this.audioInfo = audioInfo;
         tvSoundDuration.setText(TimeUtils.formatTime(audioInfo.getDuration()));
     }
@@ -190,7 +194,7 @@ public class CommonSoundItemView extends RelativeLayout {
     private CommonSoundItemViewListener listener;
 
     public interface CommonSoundItemViewListener {
-        void onDelete(AudioEntity audioEntity);
+        void onDelete(UploadVoice uploadVoice);
     }
 
     public void setCommonSoundItemViewListener(CommonSoundItemViewListener listener) {

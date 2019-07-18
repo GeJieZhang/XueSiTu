@@ -3,7 +3,7 @@ package com.dayi.bean;
 import android.view.View;
 
 public class UploadImage {
-
+    private String path;
     private String url;
     private View view;
 
@@ -21,5 +21,13 @@ public class UploadImage {
 
     public void setView(View view) {
         this.view = view;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }

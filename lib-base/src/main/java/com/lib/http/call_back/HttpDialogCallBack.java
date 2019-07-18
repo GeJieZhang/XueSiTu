@@ -78,11 +78,10 @@ public abstract class HttpDialogCallBack<T> implements EngineCallBack {
                 EventBus.getDefault().post(new Event<String>(1, "Token失效！"), EventBusTagUtils.HttpCallBack);
                 return;
             }
-//            Gson gson = new Gson();
-//            T objResult = (T) gson.fromJson(result,
-//                    HttpUtils.analysisClazzInfo(this));
+
 
             T objResult = (T) MGson.newGson().fromJson(result, HttpUtils.analysisClazzInfo(this));
+
 
             onSuccess(objResult);
 

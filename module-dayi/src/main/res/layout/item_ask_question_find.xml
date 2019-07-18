@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:layout_marginTop="8dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@mipmap/teacher_jpg_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+
+        <ImageView
+            android:id="@+id/iv_head"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/icon_audio" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+
+            android:orientation="vertical">
+
+            <TextView
+
+                android:id="@+id/tv_action"
+                style="@style/text_style11"
+                android:layout_weight="1"
+                android:text="二元一次方程"
+                android:textColor="@color/base_title"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+
+
+                style="@style/text_style11"
+                android:layout_marginTop="4dp"
+                android:text="孙老师上传，共14个课件"
+                android:textColor="@color/base_gray"
+
+                android:textSize="12sp" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_money"
+            style="@style/text_style5"
+            android:text="￥754" />
+
+        <TextView
+            style="@style/text_style5"
+            android:layout_marginRight="24dp"
+            android:text="兔币"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

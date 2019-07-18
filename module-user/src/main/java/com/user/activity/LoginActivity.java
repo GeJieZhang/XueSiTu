@@ -18,6 +18,7 @@ import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.db.shared_prefrences.interfaces.UserCacheInterface;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.views.dialog.zenhui.AlertDialog;
+import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.fastkit.utils.string_deal.regex.RegexUtils;
 import com.lib.fastkit.utils.timer_countdown.CountDownTimer;
@@ -133,7 +134,7 @@ public class LoginActivity extends BaseAppActivity {
                 .addParam("phone", phone)
                 .addParam("code", code)
                 .post()
-                .execute(new HttpNormalCallBack<BaseLoginBean>() {
+                .execute(new HttpDialogCallBack<BaseLoginBean>() {
                     @Override
                     public void onSuccess(BaseLoginBean result) {
 
