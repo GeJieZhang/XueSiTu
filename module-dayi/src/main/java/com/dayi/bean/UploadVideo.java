@@ -2,23 +2,11 @@ package com.dayi.bean;
 
 import android.view.View;
 
-public class UploadVoice {
-
-
+public class UploadVideo {
     private String path;
     private String url;
-
-    private String playUrl;
+    private String palyUrl;
     private View view;
-    private long duration;
-
-    public long getDuration() {
-        return duration;
-    }
-
-    public void setDuration(long duration) {
-        this.duration = duration;
-    }
 
     public String getUrl() {
         return url;
@@ -44,11 +32,11 @@ public class UploadVoice {
         this.path = path;
     }
 
-    public String getPlayUrl() {
-        return playUrl;
+    public String getPalyUrl() {
+        return palyUrl;
     }
 
-    public void setPlayUrl(String playUrl) {
-        this.playUrl = playUrl;
+    public void setPalyUrl(String palyUrl) {
+        this.palyUrl = palyUrl;
     }
 }

@@ -25,6 +25,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
+/**
+ * 学生问题详情
+ */
 @Route(path = ARouterPathUtils.Dayi_StudentQuestionDetailActivity)
 public class StudentQuestionDetailActivity extends BaseAppActivity {
     @BindView(R2.id.f_question_student)
@@ -61,7 +64,15 @@ public class StudentQuestionDetailActivity extends BaseAppActivity {
         list.add("");
         list.add("");
         homeAdapter = new HomeAdapter(this, list);
-        rv.setLayoutManager(new LinearLayoutManager(this));
+
+
+        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+
         rv.setAdapter(homeAdapter);
     }
 

@@ -13,10 +13,11 @@
 
         <activity android:name=".activity.AskQuestionFindActivity"></activity>
 
-
-        <activity android:name=".activity.TeacherQuestionDetailActivity"></activity>
+        <activity android:name=".activity.TeacherAnswerQuestionDetailActivity"></activity>
 
         <activity android:name=".activity.TeacherWriteAnswerActivity"></activity>
         <activity android:name=".activity.StudentQuestionDetailActivity"></activity>
+
+        <activity android:name=".activity.TeacherAnswerDetailActivity"></activity>
     </application>
 </manifest>

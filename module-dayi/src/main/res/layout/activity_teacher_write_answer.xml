@@ -7,7 +7,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
@@ -15,6 +16,7 @@
 
         <!--视频-->
         <LinearLayout
+            android:id="@+id/lin_vedio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -28,26 +30,36 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <ImageView
 
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_marginBottom="24dp"
-                android:layout_marginLeft="48dp"
-                android:layout_marginTop="24dp"
-                android:src="@mipmap/icon_camera_question" />
+            <FrameLayout
+                android:id="@+id/f_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
+                <ImageView
+                    android:id="@+id/iv_video"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginLeft="48dp"
+                    android:layout_marginRight="48dp"
+                    android:layout_marginTop="24dp"
+                    android:src="@mipmap/icon_vedio" />
+            </FrameLayout>
 
             <TextView
                 style="@style/text_style11"
+                android:layout_marginTop="16dp"
+                android:singleLine="false"
                 android:text="*请使用规范的语言进行讲解，并尽量保证视频的清晰度。"
                 android:textColor="@color/base_gray"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
 
         <!--图片语音-->
         <LinearLayout
+            android:id="@+id/lin_image_voice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -67,14 +79,37 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <ImageView
 
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginLeft="48dp"
-                    android:layout_marginTop="24dp"
-                    android:src="@mipmap/icon_camera_question" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/lin_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+
+                        android:layout_marginTop="16dp"
+
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_image"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_marginBottom="24dp"
+                        android:layout_marginLeft="48dp"
+                        android:layout_marginTop="24dp"
+                        android:src="@mipmap/icon_camera_question" />
+
+                </LinearLayout>
+
 
             </LinearLayout>
 
@@ -94,8 +129,18 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <ImageView
 
+                <LinearLayout
+                    android:id="@+id/lin_voice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_voice"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_marginBottom="24dp"
@@ -107,17 +152,17 @@
         </LinearLayout>
 
 
-        <Button
-            android:id="@+id/btn_sure"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/circle_button_blue_r10"
-            android:text="提交答案"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btn_sure"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+
+        android:background="@drawable/circle_button_blue_r10"
+        android:text="提交答案"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
 </LinearLayout>

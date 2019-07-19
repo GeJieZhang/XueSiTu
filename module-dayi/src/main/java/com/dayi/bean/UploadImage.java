@@ -5,6 +5,7 @@ import android.view.View;
 public class UploadImage {
     private String path;
     private String url;
+    private String playUrl;
     private View view;
 
     public String getUrl() {
@@ -29,5 +30,13 @@ public class UploadImage {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getPlayUrl() {
+        return playUrl;
+    }
+
+    public void setPlayUrl(String playUrl) {
+        this.playUrl = playUrl;
     }
 }

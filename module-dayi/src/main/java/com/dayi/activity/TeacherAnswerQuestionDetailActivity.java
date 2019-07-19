@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.dayi.R;
 import com.dayi.R2;
 import com.dayi.fragment.QuestionFragment;
@@ -24,8 +25,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@Route(path = ARouterPathUtils.Dayi_TeacherQuestionDetailActivity)
-public class TeacherQuestionDetailActivity extends BaseAppActivity {
+
+/**
+ * 老师解答问题详情
+ */
+@Route(path = ARouterPathUtils.Dayi_TeacherAnswerQuestionDetailActivity)
+public class TeacherAnswerQuestionDetailActivity extends BaseAppActivity {
 
 
     @BindView(R2.id.btn_sure)
@@ -102,6 +107,10 @@ public class TeacherQuestionDetailActivity extends BaseAppActivity {
                             @Override
                             public void onClick(View v) {
 
+                                ARouter.getInstance().build(ARouterPathUtils.Dayi_TeacherWriteAnswerActivity)
+                                        .withString("type", "1")
+                                        .navigation();
+
 
                             }
                         });
@@ -109,7 +118,9 @@ public class TeacherQuestionDetailActivity extends BaseAppActivity {
                         lin_voice.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-
+                                ARouter.getInstance().build(ARouterPathUtils.Dayi_TeacherWriteAnswerActivity)
+                                        .withString("type", "2")
+                                        .navigation();
                             }
                         });
 

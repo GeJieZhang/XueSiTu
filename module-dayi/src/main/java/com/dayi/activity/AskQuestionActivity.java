@@ -28,6 +28,8 @@ import com.dayi.bean.AudioEntity;
 import com.dayi.bean.BaseHttpBean;
 import com.dayi.bean.UploadImage;
 import com.dayi.bean.UploadVoice;
+import com.dayi.utils.RecordVoicePopupUtils;
+import com.dayi.utils.WriteWordPopupUtils;
 import com.dayi.view.CmmtWordPopup;
 import com.dayi.view.CommonSoundItemView;
 import com.dayi.view.MyRecordAudioView;
@@ -73,10 +75,8 @@ import butterknife.OnClick;
 public class AskQuestionActivity extends BaseAppActivity {
     @BindView(R2.id.lin_Image)
     LinearLayout linImage;
-
     @BindView(R2.id.lin_word)
     LinearLayout linWord;
-
     @BindView(R2.id.lin_voice)
     LinearLayout linVoice;
     @BindView(R2.id.iv_take_Photo)
@@ -93,23 +93,62 @@ public class AskQuestionActivity extends BaseAppActivity {
     ImageView ivWrite;
     @BindView(R2.id.btn_sure)
     Button btnSure;
-
     @BindView(R2.id.et_cmmt)
     AppCompatEditText etCmmt;
     @BindView(R2.id.tv_num)
     TextView tvNum;
 
-    private MyRecordAudioView recordAudioView;
-
     @Override
     protected void onCreateView() {
-        mainHandler = new Handler();
+
         initTitle();
         initView();
-        initVoicePopu();
-        initCmmtWordPop();
-        initRecordManager();
+        initRecodVoiceUtils();
 
+        initWordWritePopupUtils();
+
+    }
+
+    private WriteWordPopupUtils writeWordPopupUtils;
+
+    private void initWordWritePopupUtils() {
+
+        writeWordPopupUtils = new WriteWordPopupUtils(this);
+
+        writeWordPopupUtils.setWriteWordPopupUtilsListener(new WriteWordPopupUtils.WriteWordPopupUtilsListener() {
+            @Override
+            public void onVoiceIconClick() {
+                contentWord = "";
+                initWirteAndVoiceUI();
+            }
+
+            @Override
+            public void onSendClick(String content) {
+                etCmmt.setText(content);
+                tvNum.setText(content.length() + "/" + 500);
+                contentWord = content;
+                initWordUI();
+            }
+        });
+
+    }
+
+    private RecordVoicePopupUtils recordVoicePopupUtils;
+
+    private void initRecodVoiceUtils() {
+        recordVoicePopupUtils = new RecordVoicePopupUtils(this);
+
+        recordVoicePopupUtils.setRecordVoicePopupUtilsListener(new RecordVoicePopupUtils.RecordVoicePopupUtilsListener() {
+            @Override
+            public void onVoiceIconClick() {
+                initWirteAndVoiceUI();
+            }
+
+            @Override
+            public void onRecordFinish(Uri audioPath, int duration) {
+                finishRecordDo(audioPath, duration);
+            }
+        });
     }
 
     protected void initTitle() {
@@ -125,24 +164,11 @@ public class AskQuestionActivity extends BaseAppActivity {
         etCmmt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCmmtWordPop(etCmmt);
+                writeWordPopupUtils.showCmmtWordPop(v);
             }
         });
     }
 
-    private File mAudioDir;
-
-    private void initRecordManager() {
-        //默认时长60秒
-        AudioRecordManager.getInstance(this).setMaxVoiceDuration(120);
-        mAudioDir = new File(Environment.getExternalStorageDirectory(), "LQR_AUDIO");
-        if (!mAudioDir.exists()) {
-            mAudioDir.mkdirs();
-        }
-        AudioRecordManager.getInstance(this).setAudioSavePath(mAudioDir.getAbsolutePath());
-
-        AudioRecordManager.getInstance(this).setAudioRecordListener(iAudioRecordListener);
-    }
 
     @Override
     protected int getLayoutId() {
@@ -150,116 +176,8 @@ public class AskQuestionActivity extends BaseAppActivity {
     }
 
 
-    private EasyPopup voicePopu;
-
-    private void initVoicePopu() {
-        voicePopu = EasyPopup.create()
-                .setContext(this)
-                .setContentView(R.layout.popup_voice)
-                .setWidth(WindowManager.LayoutParams.FILL_PARENT)
-                .setOnViewListener(new EasyPopup.OnViewListener() {
-                    @Override
-                    public void initViews(View view, EasyPopup basePopup) {
-
-                        initRecordView(view);
-
-
-                    }
-
-
-                })
-                .setFocusAndOutsideEnable(true)
-                .apply();
-
-    }
-
-
-    private TextView tv_time;
-
-    private ImageView iv_voice;
-
-    private void initRecordView(View view) {
-        iv_voice = view.findViewById(R.id.iv_voice);
-        iv_voice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                initWirteAndVoiceUI();
-                voicePopu.dismiss();
-            }
-        });
-
-        tv_time = view.findViewById(R.id.tv_time);
-        recordAudioView = view.findViewById(R.id.record_view);
-        recordAudioView.setRecordAudioViewListener(new MyRecordAudioView.RecordAudioViewListener() {
-            @Override
-            public void onRecordViewStart() {
-                //点击开始录音
-
-                AudioRecordManager.getInstance(AskQuestionActivity.this).startRecord();
-
-            }
-
-            @Override
-            public void onRecordViewStop() {
-
-                //停止录音
-                AudioRecordManager.getInstance(AskQuestionActivity.this).stopRecord();
-            }
-        });
-
-
-    }
-
-    public void showVoicePopu(View view) {
-        // int offsetX = 0;
-        // int offsetY = 0;
-        //requestPopu.showAtAnchorView(view, YGravity.CENTER, XGravity.CENTER, offsetX, offsetY);
-
-        voicePopu.showAtLocation(view, Gravity.BOTTOM, 0, 0);
-    }
-
-
-    private CmmtWordPopup cmmtWordPopup;
-
     private String contentWord = "";
 
-    private void initCmmtWordPop() {
-
-
-        cmmtWordPopup = CmmtWordPopup.create(this)
-
-                .setWordPopupInterface(new CmmtWordPopup.WordPopupInterface() {
-                    @Override
-                    public void onVoiceClick() {
-
-                        contentWord = "";
-                        initWirteAndVoiceUI();
-                        cmmtWordPopup.dismiss();
-                    }
-
-                    @Override
-                    public void onSendClick(String content) {
-
-                        etCmmt.setText(content);
-                        tvNum.setText(content.length() + "/" + 500);
-                        contentWord = content;
-                        initWordUI();
-                        cmmtWordPopup.dismiss();
-
-
-                    }
-                })
-
-                .setOnDismissListener(new PopupWindow.OnDismissListener() {
-                    @Override
-                    public void onDismiss() {
-                        KeyboardUtils.toggleSoftInput(AskQuestionActivity.this);
-                    }
-                })
-                .apply();
-
-    }
 
     private void initWirteAndVoiceUI() {
 
@@ -272,7 +190,7 @@ public class AskQuestionActivity extends BaseAppActivity {
         linVoice.setVisibility(View.GONE);
         etCmmt.setText("");
         linWord.setVisibility(View.GONE);
-        cmmtWordPopup.setText("");
+
 
     }
 
@@ -288,14 +206,6 @@ public class AskQuestionActivity extends BaseAppActivity {
     }
 
 
-    private void showCmmtWordPop(View view) {
-        cmmtWordPopup.showSoftInput().showAtLocation(view, Gravity.BOTTOM, 0, 0);
-
-
-    }
-
-    //private List<LocalMedia> selectMedia = new ArrayList<>();
-
     @OnClick({R2.id.iv_take_Photo, R2.id.iv_voice, R2.id.iv_write, R2.id.btn_sure})
     public void onViewClicked(View view) {
         int i = view.getId();
@@ -305,11 +215,15 @@ public class AskQuestionActivity extends BaseAppActivity {
 
 
         } else if (i == R.id.iv_voice) {
-            showVoicePopu(view);
+            //showVoicePopu(view);
+
+            recordVoicePopupUtils.showVoicePopu(view);
 
 
         } else if (i == R.id.iv_write) {
-            showCmmtWordPop(view);
+
+
+            writeWordPopupUtils.showCmmtWordPop(view);
 
         } else if (i == R.id.btn_sure) {
 
@@ -391,8 +305,7 @@ public class AskQuestionActivity extends BaseAppActivity {
     protected void onStop() {
         super.onStop();
 
-
-        cmmtWordPopup.dismiss();
+        writeWordPopupUtils.dismiss();
     }
 
     //-----------------------------------------------------------------------------------图片选择回调
@@ -443,6 +356,52 @@ public class AskQuestionActivity extends BaseAppActivity {
 
         }
     }
+
+
+    private void finishRecordDo(Uri audioPath, int duration) {
+        String realPath = FileUtils.getRealFilePath(AskQuestionActivity.this, audioPath);
+
+        UploadVoice uploadVoice = uploadVoiceMap.get(realPath);
+
+        if (uploadVoice == null) {
+            uploadVoice = new UploadVoice();
+        }
+
+        uploadVoice.setDuration(duration * 1000);
+        uploadVoice.setPath(realPath);
+        /**
+         * 插入音频UI
+         */
+        final CommonSoundItemView commonSoundItemView = new CommonSoundItemView(AskQuestionActivity.this);
+        commonSoundItemView.setAudioEntity(uploadVoice);
+        commonSoundItemView.setCommonSoundItemViewListener(new CommonSoundItemView.CommonSoundItemViewListener() {
+            @Override
+            public void onDelete(UploadVoice audioEntity) {
+                linVoice.removeView(commonSoundItemView);
+
+                showLog("移除voice：" + audioEntity.getPath());
+                uploadVoiceMap.remove(audioEntity.getPath());
+                initVoiceUI();
+            }
+
+
+        });
+
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.gravity = Gravity.CENTER;
+        params.topMargin = DisplayUtil.dip2px(AskQuestionActivity.this, 16);
+        commonSoundItemView.setLayoutParams(params);
+
+        linVoice.addView(commonSoundItemView);
+        uploadVoice.setView(commonSoundItemView);
+        uploadVoiceMap.put(realPath, uploadVoice);
+        initVoiceUI();
+
+
+        uploadFile(realPath, TYPE_VOICE);
+    }
+
 
     private void instertImage(final LocalMedia media, final String compressPath) {
         final View view = LayoutInflater.from(this).inflate(R.layout.item_ask_image, null);
@@ -517,147 +476,6 @@ public class AskQuestionActivity extends BaseAppActivity {
         }
     }
 
-
-    //--------------------------------------------------------------------------------------倒记时
-
-    /**
-     * 初始化计时器用来更新倒计时
-     */
-    private Handler mainHandler;
-
-    private long recordTotalTime;
-
-    private void startTimer() {
-        mainHandler.postDelayed(runnable, 1000);
-    }
-
-
-    private Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            recordTotalTime += 1000;
-            updateTimerUI();
-
-            mainHandler.postDelayed(runnable, 1000);
-        }
-    };
-
-    private void updateTimerUI() {
-
-        String string = TimeUtils.converLongTimeToStr(recordTotalTime);
-        tv_time.setText(string);
-
-    }
-
-
-    //------------------------------------------------------------------------------------语音回调
-
-    //private List<AudioEntity> audioBeanList = new ArrayList<>();
-
-    private IAudioRecordListener iAudioRecordListener = new IAudioRecordListener() {
-        @Override
-        public void initTipView() {
-            //初始化提示视图
-
-        }
-
-        @Override
-        public void setTimeoutTipView(int counter) {
-            //设置倒计时提示视图
-        }
-
-        @Override
-        public void setRecordingTipView() {
-            //设置正在录制提示视图
-
-        }
-
-        @Override
-        public void setAudioShortTipView() {
-            //设置语音长度太短提示视图
-
-        }
-
-        @Override
-        public void setCancelTipView() {
-            //设置取消提示视图
-
-        }
-
-        @Override
-        public void destroyTipView() {
-            //销毁提示视图
-
-        }
-
-        @Override
-        public void onStartRecord() {
-            //开始录制
-            startTimer();
-        }
-
-        @Override
-        public void onFinish(final Uri audioPath, int duration) {
-
-            Log.e("======Vice时长", "" + duration);
-
-
-            String realPath = FileUtils.getRealFilePath(AskQuestionActivity.this, audioPath);
-            Log.e("======Vice路径", "" + realPath);
-            //录制结束
-            recordTotalTime = 0;
-            mainHandler.removeCallbacks(runnable);
-            tv_time.setText("00:00");
-            voicePopu.dismiss();
-            UploadVoice uploadVoice = uploadVoiceMap.get(realPath);
-
-            if (uploadVoice == null) {
-                uploadVoice = new UploadVoice();
-            }
-
-            uploadVoice.setDuration(duration * 1000);
-            uploadVoice.setPath(realPath);
-            /**
-             * 插入音频UI
-             */
-            final CommonSoundItemView commonSoundItemView = new CommonSoundItemView(AskQuestionActivity.this);
-            commonSoundItemView.setAudioEntity(uploadVoice);
-            commonSoundItemView.setCommonSoundItemViewListener(new CommonSoundItemView.CommonSoundItemViewListener() {
-                @Override
-                public void onDelete(UploadVoice audioEntity) {
-                    linVoice.removeView(commonSoundItemView);
-
-                    showLog("移除voice：" + audioEntity.getPath());
-                    uploadVoiceMap.remove(audioEntity.getPath());
-                    initVoiceUI();
-                }
-
-
-            });
-
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.gravity = Gravity.CENTER;
-            params.topMargin = DisplayUtil.dip2px(AskQuestionActivity.this, 16);
-            commonSoundItemView.setLayoutParams(params);
-
-            linVoice.addView(commonSoundItemView);
-            uploadVoice.setView(commonSoundItemView);
-            uploadVoiceMap.put(realPath, uploadVoice);
-            initVoiceUI();
-
-
-            uploadFile(realPath, TYPE_VOICE);
-        }
-
-        @Override
-        public void onAudioDBChanged(int db) {
-            //分贝改变
-
-        }
-    };
-
-
     /**
      * 刷新音频布局
      */
@@ -686,31 +504,9 @@ public class AskQuestionActivity extends BaseAppActivity {
         }
     }
 
-    private void playAudio(Uri audioPath) {
-        AudioPlayManager.getInstance().startPlay(AskQuestionActivity.this, audioPath, new IAudioPlayListener() {
-            @Override
-            public void onStart(Uri var1) {
-                //开播（一般是开始语音消息动画）
-            }
-
-            @Override
-            public void onStop(Uri var1) {
-                //停播（一般是停止语音消息动画）
-            }
-
-            @Override
-            public void onComplete(Uri var1) {
-                //播完（一般是停止语音消息动画）
-            }
-        });
-    }
-
 
     private Map<String, UploadImage> uploadImageMap = new HashMap<>();
-
-
     private Map<String, UploadVoice> uploadVoiceMap = new HashMap<>();
-
 
     private final int TYPE_IMAGE = 1;
     private final int TYPE_VOICE = 2;
@@ -756,7 +552,7 @@ public class AskQuestionActivity extends BaseAppActivity {
                                 uploadVoice = new UploadVoice();
                             }
                             uploadVoice.setUrl(s);
-
+                            uploadVoice.setPlayUrl(SharedPreferenceManager.getInstance(AskQuestionActivity.this).getUserCache().getQiNiuUrl() + s);
                             uploadVoiceMap.put(compressPath, uploadVoice);
 
                             showLog("上传语音成功:" + s);

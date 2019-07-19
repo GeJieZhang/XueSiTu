@@ -122,7 +122,9 @@ public class CommonSoundItemView extends RelativeLayout {
         if (audioInfo != null) {
 
 
-            Uri uri = Uri.parse(audioInfo.getUrl());
+            Uri uri = Uri.parse(audioInfo.getPath());
+
+
             AudioPlayManager.getInstance().startPlay(context, uri, iAudioPlayListener);
         }
 

@@ -28,7 +28,9 @@ import java.util.List;
 
 import butterknife.BindView;
 
-
+/**
+ * 学生提问后的搜索页面
+ */
 @Route(path = ARouterPathUtils.Dayi_AskQuestionFindActivity)
 public class AskQuestionFindActivity extends BaseAppActivity {
 
@@ -117,9 +119,11 @@ public class AskQuestionFindActivity extends BaseAppActivity {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (position==0){
-                        ARouter.getInstance().build(ARouterPathUtils.Dayi_TeacherQuestionDetailActivity).navigation();
-                    }else {
+                    if (position == 0) {
+
+                        ARouter.getInstance().build(ARouterPathUtils.Dayi_TeacherAnswerQuestionDetailActivity).navigation();
+                    } else {
+
                         ARouter.getInstance().build(ARouterPathUtils.Dayi_StudentQuestionDetailActivity).navigation();
                     }
 

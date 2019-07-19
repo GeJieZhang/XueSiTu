@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.dayi.R;
 import com.dayi.R2;
-import com.dayi.activity.TeacherQuestionDetailActivity;
 import com.dayi.bean.UploadVoice;
 import com.dayi.view.CommonSoundItemView;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
@@ -61,8 +60,11 @@ public class QuestionFragment extends BaseAppFragment {
     private void instertVoice() {
 
 
+        UploadVoice uploadVoice = new UploadVoice();
+        uploadVoice.setPlayUrl("http://pu00k0ssj.bkt.clouddn.com/myRecord.aac");
+
         final CommonSoundItemView commonSoundItemView = new CommonSoundItemView(getContext());
-        commonSoundItemView.setAudioEntity(new UploadVoice());
+        commonSoundItemView.setAudioEntity(uploadVoice);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.CENTER;
         params.topMargin = DisplayUtil.dip2px(getContext(), 16);
