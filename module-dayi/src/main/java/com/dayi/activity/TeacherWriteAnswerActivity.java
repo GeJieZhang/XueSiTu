@@ -2,10 +2,8 @@ package com.dayi.activity;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
-import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +23,7 @@ import com.dayi.R2;
 import com.dayi.bean.UploadImage;
 import com.dayi.bean.UploadVideo;
 import com.dayi.bean.UploadVoice;
-import com.dayi.utils.RecordVoicePopupUtils;
-import com.dayi.utils.WriteWordPopupUtils;
+import com.dayi.utils.pop.RecordVoicePopupUtils;
 import com.dayi.view.CommonSoundItemView;
 import com.lib.app.ARouterPathUtils;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
@@ -41,11 +38,9 @@ import com.luck.picture.lib.entity.LocalMedia;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**

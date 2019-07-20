@@ -1,7 +1,6 @@
 package com.dayi.activity;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.FrameLayout;
@@ -9,7 +8,8 @@ import android.widget.FrameLayout;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.dayi.R;
 import com.dayi.R2;
-import com.dayi.fragment.QuestionFragment;
+import com.dayi.fragment.child.QuestionFragment;
+import com.dayi.fragment.child.TeacherListFragment;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.FragmentTag;
 import com.lib.fastkit.utils.fragment_deal.FragmentCustomUtils;
@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 /**
@@ -32,17 +31,24 @@ import butterknife.ButterKnife;
 public class StudentQuestionDetailActivity extends BaseAppActivity {
     @BindView(R2.id.f_question_student)
     FrameLayout fQuestionStudent;
-    @BindView(R2.id.rv)
-    RecyclerView rv;
+    @BindView(R2.id.f_teacher_list)
+    FrameLayout fTeacherList;
+
 
     @Override
     protected void onCreateView() {
         initTitle();
-        initFragment();
+        initQuestionFragment();
 
-        initView();
+        initTeacherListFragment();
 
 
+    }
+
+    private void initTeacherListFragment() {
+
+        TeacherListFragment teacherListFragment = new TeacherListFragment();
+        FragmentCustomUtils.setFragment(this, R.id.f_teacher_list, teacherListFragment, FragmentTag.TeacherListFragment);
     }
 
     protected void initTitle() {
@@ -55,33 +61,13 @@ public class StudentQuestionDetailActivity extends BaseAppActivity {
 
     }
 
-    private HomeAdapter homeAdapter;
-
-    private List<String> list = new ArrayList<>();
-
-    private void initView() {
-        list.add("");
-        list.add("");
-        list.add("");
-        homeAdapter = new HomeAdapter(this, list);
-
-
-        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false) {
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        });
-
-        rv.setAdapter(homeAdapter);
-    }
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_student_question_detail;
     }
 
-    private void initFragment() {
+    private void initQuestionFragment() {
         QuestionFragment questionFragment = new QuestionFragment();
 
 
@@ -89,22 +75,5 @@ public class StudentQuestionDetailActivity extends BaseAppActivity {
 
     }
 
-
-    private class HomeAdapter extends BaseAdapter<String> {
-
-        public HomeAdapter(Context context, List<String> mData) {
-            super(context, mData);
-        }
-
-        @Override
-        public int getLayoutId() {
-            return R.layout.item_student_question_detail;
-        }
-
-        @Override
-        protected void toBindViewHolder(ViewHolder holder, int position, List<String> mData) {
-
-        }
-    }
 
 }

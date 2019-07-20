@@ -33,7 +33,7 @@ public  class FragmentUtils {
     }
 
     public static Fragment getSiXueFragment() {
-        Fragment fragment = (Fragment) ARouter.getInstance().build(ARouterPathUtils.YouXuan_SiXueFragment).navigation();
+        Fragment fragment = (Fragment) ARouter.getInstance().build(ARouterPathUtils.Dayi_SiXueFragment).navigation();
         return fragment;
     }
 

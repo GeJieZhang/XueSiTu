@@ -59,19 +59,20 @@ public class ARouterPathUtils {
     //==============================================================================================
     public static final String Dayi_DayiFragment = "/dayi/DayiFragment";
 
-
-    //==============================================================================================
-    //=================================================================================Fragment====
-    //==============================================================================================
-
+    public static final String Dayi_SiXueFragment = "/dayi/SiXueFragment";
     public static final String Dayi_TeacherAnswerDetailActivity = "/dayi/TeacherAnswerDetailActivity";
     public static final String Dayi_StudentQuestionDetailActivity = "/dayi/StudentQuestionDetailActivity";
     public static final String Dayi_TeacherWriteAnswerActivity = "/dayi/TeacherWriteAnswerActivity";
     public static final String Dayi_TeacherAnswerQuestionDetailActivity = "/dayi/TeacherAnswerQuestionDetailActivity";
     public static final String Dayi_AskQuestionFindActivity = "/dayi/AskQuestionFindActivity";
     public static final String Dayi_AskQuestionActivity = "/dayi/AskQuestionActivity";
+
+    //==============================================================================================
+    //=================================================================================Fragment====
+    //==============================================================================================
+
+
     public static final String YouXuan_FengXiangFragment = "/youxuan/FengXiangFragment";
     public static final String YouXuan_JianKeFragment = "/youxuan/JianKeFragment";
-    public static final String YouXuan_SiXueFragment = "/youxuan/SiXueFragment";
     public static final String YouXuan_YouXuanFragment = "/youxuan/YouXuanFragment";
 }

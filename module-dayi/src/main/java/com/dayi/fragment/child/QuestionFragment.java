@@ -1,4 +1,4 @@
-package com.dayi.fragment;
+package com.dayi.fragment.child;
 
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;

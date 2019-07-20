@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:id="@+id/lin_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#50000000"
+    android:gravity="center"
     android:orientation="vertical">
 
 
@@ -17,10 +20,10 @@
             android:id="@+id/lin_voice_write"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginBottom="40dp"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:layout_marginTop="40dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -40,7 +43,7 @@
 
                 <TextView
                     style="@style/text_style11"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="8dp"
                     android:text="视频"
                     android:textColor="@color/base_title"
                     android:textSize="16sp" />
@@ -70,7 +73,7 @@
 
                 <TextView
                     style="@style/text_style11"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="8dp"
                     android:text="语音+拍照"
                     android:textColor="@color/base_title"
                     android:textSize="16sp" />

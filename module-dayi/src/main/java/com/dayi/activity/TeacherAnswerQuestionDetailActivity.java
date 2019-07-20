@@ -1,9 +1,9 @@
 package com.dayi.activity;
 
 
-import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -13,7 +13,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dayi.R;
 import com.dayi.R2;
-import com.dayi.fragment.QuestionFragment;
+import com.dayi.fragment.child.QuestionFragment;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.FragmentTag;
 import com.lib.fastkit.utils.fragment_deal.FragmentCustomUtils;
@@ -22,7 +22,6 @@ import com.lib.view.navigationbar.NomalNavigationBar;
 import com.zyyoona7.popup.EasyPopup;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
@@ -91,10 +90,16 @@ public class TeacherAnswerQuestionDetailActivity extends BaseAppActivity {
     private LinearLayout lin_video;
     private LinearLayout lin_voice;
 
+    private LinearLayout lin_parent;
+
     private void initAnswerPopuPopu() {
         answerPopu = EasyPopup.create()
                 .setContext(this)
                 .setContentView(R.layout.popup_answer)
+
+                .setWidth(WindowManager.LayoutParams.FILL_PARENT)
+
+                .setHeight(WindowManager.LayoutParams.FILL_PARENT)
 
                 .setOnViewListener(new EasyPopup.OnViewListener() {
                     @Override
@@ -103,6 +108,13 @@ public class TeacherAnswerQuestionDetailActivity extends BaseAppActivity {
 
                         lin_video = view.findViewById(R.id.lin_video);
                         lin_voice = view.findViewById(R.id.lin_voice);
+                        lin_parent = view.findViewById(R.id.lin_parent);
+                        lin_parent.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                answerPopu.dismiss();
+                            }
+                        });
                         lin_video.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -110,6 +122,8 @@ public class TeacherAnswerQuestionDetailActivity extends BaseAppActivity {
                                 ARouter.getInstance().build(ARouterPathUtils.Dayi_TeacherWriteAnswerActivity)
                                         .withString("type", "1")
                                         .navigation();
+
+                                answerPopu.dismiss();
 
 
                             }
@@ -121,6 +135,7 @@ public class TeacherAnswerQuestionDetailActivity extends BaseAppActivity {
                                 ARouter.getInstance().build(ARouterPathUtils.Dayi_TeacherWriteAnswerActivity)
                                         .withString("type", "2")
                                         .navigation();
+                                answerPopu.dismiss();
                             }
                         });
 

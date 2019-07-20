@@ -7,8 +7,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
-        >
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -85,35 +84,14 @@
                 android:layout_height="wrap_content"
                 android:minHeight="200dp"></FrameLayout>
 
-
-            <TextView
-
-                style="@style/text_style11"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="24dp"
-                android:text="老师回答"
-                android:textColor="@color/base_title"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv"
+            <!--老师列表-->
+            <FrameLayout
+                android:id="@+id/f_teacher_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:layout_marginTop="24dp"
-                android:layout_weight="1"></android.support.v7.widget.RecyclerView>
+                android:layout_weight="1"
+                android:minHeight="200dp"></FrameLayout>
 
-            <TextView
-
-                style="@style/text_style4"
-                android:layout_gravity="center"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
-                android:text="~我也是有底线的！~"
-                android:textSize="14sp"
-
-                />
 
         </LinearLayout>
     </ScrollView>
