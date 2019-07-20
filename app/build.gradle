@@ -135,10 +135,5 @@ dependencies {
         api project(':module-live')
     }
 
-//    /**
-//     * 支付宝
-//     */
-//    api(name: 'alipaySdk-15.6.3-20190605142540', ext: 'aar')
-//
 
 }
