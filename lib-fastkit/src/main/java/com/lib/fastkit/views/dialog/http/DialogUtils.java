@@ -8,7 +8,7 @@ import com.lib.fastkit.views.dialog.tip.QMUITipDialog;
 
 public class DialogUtils {
 
-     QMUITipDialog tipDialog;
+    QMUITipDialog tipDialog;
 
 
     public DialogUtils() {
@@ -18,13 +18,12 @@ public class DialogUtils {
         tipDialog = new QMUITipDialog.Builder(context)
                 .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
                 .setTipWord(str)
-                .create();
-        tipDialog.setCancelable(true);
+                .create(true);
         tipDialog.show();
 
     }
 
-    public  void dismiss() {
+    public void dismiss() {
 
         tipDialog.dismiss();
 

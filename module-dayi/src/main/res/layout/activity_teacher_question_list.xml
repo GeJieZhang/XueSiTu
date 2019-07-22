@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/base_gray_bg"
     android:orientation="vertical">
 
     <ScrollView
@@ -47,18 +48,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 android:layout_marginTop="24dp"
-                android:layout_weight="1"></android.support.v7.widget.RecyclerView>
+                android:layout_weight="1"
+                android:background="@color/base_gray_bg"></android.support.v7.widget.RecyclerView>
 
             <!--<TextView-->
 
-                <!--style="@style/text_style4"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:layout_marginBottom="16dp"-->
-                <!--android:layout_marginTop="16dp"-->
-                <!--android:text="~我也是有底线的！~"-->
-                <!--android:textSize="14sp"-->
+            <!--style="@style/text_style4"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginBottom="16dp"-->
+            <!--android:layout_marginTop="16dp"-->
+            <!--android:text="~我也是有底线的！~"-->
+            <!--android:textSize="14sp"-->
 
-                <!--/>-->
+            <!--/>-->
         </LinearLayout>
 
     </ScrollView>

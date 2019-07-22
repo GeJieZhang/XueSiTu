@@ -74,9 +74,12 @@ public class StudentQuestionDetailActivity extends BaseAppActivity {
 
                             insertQuestionData(result.getObj().getQuestion());
 
+                            insertAnserData(result.getObj().getReply_user_list());
+
                         }
 
                     }
+
 
                     @Override
                     public void onError(String e) {
@@ -88,16 +91,28 @@ public class StudentQuestionDetailActivity extends BaseAppActivity {
 
     private void insertQuestionData(QuestionDetail.ObjBean.QuestionBean question) {
 
-        if (questionFragment!=null){
+        if (questionFragment != null) {
             questionFragment.updateData(question);
         }
 
 
     }
 
+    private void insertAnserData(List<QuestionDetail.ObjBean.ReplyUserListBean> reply_user_list) {
+
+        if (teacherListFragment != null) {
+            teacherListFragment.updateData(reply_user_list);
+
+        }
+    }
+
+    TeacherListFragment teacherListFragment;
+
     private void initTeacherListFragment() {
 
-        TeacherListFragment teacherListFragment = new TeacherListFragment();
+        teacherListFragment = new TeacherListFragment();
+
+
         FragmentCustomUtils.setFragment(this, R.id.f_teacher_list, teacherListFragment, FragmentTag.TeacherListFragment);
     }
 

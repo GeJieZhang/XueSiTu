@@ -6,9 +6,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.dayi.R;
 import com.dayi.R2;
 import com.dayi.activity.StudentQuestionDetailActivity;
+import com.dayi.bean.QuestionDetail;
+import com.lib.app.ARouterPathUtils;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.ui.fragment.BaseAppFragment;
@@ -34,12 +37,9 @@ public class TeacherListFragment extends BaseAppFragment {
 
     private HomeAdapter homeAdapter;
 
-    private List<String> list = new ArrayList<>();
+    private List<QuestionDetail.ObjBean.ReplyUserListBean> list = new ArrayList<>();
 
     private void initView() {
-        list.add("");
-        list.add("");
-        list.add("");
         homeAdapter = new HomeAdapter(getActivity(), list);
 
 
@@ -53,9 +53,9 @@ public class TeacherListFragment extends BaseAppFragment {
         rv.setAdapter(homeAdapter);
     }
 
-    private class HomeAdapter extends BaseAdapter<String> {
+    private class HomeAdapter extends BaseAdapter<QuestionDetail.ObjBean.ReplyUserListBean> {
 
-        public HomeAdapter(Context context, List<String> mData) {
+        public HomeAdapter(Context context, List<QuestionDetail.ObjBean.ReplyUserListBean> mData) {
             super(context, mData);
         }
 
@@ -65,9 +65,32 @@ public class TeacherListFragment extends BaseAppFragment {
         }
 
         @Override
-        protected void toBindViewHolder(ViewHolder holder, int position, List<String> mData) {
+        protected void toBindViewHolder(ViewHolder holder, final int position, final List<QuestionDetail.ObjBean.ReplyUserListBean> mData) {
 
+
+            holder.getView(R.id.tv_see).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    int replyId = mData.get(position).getReply_id();
+
+
+
+                    ARouter.getInstance().build(ARouterPathUtils.Dayi_TeacherAnswerDetailActivity)
+                            .withString("replyId", replyId + "")
+                            .navigation();
+                }
+            });
         }
     }
+
+
+    public void updateData(List<QuestionDetail.ObjBean.ReplyUserListBean> data) {
+
+        list.addAll(data);
+        homeAdapter.notifyDataSetChanged();
+
+    }
+
 
 }

@@ -37,6 +37,7 @@ import com.lib.utls.glide.GlideConfig;
 import com.lib.utls.picture_select.PhotoUtil;
 import com.lib.utls.upload.QiNiuUploadTask;
 import com.lib.utls.upload.initerface.FileUploadListener;
+import com.lib.view.navigationbar.NomalNavigationBar;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.entity.LocalMedia;
 
@@ -81,7 +82,18 @@ public class TeacherWriteAnswerActivity extends BaseAppActivity {
     protected void onCreateView() {
 
         ARouter.getInstance().inject(this);
+        initTitle();
+        initType();
 
+        initRecodVoiceUtils();
+
+
+    }
+
+    /**
+     * 初始化回答类型
+     */
+    private void initType() {
         if (type.equals("1")) {
             //视频
             linVedio.setVisibility(View.VISIBLE);
@@ -93,9 +105,14 @@ public class TeacherWriteAnswerActivity extends BaseAppActivity {
             linImageVoice.setVisibility(View.VISIBLE);
 
         }
+    }
 
+    protected void initTitle() {
 
-        initRecodVoiceUtils();
+        NomalNavigationBar navigationBar = new
+                NomalNavigationBar.Builder(this)
+                .setTitle("问答")
+                .builder();
 
 
     }
@@ -694,6 +711,7 @@ public class TeacherWriteAnswerActivity extends BaseAppActivity {
                 .addParam("voice_reply", voice_description)
                 .addParam("image_reply", image_description)
                 .addParam("video_reply", video_description)
+                .addParam("question_id", questionId)
 
                 .execute(new HttpDialogCallBack<BaseHttpBean>() {
                     @Override

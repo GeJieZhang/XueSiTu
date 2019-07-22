@@ -9,12 +9,14 @@
         android:id="@+id/lin_video"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:orientation="horizontal">
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/lin_image"
+        android:layout_marginTop="24dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -23,6 +25,7 @@
 
     <LinearLayout
         android:id="@+id/lin_voice"
+        android:layout_marginTop="24dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -31,6 +34,7 @@
 
     <LinearLayout
         android:id="@+id/lin_word"
+        android:layout_marginTop="24dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">

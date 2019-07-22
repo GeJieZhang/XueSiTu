@@ -27,6 +27,7 @@ import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -114,7 +115,8 @@ public class QMUITipDialog extends Dialog {
         public @interface IconType {
         }
 
-        private @IconType int mCurrentIconType = ICON_TYPE_NOTHING;
+        private @IconType
+        int mCurrentIconType = ICON_TYPE_NOTHING;
 
         private Context mContext;
 
@@ -142,7 +144,7 @@ public class QMUITipDialog extends Dialog {
             return this;
         }
 
-        public QMUITipDialog create(){
+        public QMUITipDialog create() {
             return create(true);
         }
 
@@ -153,9 +155,11 @@ public class QMUITipDialog extends Dialog {
          * @return 创建的 Dialog
          */
         public QMUITipDialog create(boolean cancelable) {
-            QMUITipDialog dialog = new QMUITipDialog(mContext);
+            final QMUITipDialog dialog = new QMUITipDialog(mContext);
             dialog.setCancelable(cancelable);
             dialog.setContentView(R.layout.qmui_tip_dialog_layout);
+
+
             ViewGroup contentWrap = (ViewGroup) dialog.findViewById(R.id.contentWrap);
 
             if (mCurrentIconType == ICON_TYPE_LOADING) {

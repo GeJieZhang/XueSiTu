@@ -68,7 +68,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_money"
+            android:id="@+id/tv_see"
             style="@style/text_style5"
             android:layout_width="60dp"
             android:layout_height="60dp"

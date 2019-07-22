@@ -15,12 +15,21 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.dayi.R;
 import com.dayi.R2;
+import com.dayi.bean.AnswerDetail;
+import com.dayi.bean.QuestionDetail;
 import com.dayi.bean.UploadVoice;
 import com.dayi.view.CommonSoundItemView;
 import com.lib.app.ARouterPathUtils;
+import com.lib.app.CodeUtil;
+import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
+import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
+import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.utls.glide.GlideConfig;
+import com.lib.view.navigationbar.NomalNavigationBar;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,29 +49,107 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
     @BindView(R2.id.lin_word)
     LinearLayout linWord;
     private String url = "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=262644851,3907824053&fm=26&gp=0.jpg";
-    @Autowired(name = "questionId")
-    String questionId;
+    @Autowired(name = "replyId")
+    String replyId;
 
     @Override
     protected void onCreateView() {
+
         ARouter.getInstance().inject(this);
+        initTitle();
+        initData();
 
-        insertImage(0);
-        insertImage(1);
-
-        instertVoice();
-
-
-        insertWord();
     }
 
-    private void insertWord() {
-        final View itemImage = LayoutInflater.from(this).inflate(R.layout.item_answer_wrod, null);
+    protected void initTitle() {
 
-        linWord.addView(itemImage);
+        NomalNavigationBar navigationBar = new
+                NomalNavigationBar.Builder(this)
+                .setTitle("老师回答")
+                .builder();
+
+
     }
 
-    private void insertImage(int postion) {
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_teacher_answer_detail;
+    }
+
+
+    private void initData() {
+
+        HttpUtils.with(this)
+                .addParam("requestType", "QUESTION_REPLY_DETAILE")
+                .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
+                .addParam("reply_id", replyId)
+                .execute(new HttpDialogCallBack<AnswerDetail>() {
+                    @Override
+                    public void onSuccess(AnswerDetail result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+
+                            updateUI(result);
+
+
+                        }
+
+                    }
+
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
+
+    }
+
+
+    private void updateUI(AnswerDetail result) {
+
+
+        int reply_type = result.getObj().getReply_type();
+
+        if (reply_type == 0) {
+
+            //视频
+            List<String> videoList = result.getObj().getVideo();
+            if (videoList.size() > 0) {
+                for (String s : videoList) {
+                    insertVideo(s);
+                }
+            }
+
+
+        } else {
+            //图片语音
+
+            List<String> imageList = result.getObj().getImage();
+            if (imageList.size() > 0) {
+                for (String s : imageList) {
+                    insertImage(s);
+                }
+            }
+
+
+            List<String> voiceList = result.getObj().getVoice();
+
+
+            if (voiceList.size() > 0) {
+                for (String s : voiceList) {
+                    instertVoice(s);
+                }
+            }
+
+
+        }
+
+
+    }
+
+
+    private void insertImage(String url) {
         final View itemImage = LayoutInflater.from(this).inflate(R.layout.item_answer_image, null);
 
         ImageView imageView = itemImage.findViewById(R.id.iv_image);
@@ -71,12 +158,8 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
 
         params.width = DisplayUtil.getScreenWidth(this) / 2 - DisplayUtil.dip2px(this, 20);
         params.height = DisplayUtil.dip2px(this, 112);
-        if (postion == 0) {
-            params.rightMargin = DisplayUtil.dip2px(this, 4);
-        }
-        if (postion == 1) {
-            params.leftMargin = DisplayUtil.dip2px(this, 4);
-        }
+        int margin = DisplayUtil.dip2px(this, 4);
+        params.setMargins(margin, margin, margin, margin);
         cardView.setLayoutParams(params);
 
         Glide.with(this)
@@ -87,23 +170,37 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
         linImage.addView(itemImage);
     }
 
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_teacher_answer_detail;
-    }
 
+    private void instertVoice(String url) {
 
-    private void instertVoice() {
-
-
+        UploadVoice uploadVoice = new UploadVoice();
+        uploadVoice.setPlayUrl(url);
         final CommonSoundItemView commonSoundItemView = new CommonSoundItemView(this);
-        commonSoundItemView.setAudioEntity(new UploadVoice());
+        commonSoundItemView.setAudioEntity(uploadVoice);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.LEFT;
         params.topMargin = DisplayUtil.dip2px(this, 16);
         commonSoundItemView.setLayoutParams(params);
 
         linVoice.addView(commonSoundItemView);
+
+    }
+
+    /**
+     * 插入视频
+     */
+    private void insertVideo(String url) {
+
+        View view = LayoutInflater.from(this).inflate(R.layout.item_video, null);
+
+        ImageView imageView = view.findViewById(R.id.iv_video);
+
+        Glide.with(this)
+                .load(url)
+                .apply(GlideConfig.getRoundOptions(10))
+                .into(imageView);
+        linVideo.addView(view);
+
 
     }
 

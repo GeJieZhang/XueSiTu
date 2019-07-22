@@ -81,6 +81,8 @@ public class TeacherQuestionListActivity extends BaseAppActivity {
 
                             homeAdapter1.notifyDataSetChanged();
 
+                            homeAdapter2.notifyDataSetChanged();
+
                         }
                     }
 
