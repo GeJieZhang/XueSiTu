@@ -9,14 +9,20 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dayi.R;
 import com.dayi.R2;
+import com.dayi.bean.QuestionDetail;
 import com.dayi.fragment.child.QuestionFragment;
 import com.lib.app.ARouterPathUtils;
+import com.lib.app.CodeUtil;
 import com.lib.app.FragmentTag;
+import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
+import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.fragment_deal.FragmentCustomUtils;
+import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.view.navigationbar.NomalNavigationBar;
 import com.zyyoona7.popup.EasyPopup;
@@ -38,21 +44,66 @@ public class TeacherAnswerQuestionDetailActivity extends BaseAppActivity {
     TextView tvAction;
     @BindView(R2.id.f_question_teacher)
     FrameLayout fQuestionTeacher;
-
+    @Autowired(name = "questionId")
+    String questionId;
 
     @Override
     protected void onCreateView() {
+        ARouter.getInstance().inject(this);
         initTitle();
 
 
         initFragment();
 
         initAnswerPopuPopu();
+
+
+        initData();
+
+
     }
 
-    private void initFragment() {
-        QuestionFragment questionFragment = new QuestionFragment();
 
+    private void initData() {
+
+        HttpUtils.with(this)
+                .addParam("requestType", "QUESTION_DETAILE")
+                .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
+                .addParam("question_id", questionId)
+                .execute(new HttpDialogCallBack<QuestionDetail>() {
+                    @Override
+                    public void onSuccess(QuestionDetail result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+
+                            insertQuestionData(result.getObj().getQuestion());
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
+
+    }
+
+    private void insertQuestionData(QuestionDetail.ObjBean.QuestionBean question) {
+
+        if (questionFragment != null) {
+            questionFragment.updateData(question);
+        }
+
+
+    }
+
+    private QuestionFragment questionFragment;
+
+    private void initFragment() {
+
+        questionFragment = new QuestionFragment();
 
         FragmentCustomUtils.setFragment(this, R.id.f_question_teacher, questionFragment, FragmentTag.QuestionFragment);
 
@@ -121,6 +172,8 @@ public class TeacherAnswerQuestionDetailActivity extends BaseAppActivity {
 
                                 ARouter.getInstance().build(ARouterPathUtils.Dayi_TeacherWriteAnswerActivity)
                                         .withString("type", "1")
+
+                                        .withString("questionId", questionId)
                                         .navigation();
 
                                 answerPopu.dismiss();
@@ -134,6 +187,7 @@ public class TeacherAnswerQuestionDetailActivity extends BaseAppActivity {
                             public void onClick(View v) {
                                 ARouter.getInstance().build(ARouterPathUtils.Dayi_TeacherWriteAnswerActivity)
                                         .withString("type", "2")
+                                        .withString("questionId", questionId)
                                         .navigation();
                                 answerPopu.dismiss();
                             }

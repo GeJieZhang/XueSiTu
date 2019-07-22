@@ -128,7 +128,7 @@ public class PersonalFragment extends BaseAppFragment {
 
 
     @OnClick({R2.id.lin_transparent, R2.id.iv_setting, R2.id.iv_name, R2.id.lin_class, R2.id.lin_question, R2.id.lin_evaluation, R2.id.lin_teacher, R2.id.lin_study, R2.id.lin_sign, R2.id.btn_recharge
-            , R2.id.lin_userInfo, R2.id.lin_teacher_class
+            , R2.id.lin_userInfo, R2.id.lin_teacher_class, R2.id.lin_teacher_question
     })
     public void onViewClicked(View view) {
         int i = view.getId();
@@ -148,6 +148,11 @@ public class PersonalFragment extends BaseAppFragment {
             //学生课程订单
 
             ARouter.getInstance().build(ARouterPathUtils.User_MyClassActivity).navigation();
+        } else if (i == R.id.lin_teacher_question) {
+            //答疑
+
+            ARouter.getInstance().build(ARouterPathUtils.Dayi_TeacherQuestionListActivity).navigation();
+
 
         } else if (i == R.id.lin_teacher_class) {
             //老师的课程订单
@@ -158,7 +163,7 @@ public class PersonalFragment extends BaseAppFragment {
             //学生我的提问
 
 
-            ARouter.getInstance().build(ARouterPathUtils.Dayi_AskQuestionFindActivity).navigation();
+            ARouter.getInstance().build(ARouterPathUtils.Dayi_StudentQuestionListActivity).navigation();
 
         } else if (i == R.id.lin_evaluation) {
             //学生我的测评

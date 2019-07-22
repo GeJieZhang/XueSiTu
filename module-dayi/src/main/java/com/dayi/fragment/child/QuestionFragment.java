@@ -12,11 +12,14 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.dayi.R;
 import com.dayi.R2;
+import com.dayi.bean.QuestionDetail;
 import com.dayi.bean.UploadVoice;
 import com.dayi.view.CommonSoundItemView;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.ui.fragment.BaseAppFragment;
 import com.lib.utls.glide.GlideConfig;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -33,16 +36,18 @@ public class QuestionFragment extends BaseAppFragment {
 
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
-        instertImage();
-        instertVoice();
+//        instertImage();
+//        instertVoice();
     }
+
 
     @Override
     protected int getLayoutId() {
+
         return R.layout.fragment_question;
     }
 
-    private void instertImage() {
+    private void instertImage(String url) {
 
         final View view = LayoutInflater.from(getContext()).inflate(R.layout.item_ask_image, null);
         ImageView imageView = view.findViewById(R.id.iv_image);
@@ -57,11 +62,11 @@ public class QuestionFragment extends BaseAppFragment {
 
     }
 
-    private void instertVoice() {
+    private void instertVoice(String url) {
 
 
         UploadVoice uploadVoice = new UploadVoice();
-        uploadVoice.setPlayUrl("http://pu00k0ssj.bkt.clouddn.com/myRecord.aac");
+        uploadVoice.setPlayUrl(url);
 
         final CommonSoundItemView commonSoundItemView = new CommonSoundItemView(getContext());
         commonSoundItemView.setAudioEntity(uploadVoice);
@@ -71,6 +76,50 @@ public class QuestionFragment extends BaseAppFragment {
         commonSoundItemView.setLayoutParams(params);
 
         linVoice.addView(commonSoundItemView);
+
+    }
+
+    /**
+     * 更新问题
+     *
+     * @param question
+     */
+    public void updateData(QuestionDetail.ObjBean.QuestionBean question) {
+
+
+        /**
+         * 插入文字
+         */
+        String description = question.getDescription();
+        linWord.setVisibility(View.GONE);
+        if (!description.equals("")) {
+            linWord.setVisibility(View.VISIBLE);
+            etCmmt.setText(description);
+
+        }
+
+        /**
+         * 插入图片
+         */
+        List<String> imageList = question.getImage();
+        if (imageList.size() > 0) {
+            for (String s : imageList) {
+                instertImage(s);
+            }
+
+        }
+        /**
+         * 插入
+         */
+
+        List<String> voiceList = question.getVoice();
+
+        if (voiceList.size() > 0) {
+            for (String s : voiceList) {
+                instertVoice(s);
+            }
+        }
+
 
     }
 

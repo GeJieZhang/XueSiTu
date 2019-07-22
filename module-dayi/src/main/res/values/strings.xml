@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">module-live</string>
+    <string name="rule_link"><u>了解旁听规则</u></string>
+
+    <string name="rule">
+        1.旁听回答，一经购买不克进行退还，有问题可以直接联系客服\n
+        2.主题可主动分享已经收到老师回答的回答\n
+        3.其他学员每天有一次分享app免费旁听的机会\n
+        4.其他学生旁听主题的回答，题主可获得相应的收益\n
+        5.每年级的旁听收费方式不同，请在个人资料中选择确切的年级
+    </string>
 </resources>

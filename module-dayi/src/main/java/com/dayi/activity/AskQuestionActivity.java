@@ -210,76 +210,80 @@ public class AskQuestionActivity extends BaseAppActivity {
         } else if (i == R.id.btn_sure) {
 
 
-            if (uploadImageMap.size() <= 0) {
-                showToast("请附上问题图片！");
-
-                return;
-
-            }
-
-            if (uploadVoiceMap.size() <= 0 & contentWord.equals("")) {
-                showToast("请对问题进行文字和语音描述！");
-
-                return;
-
-            }
-
-
-            String image_description = "";
-            int imageI = 0;
-            for (Map.Entry<String, UploadImage> entry : uploadImageMap.entrySet()) {
-                if (imageI != 0) {
-                    image_description += ",";
-                }
-                image_description += entry.getValue().getUrl();
-                imageI++;
-            }
-
-
-            String voice_description = "";
-            int voiceI = 0;
-            for (Map.Entry<String, UploadVoice> entry : uploadVoiceMap.entrySet()) {
-                if (voiceI != 0) {
-                    voice_description += ",";
-                }
-                voice_description += entry.getValue().getUrl();
-                voiceI++;
-            }
-
-
-            HttpUtils.with(this)
-                    .post()
-                    .addParam("requestType", "QUESTION_INITIATE_QUESTION")
-                    .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
-
-                    .addParam("image_description", image_description)
-                    .addParam("voice_description", voice_description)
-
-                    .addParam("text_description", contentWord)
-                    .execute(new HttpDialogCallBack<BaseHttpBean>() {
-                        @Override
-                        public void onSuccess(BaseHttpBean result) {
-
-                            if (result.getCode() == CodeUtil.CODE_200) {
-
-                                finish();
-
-                            }
-
-                            showToast(result.getMsg());
-
-                            showLog(result.toString());
-
-                        }
-
-                        @Override
-                        public void onError(String e) {
-
-                        }
-                    });
+            requestUplaodData();
 
 
         }
+    }
+
+    private void requestUplaodData() {
+        if (uploadImageMap.size() <= 0) {
+            showToast("请附上问题图片！");
+
+            return;
+
+        }
+
+        if (uploadVoiceMap.size() <= 0 & contentWord.equals("")) {
+            showToast("请对问题进行文字和语音描述！");
+
+            return;
+
+        }
+
+
+        String image_description = "";
+        int imageI = 0;
+        for (Map.Entry<String, UploadImage> entry : uploadImageMap.entrySet()) {
+            if (imageI != 0) {
+                image_description += ",";
+            }
+            image_description += entry.getValue().getUrl();
+            imageI++;
+        }
+
+
+        String voice_description = "";
+        int voiceI = 0;
+        for (Map.Entry<String, UploadVoice> entry : uploadVoiceMap.entrySet()) {
+            if (voiceI != 0) {
+                voice_description += ",";
+            }
+            voice_description += entry.getValue().getUrl();
+            voiceI++;
+        }
+
+
+        HttpUtils.with(this)
+                .post()
+                .addParam("requestType", "QUESTION_INITIATE_QUESTION")
+                .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
+
+                .addParam("image_description", image_description)
+                .addParam("voice_description", voice_description)
+
+                .addParam("text_description", contentWord)
+                .execute(new HttpDialogCallBack<BaseHttpBean>() {
+                    @Override
+                    public void onSuccess(BaseHttpBean result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+
+                            finish();
+
+                        }
+
+                        showToast(result.getMsg());
+
+                        showLog(result.toString());
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
     }
 
 

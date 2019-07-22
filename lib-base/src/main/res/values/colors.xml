@@ -18,7 +18,7 @@
     <color name="base_yellow">#ffe000</color>
     //灰色
     <color name="base_gray">#686868</color>
-
+    <color name="base_gray_bg">#f4f4f4</color>
     //标题颜色
     <color name="base_title">#282828</color>
     //灰色字体1

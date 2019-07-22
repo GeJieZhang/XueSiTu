@@ -18,15 +18,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.herewhite.sdk.Room;
 import com.herewhite.sdk.domain.Appliance;
-import com.herewhite.sdk.domain.ImageInformationWithUrl;
-import com.herewhite.sdk.domain.MemberState;
-import com.herewhite.sdk.domain.Scene;
-import com.lib.app.EventBusTagUtils;
-import com.lib.bean.Event;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
-import com.lib.fastkit.utils.color.ColorUtil;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.dialog.arrow.TriangleDrawable;
 import com.lib.fastkit.views.dialog.normal.NormalDialog;
@@ -44,13 +37,10 @@ import com.live.bean.control.WhiteBoradBean;
 import com.live.bean.live.MyTrackInfo;
 import com.live.view.CmmtPopup;
 import com.luck.picture.lib.entity.LocalMedia;
-import com.qiniu.droid.rtc.QNRTCUser;
 import com.smart.colorview.normal.CircleColorView;
 import com.zyyoona7.popup.EasyPopup;
 import com.zyyoona7.popup.XGravity;
 import com.zyyoona7.popup.YGravity;
-
-import org.simple.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,8 +48,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.live.activity.MainRoomActivity.screenOrientation;
-import static com.live.activity.MainRoomActivity.trackInfoMap;
 import static com.live.fragment.ChatFragment.ACTION_TYPE2;
 import static com.live.fragment.ChatFragment.ACTION_TYPE3;
 
@@ -427,8 +415,8 @@ public class RoomControlFragment extends BaseAppFragment {
         }
 
         @Override
-        protected void toBindEmptyViewHolder() {
-            super.toBindEmptyViewHolder();
+        protected void toBindEmptyViewHolder(ViewHolder holder) {
+            super.toBindEmptyViewHolder(holder);
             requestPopu.dismiss();
 
 

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="10dp"
+
+        app:cardElevation="0dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="62dp"
+                    android:layout_height="40dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/test1" />
+
+                <ImageView
+                    android:layout_width="62dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="8dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/test1" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"></View>
+
+                <TextView
+                    style="@style/text_style5"
+                    android:layout_gravity="bottom"
+                    android:text="剩余"
+                    android:textColor="@color/base_gray"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_money"
+                    style="@style/text_style5"
+                    android:layout_gravity="bottom"
+
+                    android:text="8" />
+
+                <TextView
+                    style="@style/text_style5"
+                    android:layout_gravity="bottom"
+                    android:text="兔币"
+                    android:textSize="14sp" />
+
+
+            </LinearLayout>
+
+            <View
+                style="@style/line_dotted"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="4dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/nav_share" />
+
+                <TextView
+                    style="@style/text_style5"
+
+                    android:layout_marginLeft="8dp"
+
+                    android:text="分享旁听"
+                    android:textColor="@color/base_gray"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="30dp"
+                    android:layout_weight="1"></View>
+
+                <Button
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/bg_circle_hollow_r6"
+                    android:text="查看详情"
+                    android:textColor="@color/base_title"
+
+                    />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

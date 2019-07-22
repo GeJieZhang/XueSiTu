@@ -7,7 +7,6 @@ package com.lib.app;
 public class ARouterPathUtils {
 
 
-
     //==============================================================================================
     //======================================================================================APP====
     //==============================================================================================
@@ -57,6 +56,11 @@ public class ARouterPathUtils {
     //==============================================================================================
     //======================================================================================dayi====
     //==============================================================================================
+
+
+    public static final String Dayi_PrivateAskActivity = "/dayi/PrivateAskActivity";
+    public static final String Dayi_StudentQuestionListActivity = "/dayi/StudentQuestionListActivity";
+    public static final String Dayi_TeacherQuestionListActivity = "/dayi/TeacherQuestionListActivity";
     public static final String Dayi_DayiFragment = "/dayi/DayiFragment";
 
     public static final String Dayi_SiXueFragment = "/dayi/SiXueFragment";

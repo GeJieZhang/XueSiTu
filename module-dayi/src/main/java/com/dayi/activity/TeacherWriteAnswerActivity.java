@@ -20,14 +20,18 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.dayi.R;
 import com.dayi.R2;
+import com.dayi.bean.BaseHttpBean;
 import com.dayi.bean.UploadImage;
 import com.dayi.bean.UploadVideo;
 import com.dayi.bean.UploadVoice;
 import com.dayi.utils.pop.RecordVoicePopupUtils;
 import com.dayi.view.CommonSoundItemView;
 import com.lib.app.ARouterPathUtils;
+import com.lib.app.CodeUtil;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
+import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
+import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.utls.glide.GlideConfig;
 import com.lib.utls.picture_select.PhotoUtil;
@@ -70,6 +74,8 @@ public class TeacherWriteAnswerActivity extends BaseAppActivity {
     @BindView(R2.id.btn_sure)
     Button btnSure;
     private String url = "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=262644851,3907824053&fm=26&gp=0.jpg";
+    @Autowired(name = "questionId")
+    String questionId;
 
     @Override
     protected void onCreateView() {
@@ -201,6 +207,8 @@ public class TeacherWriteAnswerActivity extends BaseAppActivity {
 
         } else if (i == R.id.btn_sure) {
 
+            requestUplaodData();
+
         }
     }
 
@@ -244,8 +252,6 @@ public class TeacherWriteAnswerActivity extends BaseAppActivity {
 
         }
     }
-
-
 
 
     private Map<String, UploadVideo> uploadVideoMap = new HashMap<>();
@@ -397,8 +403,6 @@ public class TeacherWriteAnswerActivity extends BaseAppActivity {
     }
 
 
-
-
     /**
      * 插入视频布局
      *
@@ -487,9 +491,9 @@ public class TeacherWriteAnswerActivity extends BaseAppActivity {
         final View view = LayoutInflater.from(this).inflate(R.layout.item_ask_image, null);
 
 
-        final FrameLayout f_Image_bg=view.findViewById(R.id.f_Image_bg);
+        final FrameLayout f_Image_bg = view.findViewById(R.id.f_Image_bg);
 
-        final ImageView iv_delete_Image=view.findViewById(R.id.iv_delete_Image);
+        final ImageView iv_delete_Image = view.findViewById(R.id.iv_delete_Image);
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -614,4 +618,103 @@ public class TeacherWriteAnswerActivity extends BaseAppActivity {
         updateVoiceUI();
     }
 
+    private void requestUplaodData() {
+
+        String image_description = "";
+        String voice_description = "";
+        String video_description = "";
+
+        String reply_type = "";
+
+        if (type.equals("1")) {
+
+            reply_type = "0";
+            //视频
+            if (uploadVideoMap.size() <= 0) {
+                showToast("请附上解题视频！");
+
+                return;
+            }
+
+            int videoI = 0;
+            for (Map.Entry<String, UploadVideo> entry : uploadVideoMap.entrySet()) {
+                if (videoI != 0) {
+                    video_description += ",";
+                }
+                video_description += entry.getValue().getUrl();
+                videoI++;
+            }
+
+
+        } else {
+            reply_type = "1";
+
+            if (uploadImageMap.size() <= 0) {
+                showToast("请附上解题图片！");
+
+                return;
+
+            }
+
+
+            int imageI = 0;
+            for (Map.Entry<String, UploadImage> entry : uploadImageMap.entrySet()) {
+                if (imageI != 0) {
+                    image_description += ",";
+                }
+                image_description += entry.getValue().getUrl();
+                imageI++;
+            }
+
+            if (uploadVoiceMap.size() <= 0) {
+                showToast("请附上解题语音！");
+
+                return;
+
+            }
+
+            int voiceI = 0;
+            for (Map.Entry<String, UploadVoice> entry : uploadVoiceMap.entrySet()) {
+                if (voiceI != 0) {
+                    voice_description += ",";
+                }
+                voice_description += entry.getValue().getUrl();
+                voiceI++;
+            }
+
+
+        }
+
+
+        HttpUtils.with(this)
+                .post()
+                .addParam("requestType", "QUESTION_SUBMIT_REPLY")
+                .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
+                .addParam("reply_type", reply_type)
+                .addParam("voice_reply", voice_description)
+                .addParam("image_reply", image_description)
+                .addParam("video_reply", video_description)
+
+                .execute(new HttpDialogCallBack<BaseHttpBean>() {
+                    @Override
+                    public void onSuccess(BaseHttpBean result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+
+                            finish();
+
+                        }
+
+                        showToast(result.getMsg());
+
+                        showLog(result.toString());
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
+    }
 }

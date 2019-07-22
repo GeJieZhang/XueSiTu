@@ -19,5 +19,12 @@
         <activity android:name=".activity.StudentQuestionDetailActivity"></activity>
 
         <activity android:name=".activity.TeacherAnswerDetailActivity"></activity>
+
+
+        <activity android:name=".activity.TeacherQuestionListActivity"></activity>
+
+        <activity android:name=".activity.StudentQuestionListActivity"></activity>
+
+        <activity android:name=".activity.PrivateAskActivity"></activity>
     </application>
 </manifest>

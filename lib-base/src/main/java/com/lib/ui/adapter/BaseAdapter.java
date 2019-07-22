@@ -48,7 +48,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
 
         if (getItemViewType(position) == VIEW_TYPE) {
 
-            toBindEmptyViewHolder();
+            toBindEmptyViewHolder(holder);
 
         } else {
 
@@ -58,7 +58,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
         }
     }
 
-    protected void toBindEmptyViewHolder() {
+    protected void toBindEmptyViewHolder(ViewHolder holder) {
 
 
     }
