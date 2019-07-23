@@ -58,6 +58,8 @@ public class ARouterPathUtils {
     //==============================================================================================
 
 
+
+    public static final String Dayi_DayiNormalDetailWebActivity = "/dayi/DayiNormalDetailWebActivity";
     public static final String Dayi_PrivateAskActivity = "/dayi/PrivateAskActivity";
     public static final String Dayi_StudentQuestionListActivity = "/dayi/StudentQuestionListActivity";
     public static final String Dayi_TeacherQuestionListActivity = "/dayi/TeacherQuestionListActivity";

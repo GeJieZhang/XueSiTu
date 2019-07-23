@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:background="@mipmap/teacher_jpg_bg"
+        android:background="@mipmap/teacher_jpg_bg_circle"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="16dp"
@@ -70,12 +70,13 @@
         <TextView
             android:id="@+id/tv_see"
             style="@style/text_style5"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/bg_circle_bule2"
             android:gravity="center"
             android:text="查看"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="14sp" />
 
 
     </LinearLayout>

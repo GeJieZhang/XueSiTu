@@ -22,14 +22,14 @@
         android:layout_marginTop="24dp"
         android:layout_weight="1"></android.support.v7.widget.RecyclerView>
 
-    <TextView
+    <!--<TextView-->
 
-        style="@style/text_style4"
-        android:layout_gravity="center"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"
-        android:text="~我也是有底线的！~"
-        android:textSize="14sp"
+        <!--style="@style/text_style4"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_marginBottom="16dp"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:text="~我也是有底线的！~"-->
+        <!--android:textSize="14sp"-->
 
-        />
+        <!--/>-->
 </LinearLayout>

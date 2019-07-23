@@ -136,55 +136,59 @@ public class StudentQuestionListActivity extends BaseAppActivity {
         }
 
         @Override
-        protected void toBindViewHolder(ViewHolder holder, int position, List<QuestionList.ObjBean.QuestionListBean> mData) {
-            initImage(holder, position, mData);
-
-
-        }
-    }
-
-    private void initImage(ViewHolder holder, final int position, final List<QuestionList.ObjBean.QuestionListBean> mData) {
-
-
-        /**
-         * 问答第一张图
-         */
-
-        if (mData.get(position).getImage() != null) {
-            ImageView iv_iamge1 = holder.getView(R.id.iv_image1);
-            String url1 = mData.get(position).getImage().get(0);
-            if (url1 != null) {
-                Glide.with(StudentQuestionListActivity.this)
-                        .load(url1)
-                        .apply(GlideConfig.getCircleOptions())
-                        .into(iv_iamge1);
-            }
-
+        protected void toBindViewHolder(ViewHolder holder, final int position, final List<QuestionList.ObjBean.QuestionListBean> mData) {
 
             /**
-             * 问答第二张图
+             * 问答第一张图
              */
-            ImageView iv_iamge2 = holder.getView(R.id.iv_image1);
-            String url2 = mData.get(position).getImage().get(1);
-            if (url1 != null) {
-                Glide.with(StudentQuestionListActivity.this)
-                        .load(url2)
-                        .apply(GlideConfig.getCircleOptions())
-                        .into(iv_iamge2);
+
+            if (mData.get(position).getFile() != null) {
+
+                if (mData.get(position).getFile().size() >= 1) {
+                    ImageView iv_iamge1 = holder.getView(R.id.iv_image1);
+                    String url1 = mData.get(position).getFile().get(0);
+                    if (url1 != null) {
+                        Glide.with(StudentQuestionListActivity.this)
+                                .load(url1)
+                                .apply(GlideConfig.getRoundOptions(10))
+                                .into(iv_iamge1);
+                    }
+
+                }
+
+
+                /**
+                 * 问答第二张图
+                 */
+                if (mData.get(position).getFile().size() >= 2) {
+                    ImageView iv_iamge2 = holder.getView(R.id.iv_image1);
+                    String url2 = mData.get(position).getFile().get(1);
+                    if (url2 != null) {
+                        Glide.with(StudentQuestionListActivity.this)
+                                .load(url2)
+                                .apply(GlideConfig.getRoundOptions(10))
+                                .into(iv_iamge2);
+                    }
+                }
+
             }
+
+            holder.getView(R.id.btn_detail).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    ARouter.getInstance()
+                            .build(ARouterPathUtils.Dayi_StudentQuestionDetailActivity)
+                            .withString("questionId", mData.get(position).getQuestion_id() + "")
+                            .navigation();
+                }
+            });
+
+
         }
-
-        holder.getView(R.id.btn_detail).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                ARouter.getInstance()
-                        .build(ARouterPathUtils.Dayi_StudentQuestionDetailActivity)
-                        .withString("questionId", mData.get(position).getQuestion_id() + "")
-                        .navigation();
-            }
-        });
     }
+
+
 
 
     /**
@@ -205,6 +209,40 @@ public class StudentQuestionListActivity extends BaseAppActivity {
         @Override
         protected void toBindViewHolder(ViewHolder holder, int position, List<QuestionList.ObjBean.HistoryListBean> mData) {
 
+/**
+ * 问答第一张图
+ */
+
+            if (mData.get(position).getFile() != null) {
+
+                if (mData.get(position).getFile().size() >= 1) {
+                    ImageView iv_iamge1 = holder.getView(R.id.iv_image1);
+                    String url1 = mData.get(position).getFile().get(0);
+                    if (url1 != null) {
+                        Glide.with(StudentQuestionListActivity.this)
+                                .load(url1)
+                                .apply(GlideConfig.getRoundOptions(10))
+                                .into(iv_iamge1);
+                    }
+
+                }
+
+
+                /**
+                 * 问答第二张图
+                 */
+                if (mData.get(position).getFile().size() >= 2) {
+                    ImageView iv_iamge2 = holder.getView(R.id.iv_image1);
+                    String url2 = mData.get(position).getFile().get(1);
+                    if (url2 != null) {
+                        Glide.with(StudentQuestionListActivity.this)
+                                .load(url2)
+                                .apply(GlideConfig.getRoundOptions(10))
+                                .into(iv_iamge2);
+                    }
+                }
+
+            }
 
         }
 

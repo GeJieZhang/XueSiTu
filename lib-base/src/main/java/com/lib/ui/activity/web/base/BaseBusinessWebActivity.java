@@ -1,4 +1,4 @@
-package com.youxuan.activity.web.base;
+package com.lib.ui.activity.web.base;
 
 import android.graphics.Bitmap;
 import android.webkit.JavascriptInterface;

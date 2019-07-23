@@ -3,6 +3,7 @@ package com.dayi.view;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -21,7 +22,10 @@ import com.dayi.bean.AudioEntity;
 import com.dayi.bean.UploadVoice;
 import com.lib.fastkit.utils.audio.AudioPlayManager;
 import com.lib.fastkit.utils.audio.IAudioPlayListener;
+import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.time_deal.TimeUtils;
+
+import java.util.HashMap;
 
 import static com.dayi.R2.id.tv_sound_duration;
 
@@ -124,6 +128,8 @@ public class CommonSoundItemView extends RelativeLayout {
 
             Uri uri = Uri.parse(audioInfo.getPlayUrl());
 
+            LogUtil.e(audioInfo.getPlayUrl());
+
 
             AudioPlayManager.getInstance().startPlay(context, uri, iAudioPlayListener);
         }
@@ -132,7 +138,10 @@ public class CommonSoundItemView extends RelativeLayout {
 
     public void setAudioEntity(UploadVoice audioInfo) {
         this.audioInfo = audioInfo;
-        tvSoundDuration.setText(TimeUtils.formatTime(audioInfo.getDuration()));
+
+//
+        tvSoundDuration.setText(TimeUtils.formatTime(Long.parseLong(getRingDuring(audioInfo.getPlayUrl()))));
+
     }
 
 
@@ -190,6 +199,8 @@ public class CommonSoundItemView extends RelativeLayout {
             onCompleteUI();
 
         }
+
+
     };
 
 
@@ -203,4 +214,30 @@ public class CommonSoundItemView extends RelativeLayout {
         this.listener = listener;
 
     }
+
+
+    public static String getRingDuring(String mUri) {
+        String duration = null;
+        android.media.MediaMetadataRetriever mmr = new android.media.MediaMetadataRetriever();
+
+        try {
+            if (mUri != null) {
+                HashMap<String, String> headers = null;
+                if (headers == null) {
+                    headers = new HashMap<String, String>();
+                    headers.put("User-Agent", "Mozilla/5.0 (Linux; U; Android 4.4.2; zh-CN; MW-KW-001 Build/JRO03C) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 UCBrowser/1.0.0.001 U4/0.8.0 Mobile Safari/533.1");
+                }
+                mmr.setDataSource(mUri, headers);
+            }
+
+            duration = mmr.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION);
+        } catch (Exception ex) {
+        } finally {
+            mmr.release();
+        }
+        LogUtil.e("duration " + duration);
+        return duration;
+    }
+
+
 }

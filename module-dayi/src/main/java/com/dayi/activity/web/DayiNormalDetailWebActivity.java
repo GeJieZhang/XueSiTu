@@ -1,4 +1,4 @@
-package com.youxuan.activity.web;
+package com.dayi.activity.web;
 
 
 import android.graphics.Bitmap;
@@ -6,18 +6,19 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.dayi.R;
 import com.lib.app.ARouterPathUtils;
 import com.lib.view.navigationbar.NomalNavigationBar;
 import com.tencent.smtt.sdk.WebView;
-import com.youxuan.R;
+
 import com.lib.ui.activity.web.base.BaseBusinessWebActivity;
 
 /**
  * 陪伴课
  */
 
-@Route(path = ARouterPathUtils.YouXuan_NormalDetailWebActivity)
-public class NormalDetailWebActivity extends BaseBusinessWebActivity {
+@Route(path = ARouterPathUtils.Dayi_DayiNormalDetailWebActivity)
+public class DayiNormalDetailWebActivity extends BaseBusinessWebActivity {
 
 
     private TextView title;
@@ -97,7 +98,7 @@ public class NormalDetailWebActivity extends BaseBusinessWebActivity {
 
     @Override
     protected int getWebLayoutId() {
-        return R.layout.activity_company_class;
+        return R.layout.activity_dayi_normal_detail;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.lib.fastkit.utils.audio;
 
+import android.media.MediaPlayer;
 import android.net.Uri;
 
 public interface IAudioPlayListener {
@@ -8,4 +9,6 @@ public interface IAudioPlayListener {
     void onStop(Uri var1);
 
     void onComplete(Uri var1);
+
+
 }

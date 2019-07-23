@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.bumptech.glide.Glide;
 import com.dayi.R;
 import com.dayi.R2;
 import com.dayi.bean.QuestionList;
@@ -19,6 +21,7 @@ import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.ui.adapter.BaseAdapter;
+import com.lib.utls.glide.GlideConfig;
 import com.lib.view.navigationbar.NomalNavigationBar;
 
 import java.util.ArrayList;
@@ -138,7 +141,40 @@ public class TeacherQuestionListActivity extends BaseAppActivity {
 
         @Override
         protected void toBindViewHolder(ViewHolder holder, final int position, final List<QuestionList.ObjBean.QuestionListBean> mData) {
+/**
+ * 问答第一张图
+ */
 
+            if (mData.get(position).getFile() != null) {
+
+                if (mData.get(position).getFile().size() >= 1) {
+                    ImageView iv_iamge1 = holder.getView(R.id.iv_image1);
+                    String url1 = mData.get(position).getFile().get(0);
+                    if (url1 != null) {
+                        Glide.with(TeacherQuestionListActivity.this)
+                                .load(url1)
+                                .apply(GlideConfig.getRoundOptions(10))
+                                .into(iv_iamge1);
+                    }
+
+                }
+
+
+                /**
+                 * 问答第二张图
+                 */
+                if (mData.get(position).getFile().size() >= 2) {
+                    ImageView iv_iamge2 = holder.getView(R.id.iv_image1);
+                    String url2 = mData.get(position).getFile().get(1);
+                    if (url2 != null) {
+                        Glide.with(TeacherQuestionListActivity.this)
+                                .load(url2)
+                                .apply(GlideConfig.getRoundOptions(10))
+                                .into(iv_iamge2);
+                    }
+                }
+
+            }
             holder.getView(R.id.btn_detail).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -169,8 +205,53 @@ public class TeacherQuestionListActivity extends BaseAppActivity {
         }
 
         @Override
-        protected void toBindViewHolder(ViewHolder holder, int position, List<QuestionList.ObjBean.HistoryListBean> mData) {
+        protected void toBindViewHolder(ViewHolder holder, final int position, final List<QuestionList.ObjBean.HistoryListBean> mData) {
+            holder.getView(R.id.btn_sure).setVisibility(View.GONE);
+            /**
+             * 问答第一张图
+             */
 
+            if (mData.get(position).getFile() != null) {
+
+                if (mData.get(position).getFile().size() >= 1) {
+                    ImageView iv_iamge1 = holder.getView(R.id.iv_image1);
+                    String url1 = mData.get(position).getFile().get(0);
+                    if (url1 != null) {
+                        Glide.with(TeacherQuestionListActivity.this)
+                                .load(url1)
+                                .apply(GlideConfig.getRoundOptions(10))
+                                .into(iv_iamge1);
+                    }
+
+                }
+
+
+                /**
+                 * 问答第二张图
+                 */
+                if (mData.get(position).getFile().size() >= 2) {
+                    ImageView iv_iamge2 = holder.getView(R.id.iv_image1);
+                    String url2 = mData.get(position).getFile().get(1);
+                    if (url2 != null) {
+                        Glide.with(TeacherQuestionListActivity.this)
+                                .load(url2)
+                                .apply(GlideConfig.getRoundOptions(10))
+                                .into(iv_iamge2);
+                    }
+                }
+
+            }
+
+            holder.getView(R.id.btn_detail).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    ARouter.getInstance()
+                            .build(ARouterPathUtils.Dayi_StudentQuestionDetailActivity)
+                            .withString("questionId", mData.get(position).getQuestion_id() + "")
+                            .navigation();
+                }
+            });
         }
 
         @Override

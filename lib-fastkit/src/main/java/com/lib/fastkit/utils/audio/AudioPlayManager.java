@@ -160,9 +160,9 @@ public class AudioPlayManager implements SensorEventListener {
                 public void onAudioFocusChange(int focusChange) {
                     Log.d(TAG, "OnAudioFocusChangeListener " + focusChange);
                     if (AudioPlayManager.this._audioManager != null && focusChange == -1) {
-                       AudioPlayManager.this._audioManager.abandonAudioFocus(AudioPlayManager.this.afChangeListener);
-                       AudioPlayManager.this.afChangeListener = null;
-                       AudioPlayManager.this.resetMediaPlayer();
+                        AudioPlayManager.this._audioManager.abandonAudioFocus(AudioPlayManager.this.afChangeListener);
+                        AudioPlayManager.this.afChangeListener = null;
+                        AudioPlayManager.this.resetMediaPlayer();
                     }
 
                 }
@@ -184,27 +184,31 @@ public class AudioPlayManager implements SensorEventListener {
                 this._mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     public void onCompletion(MediaPlayer mp) {
                         if (AudioPlayManager.this._playListener != null) {
-                           AudioPlayManager.this._playListener.onComplete(AudioPlayManager.this._playingUri);
-                           AudioPlayManager.this._playListener = null;
-                           AudioPlayManager.this.context = null;
+                            AudioPlayManager.this._playListener.onComplete(AudioPlayManager.this._playingUri);
+                            AudioPlayManager.this._playListener = null;
+                            AudioPlayManager.this.context = null;
                         }
 
-                       AudioPlayManager.this.reset();
+                        AudioPlayManager.this.reset();
                     }
                 });
                 this._mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                     public boolean onError(MediaPlayer mp, int what, int extra) {
-                       AudioPlayManager.this.reset();
+                        AudioPlayManager.this.reset();
                         return true;
                     }
                 });
                 this._mediaPlayer.setDataSource(context, audioUri);
                 this._mediaPlayer.setAudioStreamType(3);
                 this._mediaPlayer.prepare();
+
                 this._mediaPlayer.start();
                 if (this._playListener != null) {
                     this._playListener.onStart(this._playingUri);
+
                 }
+
+
             } catch (Exception var5) {
                 var5.printStackTrace();
                 if (this._playListener != null) {

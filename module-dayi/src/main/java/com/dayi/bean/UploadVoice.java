@@ -10,7 +10,7 @@ public class UploadVoice {
 
     private String playUrl;
     private View view;
-    private long duration;
+    private long duration = 0;
 
     public long getDuration() {
         return duration;

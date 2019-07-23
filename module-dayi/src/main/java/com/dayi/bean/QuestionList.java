@@ -7,7 +7,7 @@ public class QuestionList {
 
     /**
      * code : 200
-     * obj : {"history_list":[{"divide":3,"file":"FtyynoxXZwekhKCC7IVnVIHvk5i-","question_id":3,"image":["http://pu00k0ssj.bkt.clouddn.com/FtyynoxXZwekhKCC7IVnVIHvk5i-"]}],"question_List":[{"remaining":5,"file":"FtyynoxXZwekhKCC7IVnVIHvk5i-","question_id":3,"image":["http://pu00k0ssj.bkt.clouddn.com/FtyynoxXZwekhKCC7IVnVIHvk5i-"]}]}
+     * obj : {"history_list":[{"divide":2,"file":["http://pu00k0ssj.bkt.clouddn.com/FtyynoxXZwekhKCC7IVnVIHvk5i-"],"question_id":3},{"divide":5,"file":["http://pu00k0ssj.bkt.clouddn.com/Fm6Frf6_xGlRfAU0qyjkWpXp6qsF"],"question_id":5}],"question_List":[{"remaining":8,"file":["http://pu00k0ssj.bkt.clouddn.com/FtyynoxXZwekhKCC7IVnVIHvk5i-"],"question_id":3},{"remaining":10,"file":["http://pu00k0ssj.bkt.clouddn.com/FttbETY71vECHeB6Ysrc8n0oOLTR"],"question_id":4},{"remaining":0,"file":["http://pu00k0ssj.bkt.clouddn.com/Fm6Frf6_xGlRfAU0qyjkWpXp6qsF"],"question_id":5},{"remaining":10,"file":["http://pu00k0ssj.bkt.clouddn.com/Frr3N-lgxgc7SmG06a4wvjWx2zgy"],"question_id":6}]}
      * msg : 请求成功
      * seccess : true
      */
@@ -71,16 +71,14 @@ public class QuestionList {
 
         public static class HistoryListBean {
             /**
-             * divide : 3
-             * file : FtyynoxXZwekhKCC7IVnVIHvk5i-
+             * divide : 2
+             * file : ["http://pu00k0ssj.bkt.clouddn.com/FtyynoxXZwekhKCC7IVnVIHvk5i-"]
              * question_id : 3
-             * image : ["http://pu00k0ssj.bkt.clouddn.com/FtyynoxXZwekhKCC7IVnVIHvk5i-"]
              */
 
             private int divide;
-            private String file;
             private int question_id;
-            private List<String> image;
+            private List<String> file;
 
             public int getDivide() {
                 return divide;
@@ -90,14 +88,6 @@ public class QuestionList {
                 this.divide = divide;
             }
 
-            public String getFile() {
-                return file;
-            }
-
-            public void setFile(String file) {
-                this.file = file;
-            }
-
             public int getQuestion_id() {
                 return question_id;
             }
@@ -106,27 +96,25 @@ public class QuestionList {
                 this.question_id = question_id;
             }
 
-            public List<String> getImage() {
-                return image;
+            public List<String> getFile() {
+                return file;
             }
 
-            public void setImage(List<String> image) {
-                this.image = image;
+            public void setFile(List<String> file) {
+                this.file = file;
             }
         }
 
         public static class QuestionListBean {
             /**
-             * remaining : 5
-             * file : FtyynoxXZwekhKCC7IVnVIHvk5i-
+             * remaining : 8
+             * file : ["http://pu00k0ssj.bkt.clouddn.com/FtyynoxXZwekhKCC7IVnVIHvk5i-"]
              * question_id : 3
-             * image : ["http://pu00k0ssj.bkt.clouddn.com/FtyynoxXZwekhKCC7IVnVIHvk5i-"]
              */
 
             private int remaining;
-            private String file;
             private int question_id;
-            private List<String> image;
+            private List<String> file;
 
             public int getRemaining() {
                 return remaining;
@@ -136,14 +124,6 @@ public class QuestionList {
                 this.remaining = remaining;
             }
 
-            public String getFile() {
-                return file;
-            }
-
-            public void setFile(String file) {
-                this.file = file;
-            }
-
             public int getQuestion_id() {
                 return question_id;
             }
@@ -152,12 +132,12 @@ public class QuestionList {
                 this.question_id = question_id;
             }
 
-            public List<String> getImage() {
-                return image;
+            public List<String> getFile() {
+                return file;
             }
 
-            public void setImage(List<String> image) {
-                this.image = image;
+            public void setFile(List<String> file) {
+                this.file = file;
             }
         }
     }
