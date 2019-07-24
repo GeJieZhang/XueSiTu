@@ -630,6 +630,18 @@ rx.internal.util.atomic.LinkedQueueNode consumerNode;
 -keep class com.google.gson.stream.** { *; }
 -keep class com.google.gson.examples.android.model.** { *; }
 -keep class com.google.gson.** { *;}
+
+#--------------------------------------------------------------------------------------------------
+#JiaoZi播放器
+
+-keep public class cn.jzvd.JZMediaSystem {*; }
+-keep public class cn.jzvd.demo.CustomMedia.CustomMedia {*; }
+-keep public class cn.jzvd.demo.CustomMedia.JZMediaIjk {*; }
+-keep public class cn.jzvd.demo.CustomMedia.JZMediaSystemAssertFolder {*; }
+
+-keep class tv.danmaku.ijk.media.player.** {*; }
+-dontwarn tv.danmaku.ijk.media.player.*
+-keep interface tv.danmaku.ijk.media.player.** { *; }
 #--------------------------------------------------------------------------------------------------
 #bean
 -keep public class com.youxuan.bean.**{*;}

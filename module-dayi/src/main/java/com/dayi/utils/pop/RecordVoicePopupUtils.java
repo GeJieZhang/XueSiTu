@@ -155,7 +155,10 @@ public class RecordVoicePopupUtils {
     private ImageView iv_voice;
     private MyRecordAudioView recordAudioView;
 
+    private TextView tv_tips;
+
     private void initRecordView(View view) {
+        tv_tips = view.findViewById(R.id.tv_tips);
         iv_voice = view.findViewById(R.id.iv_voice);
         iv_voice.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,7 +180,7 @@ public class RecordVoicePopupUtils {
                 //点击开始录音
 
                 AudioRecordManager.getInstance(activity).startRecord();
-
+                tv_tips.setText("松开发送");
             }
 
             @Override
@@ -185,6 +188,10 @@ public class RecordVoicePopupUtils {
 
                 //停止录音
                 AudioRecordManager.getInstance(activity).stopRecord();
+
+                mainHandler.removeCallbacks(runnable);
+
+                tv_tips.setText("长按说话");
             }
         });
 

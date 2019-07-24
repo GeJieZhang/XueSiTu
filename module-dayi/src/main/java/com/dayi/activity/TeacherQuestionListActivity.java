@@ -206,7 +206,7 @@ public class TeacherQuestionListActivity extends BaseAppActivity {
 
         @Override
         protected void toBindViewHolder(ViewHolder holder, final int position, final List<QuestionList.ObjBean.HistoryListBean> mData) {
-            holder.getView(R.id.btn_sure).setVisibility(View.GONE);
+
             /**
              * 问答第一张图
              */

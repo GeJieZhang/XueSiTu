@@ -142,19 +142,18 @@ public class TeacherWriteAnswerActivity extends BaseAppActivity {
         showLog("语音路径:" + path);
 
 
-        insertVoice(path);
+        insertVoice(path, duration);
 
     }
 
-    private void insertVoice(String path) {
+    private void insertVoice(String path, int duration) {
         UploadVoice uploadVoice = uploadVoiceMap.get(path);
 
         if (uploadVoice == null) {
             uploadVoice = new UploadVoice();
         }
         uploadVoice.setPath(path);
-
-
+        uploadVoice.setDuration(duration);
         /**
          * 填充布局
          */
@@ -185,6 +184,11 @@ public class TeacherWriteAnswerActivity extends BaseAppActivity {
          * 更新UI
          */
         updateVoiceUI();
+
+        /**
+         * 上传文件
+         */
+        uploadFile(path, TYPE_VOICE);
     }
 
     private void updateVoiceUI() {

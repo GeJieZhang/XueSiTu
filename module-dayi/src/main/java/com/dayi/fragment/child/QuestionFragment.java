@@ -14,6 +14,7 @@ import com.dayi.R;
 import com.dayi.R2;
 import com.dayi.bean.QuestionDetail;
 import com.dayi.bean.UploadVoice;
+import com.dayi.utils.pop.ZoomImagePopupUtils;
 import com.dayi.view.CommonSoundItemView;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.ui.fragment.BaseAppFragment;
@@ -47,10 +48,20 @@ public class QuestionFragment extends BaseAppFragment {
         return R.layout.fragment_question;
     }
 
-    private void instertImage(String url) {
+    private void instertImage(final String url) {
 
         final View view = LayoutInflater.from(getContext()).inflate(R.layout.item_ask_image, null);
         ImageView imageView = view.findViewById(R.id.iv_image);
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ZoomImagePopupUtils zoomImagePopupUtils=new ZoomImagePopupUtils(getActivity());
+                zoomImagePopupUtils.setZoomImage(url);
+                zoomImagePopupUtils.showAnswerPopuPopu(v);
+            }
+        });
 
         Glide.with(this)
                 .load(url)
@@ -69,6 +80,8 @@ public class QuestionFragment extends BaseAppFragment {
         uploadVoice.setPlayUrl(url);
 
         final CommonSoundItemView commonSoundItemView = new CommonSoundItemView(getContext());
+        commonSoundItemView.isLocalVoice(false);
+
         commonSoundItemView.setAudioEntity(uploadVoice);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.CENTER;

@@ -58,6 +58,8 @@ public class CommonSoundItemView extends RelativeLayout {
     protected Context context;
     private int maxLength;
 
+    private boolean localType = true;
+
     public CommonSoundItemView(Context context) {
         super(context);
         initView(context);
@@ -125,10 +127,12 @@ public class CommonSoundItemView extends RelativeLayout {
 
         if (audioInfo != null) {
 
-
-            Uri uri = Uri.parse(audioInfo.getPlayUrl());
-
-            LogUtil.e(audioInfo.getPlayUrl());
+            Uri uri;
+            if (localType) {
+                uri = Uri.parse(audioInfo.getPath());
+            } else {
+                uri = Uri.parse(audioInfo.getPlayUrl());
+            }
 
 
             AudioPlayManager.getInstance().startPlay(context, uri, iAudioPlayListener);
@@ -139,9 +143,18 @@ public class CommonSoundItemView extends RelativeLayout {
     public void setAudioEntity(UploadVoice audioInfo) {
         this.audioInfo = audioInfo;
 
-//
-        tvSoundDuration.setText(TimeUtils.formatTime(Long.parseLong(getRingDuring(audioInfo.getPlayUrl()))));
+        if (localType) {
+            tvSoundDuration.setText(TimeUtils.formatTime(audioInfo.getDuration()));
+        } else {
+            tvSoundDuration.setText(TimeUtils.formatTime(Long.parseLong(getRingDuring(audioInfo.getPlayUrl()))));
+        }
 
+
+    }
+
+    public void isLocalVoice(boolean b) {
+
+        localType = b;
     }
 
 

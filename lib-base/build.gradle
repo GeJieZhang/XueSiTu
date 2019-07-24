@@ -153,5 +153,10 @@ dependencies {
      */
     api(name: 'alipaySdk-15.6.3-20190605142540', ext: 'aar')
 
+    /**
+     * 视频播放器
+     */
+    api 'cn.jzvd:jiaozivideoplayer:7.0.5'
+
 
 }

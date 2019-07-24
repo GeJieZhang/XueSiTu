@@ -51,7 +51,7 @@ public class QuestionList {
 
     public static class ObjBean {
         private List<HistoryListBean> history_list;
-        private List<QuestionListBean> question_List;
+        private List<QuestionListBean> question_list;
 
         public List<HistoryListBean> getHistory_list() {
             return history_list;
@@ -62,11 +62,12 @@ public class QuestionList {
         }
 
         public List<QuestionListBean> getQuestion_List() {
-            return question_List;
+            return question_list;
+
         }
 
-        public void setQuestion_List(List<QuestionListBean> question_List) {
-            this.question_List = question_List;
+        public void setQuestion_List(List<QuestionListBean> question_list) {
+            this.question_list = question_list;
         }
 
         public static class HistoryListBean {
@@ -106,6 +107,8 @@ public class QuestionList {
         }
 
         public static class QuestionListBean {
+
+
             /**
              * remaining : 8
              * file : ["http://pu00k0ssj.bkt.clouddn.com/FtyynoxXZwekhKCC7IVnVIHvk5i-"]
@@ -139,6 +142,25 @@ public class QuestionList {
             public void setFile(List<String> file) {
                 this.file = file;
             }
+
+            @Override
+            public String toString() {
+                return "QuestionListBean{" +
+                        "remaining=" + remaining +
+                        ", question_id=" + question_id +
+                        ", file=" + file +
+                        '}';
+            }
         }
+    }
+
+    @Override
+    public String toString() {
+        return "QuestionList{" +
+                "code=" + code +
+                ", obj=" + obj +
+                ", msg='" + msg + '\'' +
+                ", seccess=" + seccess +
+                '}';
     }
 }

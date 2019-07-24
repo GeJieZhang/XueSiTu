@@ -1,6 +1,5 @@
 package com.dayi.activity;
 
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,6 +20,7 @@ import com.dayi.bean.BaseHttpBean;
 import com.dayi.bean.UploadVoice;
 import com.dayi.utils.pop.AnswerQuestionPopupUtils;
 import com.dayi.utils.pop.EvaluationTeacherPoupUtils;
+import com.dayi.utils.pop.ZoomImagePopupUtils;
 import com.dayi.view.CommonSoundItemView;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
@@ -31,12 +31,13 @@ import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.utls.glide.GlideConfig;
 import com.lib.view.navigationbar.NomalNavigationBar;
+import com.lib.view.player.MyJzvdStd;
 
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jzvd.Jzvd;
 
 
 /**
@@ -78,9 +79,12 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
         ARouter.getInstance().inject(this);
         initTitle();
         initData();
-
+        //测试代码
+        insertVideo("");
 
     }
+
+    EvaluationTeacherPoupUtils evaluationTeacherPoupUtils;
 
     protected void initTitle() {
 
@@ -91,7 +95,7 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
                 .setLeftClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        EvaluationTeacherPoupUtils evaluationTeacherPoupUtils = new EvaluationTeacherPoupUtils(TeacherAnswerDetailActivity.this);
+                        evaluationTeacherPoupUtils = new EvaluationTeacherPoupUtils(TeacherAnswerDetailActivity.this);
                         evaluationTeacherPoupUtils.setEvaluationTeacherPoupUtilsListener(new EvaluationTeacherPoupUtils.EvaluationTeacherPoupUtilsListener() {
                             @Override
                             public void onSure(String correct, String praise) {
@@ -138,7 +142,7 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
                         if (result.getCode() == CodeUtil.CODE_200) {
 
                             finish();
-
+                            evaluationTeacherPoupUtils.dismiss();
                         }
 
                         showToast(result.getMsg());
@@ -269,7 +273,7 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
     }
 
 
-    private void insertImage(String url) {
+    private void insertImage(final String url) {
         final View itemImage = LayoutInflater.from(this).inflate(R.layout.item_answer_image, null);
 
         ImageView imageView = itemImage.findViewById(R.id.iv_image);
@@ -281,6 +285,16 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
         int margin = DisplayUtil.dip2px(this, 4);
         params.setMargins(margin, margin, margin, margin);
         cardView.setLayoutParams(params);
+
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ZoomImagePopupUtils zoomImagePopupUtils = new ZoomImagePopupUtils(TeacherAnswerDetailActivity.this);
+                zoomImagePopupUtils.setZoomImage(url);
+                zoomImagePopupUtils.showAnswerPopuPopu(v);
+            }
+        });
+
 
         Glide.with(this)
                 .load(url)
@@ -296,6 +310,7 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
         UploadVoice uploadVoice = new UploadVoice();
         uploadVoice.setPlayUrl(url);
         final CommonSoundItemView commonSoundItemView = new CommonSoundItemView(this);
+        commonSoundItemView.isLocalVoice(false);
         commonSoundItemView.setAudioEntity(uploadVoice);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.LEFT;
@@ -309,16 +324,22 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
     /**
      * 插入视频
      */
+    MyJzvdStd jz_player;
+
     private void insertVideo(String url) {
 
-        View view = LayoutInflater.from(this).inflate(R.layout.item_video, null);
+        View view = LayoutInflater.from(this).inflate(R.layout.item_video_temp, null);
 
-        ImageView imageView = view.findViewById(R.id.iv_video);
+        jz_player = view.findViewById(R.id.jz_player);
+        jz_player.setUp("http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4"
+                , "饺子闭眼睛");
+        Glide.with(this).load("http://jzvd-pic.nathen.cn/jzvd-pic/1bb2ebbe-140d-4e2e-abd2-9e7e564f71ac.png").into(jz_player.thumbImageView);
+//        ImageView imageView = view.findViewById(R.id.iv_video);
 
-        Glide.with(this)
-                .load(url)
-                .apply(GlideConfig.getRoundOptions(10))
-                .into(imageView);
+//        Glide.with(this)
+//                .load(url)
+//                .apply(GlideConfig.getRoundOptions(10))
+//                .into(imageView);
         linVideo.addView(view);
 
 
@@ -392,5 +413,20 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
 
                     }
                 });
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (Jzvd.backPress()) {
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Jzvd.releaseAllVideos();
     }
 }

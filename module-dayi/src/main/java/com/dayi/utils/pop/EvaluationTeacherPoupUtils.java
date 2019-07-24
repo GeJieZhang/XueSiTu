@@ -37,6 +37,7 @@ public class EvaluationTeacherPoupUtils {
 
 
     private TextView tv_complaints;
+
     private void initAnswerPopuPopu() {
         answerPopu = EasyPopup.create()
                 .setContext(activity)
@@ -84,7 +85,6 @@ public class EvaluationTeacherPoupUtils {
 
 
     private Button btn_sure;
-
 
 
     private String correct = "";
@@ -200,7 +200,7 @@ public class EvaluationTeacherPoupUtils {
         tv_complaints.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener!=null){
+                if (listener != null) {
                     listener.onComplaintsTeacher();
                 }
             }
@@ -214,6 +214,10 @@ public class EvaluationTeacherPoupUtils {
 
     public void setEvaluationTeacherPoupUtilsListener(EvaluationTeacherPoupUtilsListener evaluationTeacherPoupUtilsListener) {
         this.listener = evaluationTeacherPoupUtilsListener;
+    }
+
+    public void dismiss() {
+        answerPopu.dismiss();
     }
 
     public interface EvaluationTeacherPoupUtilsListener {

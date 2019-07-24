@@ -18,7 +18,10 @@
         <activity android:name=".activity.TeacherWriteAnswerActivity"></activity>
         <activity android:name=".activity.StudentQuestionDetailActivity"></activity>
 
-        <activity android:name=".activity.TeacherAnswerDetailActivity"></activity>
+        <activity
+            android:name=".activity.TeacherAnswerDetailActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"></activity>
 
 
         <activity android:name=".activity.TeacherQuestionListActivity"></activity>

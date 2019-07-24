@@ -50,6 +50,8 @@ public class StudentQuestionListActivity extends BaseAppActivity {
                     public void onSuccess(QuestionList result) {
 
 
+
+
                         if (result.getCode() == CodeUtil.CODE_200) {
 
                             list1.addAll(result.getObj().getQuestion_List());
@@ -57,6 +59,8 @@ public class StudentQuestionListActivity extends BaseAppActivity {
                             list2.addAll(result.getObj().getHistory_list());
 
                             homeAdapter1.notifyDataSetChanged();
+
+                            homeAdapter2.notifyDataSetChanged();
 
                         }
                     }
@@ -186,9 +190,16 @@ public class StudentQuestionListActivity extends BaseAppActivity {
 
 
         }
+
+        @Override
+        protected void toBindEmptyViewHolder(ViewHolder holder) {
+            super.toBindEmptyViewHolder(holder);
+
+            holder.setText(R.id.tv_empty, "暂无待答");
+
+
+        }
     }
-
-
 
 
     /**

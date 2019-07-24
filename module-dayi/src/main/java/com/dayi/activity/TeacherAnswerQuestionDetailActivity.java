@@ -14,6 +14,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dayi.R;
 import com.dayi.R2;
+import com.dayi.bean.BaseHttpBean;
 import com.dayi.bean.QuestionDetail;
 import com.dayi.fragment.child.QuestionFragment;
 import com.lib.app.ARouterPathUtils;
@@ -42,6 +43,10 @@ public class TeacherAnswerQuestionDetailActivity extends BaseAppActivity {
     Button btnSure;
     @BindView(R2.id.tv_action)
     TextView tvAction;
+
+    @BindView(R2.id.tv_tubi)
+    TextView tvTubi;
+
     @BindView(R2.id.f_question_teacher)
     FrameLayout fQuestionTeacher;
     @Autowired(name = "questionId")
@@ -91,7 +96,7 @@ public class TeacherAnswerQuestionDetailActivity extends BaseAppActivity {
     }
 
     private void insertQuestionData(QuestionDetail.ObjBean.QuestionBean question) {
-
+        tvTubi.setText(question.getCurrent_value() + "兔币");
         if (questionFragment != null) {
             questionFragment.updateData(question);
         }
@@ -170,13 +175,8 @@ public class TeacherAnswerQuestionDetailActivity extends BaseAppActivity {
                             @Override
                             public void onClick(View v) {
 
-                                ARouter.getInstance().build(ARouterPathUtils.Dayi_TeacherWriteAnswerActivity)
-                                        .withString("type", "1")
 
-                                        .withString("questionId", questionId)
-                                        .navigation();
-
-                                answerPopu.dismiss();
+                                teacherViesAnswer(1);
 
 
                             }
@@ -185,11 +185,9 @@ public class TeacherAnswerQuestionDetailActivity extends BaseAppActivity {
                         lin_voice.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                ARouter.getInstance().build(ARouterPathUtils.Dayi_TeacherWriteAnswerActivity)
-                                        .withString("type", "2")
-                                        .withString("questionId", questionId)
-                                        .navigation();
-                                answerPopu.dismiss();
+
+                                teacherViesAnswer(2);
+
                             }
                         });
 
@@ -199,6 +197,59 @@ public class TeacherAnswerQuestionDetailActivity extends BaseAppActivity {
                 })
                 .setFocusAndOutsideEnable(true)
                 .apply();
+
+    }
+
+
+    /**
+     * 老师抢答
+     */
+    private void teacherViesAnswer(final int type) {
+
+        HttpUtils.with(this)
+                .addParam("requestType", "QUESTION_RESPONDER_REPLY")
+                .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
+                .addParam("question_id", questionId)
+                .execute(new HttpDialogCallBack<BaseHttpBean>() {
+                    @Override
+                    public void onSuccess(BaseHttpBean result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+
+                            if (type == 1) {
+                                //视频回答
+
+                                ARouter.getInstance().build(ARouterPathUtils.Dayi_TeacherWriteAnswerActivity)
+                                        .withString("type", "1")
+
+                                        .withString("questionId", questionId)
+                                        .navigation();
+
+                                answerPopu.dismiss();
+
+
+                            } else {
+                                //图片文字回答
+                                ARouter.getInstance().build(ARouterPathUtils.Dayi_TeacherWriteAnswerActivity)
+                                        .withString("type", "2")
+                                        .withString("questionId", questionId)
+                                        .navigation();
+                                answerPopu.dismiss();
+
+                            }
+
+                        }
+
+                        showToast(result.getMsg());
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
+
 
     }
 

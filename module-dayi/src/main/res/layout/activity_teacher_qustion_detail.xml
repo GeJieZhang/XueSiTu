@@ -37,6 +37,7 @@
                 android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/tv_tubi"
                 style="@style/text_style5"
                 android:layout_marginRight="24dp"
                 android:text="20兔币"
@@ -47,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <ImageView
