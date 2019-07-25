@@ -23,6 +23,10 @@ public class WriteWordPopupUtils {
 
     private CmmtWordPopup cmmtWordPopup;
 
+    public void setText(String content){
+        cmmtWordPopup.setText(content);
+    }
+
 
     private void initCmmtWordPop() {
 

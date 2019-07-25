@@ -353,7 +353,7 @@ public class AskQuestionActivity extends BaseAppActivity {
             uploadVoice = new UploadVoice();
         }
 
-        uploadVoice.setDuration(duration * 1000);
+        uploadVoice.setDuration(duration);
         uploadVoice.setPath(realPath);
         /**
          * 插入音频UI

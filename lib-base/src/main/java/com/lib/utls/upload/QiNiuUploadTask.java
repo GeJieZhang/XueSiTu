@@ -99,16 +99,31 @@ public class QiNiuUploadTask extends AsyncTask<String, Integer, String> {
 
                     if (response != null) {
                         LogUtil.e("回调结果:" + response.toString());
+
+
                         JSONObject jsonObject = new JSONObject(response.toString());
                         String path = (String) jsonObject.get("key");
 
-                        if (fileUploadListener != null) {
 
-                            fileUploadListener.onSuccess(path);
+                        if (path != null) {
+                            if (fileUploadListener != null) {
 
-                            LogUtil.e("onSuccess1");
+                                fileUploadListener.onSuccess(path);
 
+                                LogUtil.e("onSuccess1");
+
+                            }
+                        } else {
+                            if (fileUploadListener != null) {
+
+                                fileUploadListener.onError("上传失败");
+
+                                LogUtil.e("onError");
+
+                            }
                         }
+
+
                     } else {
 
                         LogUtil.e("上传失败");

@@ -8,6 +8,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         android:scrollbars="none">
 
         <LinearLayout
@@ -25,12 +26,18 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv1"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:layout_marginTop="24dp"></android.support.v7.widget.RecyclerView>
+                android:descendantFocusability="blocksDescendants">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="24dp"></android.support.v7.widget.RecyclerView>
+            </RelativeLayout>
 
             <TextView
 
@@ -42,15 +49,20 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv2"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:layout_marginTop="24dp"
-                android:layout_weight="1"
-                android:background="@color/base_gray_bg"></android.support.v7.widget.RecyclerView>
+                android:descendantFocusability="blocksDescendants">
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_weight="1"
+                    android:background="@color/base_gray_bg"></android.support.v7.widget.RecyclerView>
+            </RelativeLayout>
             <!--<TextView-->
 
             <!--style="@style/text_style4"-->

@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 
 
@@ -204,6 +205,7 @@ public class MultiStateView extends FrameLayout {
                     if (mEmptyViewResId > -1) {
                         mEmptyView = mInflater.inflate(mEmptyViewResId, this, false);
                         addView(mEmptyView, mEmptyView.getLayoutParams());
+                        setTryAgainButton(mEmptyView);
                     }
                     if (mEmptyView == null)
                         throw new NullPointerException("Empty View");
@@ -219,6 +221,9 @@ public class MultiStateView extends FrameLayout {
                     if (mErrorViewResId > -1) {
                         mErrorView = mInflater.inflate(mErrorViewResId, this, false);
                         addView(mErrorView, mErrorView.getLayoutParams());
+
+                        setTryAgainButton(mErrorView);
+
                     }
                     if (mErrorView == null)
                         throw new NullPointerException("Error View");
@@ -234,6 +239,7 @@ public class MultiStateView extends FrameLayout {
                     if (mNetworkErrorViewResId > -1) {
                         mNetworkErrorView = mInflater.inflate(mNetworkErrorViewResId, this, false);
                         addView(mNetworkErrorView, mNetworkErrorView.getLayoutParams());
+                        setTryAgainButton(mNetworkErrorView);
                     }
                     if (mNetworkErrorView == null)
                         throw new NullPointerException("Error View");
@@ -257,5 +263,33 @@ public class MultiStateView extends FrameLayout {
                 if (mNetworkErrorView != null) mNetworkErrorView.setVisibility(View.GONE);
                 break;
         }
+    }
+
+    private void setTryAgainButton(View root) {
+        Button btn_tryAgain = root.findViewById(R.id.btn_tryAgain);
+
+        btn_tryAgain.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setViewState(VIEW_STATE_LOADING);
+                if (lisener != null) {
+                    lisener.onTryAgain();
+                }
+
+            }
+        });
+    }
+
+
+    private MultiStateViewLisener lisener;
+
+    public void setMultiStateViewLisener(MultiStateViewLisener multiStateViewLisener) {
+
+        this.lisener = multiStateViewLisener;
+
+    }
+
+    public interface MultiStateViewLisener {
+        void onTryAgain();
     }
 }

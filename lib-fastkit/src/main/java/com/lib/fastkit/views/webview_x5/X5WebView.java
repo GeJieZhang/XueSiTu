@@ -41,11 +41,19 @@ public class X5WebView extends WebView {
         WebSettings webSetting = getSettings();
         webSetting.setAllowFileAccess(true);
         webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+
+
+        /**
+         * 缩放相关
+         */
+        webSetting.setUseWideViewPort(true);
+        webSetting.setLoadWithOverviewMode(true);
         webSetting.setSupportZoom(true);
         webSetting.setBuiltInZoomControls(true);
-        webSetting.setUseWideViewPort(true);
+        webSetting.setDisplayZoomControls(true);
+
+
         webSetting.setSupportMultipleWindows(false);
-        // webSetting.setLoadWithOverviewMode(true);
         webSetting.setAppCacheEnabled(true);
         // webSetting.setDatabaseEnabled(true);
         webSetting.setDomStorageEnabled(true);

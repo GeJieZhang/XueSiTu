@@ -79,8 +79,7 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
         ARouter.getInstance().inject(this);
         initTitle();
         initData();
-        //测试代码
-        insertVideo("");
+
 
     }
 
@@ -216,13 +215,21 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
                 + "   好评率" + result.getObj().getPraise()
                 + "   答题数" + result.getObj().getReply_total());
 
+        //final String url="http://192.168.0.108:8080/assistant_content.html?id=16&index=1";
+        final String url="https://www.showdoc.cc/";
         tvSee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+//                ARouter.getInstance().build(ARouterPathUtils.Dayi_DayiNormalDetailWebActivity)
+//
+//                        .withString("urlPath", result.getObj().getTeacher_link())
+//
+//                        .navigation();
+
                 ARouter.getInstance().build(ARouterPathUtils.Dayi_DayiNormalDetailWebActivity)
 
-                        .withString("urlPath", result.getObj().getTeacher_link())
+                        .withString("urlPath", url)
 
                         .navigation();
             }
@@ -331,15 +338,11 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
         View view = LayoutInflater.from(this).inflate(R.layout.item_video_temp, null);
 
         jz_player = view.findViewById(R.id.jz_player);
-        jz_player.setUp("http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4"
-                , "饺子闭眼睛");
-        Glide.with(this).load("http://jzvd-pic.nathen.cn/jzvd-pic/1bb2ebbe-140d-4e2e-abd2-9e7e564f71ac.png").into(jz_player.thumbImageView);
-//        ImageView imageView = view.findViewById(R.id.iv_video);
 
-//        Glide.with(this)
-//                .load(url)
-//                .apply(GlideConfig.getRoundOptions(10))
-//                .into(imageView);
+        jz_player.setUp(url
+                , "");
+        Glide.with(this).load(url).into(jz_player.thumbImageView);
+
         linVideo.addView(view);
 
 

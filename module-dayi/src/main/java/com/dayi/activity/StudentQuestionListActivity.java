@@ -16,8 +16,10 @@ import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
+import com.lib.fastkit.views.load_state_view.MultiStateView;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.http.call_back.HttpDialogCallBack;
+import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.utls.glide.GlideConfig;
@@ -31,10 +33,22 @@ import butterknife.BindView;
 
 @Route(path = ARouterPathUtils.Dayi_StudentQuestionListActivity)
 public class StudentQuestionListActivity extends BaseAppActivity {
+
+
+    @BindView(R2.id.state_view)
+    MultiStateView stateView;
+
     @Override
     protected void onCreateView() {
         initTitle();
         initView();
+        stateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+        stateView.setMultiStateViewLisener(new MultiStateView.MultiStateViewLisener() {
+            @Override
+            public void onTryAgain() {
+                initData();
+            }
+        });
 
         initData();
 
@@ -45,16 +59,18 @@ public class StudentQuestionListActivity extends BaseAppActivity {
         HttpUtils.with(this)
                 .addParam("requestType", "QUESTION_USER_LIST")
                 .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
-                .execute(new HttpDialogCallBack<QuestionList>() {
+                .execute(new HttpNormalCallBack<QuestionList>() {
                     @Override
                     public void onSuccess(QuestionList result) {
 
 
-
-
                         if (result.getCode() == CodeUtil.CODE_200) {
 
+                            stateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+
                             list1.addAll(result.getObj().getQuestion_List());
+
+                            showLog("列表长度:" + list1.size());
 
                             list2.addAll(result.getObj().getHistory_list());
 
@@ -62,12 +78,14 @@ public class StudentQuestionListActivity extends BaseAppActivity {
 
                             homeAdapter2.notifyDataSetChanged();
 
+                        } else {
+                            stateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
                         }
                     }
 
                     @Override
                     public void onError(String e) {
-
+                        stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
                     }
                 });
     }

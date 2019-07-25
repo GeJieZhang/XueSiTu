@@ -57,7 +57,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         initSystemBarTint();
         addActivity();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+
         setContentView(getLayoutId());
+
+
+
         unbinder = ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         onCreateView();

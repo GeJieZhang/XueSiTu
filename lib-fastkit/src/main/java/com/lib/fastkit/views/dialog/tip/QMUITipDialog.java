@@ -192,7 +192,7 @@ public class QMUITipDialog extends Dialog {
                 LinearLayout.LayoutParams tipViewLP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
                 if (mCurrentIconType != ICON_TYPE_NOTHING) {
-                    tipViewLP.topMargin = QMUIDisplayHelper.dp2px(mContext, 12);
+                    tipViewLP.topMargin = QMUIDisplayHelper.dp2px(mContext, 8);
                 }
                 tipView.setLayoutParams(tipViewLP);
 

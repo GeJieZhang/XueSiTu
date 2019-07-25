@@ -84,7 +84,7 @@ public abstract class HttpNormalCallBack<T> implements EngineCallBack {
         } catch (Exception e) {
             responseErrorListener.handleResponseError(context, e);
 
-            LogUtil.e(e.getMessage());
+            LogUtil.e("Json解析出错:" + e.getMessage());
 
         }
 

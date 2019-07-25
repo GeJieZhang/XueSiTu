@@ -111,7 +111,7 @@ public class RecordVoicePopupUtils {
             tv_time.setText("00:00");
 
             if (listener != null) {
-                listener.onRecordFinish(audioPath, duration);
+                listener.onRecordFinish(audioPath, duration * 1000);
             }
             voicePopu.dismiss();
 

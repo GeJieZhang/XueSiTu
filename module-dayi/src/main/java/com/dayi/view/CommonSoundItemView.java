@@ -58,7 +58,11 @@ public class CommonSoundItemView extends RelativeLayout {
     protected Context context;
     private int maxLength;
 
+
+    //设置播放时使用本地文件，还是网路文件
     private boolean localType = true;
+
+    private boolean isDletedAble=true;
 
     public CommonSoundItemView(Context context) {
         super(context);
@@ -100,7 +104,11 @@ public class CommonSoundItemView extends RelativeLayout {
         this.setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                lin_delete.setVisibility(VISIBLE);
+
+                if (isDletedAble){
+                    lin_delete.setVisibility(VISIBLE);
+                }
+
 
                 return true;
             }
@@ -142,6 +150,8 @@ public class CommonSoundItemView extends RelativeLayout {
 
     public void setAudioEntity(UploadVoice audioInfo) {
         this.audioInfo = audioInfo;
+
+
 
         if (localType) {
             tvSoundDuration.setText(TimeUtils.formatTime(audioInfo.getDuration()));
@@ -218,6 +228,10 @@ public class CommonSoundItemView extends RelativeLayout {
 
 
     private CommonSoundItemViewListener listener;
+
+    public void isDletedAble(boolean b) {
+        isDletedAble=b;
+    }
 
     public interface CommonSoundItemViewListener {
         void onDelete(UploadVoice uploadVoice);

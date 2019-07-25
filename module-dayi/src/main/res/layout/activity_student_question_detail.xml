@@ -1,99 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <com.lib.fastkit.views.load_state_view.MultiStateView
 
+        android:id="@+id/state_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:emptyView="@layout/m_empty_view"
+        app:errorView="@layout/m_error_view"
+        app:networkErrorView="@layout/m_net_error_view"
+        app:loadingView="@layout/m_loading_view"
+        app:viewState="loading">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp">
 
 
-                <TextView
+                    <TextView
 
-                    style="@style/text_style11"
-                    android:text="付费问题"
-                    android:textColor="@color/base_title"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                        style="@style/text_style11"
+                        android:text="付费问题"
+                        android:textColor="@color/base_title"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
+
+                    <TextView
+                        style="@style/text_style11"
+                        android:layout_marginLeft="16dp"
+                        android:text="已付"
+                        android:textColor="@color/base_gray"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        style="@style/text_style5"
+                        android:layout_marginRight="24dp"
+                        android:layout_weight="1"
+                        android:text="20兔币"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+
+                        android:id="@+id/lin_add_describe"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="right"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/iv_add_describe"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@mipmap/icon_add_selected" />
+
+                        <TextView
+                            android:id="@+id/tv_add_describe"
+                            style="@style/text_style11"
+                            android:layout_marginLeft="8dp"
+                            android:text="补充描述"
+                            android:textColor="@color/base_title"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <TextView
                     style="@style/text_style11"
                     android:layout_marginLeft="16dp"
-                    android:text="已付"
+                    android:layout_marginTop="4dp"
+                    android:text="1分钟前发布"
                     android:textColor="@color/base_gray"
                     android:textSize="14sp" />
 
-                <TextView
-                    style="@style/text_style5"
-                    android:layout_marginRight="24dp"
-                    android:text="20兔币"
-                    android:textSize="14sp" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                <FrameLayout
+                    android:id="@+id/f_question_student"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="200dp"></FrameLayout>
+
+                <!--老师列表-->
+                <FrameLayout
+                    android:id="@+id/f_teacher_list"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="right"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
+                    android:minHeight="200dp"></FrameLayout>
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@mipmap/icon_add_selected" />
-
-                    <TextView
-                        style="@style/text_style11"
-                        android:layout_marginLeft="8dp"
-                        android:text="补充描述"
-                        android:textColor="@color/base_title"
-                        android:textSize="16sp" />
-                </LinearLayout>
 
             </LinearLayout>
 
-            <TextView
-                style="@style/text_style11"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="4dp"
-                android:text="1分钟前发布"
-                android:textColor="@color/base_gray"
-                android:textSize="14sp" />
 
-
-            <FrameLayout
-                android:id="@+id/f_question_student"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="200dp"></FrameLayout>
-
-            <!--老师列表-->
-            <FrameLayout
-                android:id="@+id/f_teacher_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:minHeight="200dp"></FrameLayout>
-
-
-        </LinearLayout>
     </ScrollView>
-
+    </com.lib.fastkit.views.load_state_view.MultiStateView>
 </LinearLayout>

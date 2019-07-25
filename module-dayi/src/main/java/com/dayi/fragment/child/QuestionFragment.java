@@ -37,8 +37,18 @@ public class QuestionFragment extends BaseAppFragment {
 
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
-//        instertImage();
-//        instertVoice();
+        etCmmt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                if (listener != null) {
+                    listener.onWordClick();
+                }
+
+
+            }
+        });
     }
 
 
@@ -57,7 +67,7 @@ public class QuestionFragment extends BaseAppFragment {
             @Override
             public void onClick(View v) {
 
-                ZoomImagePopupUtils zoomImagePopupUtils=new ZoomImagePopupUtils(getActivity());
+                ZoomImagePopupUtils zoomImagePopupUtils = new ZoomImagePopupUtils(getActivity());
                 zoomImagePopupUtils.setZoomImage(url);
                 zoomImagePopupUtils.showAnswerPopuPopu(v);
             }
@@ -73,7 +83,7 @@ public class QuestionFragment extends BaseAppFragment {
 
     }
 
-    private void instertVoice(String url) {
+    private void instertVoice(String url, boolean isDletedAble) {
 
 
         UploadVoice uploadVoice = new UploadVoice();
@@ -81,6 +91,8 @@ public class QuestionFragment extends BaseAppFragment {
 
         final CommonSoundItemView commonSoundItemView = new CommonSoundItemView(getContext());
         commonSoundItemView.isLocalVoice(false);
+
+        commonSoundItemView.isDletedAble(isDletedAble);
 
         commonSoundItemView.setAudioEntity(uploadVoice);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -98,7 +110,6 @@ public class QuestionFragment extends BaseAppFragment {
      * @param question
      */
     public void updateData(QuestionDetail.ObjBean.QuestionBean question) {
-
 
         /**
          * 插入文字
@@ -129,10 +140,38 @@ public class QuestionFragment extends BaseAppFragment {
 
         if (voiceList.size() > 0) {
             for (String s : voiceList) {
-                instertVoice(s);
+                instertVoice(s, false);
             }
         }
 
+
+    }
+
+
+    public void addVoice(CommonSoundItemView commonSoundItemView) {
+        linVoice.addView(commonSoundItemView);
+    }
+
+    public void removeVoice(View view) {
+        linVoice.removeView(view);
+    }
+
+    public void addWord(String wordContent) {
+        etCmmt.setText(wordContent);
+    }
+
+
+    private QuestionFragmentListener listener;
+
+    public void setQuestionFragmentListener(QuestionFragmentListener questionFragmentListener) {
+
+        this.listener = questionFragmentListener;
+
+    }
+
+    public interface QuestionFragmentListener {
+
+        void onWordClick();
 
     }
 
