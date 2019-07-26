@@ -2,6 +2,8 @@
     <string name="app_name">module-live</string>
     <string name="rule_link"><u>了解旁听规则</u></string>
 
+    <string name="recharge"><u>去充值</u></string>
+
     <string name="rule">
         1.旁听回答，一经购买不克进行退还，有问题可以直接联系客服\n
         2.主题可主动分享已经收到老师回答的回答\n

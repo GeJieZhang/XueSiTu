@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <com.lib.fastkit.views.load_state_view.MultiStateView
 
         android:id="@+id/state_view"
@@ -11,14 +12,16 @@
         android:layout_height="match_parent"
         app:emptyView="@layout/m_empty_view"
         app:errorView="@layout/m_error_view"
-        app:networkErrorView="@layout/m_net_error_view"
         app:loadingView="@layout/m_loading_view"
-        app:viewState="loading">
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none">
+        app:networkErrorView="@layout/m_net_error_view"
+        app:viewState="content">
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:fillViewport="true"
+            android:scrollbars="none">
 
 
             <LinearLayout
@@ -53,6 +56,7 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/tv_money"
                         style="@style/text_style5"
                         android:layout_marginRight="24dp"
                         android:layout_weight="1"
@@ -107,12 +111,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+
                     android:minHeight="200dp"></FrameLayout>
 
 
             </LinearLayout>
 
 
-    </ScrollView>
+        </ScrollView>
     </com.lib.fastkit.views.load_state_view.MultiStateView>
 </LinearLayout>

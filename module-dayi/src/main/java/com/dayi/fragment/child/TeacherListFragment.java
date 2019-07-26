@@ -5,14 +5,15 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.dayi.R;
 import com.dayi.R2;
-import com.dayi.activity.StudentQuestionDetailActivity;
 import com.dayi.bean.QuestionDetail;
 import com.lib.app.ARouterPathUtils;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
@@ -28,6 +29,10 @@ import butterknife.BindView;
 public class TeacherListFragment extends BaseAppFragment {
     @BindView(R2.id.rv)
     RecyclerView rv;
+    @BindView(R2.id.lin_pay)
+    LinearLayout linPay;
+    @BindView(R2.id.btn_pay)
+    Button btnPay;
 
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
@@ -55,6 +60,16 @@ public class TeacherListFragment extends BaseAppFragment {
         });
 
         rv.setAdapter(homeAdapter);
+
+        btnPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onPayClick(v);
+                }
+
+            }
+        });
     }
 
     private class HomeAdapter extends BaseAdapter<QuestionDetail.ObjBean.ReplyUserListBean> {
@@ -108,14 +123,46 @@ public class TeacherListFragment extends BaseAppFragment {
                 }
             });
         }
+
+        @Override
+        protected void toBindEmptyViewHolder(ViewHolder holder) {
+            super.toBindEmptyViewHolder(holder);
+
+            holder.setText(R.id.tv_empty, "暂无老师回答");
+        }
     }
 
 
     public void updateData(List<QuestionDetail.ObjBean.ReplyUserListBean> data) {
-
+        list.clear();
         list.addAll(data);
         homeAdapter.notifyDataSetChanged();
 
+    }
+
+
+    public void isShowPayPage(boolean b) {
+
+        if (b) {
+            linPay.setVisibility(View.VISIBLE);
+        } else {
+            linPay.setVisibility(View.GONE);
+        }
+
+    }
+
+
+    private TeacherListFragmentListener listener;
+
+    public void setTeacherListFragmentListener(TeacherListFragmentListener teacherListFragmentListener) {
+
+
+        this.listener = teacherListFragmentListener;
+
+    }
+
+    public interface TeacherListFragmentListener {
+        void onPayClick(View v);
     }
 
 

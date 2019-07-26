@@ -95,6 +95,16 @@ public class QuestionDetail {
             private List<String> image;
             private List<String> voice;
 
+            private int  is_visit;
+
+            public int getIs_visit() {
+                return is_visit;
+            }
+
+            public void setIs_visit(int is_visit) {
+                this.is_visit = is_visit;
+            }
+
             public int getQuestion_id() {
                 return question_id;
             }

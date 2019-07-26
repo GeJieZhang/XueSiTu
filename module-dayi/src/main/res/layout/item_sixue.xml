@@ -38,30 +38,35 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <ImageView
+                    <com.lib.fastkit.views.circle_image.niv.NiceImageView
+                        android:id="@+id/iv_image1"
                         android:layout_width="62dp"
                         android:layout_height="40dp"
                         android:scaleType="centerCrop"
-                        android:src="@mipmap/test1" />
+                        app:corner_radius="10dp" />
 
-                    <ImageView
+                    <com.lib.fastkit.views.circle_image.niv.NiceImageView
                         android:layout_width="62dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="8dp"
                         android:scaleType="centerCrop"
-                        android:src="@mipmap/test1" />
+                        app:corner_radius="10dp"
+                        />
 
                     <View
+                        android:id="@+id/iv_image2"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
-                        android:layout_weight="1"></View>
+                        android:layout_weight="1"
+
+                        ></View>
 
                     <TextView
                         android:id="@+id/tv_money"
                         style="@style/text_style5"
                         android:layout_gravity="bottom"
 
-                        android:text="￥754" />
+                        android:text="754" />
 
                     <TextView
                         style="@style/text_style5"
@@ -103,10 +108,9 @@
 
                     <TextView
                         style="@style/text_style5"
-
                         android:layout_marginLeft="8dp"
                         android:layout_weight="1"
-                        android:text="答题费"
+                        android:text="免费旁听"
                         android:textColor="@color/base_gray"
                         android:textSize="14sp" />
 
@@ -126,6 +130,7 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/iv_lock"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginLeft="16dp"

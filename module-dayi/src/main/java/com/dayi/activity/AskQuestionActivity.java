@@ -15,12 +15,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.dayi.R;
 import com.dayi.R2;
 import com.dayi.bean.BaseHttpBean;
+import com.dayi.bean.QuestionStateBean;
 import com.dayi.bean.UploadImage;
 import com.dayi.bean.UploadVoice;
+import com.dayi.utils.pop.PayPopupUtils;
 import com.dayi.utils.pop.RecordVoicePopupUtils;
 import com.dayi.utils.pop.WriteWordPopupUtils;
 import com.dayi.view.CommonSoundItemView;
@@ -79,6 +82,8 @@ public class AskQuestionActivity extends BaseAppActivity {
     AppCompatEditText etCmmt;
     @BindView(R2.id.tv_num)
     TextView tvNum;
+    @BindView(R2.id.tv_tips)
+    TextView tv_tips;
 
     @Override
     protected void onCreateView() {
@@ -88,6 +93,58 @@ public class AskQuestionActivity extends BaseAppActivity {
         initRecodVoiceUtils();
 
         initWordWritePopupUtils();
+
+
+        initPayMoneyPopupUtils();
+
+        requestpayMoneyState();
+
+    }
+
+    PayPopupUtils payPopupUtils;
+
+    private void initPayMoneyPopupUtils() {
+        payPopupUtils = new PayPopupUtils(this);
+        payPopupUtils.setPayPopupUtilsListener(new PayPopupUtils.PayPopupUtilsListener() {
+            @Override
+            public void onSure() {
+                requestUplaodData();
+            }
+
+            @Override
+            public void onRechargeClick() {
+                //去充值页面
+
+                ARouter.getInstance().build(ARouterPathUtils.User_RechargeActivity).navigation();
+            }
+        });
+
+    }
+
+    private void requestpayMoneyState() {
+
+        HttpUtils.with(this)
+                .addParam("requestType", "QUESTION_USER_STATUS")
+                .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
+                .execute(new HttpDialogCallBack<QuestionStateBean>() {
+                    @Override
+                    public void onSuccess(QuestionStateBean result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+
+                            payPopupUtils.setPopupValue(result.getObj().getAmount() + "", result.getObj().getTotal() + "");
+
+                            tv_tips.setText(result.getObj().getMsg());
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
 
     }
 
@@ -210,11 +267,10 @@ public class AskQuestionActivity extends BaseAppActivity {
         } else if (i == R.id.btn_sure) {
 
 
-            requestUplaodData();
-
-
+            payPopupUtils.showAnswerPopuPopu(view);
         }
     }
+
 
     private void requestUplaodData() {
         if (uploadImageMap.size() <= 0) {

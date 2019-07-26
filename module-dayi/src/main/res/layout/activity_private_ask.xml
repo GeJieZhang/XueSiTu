@@ -1,41 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ScrollView
+    <com.lib.fastkit.views.load_state_view.MultiStateView
+
+        android:id="@+id/state_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:scrollbars="none">
+        app:emptyView="@layout/m_empty_view"
+        app:errorView="@layout/m_error_view"
+        app:loadingView="@layout/m_loading_view"
+        app:networkErrorView="@layout/m_net_error_view"
+        app:viewState="content">
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv"
+            <com.lib.fastkit.views.spring_refresh.widget.SpringView
+                android:id="@+id/springView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
 
-            </android.support.v7.widget.RecyclerView>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/btn_sure"
-                style="?android:attr/borderlessButtonStyle"
+                </android.support.v7.widget.RecyclerView>
+            </com.lib.fastkit.views.spring_refresh.widget.SpringView>
+
+
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/circle_button_red_r10"
-                android:text="发起提问"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_sure"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/circle_button_red_r10"
+                    android:text="发起提问"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <FrameLayout
+                    android:layout_width="80dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="24dp"
+                    android:background="@mipmap/icon_fist_free">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="4dp"
+                        android:text="首次免费"
+                        android:textColor="@color/base_money"
+                        android:textSize="12sp" />
+
+                </FrameLayout>
+
+            </FrameLayout>
         </LinearLayout>
-    </ScrollView>
+
+
+    </com.lib.fastkit.views.load_state_view.MultiStateView>
 </LinearLayout>

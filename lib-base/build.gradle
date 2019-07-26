@@ -158,5 +158,10 @@ dependencies {
      */
     api 'cn.jzvd:jiaozivideoplayer:7.0.5'
 
+//    /**
+//     * 万能圆角图片
+//     */
+//    api 'com.github.SheHuan:NiceImageView:1.0.5'
+
 
 }

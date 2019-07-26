@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.bumptech.glide.Glide;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
@@ -120,9 +121,30 @@ public class SetActivity extends BaseAppActivity {
                         public void onSure() {
                             ClearDataUtils.clearAllCache(SetActivity.this);
 
+                            /**
+                             * 清除 token
+                             */
                             SharedPreferenceManager.getInstance(SetActivity.this).getUserCache().setUserToken("");
-                            setCache();
+                            /**
+                             * 清除图片缓存
+                             * 该方法必须在主线程
+                             */
+                            Glide.get(SetActivity.this).clearMemory();
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
 
+                                    /**
+                                     * 清除图片缓存
+                                     * 该方法必须在子线程
+                                     */
+                                    Glide.get(SetActivity.this).clearDiskCache();
+
+
+                                }
+                            }).start();
+
+                            setCache();
 
                         }
 

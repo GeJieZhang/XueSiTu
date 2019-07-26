@@ -1,9 +1,6 @@
 package com.dayi.activity;
 
-import android.content.Context;
 import android.net.Uri;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +15,13 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.dayi.R;
 import com.dayi.R2;
 import com.dayi.bean.BaseHttpBean;
+import com.dayi.bean.PayAnswerBean;
+import com.dayi.bean.PayStateBean;
 import com.dayi.bean.QuestionDetail;
-import com.dayi.bean.UploadImage;
-import com.dayi.bean.UploadVideo;
 import com.dayi.bean.UploadVoice;
 import com.dayi.fragment.child.QuestionFragment;
 import com.dayi.fragment.child.TeacherListFragment;
+import com.dayi.utils.pop.PayPopupUtils;
 import com.dayi.utils.pop.RecordVoicePopupUtils;
 import com.dayi.utils.pop.WriteWordPopupUtils;
 import com.dayi.view.CommonSoundItemView;
@@ -33,26 +31,21 @@ import com.lib.app.FragmentTag;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.fragment_deal.FragmentCustomUtils;
-import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.load_state_view.MultiStateView;
-import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.http.call_back.HttpDialogCallBack;
+import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
-import com.lib.ui.adapter.BaseAdapter;
 import com.lib.utls.upload.QiNiuUploadTask;
 import com.lib.utls.upload.initerface.FileUploadListener;
 import com.lib.view.navigationbar.NomalNavigationBar;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static com.lib.fastkit.views.load_state_view.MultiStateView.VIEW_STATE_CONTENT;
 
 
 /**
@@ -70,6 +63,9 @@ public class StudentQuestionDetailActivity extends BaseAppActivity {
     @BindView(R2.id.tv_add_describe)
     TextView tvAddDescribe;
 
+    @BindView(R2.id.tv_money)
+    TextView tvMoney;
+
     @BindView(R2.id.iv_add_describe)
     ImageView ivAddDescribe;
 
@@ -86,12 +82,89 @@ public class StudentQuestionDetailActivity extends BaseAppActivity {
         initTitle();
         initQuestionFragment();
         initTeacherListFragment();
-
+        initPayMoneyPopupUtils();
         initData();
+
+        iniPayState();
 
 
     }
 
+    private void iniPayState() {
+
+        HttpUtils.with(this)
+                .addParam("requestType", "QUESTION_VISIT_STATUS")
+                .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
+                .addParam("question_id", questionId)
+                .execute(new HttpNormalCallBack<PayStateBean>() {
+                    @Override
+                    public void onSuccess(PayStateBean result) {
+
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+                            payPopupUtils.setPopupValue(result.getObj().getAccount() + "", result.getObj().getTotal() + "");
+                        }
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
+
+
+    }
+
+
+    PayPopupUtils payPopupUtils;
+
+    private void initPayMoneyPopupUtils() {
+        payPopupUtils = new PayPopupUtils(this);
+        payPopupUtils.setPayPopupUtilsListener(new PayPopupUtils.PayPopupUtilsListener() {
+            @Override
+            public void onSure() {
+
+                requestPay();
+
+
+            }
+
+            @Override
+            public void onRechargeClick() {
+                //去充值页面
+
+                ARouter.getInstance().build(ARouterPathUtils.User_RechargeActivity).navigation();
+            }
+        });
+
+    }
+
+
+    /**
+     * 付费旁听
+     */
+    private void requestPay() {
+        HttpUtils.with(this)
+                .addParam("requestType", "QUESTION_BUY_VISIT")
+                .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
+                .addParam("question_id", questionId)
+                .execute(new HttpDialogCallBack<PayAnswerBean>() {
+                    @Override
+                    public void onSuccess(PayAnswerBean result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+                            initData();
+                        }
+                        showToast(result.getMsg());
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
+    }
 
     //判断时补充描述true，还是确认提交false
     private boolean isAddDiscribe = true;
@@ -176,7 +249,7 @@ public class StudentQuestionDetailActivity extends BaseAppActivity {
                 .addParam("requestType", "QUESTION_DETAILE")
                 .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
                 .addParam("question_id", questionId)
-                .execute(new HttpDialogCallBack<QuestionDetail>() {
+                .execute(new HttpNormalCallBack<QuestionDetail>() {
                     @Override
                     public void onSuccess(QuestionDetail result) {
 
@@ -187,6 +260,8 @@ public class StudentQuestionDetailActivity extends BaseAppActivity {
                             insertQuestionData(result.getObj().getQuestion());
 
                             insertAnserData(result.getObj().getReply_user_list());
+
+                            initUIState(result.getObj().getQuestion());
 
                         } else {
                             stateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
@@ -200,6 +275,33 @@ public class StudentQuestionDetailActivity extends BaseAppActivity {
                         stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
                     }
                 });
+
+    }
+
+    private void initUIState(QuestionDetail.ObjBean.QuestionBean question) {
+
+        tvMoney.setText(question.getCurrent_value() + "兔币");
+        if (question.getIs_supplement() == 1) {
+            //不能补充问题
+
+            linAddDescribe.setVisibility(View.GONE);
+
+        } else {
+            //可以补充问题
+            linAddDescribe.setVisibility(View.VISIBLE);
+        }
+
+
+        if (question.getIs_visit() == 1) {
+
+            //显示支付蒙板
+
+            teacherListFragment.isShowPayPage(true);
+
+        } else {
+            teacherListFragment.isShowPayPage(false);
+        }
+
 
     }
 
@@ -225,7 +327,12 @@ public class StudentQuestionDetailActivity extends BaseAppActivity {
     private void initTeacherListFragment() {
 
         teacherListFragment = new TeacherListFragment();
-
+        teacherListFragment.setTeacherListFragmentListener(new TeacherListFragment.TeacherListFragmentListener() {
+            @Override
+            public void onPayClick(View v) {
+                payPopupUtils.showAnswerPopuPopu(v);
+            }
+        });
 
         FragmentCustomUtils.setFragment(this, R.id.f_teacher_list, teacherListFragment, FragmentTag.TeacherListFragment);
     }

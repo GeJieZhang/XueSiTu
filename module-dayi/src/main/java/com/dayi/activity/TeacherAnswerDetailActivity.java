@@ -80,7 +80,36 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
         initTitle();
         initData();
 
+        initEvaluationPopup();
 
+
+    }
+
+    private void initEvaluationPopup() {
+        evaluationTeacherPoupUtils = new EvaluationTeacherPoupUtils(TeacherAnswerDetailActivity.this);
+        evaluationTeacherPoupUtils.setEvaluationTeacherPoupUtilsListener(new EvaluationTeacherPoupUtils.EvaluationTeacherPoupUtilsListener() {
+            @Override
+            public void onSure(String correct, String praise) {
+
+
+                evaluationTeacher(correct, praise);
+
+            }
+
+            @Override
+            public void onComplaintsTeacher() {
+
+
+                if (is_complaint == 1) {
+                    //已经投诉
+                    showToast("你已经投诉过了！");
+                } else {
+                    showComplaintPop(TeacherAnswerDetailActivity.this.getWindow().getDecorView(), 0);
+                }
+
+
+            }
+        });
     }
 
     EvaluationTeacherPoupUtils evaluationTeacherPoupUtils;
@@ -94,24 +123,14 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
                 .setLeftClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        evaluationTeacherPoupUtils = new EvaluationTeacherPoupUtils(TeacherAnswerDetailActivity.this);
-                        evaluationTeacherPoupUtils.setEvaluationTeacherPoupUtilsListener(new EvaluationTeacherPoupUtils.EvaluationTeacherPoupUtilsListener() {
-                            @Override
-                            public void onSure(String correct, String praise) {
 
+                        if (is_evaluate == 1) {
+                            //已评价
+                            finish();
+                        } else {
+                            evaluationTeacherPoupUtils.showAnswerPopuPopu(v);
+                        }
 
-                                evaluationTeacher(correct, praise);
-
-
-                            }
-
-                            @Override
-                            public void onComplaintsTeacher() {
-                                showComplaintPop(v, 0);
-                            }
-                        });
-
-                        evaluationTeacherPoupUtils.showAnswerPopuPopu(v);
                     }
                 })
                 .builder();
@@ -163,6 +182,11 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
     }
 
 
+    //0-未投诉，1-已投诉
+    private int is_complaint = 0;
+    // 0-未评价，1-已评价
+    private int is_evaluate = 0;
+
     private void initData() {
 
         HttpUtils.with(this)
@@ -175,6 +199,8 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
 
                         if (result.getCode() == CodeUtil.CODE_200) {
 
+                            is_complaint = result.getObj().getIs_complaint();
+                            is_evaluate = result.getObj().getIs_evaluate();
                             updateUI(result);
 
                             updateTeacherUI(result);
@@ -215,23 +241,18 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
                 + "   好评率" + result.getObj().getPraise()
                 + "   答题数" + result.getObj().getReply_total());
 
-        //final String url="http://192.168.0.108:8080/assistant_content.html?id=16&index=1";
-        final String url="https://www.showdoc.cc/";
+
         tvSee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-//                ARouter.getInstance().build(ARouterPathUtils.Dayi_DayiNormalDetailWebActivity)
-//
-//                        .withString("urlPath", result.getObj().getTeacher_link())
-//
-//                        .navigation();
-
                 ARouter.getInstance().build(ARouterPathUtils.Dayi_DayiNormalDetailWebActivity)
 
-                        .withString("urlPath", url)
+                        .withString("urlPath", result.getObj().getTeacher_link())
 
                         .navigation();
+
+
             }
         });
     }
@@ -349,19 +370,24 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
     }
 
 
-    @OnClick({R2.id.iv_head, R2.id.tv_see, R2.id.tv_answer_question})
+    @OnClick({R2.id.iv_head, R2.id.tv_answer_question})
     public void onViewClicked(View view) {
         int i = view.getId();
         if (i == R.id.iv_head) {
 
 
-        } else if (i == R.id.tv_see) {
-
-
         } else if (i == R.id.tv_answer_question) {
 
 
-            showComplaintPop(view, 1);
+            if (is_complaint == 1) {
+                //已投诉
+
+                showToast("你已经提交过问题了!");
+            } else {
+
+                showComplaintPop(view, 1);
+            }
+
         }
     }
 
@@ -424,7 +450,14 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
         if (Jzvd.backPress()) {
             return;
         }
-        super.onBackPressed();
+
+
+        if (is_evaluate == 1) {
+            //已评价
+            finish();
+        } else {
+            evaluationTeacherPoupUtils.showAnswerPopuPopu(this.getWindow().getDecorView());
+        }
     }
 
     @Override
@@ -432,4 +465,5 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
         super.onPause();
         Jzvd.releaseAllVideos();
     }
+
 }
