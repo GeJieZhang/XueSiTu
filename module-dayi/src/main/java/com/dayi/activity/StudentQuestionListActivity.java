@@ -236,11 +236,15 @@ public class StudentQuestionListActivity extends BaseAppActivity {
         }
 
         @Override
-        protected void toBindViewHolder(ViewHolder holder, int position, List<QuestionList.ObjBean.HistoryListBean> mData) {
+        protected void toBindViewHolder(ViewHolder holder, final int position, final List<QuestionList.ObjBean.HistoryListBean> mData) {
 
-/**
- * 问答第一张图
- */
+
+
+
+
+            /**
+             * 问答第一张图
+             */
 
             if (mData.get(position).getFile() != null) {
 
@@ -272,6 +276,18 @@ public class StudentQuestionListActivity extends BaseAppActivity {
                 }
 
             }
+
+
+            holder.getView(R.id.btn_detail).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    ARouter.getInstance()
+                            .build(ARouterPathUtils.Dayi_StudentQuestionDetailActivity)
+                            .withString("questionId", mData.get(position).getQuestion_id() + "")
+                            .navigation();
+                }
+            });
 
         }
 

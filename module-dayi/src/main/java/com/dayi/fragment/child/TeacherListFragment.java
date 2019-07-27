@@ -112,7 +112,16 @@ public class TeacherListFragment extends BaseAppFragment {
                     + "   好评率" + replyBean.getPraise()
                     + "   答题数" + replyBean.getReply_total());
 
-            holder.getView(R.id.tv_see).setOnClickListener(new View.OnClickListener() {
+
+            TextView tv_see = holder.getView(R.id.tv_see);
+
+            if (mData.get(position).getIs_respondent() == 0) {
+                tv_see.setVisibility(View.VISIBLE);
+            } else {
+                tv_see.setVisibility(View.GONE);
+            }
+
+            tv_see.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 

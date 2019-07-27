@@ -25,6 +25,7 @@ import com.dayi.bean.UploadImage;
 import com.dayi.bean.UploadVoice;
 import com.dayi.utils.pop.PayPopupUtils;
 import com.dayi.utils.pop.RecordVoicePopupUtils;
+import com.dayi.utils.pop.SubjectPopupUtils;
 import com.dayi.utils.pop.WriteWordPopupUtils;
 import com.dayi.view.CommonSoundItemView;
 import com.lib.app.ARouterPathUtils;
@@ -98,7 +99,7 @@ public class AskQuestionActivity extends BaseAppActivity {
         initPayMoneyPopupUtils();
 
         requestpayMoneyState();
-
+        initSubjectPopupUtils();
     }
 
     PayPopupUtils payPopupUtils;
@@ -108,7 +109,10 @@ public class AskQuestionActivity extends BaseAppActivity {
         payPopupUtils.setPayPopupUtilsListener(new PayPopupUtils.PayPopupUtilsListener() {
             @Override
             public void onSure() {
-                requestUplaodData();
+
+
+                subjectPopupUtils.showAnswerPopuPopu(AskQuestionActivity.this.getWindow().getDecorView());
+                payPopupUtils.dismiss();
             }
 
             @Override
@@ -120,6 +124,22 @@ public class AskQuestionActivity extends BaseAppActivity {
         });
 
     }
+
+    SubjectPopupUtils subjectPopupUtils;
+
+    private void initSubjectPopupUtils() {
+        subjectPopupUtils = new SubjectPopupUtils(this);
+        subjectPopupUtils.setGradeChooseListener(new SubjectPopupUtils.GradeChooseListener() {
+
+            @Override
+            public void onSure(int subjectId) {
+                requestUplaodData(subjectId);
+                subjectPopupUtils.dismiss();
+            }
+        });
+
+    }
+
 
     private void requestpayMoneyState() {
 
@@ -272,7 +292,17 @@ public class AskQuestionActivity extends BaseAppActivity {
     }
 
 
-    private void requestUplaodData() {
+    private void requestUplaodData(int subjectId) {
+
+        if (subjectId == 0) {
+
+            showToast("请选择你的学科！");
+
+            return;
+
+        }
+
+
         if (uploadImageMap.size() <= 0) {
             showToast("请附上问题图片！");
 
@@ -314,10 +344,9 @@ public class AskQuestionActivity extends BaseAppActivity {
                 .post()
                 .addParam("requestType", "QUESTION_INITIATE_QUESTION")
                 .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
-
                 .addParam("image_description", image_description)
                 .addParam("voice_description", voice_description)
-
+                .addParam("subject_id", subjectId)
                 .addParam("text_description", contentWord)
                 .execute(new HttpDialogCallBack<BaseHttpBean>() {
                     @Override

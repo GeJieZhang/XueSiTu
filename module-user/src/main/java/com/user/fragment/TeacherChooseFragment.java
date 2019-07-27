@@ -32,6 +32,7 @@ public class TeacherChooseFragment extends BaseAppFragment {
     TextView tv_title;
     @BindView(R2.id.btn_sure)
     Button btnSure;
+
     private GradeAdapter gradeAdapter;
 
     private String title = "学科";

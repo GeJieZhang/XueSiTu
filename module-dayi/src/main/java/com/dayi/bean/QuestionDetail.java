@@ -188,6 +188,15 @@ public class QuestionDetail {
             private int is_check;
             private String correct;
             private String praise;
+            private int is_respondent;
+
+            public int getIs_respondent() {
+                return is_respondent;
+            }
+
+            public void setIs_respondent(int is_respondent) {
+                this.is_respondent = is_respondent;
+            }
 
             public int getReply_id() {
                 return reply_id;
