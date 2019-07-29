@@ -22,6 +22,8 @@ import com.lib.fastkit.R;
 import com.lib.fastkit.ui.base.control.ActivityCollector;
 import com.lib.fastkit.utils.status_bar.QMUI.QMUIStatusBarHelper;
 import com.lib.fastkit.views.button_deal.click.ClickUtils;
+import com.umeng.message.PushAgent;
+import com.umeng.socialize.UMShareAPI;
 
 import org.simple.eventbus.EventBus;
 
@@ -62,12 +64,23 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutId());
 
 
-
         unbinder = ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         onCreateView();
 
+        //友盟:在所有的Activity 的onCreate 方法或在应用的BaseActivity的onCreate方法中添加以下方法
+        PushAgent.getInstance(this).onAppStart();
 
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        //友盟分享
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
     //获取布局id

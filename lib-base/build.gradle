@@ -158,10 +158,27 @@ dependencies {
      */
     api 'cn.jzvd:jiaozivideoplayer:7.0.5'
 
-//    /**
-//     * 万能圆角图片
-//     */
-//    api 'com.github.SheHuan:NiceImageView:1.0.5'
+    /**
+     * 友盟推送(基础SDK)
+     */
+    api 'com.umeng.umsdk:common:1.5.4'
+    //与支付宝存在冲突 api 'com.umeng.umsdk:utdid:1.1.5.3'
+    api 'com.umeng.umsdk:push:6.0.1'
+
+    //小米Push通道
+    api 'com.umeng.umsdk:xiaomi-push:3.6.17'
+    api 'com.umeng.umsdk:xiaomi-umengaccs:1.1.0'
+
+    /**
+     * 友盟分享
+     */
+    api 'com.umeng.umsdk:share-core:6.9.6'
+    api 'com.umeng.umsdk:share-wx:6.9.6'
+    api 'com.umeng.umsdk:share-qq:6.9.6'
+
+    api 'com.umeng.umsdk:share-sina:6.9.6'
+
+
 
 
 }

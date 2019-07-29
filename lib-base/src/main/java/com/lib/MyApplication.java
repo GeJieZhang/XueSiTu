@@ -3,13 +3,18 @@ package com.lib;
 
 import android.app.ActivityManager;
 import android.app.Application;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.multidex.MultiDex;
+import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 
+import com.google.gson.Gson;
+import com.lib.base.R;
 import com.lib.fastkit.utils.system.SystemUtil;
 import com.lib.service.InitIntentService;
 import com.lib.utls.application_deal.UIUtils;
@@ -22,7 +27,16 @@ import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.utls.bugly.BuglyUtil;
 import com.squareup.leakcanary.LeakCanary;
 import com.tencent.smtt.sdk.QbSdk;
+import com.umeng.commonsdk.UMConfigure;
+import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.PushAgent;
+import com.umeng.message.UmengMessageHandler;
+import com.umeng.message.UmengNotificationClickHandler;
+import com.umeng.message.entity.UMessage;
+import com.umeng.socialize.PlatformConfig;
 
+
+import org.android.agoo.xiaomi.MiPushRegistar;
 
 import java.util.Iterator;
 import java.util.List;
@@ -40,6 +54,8 @@ public class MyApplication extends Application {
     private boolean isLog = true;
     //是否开启内存检测
     private boolean isLeakCanary = true;
+
+    private String TAG = "=======推送";
 
 
     @Override
@@ -60,6 +76,111 @@ public class MyApplication extends Application {
         //BuglyUtil.init(this);
         //内存检测
         //initLeakCanary();
+
+
+        initYouMeng();
+    }
+
+    /**
+     * 初始化友盟
+     */
+    private void initYouMeng() {
+
+        /**
+         * 友盟
+         */
+        UMConfigure.init(this, "5d3e56863fc195e682000cb2", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "97110bcafcc2b47a2377bb4390bac6b7");
+        /**
+         * 小米，华为，魅族，Oppo,Vivo(推送)
+         */
+        MiPushRegistar.register(this, "5d3e56863fc195e682000cb2", "5d3e56863fc195e682000cb2");
+
+
+        /**
+         * QQ,WeiXing,微博(分享)
+         */
+        PlatformConfig.setWeixin("wx2747c1e8b040c4d1", "d07fa072e26e1e8c32701e8759fea609");
+
+
+        PlatformConfig.setSinaWeibo("2489690608", "c54ead966302cf43d9242dcdcd6f8c34", "http://sns.whalecloud.com");
+        PlatformConfig.setQQZone("1105126608", "I7rMc2xTW9BwP9OD");
+
+        initPush();
+
+
+    }
+
+    /**
+     * 初始化推送
+     */
+    private void initPush() {
+        //获取消息推送代理示例
+        PushAgent mPushAgent = PushAgent.getInstance(this);
+
+        //注册推送服务，每次调用register方法都会回调该接口
+        mPushAgent.register(new IUmengRegisterCallback() {
+
+            @Override
+            public void onSuccess(String deviceToken) {
+                //注册成功会返回deviceToken deviceToken是推送消息的唯一标志
+                Log.e(TAG, "注册成功：deviceToken：-------->  " + deviceToken);
+            }
+
+            @Override
+            public void onFailure(String s, String s1) {
+                Log.e(TAG, "注册失败：-------->  " + "s:" + s + ",s1:" + s1);
+            }
+        });
+
+        UmengMessageHandler messageHandler = new UmengMessageHandler() {
+
+            /**
+             * 自定义通知栏样式的回调方法
+             */
+            @Override
+            public Notification getNotification(Context context, UMessage msg) {
+                switch (msg.builder_id) {
+
+
+                    case 1:
+
+                        //这里是自定义通知栏的消息,不进行设置显示默认的样式
+                        Log.e(TAG, "收到消息1:" + msg.toString());
+
+                        Notification.Builder builder = new Notification.Builder(context);
+                        RemoteViews myNotificationView = new RemoteViews(context.getPackageName(),
+                                R.layout.notification_view);
+                        myNotificationView.setTextViewText(R.id.notification_title, msg.title);
+                        myNotificationView.setTextViewText(R.id.notification_text, msg.text);
+                        myNotificationView.setImageViewBitmap(R.id.notification_large_icon, getLargeIcon(context, msg));
+                        myNotificationView.setImageViewResource(R.id.notification_small_icon,
+                                getSmallIconId(context, msg));
+                        builder.setContent(myNotificationView)
+                                .setSmallIcon(getSmallIconId(context, msg))
+                                .setTicker(msg.ticker)
+                                .setAutoCancel(true);
+
+                        return builder.getNotification();
+                    default:
+
+                        Log.e(TAG, "收到消息default:" + new Gson().toJson(msg));
+                        //默认为0，若填写的builder_id并不存在，也使用默认。
+                        return super.getNotification(context, msg);
+                }
+            }
+        };
+        mPushAgent.setMessageHandler(messageHandler);
+
+        UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
+
+            @Override
+            public void dealWithCustomAction(Context context, UMessage msg) {
+                Log.e(TAG, "click");
+            }
+
+        };
+
+        mPushAgent.setNotificationClickHandler(notificationClickHandler);
     }
 
     private void initX5() {

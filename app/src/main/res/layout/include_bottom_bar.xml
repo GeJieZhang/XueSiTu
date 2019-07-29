@@ -69,7 +69,7 @@
                     <TextView
                         android:id="@+id/tv_sixue"
                         style="@style/text_style1"
-                        android:text="私学" />
+                        android:text="问答" />
 
                 </LinearLayout>
 
