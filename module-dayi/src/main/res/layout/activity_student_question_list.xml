@@ -17,95 +17,105 @@
         app:networkErrorView="@layout/m_net_error_view"
         app:viewState="content">
 
-        <ScrollView
+        <com.lib.fastkit.views.spring_refresh.widget.SpringView
+            android:id="@+id/springView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true"
-            android:scrollbars="none">
+            android:layout_height="match_parent">
 
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
-                android:orientation="vertical">
-
-                <TextView
-
-                    style="@style/text_style11"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="24dp"
-                    android:text="当前待答"
-                    android:textColor="@color/base_title"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:descendantFocusability="blocksDescendants">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rv1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="24dp"
-                        android:layout_marginTop="24dp"></android.support.v7.widget.RecyclerView>
-                </RelativeLayout>
+                android:fillViewport="true"
+                android:scrollbars="none">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent"
+
+                    android:orientation="vertical">
 
                     <TextView
 
                         style="@style/text_style11"
                         android:layout_marginLeft="16dp"
-
-                        android:text="历史问答"
+                        android:layout_marginTop="24dp"
+                        android:text="当前待答"
                         android:textColor="@color/base_title"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
-                    <TextView
-                        style="@style/text_style11"
-                        android:layout_width="match_parent"
-
-                        android:layout_marginRight="16dp"
-                        android:gravity="right"
-                        android:text="@string/rule_link"
-                        android:textColor="@color/base_title"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:descendantFocusability="blocksDescendants">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rv2"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="24dp"
+                        android:descendantFocusability="blocksDescendants">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rv1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="24dp"
+                            android:layout_marginTop="24dp"></android.support.v7.widget.RecyclerView>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
-                        android:layout_weight="1"></android.support.v7.widget.RecyclerView>
-                </RelativeLayout>
-                <!--<TextView-->
+                        android:orientation="horizontal">
 
-                <!--style="@style/text_style4"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:layout_marginBottom="16dp"-->
-                <!--android:layout_marginTop="16dp"-->
-                <!--android:text="~我也是有底线的！~"-->
-                <!--android:textSize="14sp"-->
+                        <TextView
 
-                <!--/>-->
-            </LinearLayout>
+                            style="@style/text_style11"
+                            android:layout_marginLeft="16dp"
+
+                            android:text="历史问答"
+                            android:textColor="@color/base_title"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+
+                            android:id="@+id/tv_link"
+                            style="@style/text_style11"
+                            android:layout_width="match_parent"
+
+                            android:layout_marginRight="16dp"
+                            android:gravity="right"
+                            android:text="@string/rule_link"
+                            android:textColor="@color/base_title"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:descendantFocusability="blocksDescendants">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rv2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="24dp"
+                            android:layout_marginTop="24dp"
+                            android:layout_weight="1"></android.support.v7.widget.RecyclerView>
+                    </RelativeLayout>
+                    <!--<TextView-->
+
+                    <!--style="@style/text_style4"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:layout_marginBottom="16dp"-->
+                    <!--android:layout_marginTop="16dp"-->
+                    <!--android:text="~我也是有底线的！~"-->
+                    <!--android:textSize="14sp"-->
+
+                    <!--/>-->
+                </LinearLayout>
 
 
-        </ScrollView>
+            </ScrollView>
+
+        </com.lib.fastkit.views.spring_refresh.widget.SpringView>
+
     </com.lib.fastkit.views.load_state_view.MultiStateView>
 </LinearLayout>

@@ -35,6 +35,7 @@ android {
 
     buildTypes {
         debug {
+
             // 显示Log
             buildConfigField "boolean", "LOG_DEBUG", "true"
             versionNameSuffix "-debug"
@@ -62,6 +63,7 @@ android {
         }
 
         release {
+
             // 不显示Log
             buildConfigField "boolean", "LOG_DEBUG", "false"
             //混淆
@@ -93,6 +95,7 @@ android {
         }
 
     }
+
     //环信9.0兼容
     useLibrary 'org.apache.http.legacy'
 

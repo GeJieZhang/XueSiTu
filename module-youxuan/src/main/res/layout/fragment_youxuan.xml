@@ -6,312 +6,324 @@
     android:background="@color/white"
     android:orientation="vertical">
 
+    <com.lib.fastkit.views.load_state_view.MultiStateView
 
-    <com.lib.fastkit.views.spring_refresh.widget.SpringView
-        android:id="@+id/springView"
+        android:id="@+id/state_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:emptyView="@layout/m_empty_view"
+        app:errorView="@layout/m_error_view"
+        app:loadingView="@layout/m_loading_view"
+        app:networkErrorView="@layout/m_net_error_view"
+        app:viewState="content">
 
-        <ScrollView
+        <com.lib.fastkit.views.spring_refresh.widget.SpringView
+            android:id="@+id/springView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:scrollbars="none">
+            android:layout_height="match_parent">
 
-
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:scrollbars="none">
 
-                <!--banner-->
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
                     android:orientation="vertical">
 
-                    <com.ms.banner.Banner
-                        android:id="@+id/banner"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        app:page_left_margin="40dp"
-                        app:page_right_margin="40dp" />
-
-                    <LinearLayout
-                        android:id="@+id/indicator"
-                        android:layout_width="match_parent"
-                        android:layout_height="15dp"
-                        android:layout_marginTop="16dp"
-                        android:gravity="center"
-                        android:orientation="horizontal" />
-
-                </LinearLayout>
-
-                <!--标题1-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@color/white"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/text_style2"
-                        android:layout_marginLeft="16dp"
-                        android:text="晚辅陪伴课"
-
-                        />
-
-                    <View
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"></View>
-
-                    <ImageView
-                        android:id="@+id/iv_more1"
-                        android:layout_width="25dp"
-                        android:layout_height="20dp"
-                        android:layout_marginRight="16dp"
-                        android:src="@mipmap/icon_more" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginTop="16dp"
-                    android:orientation="horizontal">
-                    <!--&lt;!&ndash;语文&ndash;&gt;-->
-                    <!--<LinearLayout-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:gravity="center"-->
-                    <!--android:orientation="vertical">-->
-
-
-                    <!--<ImageView-->
-                    <!--android:layout_width="60dp"-->
-                    <!--android:layout_height="60dp"-->
-                    <!--android:src="@mipmap/wanfu_chinese" />-->
-
-                    <!--<TextView-->
-                    <!--style="@style/text_style3"-->
-                    <!--android:text="语文陪伴" />-->
-
-                    <!--<TextView-->
-                    <!--style="@style/text_style4"-->
-                    <!--android:text="17:00-20:00" />-->
-
-                    <!--</LinearLayout>-->
-                    <!--&lt;!&ndash;数学&ndash;&gt;-->
-                    <!--<LinearLayout-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:gravity="center"-->
-                    <!--android:orientation="vertical">-->
-
-
-                    <!--<ImageView-->
-                    <!--android:layout_width="60dp"-->
-                    <!--android:layout_height="60dp"-->
-                    <!--android:src="@mipmap/wanfu_math" />-->
-
-                    <!--<TextView-->
-                    <!--style="@style/text_style3"-->
-                    <!--android:text="数学陪伴" />-->
-
-                    <!--<TextView-->
-                    <!--style="@style/text_style4"-->
-                    <!--android:text="17:00-20:00" />-->
-
-                    <!--</LinearLayout>-->
-                    <!--&lt;!&ndash;英语&ndash;&gt;-->
-                    <!--<LinearLayout-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:gravity="center"-->
-                    <!--android:orientation="vertical">-->
-
-
-                    <!--<ImageView-->
-                    <!--android:layout_width="60dp"-->
-                    <!--android:layout_height="60dp"-->
-                    <!--android:src="@mipmap/wanfu_english" />-->
-
-                    <!--<TextView-->
-                    <!--style="@style/text_style3"-->
-                    <!--android:text="英语陪伴" />-->
-
-                    <!--<TextView-->
-                    <!--style="@style/text_style4"-->
-                    <!--android:text="17:00-20:00" />-->
-
-                    <!--</LinearLayout>-->
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rv_wanfu"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-
-                    </android.support.v7.widget.RecyclerView>
-
-
-                </LinearLayout>
-
-
-                <!--标题2-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@color/white"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/text_style2"
-                        android:layout_marginLeft="16dp"
-                        android:text="智two·1对1互动课"
-
-                        />
-
-                    <View
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"></View>
-
-                    <ImageView
-                        android:id="@+id/iv_more2"
-                        android:layout_width="25dp"
-                        android:layout_height="20dp"
-                        android:layout_marginRight="16dp"
-                        android:src="@mipmap/icon_more" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    android:orientation="vertical">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rv_hudong"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-
-                    </android.support.v7.widget.RecyclerView>
-
-
-                </LinearLayout>
-
-                <!--标题3-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@color/white"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/text_style2"
-                        android:layout_marginLeft="16dp"
-                        android:text="多人精品互动课"
-
-                        />
-
-                    <View
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"></View>
-
-                    <ImageView
-                        android:id="@+id/iv_more3"
-                        android:layout_width="25dp"
-                        android:layout_height="20dp"
-                        android:layout_marginRight="16dp"
-                        android:src="@mipmap/icon_more" />
-
-                </LinearLayout>
-                <!--小学，初中，高中-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    <!--banner-->
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_height="180dp"
                         android:layout_marginTop="16dp"
+                        android:orientation="vertical">
+
+                        <com.ms.banner.Banner
+                            android:id="@+id/banner"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            app:page_left_margin="40dp"
+                            app:page_right_margin="40dp" />
+
+                        <LinearLayout
+                            android:id="@+id/indicator"
+                            android:layout_width="match_parent"
+                            android:layout_height="15dp"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center"
+                            android:orientation="horizontal" />
+
+                    </LinearLayout>
+
+                    <!--标题1-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@color/white"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <LinearLayout
-                            android:id="@+id/lin_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="horizontal"></LinearLayout>
-
-
-                        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-                            android:id="@+id/tv_title"
-                            style="@style/text_style3"
-                            android:layout_height="wrap_content"
+                        <TextView
+                            style="@style/text_style2"
                             android:layout_marginLeft="16dp"
-                            android:text="更多热门课程"
-                            android:textSize="16sp" />
+                            android:text="晚辅陪伴课"
+
+                            />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"></View>
 
                         <ImageView
-                            android:layout_width="15dp"
+                            android:id="@+id/iv_more1"
+                            android:layout_width="25dp"
                             android:layout_height="20dp"
-                            android:layout_marginLeft="4dp"
                             android:layout_marginRight="16dp"
-                            android:src="@mipmap/icon_next" />
+                            android:src="@mipmap/icon_more" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
+                        <!--&lt;!&ndash;语文&ndash;&gt;-->
+                        <!--<LinearLayout-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:gravity="center"-->
+                        <!--android:orientation="vertical">-->
+
+
+                        <!--<ImageView-->
+                        <!--android:layout_width="60dp"-->
+                        <!--android:layout_height="60dp"-->
+                        <!--android:src="@mipmap/wanfu_chinese" />-->
+
+                        <!--<TextView-->
+                        <!--style="@style/text_style3"-->
+                        <!--android:text="语文陪伴" />-->
+
+                        <!--<TextView-->
+                        <!--style="@style/text_style4"-->
+                        <!--android:text="17:00-20:00" />-->
+
+                        <!--</LinearLayout>-->
+                        <!--&lt;!&ndash;数学&ndash;&gt;-->
+                        <!--<LinearLayout-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:gravity="center"-->
+                        <!--android:orientation="vertical">-->
+
+
+                        <!--<ImageView-->
+                        <!--android:layout_width="60dp"-->
+                        <!--android:layout_height="60dp"-->
+                        <!--android:src="@mipmap/wanfu_math" />-->
+
+                        <!--<TextView-->
+                        <!--style="@style/text_style3"-->
+                        <!--android:text="数学陪伴" />-->
+
+                        <!--<TextView-->
+                        <!--style="@style/text_style4"-->
+                        <!--android:text="17:00-20:00" />-->
+
+                        <!--</LinearLayout>-->
+                        <!--&lt;!&ndash;英语&ndash;&gt;-->
+                        <!--<LinearLayout-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:gravity="center"-->
+                        <!--android:orientation="vertical">-->
+
+
+                        <!--<ImageView-->
+                        <!--android:layout_width="60dp"-->
+                        <!--android:layout_height="60dp"-->
+                        <!--android:src="@mipmap/wanfu_english" />-->
+
+                        <!--<TextView-->
+                        <!--style="@style/text_style3"-->
+                        <!--android:text="英语陪伴" />-->
+
+                        <!--<TextView-->
+                        <!--style="@style/text_style4"-->
+                        <!--android:text="17:00-20:00" />-->
+
+                        <!--</LinearLayout>-->
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rv_wanfu"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+
+                        </android.support.v7.widget.RecyclerView>
 
 
                     </LinearLayout>
 
-                    <com.lib.fastkit.views.viewpager.my.ViewPagerForScrollView
-                        android:id="@+id/contentViewPager"
+
+                    <!--标题2-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/text_style2"
+                            android:layout_marginLeft="16dp"
+                            android:text="智two·1对1互动课"
+
+                            />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"></View>
+
+                        <ImageView
+                            android:id="@+id/iv_more2"
+                            android:layout_width="25dp"
+                            android:layout_height="20dp"
+                            android:layout_marginRight="16dp"
+                            android:src="@mipmap/icon_more" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp"
+                        android:orientation="vertical">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rv_hudong"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+
+                        </android.support.v7.widget.RecyclerView>
+
+
+                    </LinearLayout>
+
+                    <!--标题3-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/text_style2"
+                            android:layout_marginLeft="16dp"
+                            android:text="多人精品互动课"
+
+                            />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"></View>
+
+                        <ImageView
+                            android:id="@+id/iv_more3"
+                            android:layout_width="25dp"
+                            android:layout_height="20dp"
+                            android:layout_marginRight="16dp"
+                            android:src="@mipmap/icon_more" />
+
+                    </LinearLayout>
+                    <!--小学，初中，高中-->
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:visibility="visible"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:id="@+id/lin_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal"></LinearLayout>
+
+
+                            <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:id="@+id/tv_title"
+                                style="@style/text_style3"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="16dp"
+                                android:text="更多热门课程"
+                                android:textSize="16sp" />
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="20dp"
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginRight="16dp"
+                                android:src="@mipmap/icon_next" />
+
+
+                        </LinearLayout>
+
+                        <com.lib.fastkit.views.viewpager.my.ViewPagerForScrollView
+                            android:id="@+id/contentViewPager"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:visibility="visible"
+
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/indicator2"
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
+                        android:orientation="horizontal" />
+
+                    <TextView
+
+                        style="@style/text_style4"
+                        android:layout_marginBottom="16dp"
+                        android:text="~我也是有底线的！~"
+                        android:textSize="14sp"
 
                         />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/indicator2"
-                    android:layout_width="match_parent"
-                    android:layout_height="15dp"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center"
-                    android:orientation="horizontal" />
 
-                <TextView
+            </ScrollView>
+        </com.lib.fastkit.views.spring_refresh.widget.SpringView>
 
-                    style="@style/text_style4"
-                    android:layout_marginBottom="16dp"
-                    android:text="~我也是有底线的！~"
-                    android:textSize="14sp"
-
-                    />
-            </LinearLayout>
-
-
-        </ScrollView>
-    </com.lib.fastkit.views.spring_refresh.widget.SpringView>
+    </com.lib.fastkit.views.load_state_view.MultiStateView>
 </LinearLayout>

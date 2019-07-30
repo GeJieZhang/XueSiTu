@@ -17,6 +17,7 @@
         android:gravity="top|start"
         android:hint="描述越详细，越方便老师为您解答哦~"
         android:imeOptions="flagNoExtractUi"
+        android:textIsSelectable="true"
         android:maxEms="500"
         android:padding="5dp"
         android:textSize="14sp" />

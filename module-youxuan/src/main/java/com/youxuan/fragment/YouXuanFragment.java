@@ -25,6 +25,7 @@ import com.lib.bean.CustomData;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.utils.status_bar.QMUI.QMUIDisplayHelper;
+import com.lib.fastkit.views.load_state_view.MultiStateView;
 import com.lib.fastkit.views.recyclerview.tool.MyLinearLayoutManager;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.fastkit.views.spring_refresh.container.DefaultFooter;
@@ -54,6 +55,9 @@ import butterknife.OnClick;
 @Route(path = ARouterPathUtils.YouXuan_YouXuanFragment)
 public class YouXuanFragment extends BaseAppFragment {
 
+
+    @BindView(R2.id.state_view)
+    MultiStateView stateView;
 
     @BindView(R2.id.rv_hudong)
     RecyclerView rvHudong;
@@ -99,7 +103,14 @@ public class YouXuanFragment extends BaseAppFragment {
 
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
+        stateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
 
+        stateView.setMultiStateViewLisener(new MultiStateView.MultiStateViewLisener() {
+            @Override
+            public void onTryAgain() {
+                initData();
+            }
+        });
         initData();
 
         initView();
@@ -131,7 +142,10 @@ public class YouXuanFragment extends BaseAppFragment {
 
                             setStageData(youXuanBean);
 
+                            stateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+
                         } else {
+                            stateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
                             showToast(youXuanBean.getMsg());
                         }
 
@@ -141,7 +155,7 @@ public class YouXuanFragment extends BaseAppFragment {
 
                     @Override
                     public void onError(String e) {
-
+                        stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
                     }
                 });
 

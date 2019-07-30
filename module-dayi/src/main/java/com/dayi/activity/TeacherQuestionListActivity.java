@@ -13,12 +13,17 @@ import com.bumptech.glide.Glide;
 import com.dayi.R;
 import com.dayi.R2;
 import com.dayi.bean.QuestionList;
+import com.dayi.utils.pop.ZoomImagePopupUtils;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
+import com.lib.fastkit.views.spring_refresh.container.DefaultFooter;
+import com.lib.fastkit.views.spring_refresh.container.DefaultHeader;
+import com.lib.fastkit.views.spring_refresh.widget.SpringView;
 import com.lib.http.call_back.HttpDialogCallBack;
+import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.utls.glide.GlideConfig;
@@ -40,13 +45,15 @@ public class TeacherQuestionListActivity extends BaseAppActivity {
     RecyclerView rv1;
     @BindView(R2.id.rv2)
     RecyclerView rv2;
-
+    @BindView(R2.id.springView)
+    SpringView springView;
     private HomeAdapter1 homeAdapter1;
     private HomeAdapter2 homeAdapter2;
 
 
     private List<QuestionList.ObjBean.QuestionListBean> list1 = new ArrayList<>();
-    private List<QuestionList.ObjBean.HistoryListBean> list2 = new ArrayList<>();
+    private List<QuestionList.ObjBean.HistoryPageBean.RowsBean> list2 = new ArrayList<>();
+    private int page = 0;
 
     @Override
     protected void onCreateView() {
@@ -71,16 +78,23 @@ public class TeacherQuestionListActivity extends BaseAppActivity {
         HttpUtils.with(this)
                 .addParam("requestType", "QUESTION_USER_LIST")
                 .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
-                .execute(new HttpDialogCallBack<QuestionList>() {
+                .addParam("limit", "10")
+                .addParam("page", page)
+
+
+                .execute(new HttpNormalCallBack<QuestionList>() {
                     @Override
                     public void onSuccess(QuestionList result) {
 
-
+                        springView.onFinishFreshAndLoad();
                         if (result.getCode() == CodeUtil.CODE_200) {
+                            if (page == 0) {
+                                list1.clear();
+                                list2.clear();
+                            }
+                            list1.addAll(result.getObj().getQuestion_list());
 
-                            list1.addAll(result.getObj().getQuestion_List());
-
-                            list2.addAll(result.getObj().getHistory_list());
+                            list2.addAll(result.getObj().getHistory_page().getRows());
 
                             homeAdapter1.notifyDataSetChanged();
 
@@ -95,6 +109,7 @@ public class TeacherQuestionListActivity extends BaseAppActivity {
                     }
                 });
     }
+
 
     private void initView() {
 
@@ -116,6 +131,28 @@ public class TeacherQuestionListActivity extends BaseAppActivity {
 
         rv1.setAdapter(homeAdapter1);
         rv2.setAdapter(homeAdapter2);
+
+
+        springView.setHeader(new DefaultHeader(this));
+        springView.setFooter(new DefaultFooter(this));
+
+        springView.setListener(new SpringView.OnFreshListener() {
+            @Override
+            public void onRefresh() {
+                page = 0;
+                initData();
+
+
+            }
+
+            @Override
+            public void onLoadmore() {
+
+                page++;
+                initData();
+
+            }
+        });
     }
 
     @Override
@@ -149,7 +186,15 @@ public class TeacherQuestionListActivity extends BaseAppActivity {
 
                 if (mData.get(position).getFile().size() >= 1) {
                     ImageView iv_iamge1 = holder.getView(R.id.iv_image1);
-                    String url1 = mData.get(position).getFile().get(0);
+                    final String url1 = mData.get(position).getFile().get(0);
+                    iv_iamge1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ZoomImagePopupUtils zoomImagePopupUtils = new ZoomImagePopupUtils(TeacherQuestionListActivity.this);
+                            zoomImagePopupUtils.setZoomImage(url1);
+                            zoomImagePopupUtils.showAnswerPopuPopu(v);
+                        }
+                    });
                     if (url1 != null) {
                         Glide.with(TeacherQuestionListActivity.this)
                                 .load(url1)
@@ -165,7 +210,15 @@ public class TeacherQuestionListActivity extends BaseAppActivity {
                  */
                 if (mData.get(position).getFile().size() >= 2) {
                     ImageView iv_iamge2 = holder.getView(R.id.iv_image1);
-                    String url2 = mData.get(position).getFile().get(1);
+                    final String url2 = mData.get(position).getFile().get(1);
+                    iv_iamge2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ZoomImagePopupUtils zoomImagePopupUtils = new ZoomImagePopupUtils(TeacherQuestionListActivity.this);
+                            zoomImagePopupUtils.setZoomImage(url2);
+                            zoomImagePopupUtils.showAnswerPopuPopu(v);
+                        }
+                    });
                     if (url2 != null) {
                         Glide.with(TeacherQuestionListActivity.this)
                                 .load(url2)
@@ -192,10 +245,10 @@ public class TeacherQuestionListActivity extends BaseAppActivity {
     /**
      * 历史问答
      */
-    private class HomeAdapter2 extends BaseAdapter<QuestionList.ObjBean.HistoryListBean> {
+    private class HomeAdapter2 extends BaseAdapter<QuestionList.ObjBean.HistoryPageBean.RowsBean> {
 
 
-        public HomeAdapter2(Context context, List<QuestionList.ObjBean.HistoryListBean> mData) {
+        public HomeAdapter2(Context context, List<QuestionList.ObjBean.HistoryPageBean.RowsBean> mData) {
             super(context, mData);
         }
 
@@ -205,7 +258,7 @@ public class TeacherQuestionListActivity extends BaseAppActivity {
         }
 
         @Override
-        protected void toBindViewHolder(ViewHolder holder, final int position, final List<QuestionList.ObjBean.HistoryListBean> mData) {
+        protected void toBindViewHolder(ViewHolder holder, final int position, final List<QuestionList.ObjBean.HistoryPageBean.RowsBean> mData) {
 
             /**
              * 问答第一张图

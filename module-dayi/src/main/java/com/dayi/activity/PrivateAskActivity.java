@@ -151,7 +151,7 @@ public class PrivateAskActivity extends BaseAppActivity {
 
                 page++;
                 initData();
-                springView.onFinishFreshAndLoad();
+
             }
         });
 

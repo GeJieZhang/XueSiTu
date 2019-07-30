@@ -7,7 +7,7 @@ public class QuestionList {
 
     /**
      * code : 200
-     * obj : {"history_list":[{"divide":2,"file":["http://pu00k0ssj.bkt.clouddn.com/FtyynoxXZwekhKCC7IVnVIHvk5i-"],"question_id":3},{"divide":5,"file":["http://pu00k0ssj.bkt.clouddn.com/Fm6Frf6_xGlRfAU0qyjkWpXp6qsF"],"question_id":5}],"question_List":[{"remaining":8,"file":["http://pu00k0ssj.bkt.clouddn.com/FtyynoxXZwekhKCC7IVnVIHvk5i-"],"question_id":3},{"remaining":10,"file":["http://pu00k0ssj.bkt.clouddn.com/FttbETY71vECHeB6Ysrc8n0oOLTR"],"question_id":4},{"remaining":0,"file":["http://pu00k0ssj.bkt.clouddn.com/Fm6Frf6_xGlRfAU0qyjkWpXp6qsF"],"question_id":5},{"remaining":10,"file":["http://pu00k0ssj.bkt.clouddn.com/Frr3N-lgxgc7SmG06a4wvjWx2zgy"],"question_id":6}]}
+     * obj : {"history_page":{"total":1,"limit":10,"page":0,"rows":[{"remaining":0,"file":["http://pu00k0ssj.bkt.clouddn.com/FiNYrIEomd96IiTL_xwS7dH8q97T"],"question_id":31}]},"question_list":[{"remaining":5,"file":["http://pu00k0ssj.bkt.clouddn.com/null"],"question_id":7},{"remaining":5,"file":["http://pu00k0ssj.bkt.clouddn.com/Frr3N-lgxgc7SmG06a4wvjWx2zgy"],"question_id":8},{"remaining":5,"file":["http://pu00k0ssj.bkt.clouddn.com/FtpfWpt3lp6KWp6JMcfM56zyFObZ"],"question_id":9},{"remaining":5,"file":["http://pu00k0ssj.bkt.clouddn.com/FtpfWpt3lp6KWp6JMcfM56zyFObZ"],"question_id":10},{"remaining":10,"file":["http://pu00k0ssj.bkt.clouddn.com/Fh74dLK2ZhuJKbiZ5n-vsMJzPlX3"],"question_id":37}]}
      * msg : 请求成功
      * seccess : true
      */
@@ -50,69 +50,126 @@ public class QuestionList {
     }
 
     public static class ObjBean {
-        private List<HistoryListBean> history_list;
+        /**
+         * history_page : {"total":1,"limit":10,"page":0,"rows":[{"remaining":0,"file":["http://pu00k0ssj.bkt.clouddn.com/FiNYrIEomd96IiTL_xwS7dH8q97T"],"question_id":31}]}
+         * question_list : [{"remaining":5,"file":["http://pu00k0ssj.bkt.clouddn.com/null"],"question_id":7},{"remaining":5,"file":["http://pu00k0ssj.bkt.clouddn.com/Frr3N-lgxgc7SmG06a4wvjWx2zgy"],"question_id":8},{"remaining":5,"file":["http://pu00k0ssj.bkt.clouddn.com/FtpfWpt3lp6KWp6JMcfM56zyFObZ"],"question_id":9},{"remaining":5,"file":["http://pu00k0ssj.bkt.clouddn.com/FtpfWpt3lp6KWp6JMcfM56zyFObZ"],"question_id":10},{"remaining":10,"file":["http://pu00k0ssj.bkt.clouddn.com/Fh74dLK2ZhuJKbiZ5n-vsMJzPlX3"],"question_id":37}]
+         */
+
+        private HistoryPageBean history_page;
         private List<QuestionListBean> question_list;
+        private String visit_rule_link;
 
-        public List<HistoryListBean> getHistory_list() {
-            return history_list;
+        public String getVisit_rule_link() {
+            return visit_rule_link;
         }
 
-        public void setHistory_list(List<HistoryListBean> history_list) {
-            this.history_list = history_list;
+        public void setVisit_rule_link(String visit_rule_link) {
+            this.visit_rule_link = visit_rule_link;
         }
 
-        public List<QuestionListBean> getQuestion_List() {
+        public HistoryPageBean getHistory_page() {
+            return history_page;
+        }
+
+        public void setHistory_page(HistoryPageBean history_page) {
+            this.history_page = history_page;
+        }
+
+        public List<QuestionListBean> getQuestion_list() {
             return question_list;
-
         }
 
-        public void setQuestion_List(List<QuestionListBean> question_list) {
+        public void setQuestion_list(List<QuestionListBean> question_list) {
             this.question_list = question_list;
         }
 
-        public static class HistoryListBean {
+        public static class HistoryPageBean {
             /**
-             * divide : 2
-             * file : ["http://pu00k0ssj.bkt.clouddn.com/FtyynoxXZwekhKCC7IVnVIHvk5i-"]
-             * question_id : 3
+             * total : 1
+             * limit : 10
+             * page : 0
+             * rows : [{"remaining":0,"file":["http://pu00k0ssj.bkt.clouddn.com/FiNYrIEomd96IiTL_xwS7dH8q97T"],"question_id":31}]
              */
 
-            private int divide;
-            private int question_id;
-            private List<String> file;
+            private int total;
+            private int limit;
+            private int page;
+            private List<RowsBean> rows;
 
-            public int getDivide() {
-                return divide;
+            public int getTotal() {
+                return total;
             }
 
-            public void setDivide(int divide) {
-                this.divide = divide;
+            public void setTotal(int total) {
+                this.total = total;
             }
 
-            public int getQuestion_id() {
-                return question_id;
+            public int getLimit() {
+                return limit;
             }
 
-            public void setQuestion_id(int question_id) {
-                this.question_id = question_id;
+            public void setLimit(int limit) {
+                this.limit = limit;
             }
 
-            public List<String> getFile() {
-                return file;
+            public int getPage() {
+                return page;
             }
 
-            public void setFile(List<String> file) {
-                this.file = file;
+            public void setPage(int page) {
+                this.page = page;
+            }
+
+            public List<RowsBean> getRows() {
+                return rows;
+            }
+
+            public void setRows(List<RowsBean> rows) {
+                this.rows = rows;
+            }
+
+            public static class RowsBean {
+                /**
+                 * remaining : 0
+                 * file : ["http://pu00k0ssj.bkt.clouddn.com/FiNYrIEomd96IiTL_xwS7dH8q97T"]
+                 * question_id : 31
+                 */
+
+                private int remaining;
+                private int question_id;
+                private List<String> file;
+
+                public int getRemaining() {
+                    return remaining;
+                }
+
+                public void setRemaining(int remaining) {
+                    this.remaining = remaining;
+                }
+
+                public int getQuestion_id() {
+                    return question_id;
+                }
+
+                public void setQuestion_id(int question_id) {
+                    this.question_id = question_id;
+                }
+
+                public List<String> getFile() {
+                    return file;
+                }
+
+                public void setFile(List<String> file) {
+                    this.file = file;
+                }
             }
         }
 
         public static class QuestionListBean {
-
-
             /**
-             * remaining : 8
-             * file : ["http://pu00k0ssj.bkt.clouddn.com/FtyynoxXZwekhKCC7IVnVIHvk5i-"]
-             * question_id : 3
+             * remaining : 5
+             * file : ["http://pu00k0ssj.bkt.clouddn.com/null"]
+             * question_id : 7
              */
 
             private int remaining;
@@ -142,25 +199,6 @@ public class QuestionList {
             public void setFile(List<String> file) {
                 this.file = file;
             }
-
-            @Override
-            public String toString() {
-                return "QuestionListBean{" +
-                        "remaining=" + remaining +
-                        ", question_id=" + question_id +
-                        ", file=" + file +
-                        '}';
-            }
         }
-    }
-
-    @Override
-    public String toString() {
-        return "QuestionList{" +
-                "code=" + code +
-                ", obj=" + obj +
-                ", msg='" + msg + '\'' +
-                ", seccess=" + seccess +
-                '}';
     }
 }

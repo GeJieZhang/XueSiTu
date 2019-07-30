@@ -27,6 +27,7 @@ import com.dayi.utils.pop.PayPopupUtils;
 import com.dayi.utils.pop.RecordVoicePopupUtils;
 import com.dayi.utils.pop.SubjectPopupUtils;
 import com.dayi.utils.pop.WriteWordPopupUtils;
+import com.dayi.utils.pop.ZoomImagePopupUtils;
 import com.dayi.view.CommonSoundItemView;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
@@ -34,7 +35,9 @@ import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.file.FileUtils;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
+import com.lib.fastkit.views.load_state_view.MultiStateView;
 import com.lib.http.call_back.HttpDialogCallBack;
+import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.utls.glide.GlideConfig;
 import com.lib.utls.picture_select.PhotoUtil;
@@ -59,6 +62,9 @@ import butterknife.OnClick;
 
 @Route(path = ARouterPathUtils.Dayi_AskQuestionActivity)
 public class AskQuestionActivity extends BaseAppActivity {
+
+    @BindView(R2.id.state_view)
+    MultiStateView stateView;
     @BindView(R2.id.lin_Image)
     LinearLayout linImage;
     @BindView(R2.id.lin_word)
@@ -89,15 +95,19 @@ public class AskQuestionActivity extends BaseAppActivity {
     @Override
     protected void onCreateView() {
 
+
+        stateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+        stateView.setMultiStateViewLisener(new MultiStateView.MultiStateViewLisener() {
+            @Override
+            public void onTryAgain() {
+                requestpayMoneyState();
+            }
+        });
         initTitle();
         initView();
         initRecodVoiceUtils();
-
         initWordWritePopupUtils();
-
-
         initPayMoneyPopupUtils();
-
         requestpayMoneyState();
         initSubjectPopupUtils();
     }
@@ -146,7 +156,7 @@ public class AskQuestionActivity extends BaseAppActivity {
         HttpUtils.with(this)
                 .addParam("requestType", "QUESTION_USER_STATUS")
                 .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
-                .execute(new HttpDialogCallBack<QuestionStateBean>() {
+                .execute(new HttpNormalCallBack<QuestionStateBean>() {
                     @Override
                     public void onSuccess(QuestionStateBean result) {
 
@@ -155,6 +165,10 @@ public class AskQuestionActivity extends BaseAppActivity {
                             payPopupUtils.setPopupValue(result.getObj().getAmount() + "", result.getObj().getTotal() + "");
 
                             tv_tips.setText(result.getObj().getMsg());
+
+                            stateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                        } else {
+                            stateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
                         }
 
 
@@ -162,6 +176,8 @@ public class AskQuestionActivity extends BaseAppActivity {
 
                     @Override
                     public void onError(String e) {
+
+                        stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
 
                     }
                 });
@@ -357,15 +373,14 @@ public class AskQuestionActivity extends BaseAppActivity {
                             finish();
 
                         }
-
                         showToast(result.getMsg());
 
-                        showLog(result.toString());
 
                     }
 
                     @Override
                     public void onError(String e) {
+
 
                     }
                 });
@@ -493,6 +508,10 @@ public class AskQuestionActivity extends BaseAppActivity {
             @Override
             public void onClick(View v) {
                 f_Image_bg.setVisibility(View.GONE);
+
+                ZoomImagePopupUtils zoomImagePopupUtils = new ZoomImagePopupUtils(AskQuestionActivity.this);
+                zoomImagePopupUtils.setZoomImage(compressPath);
+                zoomImagePopupUtils.showAnswerPopuPopu(v);
             }
         });
 

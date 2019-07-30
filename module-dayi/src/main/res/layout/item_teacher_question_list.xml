@@ -34,18 +34,20 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <ImageView
+                <com.lib.fastkit.views.circle_image.niv.NiceImageView
                     android:id="@+id/iv_image1"
                     android:layout_width="62dp"
                     android:layout_height="40dp"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    app:corner_radius="10dp" />
 
-                <ImageView
+                <com.lib.fastkit.views.circle_image.niv.NiceImageView
                     android:id="@+id/iv_image2"
                     android:layout_width="62dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="8dp"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    app:corner_radius="10dp" />
 
                 <View
                     android:layout_width="wrap_content"

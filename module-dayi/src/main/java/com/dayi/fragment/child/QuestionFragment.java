@@ -111,7 +111,7 @@ public class QuestionFragment extends BaseAppFragment {
      */
     public void updateData(QuestionDetail.ObjBean.QuestionBean question) {
 
-        linWord.removeAllViews();
+
         linVoice.removeAllViews();
         linImage.removeAllViews();
 

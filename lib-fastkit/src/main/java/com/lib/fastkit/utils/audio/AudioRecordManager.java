@@ -287,7 +287,9 @@ public class AudioRecordManager implements Handler.Callback {
 
     private void audioDBChanged() {
         if (this.mMediaRecorder != null) {
-            int db = this.mMediaRecorder.getMaxAmplitude() / 600;
+            //int db = this.mMediaRecorder.getMaxAmplitude() / 600;
+            float db = this.mMediaRecorder.getMaxAmplitude() * 1.0f / 32768;
+
             if (mAudioRecordListener != null) {
                 mAudioRecordListener.onAudioDBChanged(db);
             }

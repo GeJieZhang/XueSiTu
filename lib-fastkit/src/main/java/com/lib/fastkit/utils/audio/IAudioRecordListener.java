@@ -56,6 +56,6 @@ public interface IAudioRecordListener {
      *
      * @param db 分贝
      */
-    void onAudioDBChanged(int db);
+    void onAudioDBChanged(float db);
 
 }

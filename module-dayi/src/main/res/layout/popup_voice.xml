@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
@@ -11,6 +12,7 @@
         android:background="@color/white"
 
         android:orientation="vertical">
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,32 +36,71 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="10dp"
-                    android:src="@mipmap/icon_dian_dian" />
+                <com.dayi.view.LineWaveVoiceView
+                    android:id="@+id/horvoiceview"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:visibility="visible"
+                    app:voiceLineColor="@color/base_blue"
+                    app:voiceLineWidth="3dp"
+                    app:voiceTextColor="@color/base_title"
+                    app:voiceTextSize="16sp" />
 
-                <TextView
-                    android:id="@+id/tv_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:text="00:00"
-                    android:textColor="@color/base_title"
-                    android:textSize="16sp" />
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="10dp"
-                    android:src="@mipmap/icon_dian_dian" />
             </LinearLayout>
 
             <ImageView
-                android:layout_width="40dp"
+                android:layout_width="30dp"
                 android:layout_height="30dp" />
 
         </LinearLayout>
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:paddingLeft="16dp"-->
+        <!--android:paddingRight="16dp">-->
+
+        <!--<ImageView-->
+        <!--android:id="@+id/iv_voice"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="25dp"-->
+        <!--android:src="@mipmap/icon_keyboard" />-->
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<ImageView-->
+        <!--android:layout_width="25dp"-->
+        <!--android:layout_height="10dp"-->
+        <!--android:src="@mipmap/icon_dian_dian" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/tv_time"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="8dp"-->
+        <!--android:layout_marginRight="8dp"-->
+        <!--android:text="00:00"-->
+        <!--android:textColor="@color/base_title"-->
+        <!--android:textSize="16sp" />-->
+
+        <!--<ImageView-->
+        <!--android:layout_width="25dp"-->
+        <!--android:layout_height="10dp"-->
+        <!--android:src="@mipmap/icon_dian_dian" />-->
+        <!--</LinearLayout>-->
+
+        <!--<ImageView-->
+        <!--android:layout_width="40dp"-->
+        <!--android:layout_height="30dp" />-->
+
+        <!--</LinearLayout>-->
 
 
         <com.dayi.view.MyRecordAudioView

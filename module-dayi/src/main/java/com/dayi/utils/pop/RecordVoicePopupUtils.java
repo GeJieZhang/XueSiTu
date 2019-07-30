@@ -18,10 +18,12 @@ import com.dayi.R;
 import com.dayi.activity.AskQuestionActivity;
 import com.dayi.bean.UploadVoice;
 import com.dayi.view.CommonSoundItemView;
+import com.dayi.view.LineWaveVoiceView;
 import com.dayi.view.MyRecordAudioView;
 import com.lib.fastkit.utils.audio.AudioRecordManager;
 import com.lib.fastkit.utils.audio.IAudioRecordListener;
 import com.lib.fastkit.utils.file.FileUtils;
+import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.utils.time_deal.TimeUtils;
 import com.zyyoona7.popup.EasyPopup;
@@ -104,12 +106,15 @@ public class RecordVoicePopupUtils {
         public void onStartRecord() {
             //开始录制
             startTimer();
+
+            lineWaveVoiceView.startRecord();
         }
 
         @Override
         public void onFinish(final Uri audioPath, int duration) {
-            tv_time.setText("00:00");
 
+            lineWaveVoiceView.stopRecord();
+            lineWaveVoiceView.setText("00:00");
             if (listener != null) {
                 listener.onRecordFinish(audioPath, duration * 1000);
             }
@@ -118,9 +123,13 @@ public class RecordVoicePopupUtils {
         }
 
         @Override
-        public void onAudioDBChanged(int db) {
-            //分贝改变
+        public void onAudioDBChanged(float db) {
 
+            LogUtil.e("分贝大小1:" + db);
+
+
+            //分贝改变
+            lineWaveVoiceView.refreshVoiceElement(db);
         }
     };
 
@@ -151,13 +160,16 @@ public class RecordVoicePopupUtils {
     }
 
 
-    private TextView tv_time;
     private ImageView iv_voice;
     private MyRecordAudioView recordAudioView;
 
     private TextView tv_tips;
 
+    private LineWaveVoiceView lineWaveVoiceView;
+
     private void initRecordView(View view) {
+
+        lineWaveVoiceView = view.findViewById(R.id.horvoiceview);
         tv_tips = view.findViewById(R.id.tv_tips);
         iv_voice = view.findViewById(R.id.iv_voice);
         iv_voice.setOnClickListener(new View.OnClickListener() {
@@ -172,7 +184,7 @@ public class RecordVoicePopupUtils {
             }
         });
 
-        tv_time = view.findViewById(R.id.tv_time);
+
         recordAudioView = view.findViewById(R.id.record_view);
         recordAudioView.setRecordAudioViewListener(new MyRecordAudioView.RecordAudioViewListener() {
             @Override
@@ -189,7 +201,7 @@ public class RecordVoicePopupUtils {
                 //停止录音
                 AudioRecordManager.getInstance(activity).stopRecord();
 
-                mainHandler.removeCallbacks(runnable);
+                stopTimer();
 
                 tv_tips.setText("长按说话");
             }
@@ -211,10 +223,16 @@ public class RecordVoicePopupUtils {
      */
     private Handler mainHandler;
 
-    private long recordTotalTime;
+    private long recordTotalTime = 0;
 
     private void startTimer() {
         mainHandler.postDelayed(runnable, 1000);
+    }
+
+    private void stopTimer() {
+        mainHandler.removeCallbacks(runnable);
+
+        recordTotalTime = 0;
     }
 
     private Runnable runnable = new Runnable() {
@@ -230,7 +248,10 @@ public class RecordVoicePopupUtils {
     private void updateTimerUI() {
 
         String string = TimeUtils.converLongTimeToStr(recordTotalTime);
-        tv_time.setText(string);
+        lineWaveVoiceView.setText(" " + string + " ");
+
+        LogUtil.e(string);
+
 
     }
 
