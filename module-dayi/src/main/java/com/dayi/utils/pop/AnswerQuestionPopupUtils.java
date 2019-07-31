@@ -58,7 +58,7 @@ public class AnswerQuestionPopupUtils {
 
     private AppCompatEditText et_cmmt;
 
-    private Button btn_sure,btn_cancel;
+    private Button btn_sure, btn_cancel;
 
     private LinearLayout lin_parent;
 
@@ -67,14 +67,13 @@ public class AnswerQuestionPopupUtils {
     private TextView tv_title;
 
 
-
     private void initView(View view) {
-        tv_title=view.findViewById(R.id.tv_title);
+        tv_title = view.findViewById(R.id.tv_title);
         lin_parent = view.findViewById(R.id.lin_parent);
         card = view.findViewById(R.id.card);
         et_cmmt = view.findViewById(R.id.et_cmmt);
         btn_sure = view.findViewById(R.id.btn_sure);
-        btn_cancel=view.findViewById(R.id.btn_cancel);
+        btn_cancel = view.findViewById(R.id.btn_cancel);
 
         card.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +88,6 @@ public class AnswerQuestionPopupUtils {
                 answerPopu.dismiss();
             }
         });
-
 
 
         btn_sure.setOnClickListener(new View.OnClickListener() {
@@ -150,6 +148,7 @@ public class AnswerQuestionPopupUtils {
     public void setContent(String content) {
         et_cmmt.setText(content);
     }
+
     public void setTitle(String title) {
         tv_title.setText(title);
     }

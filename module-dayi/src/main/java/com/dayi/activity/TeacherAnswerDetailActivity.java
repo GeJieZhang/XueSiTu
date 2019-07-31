@@ -404,7 +404,9 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
         }
     }
 
-    private void showComplaintPop(View view, int type) {
+    private void showComplaintPop(View view, final int type) {
+
+
         AnswerQuestionPopupUtils answerQuestionPopupUtils = new AnswerQuestionPopupUtils(this);
 
         answerQuestionPopupUtils.setAnswerQuestionPopupUtilsListener(new AnswerQuestionPopupUtils.AnswerQuestionPopupUtilsListener() {
@@ -412,7 +414,7 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
             public void onSure(String content) {
 
 
-                complaintTeacher(content);
+                complaintTeacher(content, type);
 
             }
         });
@@ -430,12 +432,24 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
     }
 
 
-    private void complaintTeacher(String content) {
+    private void complaintTeacher(String content, int type) {
+
+        String complaint_content = "";
+        String problem_content = "";
+
+        if (type == 0) {
+            complaint_content = content;
+        } else {
+            problem_content = content;
+        }
+
+
         HttpUtils.with(this)
                 .addParam("requestType", "QUESTION_REPLY_COMPLAINT")
                 .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
                 .addParam("reply_id", replyId)
-                .addParam("complaint_content", content)
+                .addParam("complaint_content", complaint_content)
+                .addParam("problem_content", problem_content)
                 .execute(new HttpDialogCallBack<BaseHttpBean>() {
                     @Override
                     public void onSuccess(BaseHttpBean result) {
