@@ -23,6 +23,7 @@ import com.lib.app.FragmentTag;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.fragment_deal.FragmentCustomUtils;
+import com.lib.fastkit.views.load_state_view.MultiStateView;
 import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.view.navigationbar.NomalNavigationBar;
@@ -38,7 +39,8 @@ import butterknife.OnClick;
 @Route(path = ARouterPathUtils.Dayi_TeacherAnswerQuestionDetailActivity)
 public class TeacherAnswerQuestionDetailActivity extends BaseAppActivity {
 
-
+    @BindView(R2.id.state_view)
+    MultiStateView stateView;
     @BindView(R2.id.btn_sure)
     Button btnSure;
     @BindView(R2.id.tv_action)
@@ -55,9 +57,16 @@ public class TeacherAnswerQuestionDetailActivity extends BaseAppActivity {
     @Override
     protected void onCreateView() {
         ARouter.getInstance().inject(this);
+        stateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+        stateView.setMultiStateViewLisener(new MultiStateView.MultiStateViewLisener() {
+            @Override
+            public void onTryAgain() {
+                initData();
+            }
+        });
+
+
         initTitle();
-
-
         initFragment();
 
         initAnswerPopuPopu();
@@ -82,7 +91,9 @@ public class TeacherAnswerQuestionDetailActivity extends BaseAppActivity {
                         if (result.getCode() == CodeUtil.CODE_200) {
 
                             insertQuestionData(result.getObj().getQuestion());
-
+                            stateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                        } else {
+                            stateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
                         }
 
                     }
@@ -90,6 +101,8 @@ public class TeacherAnswerQuestionDetailActivity extends BaseAppActivity {
                     @Override
                     public void onError(String e) {
 
+
+                        stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
                     }
                 });
 

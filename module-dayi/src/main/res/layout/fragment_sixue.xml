@@ -6,146 +6,210 @@
     android:background="#f3f3f3"
     android:orientation="vertical">
 
-    <ScrollView
+    <com.lib.fastkit.views.load_state_view.MultiStateView
+
+        android:id="@+id/state_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none">
+        app:emptyView="@layout/m_empty_view"
+        app:errorView="@layout/m_error_view"
+        app:loadingView="@layout/m_loading_view"
+        app:networkErrorView="@layout/m_net_error_view"
+        app:viewState="content">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:fillViewport="true"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingBottom="16dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="8dp">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+
+                                style="@style/text_style11"
+                                android:layout_weight="1"
+                                android:text="新用户首次免费"
+                                android:textColor="@color/base_title"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:layout_marginLeft="4dp"
+                                android:src="@mipmap/icon_ask_bg2"
+
+                                />
+                        </LinearLayout>
+
 
                         <TextView
 
+
                             style="@style/text_style11"
-                            android:layout_weight="1"
-                            android:text="新用户首次免费"
-                            android:textColor="@color/base_title"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:layout_marginTop="8dp"
+                            android:text="海量名师实时在线"
+                            android:textColor="@color/base_gray"
 
-                        <ImageView
-                            android:layout_width="10dp"
-                            android:layout_height="10dp"
-                            android:layout_marginLeft="4dp"
-                            android:src="@mipmap/icon_ask_bg2"
-
-                            />
+                            android:textSize="12sp" />
                     </LinearLayout>
 
+                    <ImageView
+                        android:id="@+id/iv_ask"
+                        android:layout_width="45dp"
+                        android:layout_height="60dp"
+                        android:src="@mipmap/icon_ask_bg" />
 
-                    <TextView
 
-
-                        style="@style/text_style11"
-                        android:layout_marginTop="8dp"
-                        android:text="海量名师实时在线"
-                        android:textColor="@color/base_gray"
-
-                        android:textSize="12sp" />
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/iv_ask"
-                    android:layout_width="45dp"
-                    android:layout_height="60dp"
-                    android:src="@mipmap/icon_ask_bg" />
 
-
-            </LinearLayout>
-
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp">
-
-            </android.support.v7.widget.RecyclerView>
-
-            <!--更多-->
-            <LinearLayout
-                android:id="@+id/lin_more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="16dp"
-
-                android:background="@drawable/circle_button_white"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingBottom="4dp"
-
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:paddingTop="4dp">
-
-                <TextView
-                    style="@style/text_style3"
-                    android:text="更多"
-
-
-                    />
-
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_marginLeft="4dp"
-                    android:background="@mipmap/icon_more_2" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:background="@color/white"
-                android:orientation="vertical">
-                <!--广告-->
-                <ImageView
-                    android:id="@+id/iv_ad"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv"
                     android:layout_width="match_parent"
-                    android:layout_height="170dp"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginTop="24dp" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+
+                </android.support.v7.widget.RecyclerView>
+
+                <!--更多-->
+                <LinearLayout
+                    android:id="@+id/lin_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="16dp"
+
+                    android:background="@drawable/circle_button_white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp"
+
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="4dp">
+
+                    <TextView
+                        style="@style/text_style3"
+                        android:text="更多"
 
 
-                <!--标题1-->
+                        />
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginLeft="4dp"
+                        android:background="@mipmap/icon_more_2" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+                    <!--广告-->
+                    <ImageView
+                        android:id="@+id/iv_ad"
+                        android:layout_width="match_parent"
+                        android:layout_height="170dp"
+                        android:layout_marginBottom="24dp"
+                        android:layout_marginTop="24dp" />
+
+
+                    <!--标题1-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/text_style2"
+                            android:layout_marginLeft="16dp"
+                            android:text="了解问答"
+
+                            />
+
+                        <View
+                            android:layout_width="34dp"
+                            android:layout_height="3dp"
+                            android:layout_marginLeft="18dp"
+                            android:layout_marginTop="4dp"
+                            android:background="@color/base_blue">
+
+                        </View>
+
+
+                    </LinearLayout>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginBottom="24dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="24dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="0dp"
+
+                        >
+
+                     <LinearLayout
+                         android:id="@+id/lin_video"
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
+                         android:orientation="vertical"
+                         >
+
+                     </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+
+                </LinearLayout>
+                <!--标题2流程图-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:background="@color/white"
+                    android:layout_marginTop="24dp"
                     android:gravity="center_vertical"
                     android:orientation="vertical">
 
                     <TextView
                         style="@style/text_style2"
                         android:layout_marginLeft="16dp"
-                        android:text="了解问答"
+                        android:text="流程介绍"
 
                         />
 
@@ -161,120 +225,72 @@
 
                 </LinearLayout>
 
-                <android.support.v7.widget.CardView
 
+                <!--流程-->
+                <ImageView
+                    android:id="@+id/iv_process"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_height="220dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
+
+                    android:src="@mipmap/test1" />
+                <!--旁听规则-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/text_style2"
+                        android:layout_marginLeft="16dp"
+                        android:text="旁听规则"
+
+                        />
+
+                    <View
+                        android:layout_width="34dp"
+                        android:layout_height="3dp"
+                        android:layout_marginLeft="18dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@color/base_blue">
+
+                    </View>
+
+
+                </LinearLayout>
+
+                <!--规则-->
+                <TextView
+                    style="@style/text_style4"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="16dp"
                     android:layout_marginTop="24dp"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="0dp"
-
-                    >
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@mipmap/test1" />
-
-                </android.support.v7.widget.CardView>
-
-
-            </LinearLayout>
-            <!--标题2流程图-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="24dp"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
+                    android:gravity="left"
+                    android:lineSpacingMultiplier="1.5"
+                    android:paddingLeft="16dp"
+                    android:singleLine="false"
+                    android:text="@string/rule"
+                    android:textColor="@color/base_title"
+                    android:textSize="12sp"></TextView>
 
                 <TextView
-                    style="@style/text_style2"
-                    android:layout_marginLeft="16dp"
-                    android:text="流程介绍"
+
+                    style="@style/text_style4"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:text="~我也是有底线的！~"
+                    android:textSize="14sp"
 
                     />
-
-                <View
-                    android:layout_width="34dp"
-                    android:layout_height="3dp"
-                    android:layout_marginLeft="18dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@color/base_blue">
-
-                </View>
-
-
             </LinearLayout>
 
+        </ScrollView>
 
-            <!--流程-->
-            <ImageView
-                android:id="@+id/iv_process"
-                android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
-
-                android:src="@mipmap/test1" />
-            <!--旁听规则-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/text_style2"
-                    android:layout_marginLeft="16dp"
-                    android:text="旁听规则"
-
-                    />
-
-                <View
-                    android:layout_width="34dp"
-                    android:layout_height="3dp"
-                    android:layout_marginLeft="18dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@color/base_blue">
-
-                </View>
-
-
-            </LinearLayout>
-
-            <!--规则-->
-            <TextView
-                style="@style/text_style4"
-                android:layout_width="match_parent"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="24dp"
-                android:gravity="left"
-                android:lineSpacingMultiplier="1.5"
-                android:paddingLeft="16dp"
-                android:singleLine="false"
-                android:text="@string/rule"
-                android:textColor="@color/base_title"
-                android:textSize="12sp"></TextView>
-
-            <TextView
-
-                style="@style/text_style4"
-                android:layout_width="match_parent"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
-                android:gravity="center"
-                android:text="~我也是有底线的！~"
-                android:textSize="14sp"
-
-                />
-        </LinearLayout>
-
-    </ScrollView>
+    </com.lib.fastkit.views.load_state_view.MultiStateView>
 
 
 </LinearLayout>

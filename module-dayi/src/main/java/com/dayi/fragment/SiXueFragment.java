@@ -4,20 +4,32 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.dayi.R;
 import com.dayi.R2;
+import com.dayi.activity.PrivateAskActivity;
+import com.dayi.bean.SiXueBean;
+import com.dayi.utils.pop.ZoomImagePopupUtils;
 import com.lib.app.ARouterPathUtils;
+import com.lib.app.CodeUtil;
+import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
+import com.lib.fastkit.http.ok.HttpUtils;
+import com.lib.fastkit.views.load_state_view.MultiStateView;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
+import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.ui.fragment.BaseAppFragment;
 import com.lib.utls.glide.GlideConfig;
+import com.lib.view.player.MyJzvdStd;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +41,8 @@ import butterknife.OnClick;
 @Route(path = ARouterPathUtils.Dayi_SiXueFragment)
 public class SiXueFragment extends BaseAppFragment {
 
-
+    @BindView(R2.id.state_view)
+    MultiStateView stateView;
     @BindView(R2.id.rv)
     RecyclerView rv;
     @BindView(R2.id.iv_ad)
@@ -40,44 +53,128 @@ public class SiXueFragment extends BaseAppFragment {
     ImageView ivAsk;
     @BindView(R2.id.lin_more)
     LinearLayout linMore;
-
-    //广告图
-
-    String url1 = "http://pu00k0ssj.bkt.clouddn.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20190720155403.png";
-
-
-    //流程图
-    String url2 = "http://pu00k0ssj.bkt.clouddn.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20190720155835.png";
-
-
+    @BindView(R2.id.lin_video)
+    LinearLayout linVideo;
 
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
 
-        Glide.with(this)
-                .load(url1)
-                .apply(GlideConfig.getRectangleOptions())
-                .into(ivAd);
+        stateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+        stateView.setMultiStateViewLisener(new MultiStateView.MultiStateViewLisener() {
+            @Override
+            public void onTryAgain() {
+                initData();
+            }
+        });
 
-        Glide.with(this)
-                .load(url2)
-                .apply(GlideConfig.getRectangleOptions())
-                .into(ivProcess);
 
         initView();
+
+        initData();
 
 
     }
 
+    private void initData() {
+        HttpUtils.with(getContext())
+                .addParam("requestType", "QUESTION_PAGE_DATA")
+                .addParam("token", SharedPreferenceManager.getInstance(getContext()).getUserCache().getUserToken())
+                .execute(new HttpNormalCallBack<SiXueBean>() {
+                    @Override
+                    public void onSuccess(SiXueBean result) {
+                        if (result.getCode() == CodeUtil.CODE_200) {
+
+
+                            updateUI(result);
+                            stateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+
+                        } else {
+                            stateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String e) {
+                        stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
+                    }
+                });
+
+    }
+
+    private void updateUI(SiXueBean result) {
+
+        List<SiXueBean.ObjBean.QuestionFileBean> fileBeanList = result.getObj().getQuestion_file();
+
+
+        if (fileBeanList != null && fileBeanList.size() > 0) {
+            for (SiXueBean.ObjBean.QuestionFileBean questionFileBean : fileBeanList) {
+
+                switch (questionFileBean.getCode()) {
+                    case "video_1": {
+
+                        String url = questionFileBean.getHash();
+
+                        insertVideo(url);
+                        break;
+                    }
+
+                    case "img_1": {
+                        String url1 = questionFileBean.getHash();
+                        Glide.with(this)
+                                .load(url1)
+                                .apply(GlideConfig.getRectangleOptions())
+                                .into(ivAd);
+
+                        break;
+                    }
+
+                    case "img_2": {
+                        String url2 = questionFileBean.getHash();
+                        Glide.with(this)
+                                .load(url2)
+                                .apply(GlideConfig.getRectangleOptions())
+                                .into(ivProcess);
+
+                        break;
+                    }
+                }
+
+            }
+        }
+
+
+        list.addAll(result.getObj().getQuestion_list());
+        homeAdapter.notifyDataSetChanged();
+
+
+    }
+
+    /**
+     * 插入视频
+     */
+    MyJzvdStd jz_player;
+
+    private void insertVideo(String url) {
+
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.item_video_temp, null);
+
+        jz_player = view.findViewById(R.id.jz_player);
+
+        jz_player.setUp(url
+                , "");
+        Glide.with(this).load(url).into(jz_player.thumbImageView);
+
+        linVideo.addView(view);
+
+
+    }
+
+
     private HomeAdapter homeAdapter;
-    private List<String> list = new ArrayList<>();
+    private List<SiXueBean.ObjBean.QuestionListBean> list = new ArrayList<>();
 
     private void initView() {
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
+
         homeAdapter = new HomeAdapter(getContext(), list);
 
         rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
@@ -103,16 +200,17 @@ public class SiXueFragment extends BaseAppFragment {
         int i = view.getId();
         if (i == R.id.iv_ask) {
 
-            ARouter.getInstance().build(ARouterPathUtils.Dayi_PrivateAskActivity).navigation();
+            ARouter.getInstance().build(ARouterPathUtils.Dayi_AskQuestionActivity).navigation();
         } else if (i == R.id.lin_more) {
+            ARouter.getInstance().build(ARouterPathUtils.Dayi_PrivateAskActivity).navigation();
         }
     }
 
 
-    private class HomeAdapter extends BaseAdapter<String> {
+    private class HomeAdapter extends BaseAdapter<SiXueBean.ObjBean.QuestionListBean> {
 
 
-        public HomeAdapter(Context context, List<String> mData) {
+        public HomeAdapter(Context context, List<SiXueBean.ObjBean.QuestionListBean> mData) {
             super(context, mData);
         }
 
@@ -122,8 +220,88 @@ public class SiXueFragment extends BaseAppFragment {
         }
 
         @Override
-        protected void toBindViewHolder(ViewHolder holder, int position, List<String> mData) {
+        protected void toBindViewHolder(ViewHolder holder, final int position, final List<SiXueBean.ObjBean.QuestionListBean> mData) {
+            /**
+             * 问答第一张图
+             */
 
+            if (mData.get(position).getFile() != null) {
+
+                if (mData.get(position).getFile().size() >= 1) {
+                    ImageView iv_iamge1 = holder.getView(R.id.iv_image1);
+                    final String url1 = mData.get(position).getFile().get(0);
+                    iv_iamge1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ZoomImagePopupUtils zoomImagePopupUtils = new ZoomImagePopupUtils(getActivity());
+                            zoomImagePopupUtils.setZoomImage(url1);
+                            zoomImagePopupUtils.showAnswerPopuPopu(v);
+                        }
+                    });
+
+                    if (url1 != null) {
+                        Glide.with(getActivity())
+                                .load(url1)
+                                .apply(GlideConfig.getRoundOptions(20))
+                                .into(iv_iamge1);
+                    }
+
+                }
+
+
+                /**
+                 * 问答第二张图
+                 */
+                if (mData.get(position).getFile().size() >= 2) {
+                    ImageView iv_iamge2 = holder.getView(R.id.iv_image1);
+                    final String url2 = mData.get(position).getFile().get(1);
+
+
+                    iv_iamge2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ZoomImagePopupUtils zoomImagePopupUtils = new ZoomImagePopupUtils(getActivity());
+                            zoomImagePopupUtils.setZoomImage(url2);
+                            zoomImagePopupUtils.showAnswerPopuPopu(v);
+                        }
+                    });
+                    if (url2 != null) {
+                        Glide.with(getActivity())
+                                .load(url2)
+                                .apply(GlideConfig.getRoundOptions(20))
+                                .into(iv_iamge2);
+                    }
+                }
+
+            }
+
+            TextView tv_money = holder.getView(R.id.tv_money);
+            ImageView iv_lock = holder.getView(R.id.iv_lock);
+
+            Button btn_sure = holder.getView(R.id.btn_sure);
+
+            if (mData.get(position).getType() == 0) {
+
+                iv_lock.setImageResource(R.mipmap.icon_lock);
+                btn_sure.setText("1折付费旁听");
+            } else {
+                iv_lock.setImageResource(R.mipmap.icon_unlock);
+
+                btn_sure.setText("查看详情");
+            }
+
+            tv_money.setText(mData.get(position).getCurrent_value() + "");
+
+            btn_sure.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    ARouter.getInstance()
+                            .build(ARouterPathUtils.Dayi_StudentQuestionDetailActivity)
+                            .withString("questionId", mData.get(position).getQuestion_id() + "")
+                            .navigation();
+                }
+            });
         }
     }
 

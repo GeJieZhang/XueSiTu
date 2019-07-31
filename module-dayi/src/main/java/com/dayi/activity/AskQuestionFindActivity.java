@@ -1,11 +1,15 @@
 package com.dayi.activity;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -18,6 +22,8 @@ import com.bumptech.glide.request.target.Target;
 import com.dayi.R;
 import com.dayi.R2;
 import com.lib.app.ARouterPathUtils;
+import com.lib.fastkit.utils.log.LogUtil;
+import com.lib.fastkit.utils.time_deal.TimeUtils;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.ui.adapter.BaseAdapter;
@@ -27,6 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 学生提问后的搜索页面
@@ -37,9 +45,15 @@ public class AskQuestionFindActivity extends BaseAppActivity {
 
     @BindView(R2.id.iv_gif)
     ImageView ivGif;
-
+    @BindView(R2.id.tv_cut_time)
+    TextView tvCutTime;
+    @BindView(R2.id.btn_back)
+    Button btnBack;
+    @BindView(R2.id.btn_share)
+    Button btnShare;
     @BindView(R2.id.rv)
     RecyclerView rv;
+
 
     @Override
     protected void onCreateView() {
@@ -47,7 +61,7 @@ public class AskQuestionFindActivity extends BaseAppActivity {
         initGif();
 
         initView();
-
+        startTimer();
 
     }
 
@@ -102,6 +116,17 @@ public class AskQuestionFindActivity extends BaseAppActivity {
     }
 
 
+    @OnClick({R2.id.btn_back, R2.id.btn_share})
+    public void onViewClicked(View view) {
+        int i = view.getId();
+        if (i == R.id.btn_back) {
+
+            finish();
+        } else if (i == R.id.btn_share) {
+        }
+    }
+
+
     private class HomeAdapter extends BaseAdapter<String> {
 
         public HomeAdapter(Context context, List<String> mData) {
@@ -134,5 +159,49 @@ public class AskQuestionFindActivity extends BaseAppActivity {
     }
 
 
+    //-----------------------------------------------------------------------------记时器
+
+    /**
+     * 初始化计时器用来更新倒计时
+     */
+    private Handler mainHandler = new Handler();
+
+
+    private long recordTotalTime = 1000 * 60 * 10;
+
+    private void startTimer() {
+        mainHandler.postDelayed(runnable, 1000);
+    }
+
+    private void stopTimer() {
+        mainHandler.removeCallbacks(runnable);
+
+        recordTotalTime = 1000 * 60 * 10;
+    }
+
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            recordTotalTime -= 1000;
+            updateTimerUI();
+
+            mainHandler.postDelayed(runnable, 1000);
+        }
+    };
+
+    private void updateTimerUI() {
+
+        String string = TimeUtils.converLongTimeToStr(recordTotalTime);
+
+        tvCutTime.setText("等待老师抢单:" + string);
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopTimer();
+    }
 }
 

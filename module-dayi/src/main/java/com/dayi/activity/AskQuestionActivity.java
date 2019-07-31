@@ -370,8 +370,10 @@ public class AskQuestionActivity extends BaseAppActivity {
 
                         if (result.getCode() == CodeUtil.CODE_200) {
 
-                            finish();
+                            ARouter.getInstance().build(ARouterPathUtils.Dayi_AskQuestionFindActivity).navigation();
 
+
+                            finish();
                         }
                         showToast(result.getMsg());
 

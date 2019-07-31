@@ -53,6 +53,8 @@ import butterknife.OnClick;
  */
 @Route(path = ARouterPathUtils.Dayi_StudentQuestionDetailActivity)
 public class StudentQuestionDetailActivity extends BaseAppActivity {
+
+
     @BindView(R2.id.f_question_student)
     FrameLayout fQuestionStudent;
     @BindView(R2.id.f_teacher_list)

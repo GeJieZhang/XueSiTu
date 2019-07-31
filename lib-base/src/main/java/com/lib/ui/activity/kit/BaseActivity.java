@@ -71,6 +71,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         //友盟:在所有的Activity 的onCreate 方法或在应用的BaseActivity的onCreate方法中添加以下方法
         PushAgent.getInstance(this).onAppStart();
 
+        Log.e("类名检测======", this.getClass().getName());
+
 
     }
 

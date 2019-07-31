@@ -128,7 +128,7 @@ public class PersonalFragment extends BaseAppFragment {
 
 
     @OnClick({R2.id.lin_transparent, R2.id.iv_setting, R2.id.iv_name, R2.id.lin_class, R2.id.lin_question, R2.id.lin_evaluation, R2.id.lin_teacher, R2.id.lin_study, R2.id.lin_sign, R2.id.btn_recharge
-            , R2.id.lin_userInfo, R2.id.lin_teacher_class, R2.id.lin_teacher_question
+            , R2.id.lin_userInfo, R2.id.lin_teacher_class, R2.id.lin_teacher_question, R2.id.iv_work_desk
     })
     public void onViewClicked(View view) {
         int i = view.getId();
@@ -203,6 +203,10 @@ public class PersonalFragment extends BaseAppFragment {
             } else {
                 ARouter.getInstance().build(ARouterPathUtils.User_RechargeActivity).navigation();
             }
+
+        } else if (i == R.id.iv_work_desk) {
+
+            ARouter.getInstance().build(ARouterPathUtils.User_TeacherWorkbenchActivity).navigation();
 
         }
     }

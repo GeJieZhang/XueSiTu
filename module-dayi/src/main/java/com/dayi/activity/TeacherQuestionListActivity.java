@@ -18,6 +18,7 @@ import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
+import com.lib.fastkit.views.load_state_view.MultiStateView;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.fastkit.views.spring_refresh.container.DefaultFooter;
 import com.lib.fastkit.views.spring_refresh.container.DefaultHeader;
@@ -41,6 +42,9 @@ import butterknife.ButterKnife;
  */
 @Route(path = ARouterPathUtils.Dayi_TeacherQuestionListActivity)
 public class TeacherQuestionListActivity extends BaseAppActivity {
+
+    @BindView(R2.id.state_view)
+    MultiStateView stateView;
     @BindView(R2.id.rv1)
     RecyclerView rv1;
     @BindView(R2.id.rv2)
@@ -57,6 +61,15 @@ public class TeacherQuestionListActivity extends BaseAppActivity {
 
     @Override
     protected void onCreateView() {
+
+        stateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+
+        stateView.setMultiStateViewLisener(new MultiStateView.MultiStateViewLisener() {
+            @Override
+            public void onTryAgain() {
+                initData();
+            }
+        });
         initTitle();
         initView();
         initData();
@@ -99,12 +112,16 @@ public class TeacherQuestionListActivity extends BaseAppActivity {
                             homeAdapter1.notifyDataSetChanged();
 
                             homeAdapter2.notifyDataSetChanged();
-
+                            stateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                        } else {
+                            stateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
                         }
                     }
 
                     @Override
                     public void onError(String e) {
+
+                        stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
 
                     }
                 });

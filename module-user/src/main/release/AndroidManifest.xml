@@ -18,6 +18,7 @@
         <activity android:name=".activity.RechargeActivity"></activity>
         <activity android:name=".activity.TeacherUserInfoActivity"></activity>
         <activity android:name=".activity.StudentUserInfoActivity"></activity>
+        <activity android:name=".activity.TeacherWorkbenchActivity"></activity>
 
     </application>
 </manifest>

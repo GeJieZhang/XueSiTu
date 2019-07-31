@@ -27,6 +27,7 @@ import com.lib.app.CodeUtil;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
+import com.lib.fastkit.views.load_state_view.MultiStateView;
 import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.utls.glide.GlideConfig;
@@ -46,6 +47,8 @@ import cn.jzvd.Jzvd;
 @Route(path = ARouterPathUtils.Dayi_TeacherAnswerDetailActivity)
 public class TeacherAnswerDetailActivity extends BaseAppActivity {
 
+    @BindView(R2.id.state_view)
+    MultiStateView stateView;
     @BindView(R2.id.lin_video)
     LinearLayout linVideo;
     @BindView(R2.id.lin_image)
@@ -77,6 +80,14 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
     protected void onCreateView() {
 
         ARouter.getInstance().inject(this);
+
+        stateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+        stateView.setMultiStateViewLisener(new MultiStateView.MultiStateViewLisener() {
+            @Override
+            public void onTryAgain() {
+                initData();
+            }
+        });
         initTitle();
         initData();
 
@@ -205,7 +216,9 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
 
                             updateTeacherUI(result);
 
-
+                            stateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                        } else {
+                            stateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
                         }
 
                     }
@@ -213,7 +226,7 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
 
                     @Override
                     public void onError(String e) {
-
+                        stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
                     }
                 });
 
