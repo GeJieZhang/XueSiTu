@@ -19,6 +19,7 @@
         <activity android:name=".activity.TeacherUserInfoActivity"></activity>
         <activity android:name=".activity.StudentUserInfoActivity"></activity>
         <activity android:name=".activity.TeacherWorkbenchActivity"></activity>
-
+        <activity android:name=".activity.MessageActivity"></activity>
+        <activity android:name=".activity.RecordsActivity"></activity>
     </application>
 </manifest>

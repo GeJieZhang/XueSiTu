@@ -19,6 +19,8 @@ public class TimeUtils {
     public static final String FORMAT_2 = "yyyy-MM-dd HH:mm:ss.SSS";
     public static final String FORMAT_3 = "dd HH:mm";
 
+    public static final String FORMAT_4 = "yyyy-MM";
+
     /**
      * 不能实例化
      */

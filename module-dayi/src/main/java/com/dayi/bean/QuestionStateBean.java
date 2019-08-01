@@ -55,8 +55,8 @@ public class QuestionStateBean {
          */
 
         private String msg;
-        private int total;
-        private int amount;
+        private float total;
+        private float amount;
 
         public String getMsg() {
             return msg;
@@ -66,7 +66,7 @@ public class QuestionStateBean {
             this.msg = msg;
         }
 
-        public int getTotal() {
+        public float getTotal() {
             return total;
         }
 
@@ -74,7 +74,7 @@ public class QuestionStateBean {
             this.total = total;
         }
 
-        public int getAmount() {
+        public float getAmount() {
             return amount;
         }
 

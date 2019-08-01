@@ -12,11 +12,17 @@
         android:gravity="center"
         android:orientation="vertical">
 
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/pic_empty" />
+
         <TextView
             android:id="@+id/mzw_loading_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="什么都没有"
+            android:layout_marginTop="16dp"
             android:textColor="#cbcbcb"
             android:textSize="15sp" />
 

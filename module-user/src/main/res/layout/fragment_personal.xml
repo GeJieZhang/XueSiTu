@@ -73,8 +73,8 @@
 
                 <ImageView
                     android:id="@+id/iv_head"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp" />
+                    android:layout_width="85dp"
+                    android:layout_height="85dp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -93,7 +93,8 @@
                             android:id="@+id/tv_name"
                             style="@style/text_style2"
                             android:maxEms="8"
-                            android:text="小明同学" />
+                            android:text="小明同学"
+                            android:textStyle="normal" />
 
                         <ImageView
                             android:id="@+id/iv_name"
@@ -106,9 +107,11 @@
 
 
                     <TextView
+                        android:id="@+id/tv_money"
                         style="@style/text_style3"
                         android:layout_marginTop="8dp"
-                        android:text="兔币:120" />
+                        android:text="兔币:120"
+                        />
 
                     <Button
                         android:id="@+id/btn_recharge"
@@ -116,7 +119,7 @@
                         android:layout_width="60dp"
                         android:layout_height="25dp"
                         android:layout_marginRight="16dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="16dp"
                         android:background="@drawable/circle_button_r15"
                         android:text="充值"
                         android:textColor="@color/white"

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 
 import com.lib.fastkit.R;
@@ -206,6 +207,8 @@ public class MultiStateView extends FrameLayout {
                         mEmptyView = mInflater.inflate(mEmptyViewResId, this, false);
                         addView(mEmptyView, mEmptyView.getLayoutParams());
                         setTryAgainButton(mEmptyView);
+
+
                     }
                     if (mEmptyView == null)
                         throw new NullPointerException("Empty View");
@@ -291,5 +294,20 @@ public class MultiStateView extends FrameLayout {
 
     public interface MultiStateViewLisener {
         void onTryAgain();
+    }
+
+
+    /**
+     * 设置页面为空时的文字
+     *
+     * @param str
+     */
+    public void setEmptyViewTiext(String str) {
+
+        if (mEmptyView != null) {
+            TextView mzw_loading_text = mEmptyView.findViewById(R.id.mzw_loading_text);
+            mzw_loading_text.setText(str);
+        }
+
     }
 }

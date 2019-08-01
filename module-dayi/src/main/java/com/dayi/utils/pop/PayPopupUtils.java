@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.dayi.R;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
+import com.lib.fastkit.utils.log.LogUtil;
 import com.zyyoona7.popup.EasyPopup;
 
 public class PayPopupUtils {
@@ -74,14 +75,14 @@ public class PayPopupUtils {
             @Override
             public void onClick(View v) {
 
-                if (listener!=null){
+                if (listener != null) {
                     listener.onRechargeClick();
                 }
 
             }
         });
 
-        tv_cut_money = view.findViewById(R.id.tv_recharge);
+        tv_cut_money = view.findViewById(R.id.tv_cut_money);
 
 
         lin_parent = view.findViewById(R.id.lin_parent);
@@ -156,14 +157,23 @@ public class PayPopupUtils {
         void onRechargeClick();
     }
 
+
+    /**
+     * @param money     需要支付的
+     * @param haveMoney 剩下的兔币
+     */
     public void setPopupValue(String money, String haveMoney) {
-        tv_cut_money.setText(money);
+
+
+        LogUtil.e(money);
+        LogUtil.e(haveMoney);
+        tv_cut_money.setText(money + "兔币");
 
         tv_money.setText(haveMoney);
 
-        int moneyValue = Integer.valueOf(haveMoney);
-
-        if (moneyValue <= 0) {
+        float payMoney = Float.parseFloat(money);
+        float totalMoney = Float.parseFloat(haveMoney);
+        if (totalMoney < payMoney) {
             tv_money.setTextColor(activity.getResources().getColor(R.color.base_money));
 
             tv_recharge.setVisibility(View.VISIBLE);

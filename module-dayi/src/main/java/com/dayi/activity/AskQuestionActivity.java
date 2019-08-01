@@ -120,8 +120,8 @@ public class AskQuestionActivity extends BaseAppActivity {
             @Override
             public void onSure() {
 
+                requestUplaodData();
 
-                subjectPopupUtils.showAnswerPopuPopu(AskQuestionActivity.this.getWindow().getDecorView());
                 payPopupUtils.dismiss();
             }
 
@@ -143,7 +143,9 @@ public class AskQuestionActivity extends BaseAppActivity {
 
             @Override
             public void onSure(int subjectId) {
-                requestUplaodData(subjectId);
+                AskQuestionActivity.this.subjectId = subjectId;
+
+                payPopupUtils.showAnswerPopuPopu(AskQuestionActivity.this.getWindow().getDecorView());
                 subjectPopupUtils.dismiss();
             }
         });
@@ -302,13 +304,15 @@ public class AskQuestionActivity extends BaseAppActivity {
 
         } else if (i == R.id.btn_sure) {
 
+            subjectPopupUtils.showAnswerPopuPopu(AskQuestionActivity.this.getWindow().getDecorView());
 
-            payPopupUtils.showAnswerPopuPopu(view);
         }
     }
 
 
-    private void requestUplaodData(int subjectId) {
+    private int subjectId = 0;
+
+    private void requestUplaodData() {
 
         if (subjectId == 0) {
 
