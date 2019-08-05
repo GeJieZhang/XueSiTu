@@ -1,6 +1,7 @@
 package com.user.activity;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -8,7 +9,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.lib.app.ARouterPathUtils;
@@ -16,6 +16,7 @@ import com.lib.app.CodeUtil;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.permission.custom.PermissionUtil;
+import com.lib.fastkit.views.load_state_view.MultiStateView;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.fastkit.views.spring_refresh.container.DefaultFooter;
 import com.lib.fastkit.views.spring_refresh.container.DefaultHeader;
@@ -34,6 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 @Route(path = ARouterPathUtils.User_MyClassActivity)
 public class MyClassActivity extends BaseAppActivity {
@@ -41,7 +44,8 @@ public class MyClassActivity extends BaseAppActivity {
     RecyclerView recyclerView;
     @BindView(R2.id.springView)
     SpringView springView;
-
+    @BindView(R2.id.state_view)
+    MultiStateView stateView;
 
     private List<ClassBean.ObjBean.RowsBean> mData = new ArrayList<>();
 
@@ -68,6 +72,14 @@ public class MyClassActivity extends BaseAppActivity {
 
     @Override
     protected void onCreateView() {
+
+        stateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+        stateView.setMultiStateViewLisener(new MultiStateView.MultiStateViewLisener() {
+            @Override
+            public void onTryAgain() {
+                initData();
+            }
+        });
         token = SharedPreferenceManager.getInstance(this).getUserCache().getUserToken();
         identity = SharedPreferenceManager.getInstance(this).getUserCache().getUserIdentity();
         userPhone = SharedPreferenceManager.getInstance(this).getUserCache().getUserPhone();
@@ -125,23 +137,30 @@ public class MyClassActivity extends BaseAppActivity {
                     public void onSuccess(ClassBean result) {
 
 
-                        if (page == 0) {
-                            mData.clear();
+                        if (result.getCode() == CodeUtil.CODE_200) {
+                            if (page == 0) {
+                                mData.clear();
 
-                            mData.addAll(result.getObj().getRows());
+                                mData.addAll(result.getObj().getRows());
 
-                            homeAdapter.notifyDataSetChanged();
+                                homeAdapter.notifyDataSetChanged();
 
+                            } else {
+                                mData.addAll(result.getObj().getRows());
+                                homeAdapter.notifyDataSetChanged();
+                            }
+
+                            stateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
                         } else {
-                            mData.addAll(result.getObj().getRows());
-                            homeAdapter.notifyDataSetChanged();
+                            stateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
                         }
+
 
                     }
 
                     @Override
                     public void onError(String e) {
-
+                        stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
                     }
                 });
 
@@ -151,6 +170,11 @@ public class MyClassActivity extends BaseAppActivity {
     @Override
     protected int getLayoutId() {
         return R.layout.activity_my_class;
+    }
+
+
+    @OnClick(R2.id.lin_other)
+    public void onViewClicked() {
     }
 
 

@@ -84,6 +84,9 @@ public class PersonalFragment extends BaseAppFragment {
     }
 
 
+    /**
+     * 通过不通的身份显示页面
+     */
     public void initUserInfo() {
 
 
@@ -100,12 +103,14 @@ public class PersonalFragment extends BaseAppFragment {
 
 
         if (identity.equals("1")) {
+            //老师
             linTeacherParent.setVisibility(View.VISIBLE);
             linStudentParent.setVisibility(View.GONE);
             btnRecharge.setText("提现");
 
         } else {
 
+            //学生
             linTeacherParent.setVisibility(View.GONE);
             linStudentParent.setVisibility(View.VISIBLE);
             btnRecharge.setText("充值");
@@ -118,7 +123,7 @@ public class PersonalFragment extends BaseAppFragment {
     public void onResume() {
         super.onResume();
 
-
+        initUserInfo();
     }
 
     @Override

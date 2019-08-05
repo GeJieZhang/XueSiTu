@@ -20,7 +20,10 @@ public class EventBusTagUtils {
      */
     public static final String TeacherStudentChooseFragment = "TeacherStudentChooseFragment";
 
-
+    /**
+     * 登录成功
+     */
+    public static final String LoginActivity = "LoginActivity";
     /**
      * Token失效
      */

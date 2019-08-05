@@ -21,5 +21,6 @@
         <activity android:name=".activity.TeacherWorkbenchActivity"></activity>
         <activity android:name=".activity.MessageActivity"></activity>
         <activity android:name=".activity.RecordsActivity"></activity>
+        <activity android:name=".activity.MessageDetailActivity"></activity>
     </application>
 </manifest>

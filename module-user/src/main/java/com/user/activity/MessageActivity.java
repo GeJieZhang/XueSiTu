@@ -4,8 +4,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.lib.app.ARouterPathUtils;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.ui.activity.BaseAppActivity;
@@ -112,6 +114,13 @@ public class MessageActivity extends BaseAppActivity {
 
         @Override
         protected void toBindViewHolder(ViewHolder holder, int position, List<String> mData) {
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ARouter.getInstance().build(ARouterPathUtils.User_MessageDetailActivity).navigation();
+                }
+            });
 
         }
     }

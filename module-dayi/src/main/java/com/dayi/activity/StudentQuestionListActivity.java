@@ -86,16 +86,12 @@ public class StudentQuestionListActivity extends BaseAppActivity {
     }
 
 
-
-
     private void initData() {
         HttpUtils.with(this)
                 .addParam("requestType", "QUESTION_USER_LIST")
                 .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
                 .addParam("limit", "10")
                 .addParam("page", page)
-
-
                 .execute(new HttpNormalCallBack<QuestionList>() {
                     @Override
                     public void onSuccess(QuestionList result) {
@@ -198,8 +194,6 @@ public class StudentQuestionListActivity extends BaseAppActivity {
             }
         });
     }
-
-
 
 
     /**
@@ -324,7 +318,16 @@ public class StudentQuestionListActivity extends BaseAppActivity {
 
                 if (mData.get(position).getFile().size() >= 1) {
                     ImageView iv_iamge1 = holder.getView(R.id.iv_image1);
-                    String url1 = mData.get(position).getFile().get(0);
+                    final String url1 = mData.get(position).getFile().get(0);
+
+                    iv_iamge1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ZoomImagePopupUtils zoomImagePopupUtils = new ZoomImagePopupUtils(StudentQuestionListActivity.this);
+                            zoomImagePopupUtils.setZoomImage(url1);
+                            zoomImagePopupUtils.showAnswerPopuPopu(v);
+                        }
+                    });
                     if (url1 != null) {
                         Glide.with(StudentQuestionListActivity.this)
                                 .load(url1)
@@ -340,7 +343,15 @@ public class StudentQuestionListActivity extends BaseAppActivity {
                  */
                 if (mData.get(position).getFile().size() >= 2) {
                     ImageView iv_iamge2 = holder.getView(R.id.iv_image1);
-                    String url2 = mData.get(position).getFile().get(1);
+                    final String url2 = mData.get(position).getFile().get(1);
+                    iv_iamge2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ZoomImagePopupUtils zoomImagePopupUtils = new ZoomImagePopupUtils(StudentQuestionListActivity.this);
+                            zoomImagePopupUtils.setZoomImage(url2);
+                            zoomImagePopupUtils.showAnswerPopuPopu(v);
+                        }
+                    });
                     if (url2 != null) {
                         Glide.with(StudentQuestionListActivity.this)
                                 .load(url2)

@@ -1,4 +1,4 @@
-package com.youxuan.fragment.banner;
+package com.lib.view.banner.holder;
 
 import android.content.Context;
 import android.view.LayoutInflater;

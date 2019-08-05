@@ -2,7 +2,6 @@ package com.user.activity;
 
 import android.content.DialogInterface;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -25,12 +24,12 @@ import com.lib.fastkit.utils.timer_countdown.CountDownTimer;
 import com.lib.ui.activity.BaseAppActivity;
 import com.user.R;
 import com.user.R2;
+import com.user.bean.BaseBean;
 import com.user.bean.BaseLoginBean;
 import com.user.bean.IdentityUserBean;
-import com.user.fragment.NickNameFragment;
 import com.user.fragment.XieYiFragment;
-import com.user.test.LoginManager;
 
+import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 
 import butterknife.BindView;
@@ -149,6 +148,8 @@ public class LoginActivity extends BaseAppActivity {
 
 
                             // ARouter.getInstance().build(ARouterPathUtils.App_MainActivity).navigation();
+                            EventBus.getDefault().post(new Event<>(1, "登录成功"), EventBusTagUtils.LoginActivity);
+
 
                             finish();
 
@@ -348,5 +349,7 @@ public class LoginActivity extends BaseAppActivity {
 
 
     }
+
+
 
 }

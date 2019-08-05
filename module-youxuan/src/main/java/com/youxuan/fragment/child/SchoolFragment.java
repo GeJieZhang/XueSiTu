@@ -32,7 +32,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-@SuppressLint("ValidFragment")
+
 @Route(path = ARouterPathUtils.YouXuan_SchoolFragment)
 public class SchoolFragment extends BaseAppFragment {
     @BindView(R2.id.rv_school)
@@ -42,6 +42,10 @@ public class SchoolFragment extends BaseAppFragment {
     private HomeAdapter homeAdapter;
 
     private List<YouXuanBean.ObjBean.StageBean.CourseBean> carList = new ArrayList<>();
+
+    public SchoolFragment() {
+    }
+
 
     @SuppressLint("ValidFragment")
     public SchoolFragment(List<YouXuanBean.ObjBean.StageBean.CourseBean> list) {

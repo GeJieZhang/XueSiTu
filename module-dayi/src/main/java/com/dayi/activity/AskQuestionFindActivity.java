@@ -121,6 +121,8 @@ public class AskQuestionFindActivity extends BaseAppActivity {
         int i = view.getId();
         if (i == R.id.btn_back) {
 
+            ARouter.getInstance().build(ARouterPathUtils.Dayi_StudentQuestionListActivity).navigation();
+
             finish();
         } else if (i == R.id.btn_share) {
         }

@@ -22,7 +22,7 @@ public class MessageTopView extends LinearLayout {
     private Context context;
 
 
-    private String str[] = {"官方推送", "审核消息", "订单通知", "评论消息"};
+    private String str[] = {"官方推送", "关联消息", "订单通知", "评论消息"};
 
     private int iconChecked[] = {R.mipmap.icon_push, R.mipmap.icon_examine, R.mipmap.icon_goods, R.mipmap.icon_comment};
     private int icon[] = {R.mipmap.icon_push_default, R.mipmap.icon_examine_default, R.mipmap.icon_goods_default, R.mipmap.icon_comment_default};
@@ -48,6 +48,8 @@ public class MessageTopView extends LinearLayout {
 
     private List<ImageView> imageList = new ArrayList<>();
 
+    private List<LinearLayout> linearLayoutsList = new ArrayList<>();
+
     private void initView() {
         imageList.clear();
 
@@ -60,20 +62,23 @@ public class MessageTopView extends LinearLayout {
             root.setLayoutParams(params);
             TextView tv_title = root.findViewById(R.id.tv_title);
             ImageView iv_image = root.findViewById(R.id.iv_image);
+            LinearLayout lin_parent = root.findViewById(R.id.lin_parent);
+            linearLayoutsList.add(lin_parent);
             imageList.add(iv_image);
             tv_title.setText(str[i]);
             iv_image.setImageResource(icon[i]);
-            setClickEvent(iv_image, i);
+
+            setClickEvent(lin_parent, i);
 
             addView(root);
         }
 
     }
 
-    public void setClickEvent(ImageView imageView, final int i) {
+    public void setClickEvent(LinearLayout lin_parent, final int i) {
 
 
-        imageView.setOnClickListener(new OnClickListener() {
+        lin_parent.setOnClickListener(new OnClickListener() {
 
 
             @Override

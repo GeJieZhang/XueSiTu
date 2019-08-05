@@ -125,8 +125,6 @@ public class RecordVoicePopupUtils {
         @Override
         public void onAudioDBChanged(float db) {
 
-            LogUtil.e("分贝大小1:" + db);
-
 
             //分贝改变
             lineWaveVoiceView.refreshVoiceElement(db);

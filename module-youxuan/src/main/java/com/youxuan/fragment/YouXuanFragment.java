@@ -36,6 +36,8 @@ import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.ui.fragment.BaseAppFragment;
 import com.lib.utls.glide.GlideConfig;
+import com.lib.view.banner.MyBannerView;
+import com.lib.view.banner.holder.CustomViewHolder2;
 import com.ms.banner.Banner;
 import com.ms.banner.BannerConfig;
 import com.ms.banner.Transformer;
@@ -43,7 +45,7 @@ import com.ms.banner.listener.OnBannerClickListener;
 import com.youxuan.R;
 import com.youxuan.R2;
 import com.youxuan.bean.YouXuanBean;
-import com.youxuan.fragment.banner.CustomViewHolder2;
+
 import com.youxuan.fragment.child.SchoolFragment;
 
 import java.util.ArrayList;
@@ -73,8 +75,8 @@ public class YouXuanFragment extends BaseAppFragment {
     @BindView(R2.id.lin_title)
     LinearLayout linTitle;
 
-    @BindView(R2.id.banner)
-    Banner banner;
+    @BindView(R2.id.myBanner)
+    MyBannerView myBanner;
 
     @BindView(R2.id.indicator)
     LinearLayout indicator;
@@ -90,12 +92,12 @@ public class YouXuanFragment extends BaseAppFragment {
 
     private List<ImageView> indicatorImages = new ArrayList<>();
     private List<ImageView> indicatorImages2 = new ArrayList<>();
-    private int mIndicatorSelectedResId = R.mipmap.wheelpoint_selected;
-    private int mIndicatorUnselectedResId = R.mipmap.wheelpoint_default;
+//    private int mIndicatorSelectedResId = R.mipmap.wheelpoint_selected;
+//    private int mIndicatorUnselectedResId = R.mipmap.wheelpoint_default;
 
     private int mIndicatorSelectedResId2 = R.mipmap.wheelbar_selected;
     private int mIndicatorUnselectedResId2 = R.mipmap.wheelbar_default;
-    private int lastPosition = 0;
+
     private int lastPosition2 = 0;
     //private String schoolList[] = {"小学", "初中", "高中"};
     public final int CUT_TIME = 60000;
@@ -206,6 +208,9 @@ public class YouXuanFragment extends BaseAppFragment {
         initBannerView();
 
 
+
+
+
     }
 
     private void initView() {
@@ -258,64 +263,18 @@ public class YouXuanFragment extends BaseAppFragment {
     }
 
     private void initBannerView() {
-        lastPosition = 0;
+        myBanner.setupdateData(mList,MyBannerView.TYPE_CIRCLE);
 
-
-        initIndicator();
-
-
-        banner.setAutoPlay(true)
-                .setPages(mList, new CustomViewHolder2())
-                .setBannerStyle(BannerConfig.NOT_INDICATOR)
-                .setBannerAnimation(Transformer.Scale)
-                .setOnBannerClickListener(new OnBannerClickListener() {
-                    @Override
-                    public void onBannerClick(List datas, int position) {
-                        showToast(position + "");
-
-                    }
-                })
-                .start();
-        banner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        myBanner.setMyBannerViewListener(new MyBannerView.MyBannerViewListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                indicatorImages.get((lastPosition + mList.size()) % mList.size()).setImageResource(mIndicatorUnselectedResId);
-                indicatorImages.get((position + mList.size()) % mList.size()).setImageResource(mIndicatorSelectedResId);
-                lastPosition = position;
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
+            public void onBannerClick(int positon) {
 
             }
         });
 
     }
 
-    private void initIndicator() {
-        indicator.removeAllViews();
-        indicatorImages.clear();
-        for (int i = 0; i < mList.size(); i++) {
-            ImageView imageView = new ImageView(getActivity());
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            LinearLayout.LayoutParams custom_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            custom_params.leftMargin = DisplayUtil.dip2px(getActivity(), 5);
-            custom_params.rightMargin = DisplayUtil.dip2px(getActivity(), 5);
-            if (i == 0) {
-                imageView.setImageResource(mIndicatorSelectedResId);
-            } else {
-                imageView.setImageResource(mIndicatorUnselectedResId);
-            }
-            indicatorImages.add(imageView);
-            indicator.addView(imageView, custom_params);
-        }
-    }
+
 
 
     @Override
@@ -612,26 +571,7 @@ public class YouXuanFragment extends BaseAppFragment {
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
 
-        if (banner != null) {
-            banner.startAutoPlay();
-        }
-
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-
-        if (banner != null) {
-            banner.stopAutoPlay();
-        }
-
-    }
 
 
     private Handler handler = new Handler();

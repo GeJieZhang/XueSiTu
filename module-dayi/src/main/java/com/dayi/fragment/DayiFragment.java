@@ -14,13 +14,15 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dayi.R;
 import com.dayi.R2;
-import com.dayi.fragment.banner.CustomViewHolder2;
+
 import com.lib.app.ARouterPathUtils;
 import com.lib.bean.CustomData;
 import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.progress.circle_progress.CircleProgress;
 import com.lib.ui.fragment.BaseAppFragment;
+import com.lib.view.banner.MyBannerView;
+import com.lib.view.banner.holder.CustomViewHolder2;
 import com.ms.banner.Banner;
 import com.ms.banner.BannerConfig;
 import com.ms.banner.Transformer;
@@ -51,8 +53,8 @@ public class DayiFragment extends BaseAppFragment {
     LinearLayout linTuijian;
     @BindView(R2.id.lin_tuXun)
     LinearLayout linTuXun;
-    @BindView(R2.id.banner)
-    Banner banner;
+    @BindView(R2.id.myBanner)
+    MyBannerView myBanner;
     @BindView(R2.id.indicator)
     LinearLayout indicator;
     @BindView(R2.id.lin_video)
@@ -89,8 +91,7 @@ public class DayiFragment extends BaseAppFragment {
 
         //轮播
         initBannerData();
-        initIndicator();
-        initBanner();
+
 
         //视频
 
@@ -147,58 +148,16 @@ public class DayiFragment extends BaseAppFragment {
         mList.add(new CustomData("", "CustomLayout", false));
         mList.add(new CustomData("", "Transformer", false));
         mList.add(new CustomData("", "Viewpager", false));
-    }
 
-    private void initBanner() {
-        banner.setAutoPlay(true)
-                .setPages(mList, new CustomViewHolder2())
-                .setBannerStyle(BannerConfig.NOT_INDICATOR)
-                .setBannerAnimation(Transformer.Scale)
-                .setOnBannerClickListener(new OnBannerClickListener() {
-                    @Override
-                    public void onBannerClick(List datas, int position) {
-                        showToast(position + "");
-
-                    }
-                })
-                .start();
-        banner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        myBanner.setupdateData(mList, MyBannerView.TYPE_RECTANGULAR);
+        myBanner.setMyBannerViewListener(new MyBannerView.MyBannerViewListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                indicatorImages.get((lastPosition + mList.size()) % mList.size()).setImageResource(mIndicatorUnselectedResId);
-                indicatorImages.get((position + mList.size()) % mList.size()).setImageResource(mIndicatorSelectedResId);
-                lastPosition = position;
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
+            public void onBannerClick(int positon) {
 
             }
         });
     }
 
-    private void initIndicator() {
-        for (int i = 0; i < mList.size(); i++) {
-            ImageView imageView = new ImageView(getActivity());
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            LinearLayout.LayoutParams custom_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            custom_params.leftMargin = DisplayUtil.dip2px(getActivity(), 5);
-            custom_params.rightMargin = DisplayUtil.dip2px(getActivity(), 5);
-            if (i == 0) {
-                imageView.setImageResource(mIndicatorSelectedResId);
-            } else {
-                imageView.setImageResource(mIndicatorUnselectedResId);
-            }
-            indicatorImages.add(imageView);
-            indicator.addView(imageView, custom_params);
-        }
-    }
 
     private void initTuxun() {
         linTuXun.removeAllViews();

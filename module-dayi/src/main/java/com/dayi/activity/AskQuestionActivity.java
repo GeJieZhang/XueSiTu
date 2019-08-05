@@ -167,10 +167,13 @@ public class AskQuestionActivity extends BaseAppActivity {
                             payPopupUtils.setPopupValue(result.getObj().getAmount() + "", result.getObj().getTotal() + "");
 
                             tv_tips.setText(result.getObj().getMsg());
-
-                            stateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                            if (stateView != null) {
+                                stateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                            }
                         } else {
-                            stateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+                            if (stateView != null) {
+                                stateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+                            }
                         }
 
 
@@ -179,7 +182,10 @@ public class AskQuestionActivity extends BaseAppActivity {
                     @Override
                     public void onError(String e) {
 
-                        stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
+
+                        if (stateView != null) {
+                            stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
+                        }
 
                     }
                 });
@@ -303,6 +309,21 @@ public class AskQuestionActivity extends BaseAppActivity {
             writeWordPopupUtils.showCmmtWordPop(view);
 
         } else if (i == R.id.btn_sure) {
+
+
+            if (uploadImageMap.size() <= 0) {
+                showToast("请附上问题图片！");
+
+                return;
+
+            }
+
+            if (uploadVoiceMap.size() <= 0 & contentWord.equals("")) {
+                showToast("请对问题进行文字和语音描述！");
+
+                return;
+
+            }
 
             subjectPopupUtils.showAnswerPopuPopu(AskQuestionActivity.this.getWindow().getDecorView());
 

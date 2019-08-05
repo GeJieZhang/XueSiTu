@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.lib.MyApplication;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
 import com.lib.app.EventBusTagUtils;
@@ -32,6 +33,7 @@ import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.utls.bugly.BuglyUtil;
 import com.live.activity.MainRoomActivity;
+import com.user.bean.BaseBean;
 import com.user.fragment.PersonalFragment;
 import com.xuesitu.R;
 import com.xuesitu.bean.CheckTokenBean;
@@ -106,8 +108,26 @@ public class MainActivity extends BaseAppActivity {
 
         requestQiniuToken();
         requestCheckToken();
-        //BuglyUtil.checkUpdate();
+
+
+        bindYoumengTokenByUser();
+
+
     }
+
+
+    /**
+     * 登录后需要绑定
+     * 每次进入页面如何用户Token和友盟Token都不为空那么再次绑定
+     */
+    private void bindYoumengTokenByUser() {
+        String userToken = SharedPreferenceManager.getInstance(this).getUserCache().getUserToken();
+        String youMengToken = SharedPreferenceManager.getInstance(this).getUserCache().getYouMengPushToken();
+        if (!userToken.equals("") && !youMengToken.equals("")) {
+            bindYouMengToken();
+        }
+    }
+
 
     @Override
     protected int getLayoutId() {
@@ -350,6 +370,26 @@ public class MainActivity extends BaseAppActivity {
     }
 
 
+    @Subscriber(tag = EventBusTagUtils.LoginActivity)
+    public void fromLoginActivity(Event event) {
+
+        switch (event.getEventCode()) {
+
+            case 1: {
+
+
+                bindYouMengToken();
+
+
+                break;
+            }
+
+        }
+
+
+    }
+
+
     /**
      * @param event
      */
@@ -381,6 +421,25 @@ public class MainActivity extends BaseAppActivity {
 
 
     }
+
+    private void bindYouMengToken() {
+        HttpUtils.with(this)
+                .addParam("requestType", "SET_APPID")
+                .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
+                .addParam("app_id", SharedPreferenceManager.getInstance(this).getUserCache().getYouMengPushToken())
+                .execute(new HttpNormalCallBack<BaseBean>() {
+                    @Override
+                    public void onSuccess(BaseBean result) {
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
+    }
+
 
     /**
      * 全局登录监听

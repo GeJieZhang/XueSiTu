@@ -62,7 +62,7 @@ public class CommonSoundItemView extends RelativeLayout {
     //设置播放时使用本地文件，还是网路文件
     private boolean localType = true;
 
-    private boolean isDletedAble=true;
+    private boolean isDletedAble = true;
 
     public CommonSoundItemView(Context context) {
         super(context);
@@ -105,7 +105,7 @@ public class CommonSoundItemView extends RelativeLayout {
             @Override
             public boolean onLongClick(View v) {
 
-                if (isDletedAble){
+                if (isDletedAble) {
                     lin_delete.setVisibility(VISIBLE);
                 }
 
@@ -144,13 +144,13 @@ public class CommonSoundItemView extends RelativeLayout {
 
 
             AudioPlayManager.getInstance().startPlay(context, uri, iAudioPlayListener);
+
         }
 
     }
 
     public void setAudioEntity(UploadVoice audioInfo) {
         this.audioInfo = audioInfo;
-
 
 
         if (localType) {
@@ -230,7 +230,7 @@ public class CommonSoundItemView extends RelativeLayout {
     private CommonSoundItemViewListener listener;
 
     public void isDletedAble(boolean b) {
-        isDletedAble=b;
+        isDletedAble = b;
     }
 
     public interface CommonSoundItemViewListener {
@@ -262,9 +262,26 @@ public class CommonSoundItemView extends RelativeLayout {
         } finally {
             mmr.release();
         }
-        LogUtil.e("duration " + duration);
+
         return duration;
     }
 
 
+    @Override
+    protected void onWindowVisibilityChanged(int visibility) {
+        super.onWindowVisibilityChanged(visibility);
+
+        if (visibility == View.VISIBLE) {
+            //开始某些任务(可见)
+
+
+        } else if (visibility == INVISIBLE || visibility == GONE) {
+            //停止某些任务(不可见)当这个自定义View不可见的时候停止播放语音
+
+
+            AudioPlayManager.getInstance().stopPlay();
+
+
+        }
+    }
 }

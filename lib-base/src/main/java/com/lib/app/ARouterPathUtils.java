@@ -51,6 +51,8 @@ public class ARouterPathUtils {
     public static final String User_MessageActivity = "/user/MessageActivity";
     public static final String User_RecordsActivity = "/user/RecordsActivity";
 
+    public static final String User_MessageDetailActivity = "/user/MessageDetailActivity";
+
     //==============================================================================================
     //======================================================================================live====
     //==============================================================================================
@@ -62,7 +64,6 @@ public class ARouterPathUtils {
     //==============================================================================================
     //======================================================================================dayi====
     //==============================================================================================
-
 
 
     public static final String Dayi_DayiNormalDetailWebActivity = "/dayi/DayiNormalDetailWebActivity";

@@ -24,8 +24,8 @@ public class HttpUtils {
     // 正式
     //private String mUrl = "http://192.168.2.28:8081/xuesitu_api/api/";
     //本地
-    private String mUrl = "http://192.168.0.117:8081/api";
-    //private String mUrl = "http://www.baidu.com/";
+    private  static String mUrl = "";
+
 
     // 请求方式
     private int mType = POST_TYPE;
@@ -116,8 +116,11 @@ public class HttpUtils {
 
 
     // 在Application初始化引擎
-    public static void init(IHttpEngine httpEngine) {
+    public static void init(IHttpEngine httpEngine, String url) {
+
+        mUrl=url;
         mHttpEngine = httpEngine;
+
     }
 
 

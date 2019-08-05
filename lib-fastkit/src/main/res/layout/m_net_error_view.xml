@@ -12,10 +12,16 @@
         android:gravity="center"
         android:orientation="vertical">
 
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/pic_empty" />
+
         <TextView
             android:id="@+id/mzw_loading_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="加载失败,请检查网络"
             android:textColor="#cbcbcb"
             android:textSize="15sp" />

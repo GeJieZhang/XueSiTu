@@ -4,6 +4,7 @@ package com.lib;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.app.Notification;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -15,6 +16,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 
 import com.google.gson.Gson;
 import com.lib.base.R;
+import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.utils.system.SystemUtil;
 import com.lib.service.InitIntentService;
 import com.lib.utls.application_deal.UIUtils;
@@ -57,6 +59,8 @@ public class MyApplication extends Application {
 
     private String TAG = "=======推送";
 
+    private String url = "http://192.168.0.117:8081/api";
+
 
     @Override
     public void onCreate() {
@@ -87,7 +91,7 @@ public class MyApplication extends Application {
     private void initYouMeng() {
 
         /**
-         * 友盟
+         * 友盟(分享，推送)
          */
         UMConfigure.init(this, "5d3e56863fc195e682000cb2", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "97110bcafcc2b47a2377bb4390bac6b7");
         /**
@@ -100,8 +104,6 @@ public class MyApplication extends Application {
          * QQ,WeiXing,微博(分享)
          */
         PlatformConfig.setWeixin("wx2747c1e8b040c4d1", "d07fa072e26e1e8c32701e8759fea609");
-
-
         PlatformConfig.setSinaWeibo("2489690608", "c54ead966302cf43d9242dcdcd6f8c34", "http://sns.whalecloud.com");
         PlatformConfig.setQQZone("1105126608", "I7rMc2xTW9BwP9OD");
 
@@ -124,6 +126,10 @@ public class MyApplication extends Application {
             public void onSuccess(String deviceToken) {
                 //注册成功会返回deviceToken deviceToken是推送消息的唯一标志
                 Log.e(TAG, "注册成功：deviceToken：-------->  " + deviceToken);
+
+                SharedPreferenceManager.getInstance(MyApplication.this).getUserCache().setYouMengPushToken(deviceToken);
+
+
             }
 
             @Override
@@ -139,34 +145,14 @@ public class MyApplication extends Application {
              */
             @Override
             public Notification getNotification(Context context, UMessage msg) {
-                switch (msg.builder_id) {
+
+                Log.e(TAG, "收到消息default:" + new Gson().toJson(msg));
 
 
-                    case 1:
 
-                        //这里是自定义通知栏的消息,不进行设置显示默认的样式
-                        Log.e(TAG, "收到消息1:" + msg.toString());
 
-                        Notification.Builder builder = new Notification.Builder(context);
-                        RemoteViews myNotificationView = new RemoteViews(context.getPackageName(),
-                                R.layout.notification_view);
-                        myNotificationView.setTextViewText(R.id.notification_title, msg.title);
-                        myNotificationView.setTextViewText(R.id.notification_text, msg.text);
-                        myNotificationView.setImageViewBitmap(R.id.notification_large_icon, getLargeIcon(context, msg));
-                        myNotificationView.setImageViewResource(R.id.notification_small_icon,
-                                getSmallIconId(context, msg));
-                        builder.setContent(myNotificationView)
-                                .setSmallIcon(getSmallIconId(context, msg))
-                                .setTicker(msg.ticker)
-                                .setAutoCancel(true);
 
-                        return builder.getNotification();
-                    default:
-
-                        Log.e(TAG, "收到消息default:" + new Gson().toJson(msg));
-                        //默认为0，若填写的builder_id并不存在，也使用默认。
-                        return super.getNotification(context, msg);
-                }
+                return super.getNotification(context, msg);
             }
         };
         mPushAgent.setMessageHandler(messageHandler);
@@ -270,7 +256,7 @@ public class MyApplication extends Application {
     private void initHttp() {
 
 
-        HttpUtils.init(new OkHttpEngine(applicationInstance));
+        HttpUtils.init(new OkHttpEngine(applicationInstance), url);
 
 
     }
@@ -425,6 +411,23 @@ public class MyApplication extends Application {
         }
         // 没有匹配的项，返回为null
         return null;
+    }
+
+
+    /**
+     * 查看当前再栈顶的Activity
+     */
+    public void getTopStackActivity() {
+
+        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+        Log.e("current", "pkg:" + cn.getPackageName());
+        Log.e("currentclass", "cls:" + cn.getClassName());
+        if (!cn.getClassName().equals("当前显示的class名")) {
+            //跳转操作
+        } else {
+            //不跳转
+        }
     }
 
 }

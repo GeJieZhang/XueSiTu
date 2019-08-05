@@ -59,7 +59,7 @@
                         android:layout_height="40dp"
                         android:layout_marginRight="16dp"
                         android:background="@drawable/bg_circle_hollow_r6"
-                        android:text="返回"
+                        android:text="历史问答"
                         android:textColor="@color/base_title"
 
                         />
