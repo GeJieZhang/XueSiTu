@@ -23,6 +23,7 @@ import com.lib.app.EventBusTagUtils;
 import com.lib.app.FragmentTag;
 import com.lib.app.FragmentUtils;
 import com.lib.bean.Event;
+import com.lib.bean.PushDetailBean;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.animation_deal.AnimationUtil;
@@ -32,6 +33,7 @@ import com.lib.fastkit.views.viewpager.my.MyViewPager;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.utls.bugly.BuglyUtil;
+import com.lib.utls.pop.PushPopupUtils;
 import com.live.activity.MainRoomActivity;
 import com.user.bean.BaseBean;
 import com.user.fragment.PersonalFragment;
@@ -85,10 +87,11 @@ public class MainActivity extends BaseAppActivity {
     private DemandAdapter mDemandAdapter;
     private List<Fragment> fragments = new ArrayList<>();
 
+    private PushPopupUtils pushPopupUtils;
 
     @Override
     protected void onCreateView() {
-
+        pushPopupUtils = new PushPopupUtils(this);
 
         initData();
         initView();
@@ -388,6 +391,7 @@ public class MainActivity extends BaseAppActivity {
 
 
     }
+
 
 
     /**

@@ -1,6 +1,7 @@
 
 package com.lib;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.app.Notification;
@@ -8,16 +9,25 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.multidex.MultiDex;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.lib.app.EventBusTagUtils;
 import com.lib.base.R;
+import com.lib.bean.Event;
+import com.lib.bean.PushBean;
+import com.lib.bean.PushDetailBean;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
+import com.lib.fastkit.utils.json_deal.lib_mgson.MGson;
 import com.lib.fastkit.utils.system.SystemUtil;
+import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.service.InitIntentService;
 import com.lib.utls.application_deal.UIUtils;
 import com.lib.fastkit.http.ok.HttpUtils;
@@ -27,6 +37,7 @@ import com.lib.fastkit.utils.log.LogUtil;
 
 
 import com.lib.utls.bugly.BuglyUtil;
+import com.lib.utls.pop.PushPopupUtils;
 import com.squareup.leakcanary.LeakCanary;
 import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.commonsdk.UMConfigure;
@@ -39,6 +50,9 @@ import com.umeng.socialize.PlatformConfig;
 
 
 import org.android.agoo.xiaomi.MiPushRegistar;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.simple.eventbus.EventBus;
 
 import java.util.Iterator;
 import java.util.List;
@@ -56,6 +70,7 @@ public class MyApplication extends Application {
     private boolean isLog = true;
     //是否开启内存检测
     private boolean isLeakCanary = true;
+
 
     private String TAG = "=======推送";
 
@@ -83,7 +98,10 @@ public class MyApplication extends Application {
 
 
         initYouMeng();
+
+
     }
+
 
     /**
      * 初始化友盟
@@ -112,10 +130,13 @@ public class MyApplication extends Application {
 
     }
 
+
     /**
      * 初始化推送
      */
     private void initPush() {
+
+
         //获取消息推送代理示例
         PushAgent mPushAgent = PushAgent.getInstance(this);
 
@@ -146,10 +167,28 @@ public class MyApplication extends Application {
             @Override
             public Notification getNotification(Context context, UMessage msg) {
 
-                Log.e(TAG, "收到消息default:" + new Gson().toJson(msg));
+
+                String json = new Gson().toJson(msg);
+                Log.e(TAG, "收到消息default:" + json);
 
 
+                try {
+                    PushBean pushBean = MGson.newGson().fromJson(json, PushBean.class);
+                    String jsonTicker = pushBean.getA().getNameValuePairs().getBody().getNameValuePairs().getTicker();
 
+                    PushDetailBean pushDetailBean = MGson.newGson().fromJson(jsonTicker, PushDetailBean.class);
+
+                    if (pushDetailBean.getType() == 1) {
+                        //答题类推送
+
+                        EventBus.getDefault().post(new Event<>(1, pushDetailBean), EventBusTagUtils.MyApplication);
+
+
+                    }
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                }
 
 
                 return super.getNotification(context, msg);

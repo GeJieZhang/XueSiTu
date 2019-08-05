@@ -29,6 +29,10 @@ public class EventBusTagUtils {
      */
     public static final String HttpCallBack = "HttpCallBack";
 
+    /**
+     * 推送
+     */
+    public static final String MyApplication = "MyApplication";
 
 
 }

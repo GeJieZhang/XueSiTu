@@ -1,5 +1,7 @@
 package com.lib.ui.activity.kit;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,14 +20,21 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.lib.MyApplication;
+import com.lib.app.EventBusTagUtils;
+import com.lib.bean.Event;
+import com.lib.bean.PushDetailBean;
 import com.lib.fastkit.R;
 import com.lib.fastkit.ui.base.control.ActivityCollector;
+import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.status_bar.QMUI.QMUIStatusBarHelper;
 import com.lib.fastkit.views.button_deal.click.ClickUtils;
+import com.lib.utls.pop.PushPopupUtils;
 import com.umeng.message.PushAgent;
 import com.umeng.socialize.UMShareAPI;
 
 import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -52,6 +61,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     private Toast mToast;
     private Unbinder unbinder;
 
+    private String className = "com.lib.ui.activity.kit.BaseActivity";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +86,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         Log.e("=============", "==============================================当前页面");
         Log.e("类名检测======", this.getClass().getName());
         Log.e("=============", "====================================================");
+        initActivityLife();
+
 
     }
 
@@ -386,5 +399,86 @@ public abstract class BaseActivity extends AppCompatActivity {
         ActivityCollector.getInstance().finishActivity(this);
     }
 
+
+    /**
+     * 推送
+     *
+     * @param event
+     */
+
+    PushPopupUtils pushPopupUtils;
+
+    @Subscriber(tag = EventBusTagUtils.MyApplication)
+    public void fromMyApplication(Event event) {
+
+        switch (event.getEventCode()) {
+
+            case 1: {
+                if (className.equals(stackTopActivity.getLocalClassName())) {
+                    PushDetailBean pushDetailBean = (PushDetailBean) event.getData();
+                    pushPopupUtils.updateData(pushDetailBean);
+                    pushPopupUtils.showAnswerPopuPopu(this.getWindow().getDecorView());
+                }
+
+                break;
+            }
+
+        }
+
+
+    }
+
+    /**
+     * 监听Activity的生命周期
+     */
+
+    private Activity stackTopActivity;
+
+    private void initActivityLife() {
+        pushPopupUtils = new PushPopupUtils(this);
+        className = this.getClass().getName();
+
+        MyApplication.getInstance().registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+
+
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+                stackTopActivity = activity;
+
+
+                LogUtil.e("包明:" + stackTopActivity.getLocalClassName());
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+
+            }
+        });
+
+    }
 
 }
