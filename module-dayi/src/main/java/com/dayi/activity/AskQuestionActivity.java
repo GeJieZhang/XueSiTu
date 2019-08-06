@@ -19,6 +19,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.dayi.R;
 import com.dayi.R2;
+import com.dayi.bean.AskBean;
 import com.dayi.bean.BaseHttpBean;
 import com.dayi.bean.QuestionStateBean;
 import com.dayi.bean.UploadImage;
@@ -29,6 +30,7 @@ import com.dayi.utils.pop.SubjectPopupUtils;
 import com.dayi.utils.pop.WriteWordPopupUtils;
 import com.dayi.utils.pop.ZoomImagePopupUtils;
 import com.dayi.view.CommonSoundItemView;
+import com.google.gson.Gson;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
@@ -36,6 +38,7 @@ import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.file.FileUtils;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.load_state_view.MultiStateView;
+import com.lib.framework.component.interceptor.GroupUtils;
 import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
@@ -60,7 +63,7 @@ import butterknife.OnClick;
  */
 
 
-@Route(path = ARouterPathUtils.Dayi_AskQuestionActivity)
+@Route(path = ARouterPathUtils.Dayi_AskQuestionActivity, group = GroupUtils.NEED_LOGIN)
 public class AskQuestionActivity extends BaseAppActivity {
 
     @BindView(R2.id.state_view)
@@ -333,6 +336,8 @@ public class AskQuestionActivity extends BaseAppActivity {
 
     private int subjectId = 0;
 
+    private String askJson = "";
+
     private void requestUplaodData() {
 
         if (subjectId == 0) {
@@ -389,13 +394,17 @@ public class AskQuestionActivity extends BaseAppActivity {
                 .addParam("voice_description", voice_description)
                 .addParam("subject_id", subjectId)
                 .addParam("text_description", contentWord)
-                .execute(new HttpDialogCallBack<BaseHttpBean>() {
+                .execute(new HttpDialogCallBack<AskBean>() {
                     @Override
-                    public void onSuccess(BaseHttpBean result) {
+                    public void onSuccess(AskBean result) {
+
+                        askJson = new Gson().toJson(result);
 
                         if (result.getCode() == CodeUtil.CODE_200) {
 
-                            ARouter.getInstance().build(ARouterPathUtils.Dayi_AskQuestionFindActivity).navigation();
+                            ARouter.getInstance().build(ARouterPathUtils.Dayi_AskQuestionFindActivity)
+                                    .withString("json",askJson)
+                                    .navigation();
 
 
                             finish();

@@ -23,6 +23,7 @@ import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.fastkit.views.spring_refresh.container.DefaultFooter;
 import com.lib.fastkit.views.spring_refresh.container.DefaultHeader;
 import com.lib.fastkit.views.spring_refresh.widget.SpringView;
+import com.lib.framework.component.interceptor.GroupUtils;
 import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
@@ -317,7 +318,7 @@ public class TeacherQuestionListActivity extends BaseAppActivity {
                 public void onClick(View v) {
 
                     ARouter.getInstance()
-                            .build(ARouterPathUtils.Dayi_StudentQuestionDetailActivity)
+                            .build(ARouterPathUtils.Dayi_StudentQuestionDetailActivity, GroupUtils.NEED_LOGIN)
                             .withString("questionId", mData.get(position).getQuestion_id() + "")
                             .navigation();
                 }

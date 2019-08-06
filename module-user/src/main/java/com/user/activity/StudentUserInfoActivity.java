@@ -131,7 +131,7 @@ public class StudentUserInfoActivity extends BaseAppActivity {
 
         HttpUtils.with(this)
                 .post()
-                .addParam("requestType", "STUDENT_PERSONAL_INFO")
+                .addParam("requestType", "PERSONAL_INFO")
                 .addParam("token", token)
                 .execute(new HttpNormalCallBack<StudentInfoBean>() {
                     @Override

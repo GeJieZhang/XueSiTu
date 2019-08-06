@@ -1,29 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.user.view.MessageTopView
-        android:id="@+id/mv_top"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <com.lib.fastkit.views.load_state_view.MultiStateView
 
-        android:background="@color/white"
-        android:gravity="center"
-        android:minHeight="40dp"
-        android:orientation="horizontal"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv"
+        android:id="@+id/state_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
-        android:background="@color/white">
+        app:emptyView="@layout/m_empty_view"
+        app:errorView="@layout/m_error_view"
+        app:loadingView="@layout/m_loading_view"
+        app:networkErrorView="@layout/m_net_error_view"
+        app:viewState="content">
 
-    </android.support.v7.widget.RecyclerView>
+        <com.lib.fastkit.views.spring_refresh.widget.SpringView
+            android:id="@+id/springView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                android:scrollbars="none">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <com.user.view.MessageTopView
+                        android:id="@+id/mv_top"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:minHeight="40dp"
+                        android:orientation="horizontal"
+                        android:paddingBottom="16dp"
+                        android:paddingTop="16dp" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginTop="16dp"
+                        android:layout_weight="1"
+                        android:background="@color/white">
+
+                    </android.support.v7.widget.RecyclerView>
+                </LinearLayout>
+            </ScrollView>
+        </com.lib.fastkit.views.spring_refresh.widget.SpringView>
+
+    </com.lib.fastkit.views.load_state_view.MultiStateView>
 </LinearLayout>

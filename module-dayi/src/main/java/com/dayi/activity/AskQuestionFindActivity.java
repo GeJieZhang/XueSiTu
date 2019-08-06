@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
@@ -21,12 +22,16 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.dayi.R;
 import com.dayi.R2;
+import com.dayi.bean.AskBean;
+import com.google.gson.Gson;
 import com.lib.app.ARouterPathUtils;
 import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.time_deal.TimeUtils;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
+import com.lib.framework.component.interceptor.GroupUtils;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.ui.adapter.BaseAdapter;
+import com.lib.utls.glide.GlideConfig;
 import com.lib.view.navigationbar.NomalNavigationBar;
 
 import java.util.ArrayList;
@@ -53,10 +58,14 @@ public class AskQuestionFindActivity extends BaseAppActivity {
     Button btnShare;
     @BindView(R2.id.rv)
     RecyclerView rv;
+    @Autowired(name = "json")
+    String json;
 
 
     @Override
     protected void onCreateView() {
+
+        ARouter.getInstance().inject(this);
         initTitle();
         initGif();
 
@@ -74,14 +83,15 @@ public class AskQuestionFindActivity extends BaseAppActivity {
 
     }
 
-    private List<String> list = new ArrayList<>();
+    private List<AskBean.ObjBean.TeachingAssistantBean> list = new ArrayList<>();
     private HomeAdapter homeAdapter;
 
     private void initView() {
 
-        list.add("");
-        list.add("");
-        list.add("");
+
+        AskBean askBean = new Gson().fromJson(json, AskBean.class);
+        list.addAll(askBean.getObj().getTeaching_assistant());
+
         homeAdapter = new HomeAdapter(this, list);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(homeAdapter);
@@ -129,9 +139,9 @@ public class AskQuestionFindActivity extends BaseAppActivity {
     }
 
 
-    private class HomeAdapter extends BaseAdapter<String> {
+    private class HomeAdapter extends BaseAdapter<AskBean.ObjBean.TeachingAssistantBean> {
 
-        public HomeAdapter(Context context, List<String> mData) {
+        public HomeAdapter(Context context, List<AskBean.ObjBean.TeachingAssistantBean> mData) {
             super(context, mData);
         }
 
@@ -141,17 +151,37 @@ public class AskQuestionFindActivity extends BaseAppActivity {
         }
 
         @Override
-        protected void toBindViewHolder(ViewHolder holder, final int position, List<String> mData) {
+        protected void toBindViewHolder(ViewHolder holder, final int position, List<AskBean.ObjBean.TeachingAssistantBean> mData) {
+
+
+            ImageView imageView = holder.getView(R.id.iv_head);
+            final String url = mData.get(position).getPhoto_url();
+            Glide.with(AskQuestionFindActivity.this)
+                    .load(url)
+                    .apply(GlideConfig.getRoundOptions(10))
+                    .into(imageView);
+
+            holder.setText(R.id.tv_title, mData.get(position).getBig_title());
+
+            holder.setText(R.id.tv_content, mData.get(position).getUsername() + "上传,共"
+                    + mData.get(position).getAssistant_num() + "个教辅");
+
+            final String urlPath = "";
+
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (position == 0) {
 
-                        ARouter.getInstance().build(ARouterPathUtils.Dayi_TeacherAnswerQuestionDetailActivity).navigation();
+                        ARouter.getInstance().build(ARouterPathUtils.Dayi_DayiNormalDetailWebActivity)
+                                .withString("urlPath", urlPath)
+                                .navigation();
                     } else {
 
-                        ARouter.getInstance().build(ARouterPathUtils.Dayi_StudentQuestionDetailActivity).navigation();
+                        ARouter.getInstance().build(ARouterPathUtils.Dayi_DayiNormalDetailWebActivity)
+                                .withString("urlPath", urlPath)
+                                .navigation();
                     }
 
                 }

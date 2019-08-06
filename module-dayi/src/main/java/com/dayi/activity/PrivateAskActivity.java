@@ -28,6 +28,7 @@ import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.fastkit.views.spring_refresh.container.DefaultFooter;
 import com.lib.fastkit.views.spring_refresh.container.DefaultHeader;
 import com.lib.fastkit.views.spring_refresh.widget.SpringView;
+import com.lib.framework.component.interceptor.GroupUtils;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.ui.adapter.BaseAdapter;
@@ -171,7 +172,9 @@ public class PrivateAskActivity extends BaseAppActivity {
 
         } else if (i == R.id.btn_sure) {
 
-            ARouter.getInstance().build(ARouterPathUtils.Dayi_AskQuestionActivity).navigation();
+            ARouter.getInstance().build(ARouterPathUtils.Dayi_AskQuestionActivity, GroupUtils.NEED_LOGIN)
+
+                    .navigation();
 
         }
     }
@@ -269,7 +272,7 @@ public class PrivateAskActivity extends BaseAppActivity {
                 public void onClick(View v) {
 
                     ARouter.getInstance()
-                            .build(ARouterPathUtils.Dayi_StudentQuestionDetailActivity)
+                            .build(ARouterPathUtils.Dayi_StudentQuestionDetailActivity, GroupUtils.NEED_LOGIN)
                             .withString("questionId", mData.get(position).getQuestion_id() + "")
                             .navigation();
                 }

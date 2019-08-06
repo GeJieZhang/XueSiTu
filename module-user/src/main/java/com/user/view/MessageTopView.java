@@ -26,6 +26,10 @@ public class MessageTopView extends LinearLayout {
 
     private int iconChecked[] = {R.mipmap.icon_push, R.mipmap.icon_examine, R.mipmap.icon_goods, R.mipmap.icon_comment};
     private int icon[] = {R.mipmap.icon_push_default, R.mipmap.icon_examine_default, R.mipmap.icon_goods_default, R.mipmap.icon_comment_default};
+    public static final int GF = 0;
+    public static final int GL = 1;
+    public static final int DD = 2;
+    public static final int PL = 3;
 
     public MessageTopView(Context context) {
         this(context, null);
@@ -50,6 +54,9 @@ public class MessageTopView extends LinearLayout {
 
     private List<LinearLayout> linearLayoutsList = new ArrayList<>();
 
+
+    private List<View> viewList = new ArrayList<>();
+
     private void initView() {
         imageList.clear();
 
@@ -63,8 +70,13 @@ public class MessageTopView extends LinearLayout {
             TextView tv_title = root.findViewById(R.id.tv_title);
             ImageView iv_image = root.findViewById(R.id.iv_image);
             LinearLayout lin_parent = root.findViewById(R.id.lin_parent);
+            View v_point = root.findViewById(R.id.v_point);
+
+
             linearLayoutsList.add(lin_parent);
             imageList.add(iv_image);
+            viewList.add(v_point);
+
             tv_title.setText(str[i]);
             iv_image.setImageResource(icon[i]);
 
@@ -95,7 +107,7 @@ public class MessageTopView extends LinearLayout {
                         break;
                     }
 
-                    case "审核消息": {
+                    case "关联消息": {
 
                         if (listener != null) {
                             listener.onClickSH();
@@ -132,6 +144,15 @@ public class MessageTopView extends LinearLayout {
             imageList.get(i).setImageResource(icon[i]);
         }
 
+    }
+
+
+    public void showPoint(int i) {
+        viewList.get(i).setVisibility(VISIBLE);
+    }
+
+    public void hidePoint(int i) {
+        viewList.get(i).setVisibility(GONE);
     }
 
 

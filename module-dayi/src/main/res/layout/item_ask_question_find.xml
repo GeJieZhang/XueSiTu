@@ -34,7 +34,7 @@
 
             <TextView
 
-                android:id="@+id/tv_action"
+                android:id="@+id/tv_title"
                 style="@style/text_style11"
                 android:layout_weight="1"
                 android:text="二元一次方程"
@@ -45,6 +45,7 @@
             <TextView
 
 
+                android:id="@+id/tv_content"
                 style="@style/text_style11"
                 android:layout_marginTop="4dp"
                 android:text="孙老师上传，共14个课件"
@@ -58,7 +59,7 @@
         <TextView
             android:id="@+id/tv_money"
             style="@style/text_style5"
-            android:text="￥754" />
+            android:text="754" />
 
         <TextView
             style="@style/text_style5"

@@ -157,7 +157,7 @@ public class TeacherUserInfoActivity extends BaseAppActivity {
 
         HttpUtils.with(this)
                 .post()
-                .addParam("requestType", "TEACHER_PERSONAL_INFO")
+                .addParam("requestType", "PERSONAL_INFO")
                 .addParam("token", token)
                 .execute(new HttpDialogCallBack<TeacherInfoBean>() {
                     @Override

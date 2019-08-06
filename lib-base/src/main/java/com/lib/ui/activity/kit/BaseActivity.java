@@ -25,6 +25,7 @@ import com.lib.app.EventBusTagUtils;
 import com.lib.bean.Event;
 import com.lib.bean.PushDetailBean;
 import com.lib.fastkit.R;
+import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.ui.base.control.ActivityCollector;
 import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.status_bar.QMUI.QMUIStatusBarHelper;
@@ -283,7 +284,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-
     /**
      * Toast
      *
@@ -397,6 +397,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
         unbinder.unbind();
         ActivityCollector.getInstance().finishActivity(this);
+
     }
 
 
@@ -454,8 +455,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             public void onActivityResumed(Activity activity) {
                 stackTopActivity = activity;
 
-
-                LogUtil.e("包明:" + stackTopActivity.getLocalClassName());
             }
 
             @Override

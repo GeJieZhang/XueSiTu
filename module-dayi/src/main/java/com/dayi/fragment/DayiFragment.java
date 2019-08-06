@@ -20,6 +20,7 @@ import com.lib.bean.CustomData;
 import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.progress.circle_progress.CircleProgress;
+import com.lib.framework.component.interceptor.GroupUtils;
 import com.lib.ui.fragment.BaseAppFragment;
 import com.lib.view.banner.MyBannerView;
 import com.lib.view.banner.holder.CustomViewHolder2;
@@ -55,6 +56,9 @@ public class DayiFragment extends BaseAppFragment {
     LinearLayout linTuXun;
     @BindView(R2.id.myBanner)
     MyBannerView myBanner;
+
+    @BindView(R2.id.myBanner2)
+    MyBannerView myBanner2;
     @BindView(R2.id.indicator)
     LinearLayout indicator;
     @BindView(R2.id.lin_video)
@@ -149,8 +153,19 @@ public class DayiFragment extends BaseAppFragment {
         mList.add(new CustomData("", "Transformer", false));
         mList.add(new CustomData("", "Viewpager", false));
 
+
+
+
         myBanner.setupdateData(mList, MyBannerView.TYPE_RECTANGULAR);
         myBanner.setMyBannerViewListener(new MyBannerView.MyBannerViewListener() {
+            @Override
+            public void onBannerClick(int positon) {
+
+            }
+        });
+
+        myBanner2.setupdateData(mList, MyBannerView.TYPE_RECTANGULAR);
+        myBanner2.setMyBannerViewListener(new MyBannerView.MyBannerViewListener() {
             @Override
             public void onBannerClick(int positon) {
 
@@ -212,7 +227,7 @@ public class DayiFragment extends BaseAppFragment {
             @Override
             public void onRequestPermissionSuccess() {
 
-                ARouter.getInstance().build(ARouterPathUtils.Dayi_AskQuestionActivity).navigation();
+                ARouter.getInstance().build(ARouterPathUtils.Dayi_AskQuestionActivity, GroupUtils.NEED_LOGIN).navigation();
 
 
             }

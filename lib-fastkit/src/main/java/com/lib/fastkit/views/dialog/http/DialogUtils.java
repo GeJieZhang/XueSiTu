@@ -2,6 +2,7 @@ package com.lib.fastkit.views.dialog.http;
 
 import android.content.Context;
 
+import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.views.dialog.normal.NormalDialog;
 import com.lib.fastkit.views.dialog.tip.QMUITipDialog;
 
@@ -26,6 +27,7 @@ public class DialogUtils {
     public void dismiss() {
 
         tipDialog.dismiss();
+        HttpUtils.cancel();
 
     }
 

@@ -25,6 +25,7 @@ import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.views.load_state_view.MultiStateView;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
+import com.lib.framework.component.interceptor.GroupUtils;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.ui.fragment.BaseAppFragment;
@@ -200,7 +201,7 @@ public class SiXueFragment extends BaseAppFragment {
         int i = view.getId();
         if (i == R.id.iv_ask) {
 
-            ARouter.getInstance().build(ARouterPathUtils.Dayi_AskQuestionActivity).navigation();
+            ARouter.getInstance().build(ARouterPathUtils.Dayi_AskQuestionActivity, GroupUtils.NEED_LOGIN).navigation();
         } else if (i == R.id.lin_more) {
             ARouter.getInstance().build(ARouterPathUtils.Dayi_PrivateAskActivity).navigation();
         }
@@ -297,7 +298,7 @@ public class SiXueFragment extends BaseAppFragment {
                 public void onClick(View v) {
 
                     ARouter.getInstance()
-                            .build(ARouterPathUtils.Dayi_StudentQuestionDetailActivity)
+                            .build(ARouterPathUtils.Dayi_StudentQuestionDetailActivity, GroupUtils.NEED_LOGIN)
                             .withString("questionId", mData.get(position).getQuestion_id() + "")
                             .navigation();
                 }

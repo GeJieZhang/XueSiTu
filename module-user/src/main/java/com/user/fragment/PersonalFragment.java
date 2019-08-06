@@ -10,14 +10,18 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.lib.app.ARouterPathUtils;
+import com.lib.app.CodeUtil;
 import com.lib.app.EventBusTagUtils;
 import com.lib.bean.Event;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.db.shared_prefrences.interfaces.UserCacheInterface;
+import com.lib.fastkit.http.ok.HttpUtils;
+import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.fragment.BaseAppFragment;
 import com.lib.utls.glide.GlideConfig;
 import com.user.R;
 import com.user.R2;
+import com.user.bean.PersonInfoBean;
 
 import org.simple.eventbus.EventBus;
 
@@ -76,20 +80,63 @@ public class PersonalFragment extends BaseAppFragment {
 
         initView();
         initUserInfo();
+
+
     }
+
 
     private void initView() {
 
 
     }
 
+    PersonInfoBean personInfoBean;
 
     /**
      * 通过不通的身份显示页面
      */
     public void initUserInfo() {
 
+        String token = SharedPreferenceManager.getInstance(getContext()).getUserCache().getUserToken();
 
+        if (!token.equals("")) {
+
+            HttpUtils.with(getContext())
+                    .addParam("requestType", "PERSONAL_INFO")
+                    .addParam("token", token)
+                    .execute(new HttpNormalCallBack<PersonInfoBean>() {
+                        @Override
+                        public void onSuccess(PersonInfoBean result) {
+
+
+                            if (result.getCode() == CodeUtil.CODE_200) {
+                                personInfoBean = result;
+                                UserCacheInterface userCacheInterface = SharedPreferenceManager.getInstance(getContext()).getUserCache();
+                                userCacheInterface.setUserIdentity(result.getObj().getIdentity() + "");
+
+                                setIdentity();
+
+
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onError(String e) {
+
+                        }
+                    });
+
+        }
+
+
+        setIdentity();
+
+
+    }
+
+    private void setIdentity() {
         UserCacheInterface userCacheInterface = SharedPreferenceManager.getInstance(getContext()).getUserCache();
         identity = userCacheInterface.getUserIdentity();
 
@@ -115,8 +162,6 @@ public class PersonalFragment extends BaseAppFragment {
             linStudentParent.setVisibility(View.VISIBLE);
             btnRecharge.setText("充值");
         }
-
-
     }
 
     @Override

@@ -24,6 +24,7 @@ import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.fastkit.views.spring_refresh.container.DefaultFooter;
 import com.lib.fastkit.views.spring_refresh.container.DefaultHeader;
 import com.lib.fastkit.views.spring_refresh.widget.SpringView;
+import com.lib.framework.component.interceptor.GroupUtils;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.ui.adapter.BaseAdapter;
@@ -114,6 +115,10 @@ public class StudentQuestionListActivity extends BaseAppActivity {
 
                             homeAdapter1.notifyDataSetChanged();
                             homeAdapter2.notifyDataSetChanged();
+
+                            if (list1.size() == 0 && list2.size() == 0) {
+                                stateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                            }
 
                         } else {
                             stateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
@@ -271,7 +276,7 @@ public class StudentQuestionListActivity extends BaseAppActivity {
                 public void onClick(View v) {
 
                     ARouter.getInstance()
-                            .build(ARouterPathUtils.Dayi_StudentQuestionDetailActivity)
+                            .build(ARouterPathUtils.Dayi_StudentQuestionDetailActivity, GroupUtils.NEED_LOGIN)
                             .withString("questionId", mData.get(position).getQuestion_id() + "")
                             .navigation();
                 }
@@ -368,7 +373,7 @@ public class StudentQuestionListActivity extends BaseAppActivity {
                 public void onClick(View v) {
 
                     ARouter.getInstance()
-                            .build(ARouterPathUtils.Dayi_StudentQuestionDetailActivity)
+                            .build(ARouterPathUtils.Dayi_StudentQuestionDetailActivity, GroupUtils.NEED_LOGIN)
                             .withString("questionId", mData.get(position).getQuestion_id() + "")
                             .navigation();
                 }

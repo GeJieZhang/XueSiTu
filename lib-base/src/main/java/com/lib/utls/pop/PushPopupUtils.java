@@ -23,6 +23,7 @@ import com.lib.base.R;
 import com.lib.bean.PushBean;
 import com.lib.bean.PushDetailBean;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
+import com.lib.framework.component.interceptor.GroupUtils;
 import com.lib.ui.adapter.BaseAdapter;
 import com.zyyoona7.popup.EasyPopup;
 
@@ -127,7 +128,7 @@ public class PushPopupUtils {
 
                 if (list.size() > 0) {
 
-                    ARouter.getInstance().build(ARouterPathUtils.Dayi_StudentQuestionDetailActivity)
+                    ARouter.getInstance().build(ARouterPathUtils.Dayi_StudentQuestionDetailActivity, GroupUtils.NEED_LOGIN)
                             .withString("questionId", list.get(positon).getObj().getQuestion_id() + "")
                             .navigation();
 

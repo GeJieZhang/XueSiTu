@@ -7,7 +7,9 @@ import com.alibaba.android.arouter.facade.annotation.Interceptor;
 import com.alibaba.android.arouter.facade.callback.InterceptorCallback;
 import com.alibaba.android.arouter.facade.template.IInterceptor;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.lib.MyApplication;
 import com.lib.app.ARouterPathUtils;
+import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 
 
 /**
@@ -28,7 +30,13 @@ public class LoginInterceptor implements IInterceptor {
              * 判断如果没有登录跳转到登录界面
              *
              */
-            //ARouter.getInstance().build(ARouterPathUtils.User_RegisterActivity).navigation();
+
+            if (SharedPreferenceManager.getInstance(MyApplication.getInstance()).getUserCache().getUserToken().equals("")) {
+                ARouter.getInstance().build(ARouterPathUtils.User_LoginActivity).navigation();
+            } else {
+                callback.onContinue(postcard);
+            }
+
 
         } else {
             /**

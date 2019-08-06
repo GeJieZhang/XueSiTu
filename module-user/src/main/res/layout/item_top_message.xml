@@ -19,9 +19,11 @@
             android:src="@mipmap/icon_push" />
 
         <View
+            android:id="@+id/v_point"
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:layout_gravity="right"
+            android:visibility="gone"
             android:background="@drawable/bg_circle_red" />
 
     </FrameLayout>

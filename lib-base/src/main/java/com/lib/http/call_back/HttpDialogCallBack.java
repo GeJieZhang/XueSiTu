@@ -123,7 +123,6 @@ public abstract class HttpDialogCallBack<T> implements EngineCallBack {
     public void onErrorHide() {
 
         dialogUtils.dismiss();
-        HttpUtils.cancel();
 
     }
 

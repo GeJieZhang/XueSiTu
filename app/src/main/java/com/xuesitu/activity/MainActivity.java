@@ -393,7 +393,6 @@ public class MainActivity extends BaseAppActivity {
     }
 
 
-
     /**
      * @param event
      */
@@ -458,9 +457,9 @@ public class MainActivity extends BaseAppActivity {
             case 1: {
 
                 //Token失效
-                //ARouter.getInstance().build(ARouterPathUtils.User_LoginActivity).navigation();
-
                 SharedPreferenceManager.getInstance(this).getUserCache().setUserToken("");
+                ARouter.getInstance().build(ARouterPathUtils.User_LoginActivity).navigation();
+
 
                 //showToast("Token失效请重新登录!");
 

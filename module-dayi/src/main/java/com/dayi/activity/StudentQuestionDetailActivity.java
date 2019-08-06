@@ -33,6 +33,7 @@ import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.fragment_deal.FragmentCustomUtils;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.load_state_view.MultiStateView;
+import com.lib.framework.component.interceptor.GroupUtils;
 import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
@@ -51,7 +52,7 @@ import butterknife.OnClick;
 /**
  * 学生问题详情
  */
-@Route(path = ARouterPathUtils.Dayi_StudentQuestionDetailActivity)
+@Route(path = ARouterPathUtils.Dayi_StudentQuestionDetailActivity,group = GroupUtils.NEED_LOGIN)
 public class StudentQuestionDetailActivity extends BaseAppActivity {
 
 
