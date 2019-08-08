@@ -36,6 +36,7 @@ public class ClearDataUtils {
 
     }
 
+
     private static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
@@ -95,6 +96,18 @@ public class ClearDataUtils {
      */
     public static void cleanFiles(Context context) {
         deleteFilesByDirectory(context.getFilesDir());
+    }
+
+    /**
+     * 清空WebView的缓存
+     *
+     * @param context
+     */
+    public static void cleanWebViewCache(Context context) {
+
+        cleanCustomCache(context.getDir("appcache", 0).getPath());
+        cleanCustomCache(context.getDir("databases", 0).getPath());
+
     }
 
     /**

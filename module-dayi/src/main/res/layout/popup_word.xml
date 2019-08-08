@@ -6,7 +6,22 @@
     android:orientation="vertical">
 
 
-    <android.support.v7.widget.AppCompatEditText
+    <!--<EditText-->
+    <!--android:id="@+id/et_cmmt"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="120dp"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:layout_marginRight="15dp"-->
+    <!--android:layout_marginTop="15dp"-->
+    <!--android:background="#f6f6f6"-->
+    <!--android:gravity="top|start"-->
+    <!--android:hint="描述越详细，越方便老师为您解答哦~"-->
+    <!--android:imeOptions="flagNoExtractUi"-->
+    <!--android:maxEms="500"-->
+    <!--android:padding="5dp"-->
+    <!--android:textSize="14sp" />-->
+
+    <EditText
         android:id="@+id/et_cmmt"
         android:layout_width="match_parent"
         android:layout_height="120dp"
@@ -16,8 +31,6 @@
         android:background="#f6f6f6"
         android:gravity="top|start"
         android:hint="描述越详细，越方便老师为您解答哦~"
-        android:imeOptions="flagNoExtractUi"
-        android:textIsSelectable="true"
         android:maxEms="500"
         android:padding="5dp"
         android:textSize="14sp" />

@@ -25,6 +25,7 @@ import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.fragment_deal.FragmentCustomUtils;
 import com.lib.fastkit.views.load_state_view.MultiStateView;
 import com.lib.http.call_back.HttpDialogCallBack;
+import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.view.navigationbar.NomalNavigationBar;
 import com.zyyoona7.popup.EasyPopup;
@@ -84,7 +85,7 @@ public class TeacherAnswerQuestionDetailActivity extends BaseAppActivity {
                 .addParam("requestType", "QUESTION_DETAILE")
                 .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
                 .addParam("question_id", questionId)
-                .execute(new HttpDialogCallBack<QuestionDetail>() {
+                .execute(new HttpNormalCallBack<QuestionDetail>() {
                     @Override
                     public void onSuccess(QuestionDetail result) {
 

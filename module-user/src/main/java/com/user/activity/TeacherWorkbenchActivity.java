@@ -10,8 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.lib.app.ARouterPathUtils;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
+import com.lib.html.HtmlPathUtils;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.view.navigationbar.NomalNavigationBar;
@@ -107,6 +109,9 @@ public class TeacherWorkbenchActivity extends BaseAppActivity {
                 public void onClick(View v) {
                     switch (position) {
                         case 0: {
+                            //老师-答疑
+
+                            ARouter.getInstance().build(ARouterPathUtils.Dayi_TeacherQuestionListActivity).navigation();
 
 
                             break;
@@ -118,7 +123,9 @@ public class TeacherWorkbenchActivity extends BaseAppActivity {
                         }
                         case 2: {
 
+                            //老师-课程订单
 
+                            ARouter.getInstance().build(ARouterPathUtils.User_MyClassActivity).navigation();
                             break;
                         }
                         case 3: {
@@ -127,13 +134,19 @@ public class TeacherWorkbenchActivity extends BaseAppActivity {
                             break;
                         }
                         case 4: {
-
+                            //老师-教辅
+                            ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+                                    .withString("urlPath", HtmlPathUtils.T_Assistant)
+                                    .navigation();
 
                             break;
                         }
                         case 5: {
 
-
+                            //老师-录播课
+                            ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+                                    .withString("urlPath", HtmlPathUtils.T_Video)
+                                    .navigation();
                             break;
                         }
                     }

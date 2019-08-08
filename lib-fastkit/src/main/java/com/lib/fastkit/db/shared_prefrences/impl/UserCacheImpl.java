@@ -20,11 +20,13 @@ public class UserCacheImpl extends SharedPreferenceModel implements UserCacheInt
     private static final String Key_Is_Login = "IsLogin";
     private static final String Key_Token = "Token";
     private static final String Key_Identity = "Identity";
-    private static final String Key_Url = "Url";
-    private static final String Key_Phone = "Phone";
+    private static final String Key_User_Head_Url = "UserHeadUrl";
+    private static final String Key_User_Phone = "UserPhone";
+    private static final String Key_User_Money = "UserMoney";
     private static final String Key_Qi_Niu_Token = "QiNiuToken";
     private static final String Key_Qi_Niu_Url = "QiNiuUrl";
     private static final String Key_You_Meng_Token = "YouMengToken";
+
 
     public UserCacheImpl(Context context) {
         super(context, FILE_NAME, Context.MODE_PRIVATE);
@@ -77,22 +79,22 @@ public class UserCacheImpl extends SharedPreferenceModel implements UserCacheInt
 
     @Override
     public void setUserHeadUrl(String url) {
-        put(Key_Url, url);
+        put(Key_User_Head_Url, url);
     }
 
     @Override
     public String getUserHeadUrl() {
-        return getString(Key_Url);
+        return getString(Key_User_Head_Url);
     }
 
     @Override
     public void setUserPhone(String phone) {
-        put(Key_Phone, phone);
+        put(Key_User_Phone, phone);
     }
 
     @Override
     public String getUserPhone() {
-        return getString(Key_Phone);
+        return getString(Key_User_Phone);
     }
 
     @Override
@@ -123,5 +125,17 @@ public class UserCacheImpl extends SharedPreferenceModel implements UserCacheInt
     @Override
     public String getYouMengPushToken() {
         return getString(Key_You_Meng_Token);
+    }
+
+    @Override
+    public void setUserMoney(String money) {
+
+        put(Key_User_Money, money);
+
+    }
+
+    @Override
+    public String getUserMoney() {
+        return getString(Key_User_Money);
     }
 }

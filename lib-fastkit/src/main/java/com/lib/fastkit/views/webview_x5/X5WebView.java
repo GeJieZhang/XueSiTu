@@ -16,6 +16,9 @@ import com.tencent.smtt.sdk.WebSettings.LayoutAlgorithm;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 
+import static com.tencent.smtt.export.external.interfaces.IX5WebSettings.LOAD_CACHE_ONLY;
+import static com.tencent.smtt.export.external.interfaces.IX5WebSettings.LOAD_DEFAULT;
+
 public class X5WebView extends WebView {
 
     private Context mContext;
@@ -55,7 +58,7 @@ public class X5WebView extends WebView {
 
         webSetting.setSupportMultipleWindows(false);
         webSetting.setAppCacheEnabled(true);
-        // webSetting.setDatabaseEnabled(true);
+        webSetting.setCacheMode(LOAD_DEFAULT);
         webSetting.setDomStorageEnabled(true);
         webSetting.setJavaScriptEnabled(true);
         webSetting.setGeolocationEnabled(true);

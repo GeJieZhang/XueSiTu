@@ -33,6 +33,7 @@ import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.utls.glide.GlideConfig;
+import com.lib.utls.share.ShareUtils;
 import com.lib.view.navigationbar.NomalNavigationBar;
 
 import java.util.ArrayList;
@@ -228,7 +229,7 @@ public class PrivateAskActivity extends BaseAppActivity {
                  * 问答第二张图
                  */
                 if (mData.get(position).getFile().size() >= 2) {
-                    ImageView iv_iamge2 = holder.getView(R.id.iv_image1);
+                    ImageView iv_iamge2 = holder.getView(R.id.iv_image2);
                     final String url2 = mData.get(position).getFile().get(1);
 
 
@@ -278,7 +279,19 @@ public class PrivateAskActivity extends BaseAppActivity {
                 }
             });
 
+            holder.getView(R.id.lin_share).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String url = mData.get(position).getFile().get(0);
+                    String question_id = mData.get(position).getQuestion_id() + "";
 
+                    ShareUtils.getInstance(PrivateAskActivity.this)
+                            .setShareWebUrl("https://www.baidu.com/", "免费分享旁听", url, "分享后和可免费旁听")
+                            .setShareId(question_id)
+                            .openShareALLBorad();
+
+                }
+            });
         }
     }
 }

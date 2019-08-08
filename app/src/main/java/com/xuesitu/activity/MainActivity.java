@@ -430,6 +430,8 @@ public class MainActivity extends BaseAppActivity {
                 .addParam("requestType", "SET_APPID")
                 .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
                 .addParam("app_id", SharedPreferenceManager.getInstance(this).getUserCache().getYouMengPushToken())
+                .addParam("client", "android")
+
                 .execute(new HttpNormalCallBack<BaseBean>() {
                     @Override
                     public void onSuccess(BaseBean result) {

@@ -2,9 +2,18 @@ package com.lib.utls.share;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.lib.app.CodeUtil;
+import com.lib.bean.ShareBean;
+import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
+import com.lib.fastkit.http.ok.HttpUtils;
+import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.permission.custom.PermissionUtil;
+import com.lib.http.call_back.HttpNormalCallBack;
 import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMVideo;
@@ -18,12 +27,15 @@ public class ShareUtils {
 
     private Activity activity;
 
+    private String TAG = "=======分享";
+
 
     public ShareUtils(final Activity activity) {
 
         this.activity = activity;
 
         shareAction = new ShareAction(activity);
+        shareAction.setCallback(umShareListener);
 
 
     }
@@ -126,7 +138,7 @@ public class ShareUtils {
     /**
      * 打开带面板选择的分享
      */
-    public void openShareALLBorad() {
+    public ShareAction openShareALLBorad() {
 
         PermissionUtil.getInstance(activity).externalStorage(new PermissionUtil.RequestPermission() {
             @Override
@@ -139,7 +151,7 @@ public class ShareUtils {
 
             }
         });
-
+        return shareAction;
 
     }
 
@@ -147,7 +159,7 @@ public class ShareUtils {
     /**
      * 分享新浪
      */
-    public void shareSINA() {
+    public ShareAction shareSINA() {
         PermissionUtil.getInstance(activity).externalStorage(new PermissionUtil.RequestPermission() {
             @Override
             public void onRequestPermissionSuccess() {
@@ -160,13 +172,13 @@ public class ShareUtils {
 
             }
         });
-
+        return shareAction;
     }
 
     /**
      * 分享QQ
      */
-    public void shareQQ() {
+    public ShareAction shareQQ() {
 
         PermissionUtil.getInstance(activity).externalStorage(new PermissionUtil.RequestPermission() {
             @Override
@@ -181,6 +193,7 @@ public class ShareUtils {
             }
         });
 
+        return shareAction;
 
 
     }
@@ -204,6 +217,78 @@ public class ShareUtils {
         });
 
 
+    }
+
+
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+
+            showLog("分享开始");
+
+            requestShareSuccess();
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA share_media) {
+
+            showLog("分享成功");
+
+
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+            showLog("分享失败");
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA share_media) {
+            showLog("分享取消");
+        }
+    };
+
+    private void requestShareSuccess() {
+
+
+        HttpUtils.with(activity)
+                .addParam("requestType", "QUESTION_SHARE_VISIT")
+                .addParam("token", SharedPreferenceManager.getInstance(activity).getUserCache().getUserToken())
+                .addParam("question_id", shareId)
+                .execute(new HttpNormalCallBack<ShareBean>() {
+                    @Override
+                    public void onSuccess(ShareBean result) {
+
+
+                        Toast.makeText(activity, result.getMsg(), Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
+
 
     }
+
+
+    private String shareId = "";
+
+    public ShareUtils setShareId(String id) {
+
+        this.shareId = id;
+
+        return this;
+
+    }
+
+
+    private void showLog(String str) {
+        Log.e(TAG, str);
+
+    }
+
+
 }

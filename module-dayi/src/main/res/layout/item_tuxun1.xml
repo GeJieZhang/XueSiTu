@@ -20,6 +20,7 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/iv_cover"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
@@ -43,8 +44,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:gravity="center"
-        android:maxLines="2"
-        android:singleLine="false"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:singleLine="true"
         android:text="教育孩子，是一场"
         android:textStyle="bold" />
 

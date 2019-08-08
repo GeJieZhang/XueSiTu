@@ -1,13 +1,12 @@
-package com.dayi.bean;
+package com.lib.bean;
 
-public class PayStateBean {
-
+public class RobQuestionBean {
 
     /**
-     * code : 200
-     * obj : {"total":7653,"account":1}
-     * msg : 请求成功
-     * seccess : true
+     * code : 408
+     * obj : {}
+     * msg : 兔币不足
+     * seccess : false
      */
 
     private int code;
@@ -48,28 +47,15 @@ public class PayStateBean {
     }
 
     public static class ObjBean {
-        /**
-         * total : 7653
-         * account : 1
-         */
+    }
 
-        private float total;
-        private float account;
-
-        public float getTotal() {
-            return total;
-        }
-
-        public void setTotal(float total) {
-            this.total = total;
-        }
-
-        public float getAccount() {
-            return account;
-        }
-
-        public void setAccount(float account) {
-            this.account = account;
-        }
+    @Override
+    public String toString() {
+        return "BaseHttpBean{" +
+                "code=" + code +
+                ", obj=" + obj +
+                ", msg='" + msg + '\'' +
+                ", seccess=" + seccess +
+                '}';
     }
 }

@@ -21,6 +21,7 @@ import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.fastkit.views.spring_refresh.container.DefaultFooter;
 import com.lib.fastkit.views.spring_refresh.container.DefaultHeader;
 import com.lib.fastkit.views.spring_refresh.widget.SpringView;
+import com.lib.html.HtmlPathUtils;
 import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
@@ -175,6 +176,11 @@ public class MyClassActivity extends BaseAppActivity {
 
     @OnClick(R2.id.lin_other)
     public void onViewClicked() {
+
+        ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+                .withString("urlPath", HtmlPathUtils.S_Class_Resouce)
+                .navigation();
+
     }
 
 

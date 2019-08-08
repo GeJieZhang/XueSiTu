@@ -246,10 +246,17 @@ public class OkHttpEngine implements IHttpEngine {
 
 
     public void cancel() {
+        
         if (callList.size() > 0) {
-            for (Call call : callList) {
-                call.cancel();
-                callList.remove(call);
+            for (final Call call : callList) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        call.cancel();
+                        callList.remove(call);
+
+                    }
+                }).start();
 
             }
         }

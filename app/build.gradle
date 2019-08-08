@@ -135,6 +135,8 @@ dependencies {
 
         api project(':module-dayi')
         api project(':module-live')
+
+        api project(':module-share')
     }
 
 }

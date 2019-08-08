@@ -29,6 +29,7 @@ import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.load_state_view.MultiStateView;
 import com.lib.http.call_back.HttpDialogCallBack;
+import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.utls.glide.GlideConfig;
 import com.lib.view.navigationbar.NomalNavigationBar;
@@ -164,14 +165,18 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
                 .addParam("reply_id", replyId)
                 .addParam("praise", praise)
                 .addParam("correct", correct)
-                .execute(new HttpDialogCallBack<BaseHttpBean>() {
+                .execute(new HttpNormalCallBack<BaseHttpBean>() {
                     @Override
                     public void onSuccess(BaseHttpBean result) {
 
                         if (result.getCode() == CodeUtil.CODE_200) {
 
-                            finish();
+
                             evaluationTeacherPoupUtils.dismiss();
+                            finish();
+                        } else {
+                            evaluationTeacherPoupUtils.dismiss();
+                            finish();
                         }
 
                         showToast(result.getMsg());
@@ -204,7 +209,7 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
                 .addParam("requestType", "QUESTION_REPLY_DETAILE")
                 .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
                 .addParam("reply_id", replyId)
-                .execute(new HttpDialogCallBack<AnswerDetail>() {
+                .execute(new HttpNormalCallBack<AnswerDetail>() {
                     @Override
                     public void onSuccess(AnswerDetail result) {
 
@@ -353,6 +358,7 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
         final CommonSoundItemView commonSoundItemView = new CommonSoundItemView(this);
         commonSoundItemView.isLocalVoice(false);
         commonSoundItemView.setAudioEntity(uploadVoice);
+        commonSoundItemView.isDletedAble(false);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.LEFT;
         params.topMargin = DisplayUtil.dip2px(this, 16);

@@ -158,7 +158,7 @@ public class AskQuestionFindActivity extends BaseAppActivity {
             final String url = mData.get(position).getPhoto_url();
             Glide.with(AskQuestionFindActivity.this)
                     .load(url)
-                    .apply(GlideConfig.getRoundOptions(10))
+                    .apply(GlideConfig.getCircleOptions())
                     .into(imageView);
 
             holder.setText(R.id.tv_title, mData.get(position).getBig_title());

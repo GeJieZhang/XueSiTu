@@ -175,13 +175,17 @@ public class PermissionUtil {
 
     /**
      * 语音
+     *
      * @param requestPermission
      */
 
     public static void externalAudio(RequestPermission requestPermission) {
-        requestPermission(rxPermissions, requestPermission, Manifest.permission.READ_EXTERNAL_STORAGE
+        requestPermission(rxPermissions, requestPermission, Manifest.permission.WRITE_EXTERNAL_STORAGE
+                , Manifest.permission.READ_EXTERNAL_STORAGE
+                , Manifest.permission.MODIFY_AUDIO_SETTINGS
                 , Manifest.permission.RECORD_AUDIO
-
+                , Manifest.permission.CAMERA
+                , Manifest.permission.WAKE_LOCK
         );
     }
 

@@ -271,6 +271,7 @@ public class StudentQuestionListActivity extends BaseAppActivity {
 
             }
 
+          holder.setText(R.id.tv_money,mData.get(position).getRemaining()+"");
             holder.getView(R.id.btn_detail).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -366,7 +367,7 @@ public class StudentQuestionListActivity extends BaseAppActivity {
                 }
 
             }
-
+            holder.setText(R.id.tv_money,mData.get(position).getRemaining()+"");
 
             holder.getView(R.id.btn_detail).setOnClickListener(new View.OnClickListener() {
                 @Override

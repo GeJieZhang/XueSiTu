@@ -74,7 +74,8 @@ public class MyApplication extends Application {
 
     private String TAG = "=======推送";
 
-    private String url = "http://192.168.0.117:8081/api";
+    public static String url = "http://192.168.0.117:8081/api";
+    public static String urlHtml = "http://192.168.0.101:8080/";
 
 
     @Override

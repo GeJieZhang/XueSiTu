@@ -51,4 +51,9 @@ public interface UserCacheInterface extends BaseCacheInterface {
     void setYouMengPushToken(String token);
 
     String getYouMengPushToken();
+
+
+    void setUserMoney(String money);
+
+    String getUserMoney();
 }

@@ -7,6 +7,7 @@
 
 
     <ImageView
+        android:id="@+id/iv_head"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginRight="16dp"
@@ -14,12 +15,14 @@
 
     <TextView
 
+        android:id="@+id/tv_content"
         style="@style/text_style3"
         android:layout_weight="1"
-        android:textSize="12sp"
-        android:text="小明同学提出了个4年级的问题" />
+        android:text="小明同学提出了个4年级的问题"
+        android:textSize="12sp" />
 
     <TextView
+        android:id="@+id/tv_time"
         style="@style/text_style4"
         android:layout_marginLeft="16dp"
         android:text="3分钟前" />

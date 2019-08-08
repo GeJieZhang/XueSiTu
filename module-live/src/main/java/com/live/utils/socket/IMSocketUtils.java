@@ -241,7 +241,11 @@ public class IMSocketUtils {
 
 
     public void closeSocket() {
-        mSocket.close(1000, "断开IMSocket");
+
+        if (mSocket != null) {
+            mSocket.close(1000, "断开IMSocket");
+        }
+
 
         isReallyClose = true;
 

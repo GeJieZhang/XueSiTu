@@ -19,11 +19,16 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.lib.app.ARouterPathUtils;
+import com.lib.app.CodeUtil;
 import com.lib.base.R;
 import com.lib.bean.PushBean;
 import com.lib.bean.PushDetailBean;
+import com.lib.bean.RobQuestionBean;
+import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
+import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.framework.component.interceptor.GroupUtils;
+import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.ui.adapter.BaseAdapter;
 import com.zyyoona7.popup.EasyPopup;
 
@@ -128,11 +133,9 @@ public class PushPopupUtils {
 
                 if (list.size() > 0) {
 
-                    ARouter.getInstance().build(ARouterPathUtils.Dayi_StudentQuestionDetailActivity, GroupUtils.NEED_LOGIN)
-                            .withString("questionId", list.get(positon).getObj().getQuestion_id() + "")
-                            .navigation();
+                    teacherViesAnswer(list.get(positon).getObj().getQuestion_id() + "");
 
-                    dismiss();
+
                 }
 
 
@@ -145,6 +148,45 @@ public class PushPopupUtils {
                 dismiss();
             }
         });
+
+
+    }
+
+
+    /**
+     * 老师抢答
+     */
+    private void teacherViesAnswer(String questionId) {
+
+        HttpUtils.with(context)
+                .addParam("requestType", "QUESTION_RESPONDER_REPLY")
+                .addParam("token", SharedPreferenceManager.getInstance(context).getUserCache().getUserToken())
+                .addParam("question_id", questionId)
+                .execute(new HttpDialogCallBack<RobQuestionBean>() {
+                    @Override
+                    public void onSuccess(RobQuestionBean result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+
+
+                            ARouter.getInstance().build(ARouterPathUtils.Dayi_TeacherAnswerQuestionDetailActivity, GroupUtils.NEED_LOGIN)
+                                    .withString("questionId", list.get(positon).getObj().getQuestion_id() + "")
+                                    .navigation();
+
+                            dismiss();
+
+                        }
+
+                        showToast(result.getMsg());
+
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
 
 
     }
@@ -162,20 +204,20 @@ public class PushPopupUtils {
 
             if (positon == 0 && list.size() == 1) {
 
-                iv_left.setVisibility(View.GONE);
-                iv_right.setVisibility(View.GONE);
+                iv_left.setVisibility(View.INVISIBLE);
+                iv_right.setVisibility(View.INVISIBLE);
             } else {
                 iv_left.setVisibility(View.VISIBLE);
                 iv_right.setVisibility(View.VISIBLE);
 
 
                 if (positon == 0) {
-                    iv_left.setVisibility(View.GONE);
+                    iv_left.setVisibility(View.INVISIBLE);
                 }
 
 
                 if (positon == list.size() - 1) {
-                    iv_right.setVisibility(View.GONE);
+                    iv_right.setVisibility(View.INVISIBLE);
                 }
             }
 

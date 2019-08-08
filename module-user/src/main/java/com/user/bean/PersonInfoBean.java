@@ -96,6 +96,8 @@ public class PersonInfoBean {
         private String idcard_n;
         private int status;
 
+        private float total;
+
         public String getArea() {
             return area;
         }
@@ -270,6 +272,14 @@ public class PersonInfoBean {
 
         public void setStatus(int status) {
             this.status = status;
+        }
+
+        public float getTotal() {
+            return total;
+        }
+
+        public void setTotal(float total) {
+            this.total = total;
         }
     }
 }

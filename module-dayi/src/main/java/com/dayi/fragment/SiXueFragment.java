@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -23,13 +24,18 @@ import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
+import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.views.load_state_view.MultiStateView;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
+import com.lib.fastkit.views.spring_refresh.container.DefaultFooter;
+import com.lib.fastkit.views.spring_refresh.container.DefaultHeader;
+import com.lib.fastkit.views.spring_refresh.widget.SpringView;
 import com.lib.framework.component.interceptor.GroupUtils;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.ui.fragment.BaseAppFragment;
 import com.lib.utls.glide.GlideConfig;
+import com.lib.utls.share.ShareUtils;
 import com.lib.view.player.MyJzvdStd;
 
 import java.util.ArrayList;
@@ -56,6 +62,8 @@ public class SiXueFragment extends BaseAppFragment {
     LinearLayout linMore;
     @BindView(R2.id.lin_video)
     LinearLayout linVideo;
+    @BindView(R2.id.springView)
+    SpringView springView;
 
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
@@ -71,8 +79,6 @@ public class SiXueFragment extends BaseAppFragment {
 
         initView();
 
-        initData();
-
 
     }
 
@@ -83,6 +89,7 @@ public class SiXueFragment extends BaseAppFragment {
                 .execute(new HttpNormalCallBack<SiXueBean>() {
                     @Override
                     public void onSuccess(SiXueBean result) {
+                        springView.onFinishFreshAndLoad();
                         if (result.getCode() == CodeUtil.CODE_200) {
 
 
@@ -96,6 +103,7 @@ public class SiXueFragment extends BaseAppFragment {
 
                     @Override
                     public void onError(String e) {
+                        springView.onFinishFreshAndLoad();
                         stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
                     }
                 });
@@ -143,7 +151,7 @@ public class SiXueFragment extends BaseAppFragment {
             }
         }
 
-
+        list.clear();
         list.addAll(result.getObj().getQuestion_list());
         homeAdapter.notifyDataSetChanged();
 
@@ -186,6 +194,23 @@ public class SiXueFragment extends BaseAppFragment {
         });
 
         rv.setAdapter(homeAdapter);
+
+        springView.setHeader(new DefaultHeader(getActivity()));
+        springView.setFooter(new DefaultFooter(getActivity()));
+        springView.setEnableFooter(false);
+        springView.setListener(new SpringView.OnFreshListener() {
+            @Override
+            public void onRefresh() {
+
+                initData();
+
+            }
+
+            @Override
+            public void onLoadmore() {
+                springView.onFinishFreshAndLoad();
+            }
+        });
     }
 
     @Override
@@ -200,7 +225,6 @@ public class SiXueFragment extends BaseAppFragment {
     public void onViewClicked(View view) {
         int i = view.getId();
         if (i == R.id.iv_ask) {
-
             ARouter.getInstance().build(ARouterPathUtils.Dayi_AskQuestionActivity, GroupUtils.NEED_LOGIN).navigation();
         } else if (i == R.id.lin_more) {
             ARouter.getInstance().build(ARouterPathUtils.Dayi_PrivateAskActivity).navigation();
@@ -226,6 +250,7 @@ public class SiXueFragment extends BaseAppFragment {
              * 问答第一张图
              */
 
+
             if (mData.get(position).getFile() != null) {
 
                 if (mData.get(position).getFile().size() >= 1) {
@@ -245,6 +270,7 @@ public class SiXueFragment extends BaseAppFragment {
                                 .load(url1)
                                 .apply(GlideConfig.getRoundOptions(20))
                                 .into(iv_iamge1);
+                        LogUtil.e("问答第一张图");
                     }
 
                 }
@@ -254,7 +280,7 @@ public class SiXueFragment extends BaseAppFragment {
                  * 问答第二张图
                  */
                 if (mData.get(position).getFile().size() >= 2) {
-                    ImageView iv_iamge2 = holder.getView(R.id.iv_image1);
+                    ImageView iv_iamge2 = holder.getView(R.id.iv_image2);
                     final String url2 = mData.get(position).getFile().get(1);
 
 
@@ -271,6 +297,7 @@ public class SiXueFragment extends BaseAppFragment {
                                 .load(url2)
                                 .apply(GlideConfig.getRoundOptions(20))
                                 .into(iv_iamge2);
+                        LogUtil.e("问答二张图");
                     }
                 }
 
@@ -303,8 +330,69 @@ public class SiXueFragment extends BaseAppFragment {
                             .navigation();
                 }
             });
+
+
+            holder.getView(R.id.lin_share).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String url = mData.get(position).getFile().get(0);
+                    String question_id = mData.get(position).getQuestion_id() + "";
+
+                    ShareUtils.getInstance(getActivity())
+                            .setShareWebUrl("https://www.baidu.com/", "免费分享旁听", url, "分享后和可免费旁听")
+                            .setShareId(question_id)
+                            .openShareALLBorad();
+
+                }
+            });
+
         }
     }
 
 
+    private boolean isVisibleToUser = false;
+
+    /**
+     * 懒加载
+     *
+     * @param isVisibleToUser
+     */
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        this.isVisibleToUser = isVisibleToUser;
+
+        lazyLoad();
+
+
+    }
+
+    private void lazyLoad() {
+
+        if (isVisibleToUser && isOnResume) {
+            initData();
+        }
+
+    }
+
+
+    private boolean isOnResume = false;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        isOnResume = true;
+
+        lazyLoad();
+
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        isOnResume = false;
+
+    }
 }

@@ -16,6 +16,7 @@ import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.clear_cache.ClearDataUtils;
 import com.lib.fastkit.utils.system.SystemUtil;
+import com.lib.fastkit.views.dialog.http.DialogUtils;
 import com.lib.fastkit.views.dialog.normal.NormalDialog;
 import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.http.call_back.HttpNormalCallBack;
@@ -60,13 +61,14 @@ public class SetActivity extends BaseAppActivity {
 
     }
 
+    private DialogUtils dialogUtils;
 
     private void initView() {
 
         setCache();
         String version = SystemUtil.getVerName(this);
         tvUpdate.setText(version);
-
+        dialogUtils = new DialogUtils();
 
     }
 
@@ -119,7 +121,10 @@ public class SetActivity extends BaseAppActivity {
 
                         @Override
                         public void onSure() {
+                            dialogUtils.showNormalDialog(SetActivity.this, "加载中");
+
                             ClearDataUtils.clearAllCache(SetActivity.this);
+                            ClearDataUtils.cleanWebViewCache(SetActivity.this);
 
                             /**
                              * 清除 token
@@ -145,7 +150,7 @@ public class SetActivity extends BaseAppActivity {
                             }).start();
 
                             setCache();
-
+                            dialogUtils.dismiss();
                         }
 
 
@@ -250,7 +255,7 @@ public class SetActivity extends BaseAppActivity {
                 .post()
                 .addParam("requestType", "SIGNOUT")
                 .addParam("token", token)
-                .execute(new HttpNormalCallBack<LoginOutBean>() {
+                .execute(new HttpDialogCallBack<LoginOutBean>() {
                     @Override
                     public void onSuccess(LoginOutBean result) {
 

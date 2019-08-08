@@ -397,6 +397,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
         unbinder.unbind();
         ActivityCollector.getInstance().finishActivity(this);
+        //HttpUtils.cancel();
+
 
     }
 
@@ -415,7 +417,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         switch (event.getEventCode()) {
 
             case 1: {
-                if (className.equals(stackTopActivity.getLocalClassName())) {
+
+
+                LogUtil.e("名字=====1" + className);
+                LogUtil.e("名字=====2" + stackTopActivity.getClass().getName());
+
+
+                if (className.equals(stackTopActivity.getClass().getName())) {
                     PushDetailBean pushDetailBean = (PushDetailBean) event.getData();
                     pushPopupUtils.updateData(pushDetailBean);
                     pushPopupUtils.showAnswerPopuPopu(this.getWindow().getDecorView());

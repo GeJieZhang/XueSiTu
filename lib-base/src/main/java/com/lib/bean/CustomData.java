@@ -11,11 +11,20 @@ package com.lib.bean;
 public class CustomData {
 
     private String url;
+
+    private String urlHtml;
     private String name;
     private boolean isMovie;
 
     public CustomData(String url, String name, boolean isMovie) {
         this.url = url;
+        this.name = name;
+        this.isMovie = isMovie;
+    }
+
+    public CustomData(String url, String urlHtml, String name, boolean isMovie) {
+        this.url = url;
+        this.urlHtml = urlHtml;
         this.name = name;
         this.isMovie = isMovie;
     }
@@ -42,5 +51,13 @@ public class CustomData {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUrlHtml() {
+        return urlHtml;
+    }
+
+    public void setUrlHtml(String urlHtml) {
+        this.urlHtml = urlHtml;
     }
 }

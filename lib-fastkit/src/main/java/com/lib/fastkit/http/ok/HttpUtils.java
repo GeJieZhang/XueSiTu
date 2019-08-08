@@ -199,7 +199,10 @@ public class HttpUtils {
 
 
     public static void cancel() {
-        mHttpEngine.cancel();
+        if (mHttpEngine!=null){
+            mHttpEngine.cancel();
+        }
+
     }
 
 

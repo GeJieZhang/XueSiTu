@@ -36,6 +36,7 @@ import com.lib.app.CodeUtil;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.file.FileUtils;
+import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.fastkit.views.load_state_view.MultiStateView;
 import com.lib.framework.component.interceptor.GroupUtils;
@@ -113,6 +114,8 @@ public class AskQuestionActivity extends BaseAppActivity {
         initPayMoneyPopupUtils();
         requestpayMoneyState();
         initSubjectPopupUtils();
+
+
     }
 
     PayPopupUtils payPopupUtils;
@@ -171,7 +174,18 @@ public class AskQuestionActivity extends BaseAppActivity {
 
                             tv_tips.setText(result.getObj().getMsg());
                             if (stateView != null) {
-                                stateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+
+                                String identity = SharedPreferenceManager.getInstance(AskQuestionActivity.this).getUserCache().getUserIdentity();
+                                if (identity.equals("1")) {
+                                    //老师
+
+                                    stateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                                    stateView.setEmptyViewTiext("老师不能提问哦~");
+                                } else {
+
+                                    stateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                                }
+
                             }
                         } else {
                             if (stateView != null) {
@@ -293,7 +307,7 @@ public class AskQuestionActivity extends BaseAppActivity {
 
 
     @OnClick({R2.id.iv_take_Photo, R2.id.iv_voice, R2.id.iv_write, R2.id.btn_sure})
-    public void onViewClicked(View view) {
+    public void onViewClicked(final View view) {
         int i = view.getId();
         if (i == R.id.iv_take_Photo) {
 
@@ -303,7 +317,17 @@ public class AskQuestionActivity extends BaseAppActivity {
         } else if (i == R.id.iv_voice) {
             //showVoicePopu(view);
 
-            recordVoicePopupUtils.showVoicePopu(view);
+            PermissionUtil.getInstance(this).externalAudio(new PermissionUtil.RequestPermission() {
+                @Override
+                public void onRequestPermissionSuccess() {
+                    recordVoicePopupUtils.showVoicePopu(view);
+                }
+
+                @Override
+                public void onRequestPermissionFailure() {
+
+                }
+            });
 
 
         } else if (i == R.id.iv_write) {
@@ -403,7 +427,7 @@ public class AskQuestionActivity extends BaseAppActivity {
                         if (result.getCode() == CodeUtil.CODE_200) {
 
                             ARouter.getInstance().build(ARouterPathUtils.Dayi_AskQuestionFindActivity)
-                                    .withString("json",askJson)
+                                    .withString("json", askJson)
                                     .navigation();
 
 

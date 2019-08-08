@@ -1,13 +1,13 @@
-package com.dayi.bean;
+package com.lib.bean;
 
-public class PayStateBean {
+public class ShareBean {
 
 
     /**
-     * code : 200
-     * obj : {"total":7653,"account":1}
-     * msg : 请求成功
-     * seccess : true
+     * code : 442
+     * obj : {}
+     * msg : 每天只能分享奖励一次旁听
+     * seccess : false
      */
 
     private int code;
@@ -48,28 +48,5 @@ public class PayStateBean {
     }
 
     public static class ObjBean {
-        /**
-         * total : 7653
-         * account : 1
-         */
-
-        private float total;
-        private float account;
-
-        public float getTotal() {
-            return total;
-        }
-
-        public void setTotal(float total) {
-            this.total = total;
-        }
-
-        public float getAccount() {
-            return account;
-        }
-
-        public void setAccount(float account) {
-            this.account = account;
-        }
     }
 }

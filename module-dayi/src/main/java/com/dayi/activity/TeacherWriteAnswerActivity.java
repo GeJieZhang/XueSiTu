@@ -30,6 +30,7 @@ import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
+import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.fastkit.utils.px_dp.DisplayUtil;
 import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.ui.activity.BaseAppActivity;
@@ -211,7 +212,7 @@ public class TeacherWriteAnswerActivity extends BaseAppActivity {
 
 
     @OnClick({R2.id.iv_video, R2.id.iv_image, R2.id.iv_voice, R2.id.btn_sure})
-    public void onViewClicked(View view) {
+    public void onViewClicked(final View view) {
         int i = view.getId();
         if (i == R.id.iv_video) {
 
@@ -224,7 +225,19 @@ public class TeacherWriteAnswerActivity extends BaseAppActivity {
 
 
         } else if (i == R.id.iv_voice) {
-            recordVoicePopupUtils.showVoicePopu(view);
+
+            PermissionUtil.getInstance(this).externalAudio(new PermissionUtil.RequestPermission() {
+                @Override
+                public void onRequestPermissionSuccess() {
+                    recordVoicePopupUtils.showVoicePopu(view);
+                }
+
+                @Override
+                public void onRequestPermissionFailure() {
+
+                }
+            });
+
 
         } else if (i == R.id.btn_sure) {
 

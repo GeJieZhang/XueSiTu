@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -33,7 +34,7 @@ public class CmmtWordPopup extends BasePopup<CmmtWordPopup> {
     ImageView iv_voice;
 
     Button btn_send;
-    AppCompatEditText mEditText;
+    EditText mEditText;
 
     private TextView tv_num;
 
