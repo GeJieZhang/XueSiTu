@@ -202,8 +202,7 @@ public class WhiteBoardFragment extends BaseAppFragment {
     }
 
     /**
-     *
-     * @param color 颜色id
+     * @param color    颜色id
      * @param position 颜色索引
      */
     public void setPenColor(Integer color, int position) {
@@ -275,7 +274,9 @@ public class WhiteBoardFragment extends BaseAppFragment {
 
                 lin_insert.setVisibility(View.GONE);
 
-                room.insertImage(new ImageInformationWithUrl(0d, 0d, 200d, 100d, s));
+                String urlHead = SharedPreferenceManager.getInstance(getContext()).getUserCache().getQiNiuUrl();
+
+                room.insertImage(new ImageInformationWithUrl(0d, 0d, 200d, 100d, urlHead + s));
             }
 
             @Override

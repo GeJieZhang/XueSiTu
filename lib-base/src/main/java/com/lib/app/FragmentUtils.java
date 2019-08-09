@@ -5,12 +5,11 @@ import android.support.v4.app.Fragment;
 import com.alibaba.android.arouter.launcher.ARouter;
 
 
-
 /**
  * Created by Administrator on 2017/12/4 0004.
  */
 
-public  class FragmentUtils {
+public class FragmentUtils {
 
     public static Fragment getDayiFragment() {
         Fragment fragment = (Fragment) ARouter.getInstance().build(ARouterPathUtils.Dayi_DayiFragment).navigation();
@@ -39,6 +38,11 @@ public  class FragmentUtils {
 
     public static Fragment getSchoolFragment() {
         Fragment fragment = (Fragment) ARouter.getInstance().build(ARouterPathUtils.YouXuan_SchoolFragment).navigation();
+        return fragment;
+    }
+
+    public static Fragment getShareFragemnt() {
+        Fragment fragment = (Fragment) ARouter.getInstance().build(ARouterPathUtils.Share_ShareFragment).navigation();
         return fragment;
     }
 }

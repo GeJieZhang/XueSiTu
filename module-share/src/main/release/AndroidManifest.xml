@@ -6,6 +6,8 @@
 
     <application>
 
+        <activity android:name=".activity.MainShareActivity"></activity>
+
     </application>
 
 

@@ -751,6 +751,8 @@ public class ChatFragment extends BaseAppFragment {
             public void onSuccess(String s) {
 
 
+                String urlHead = SharedPreferenceManager.getInstance(getContext()).getUserCache().getQiNiuUrl();
+
                 IMBean imBean = new IMBean();
                 imBean.setActionType(ACTION_TYPE1);
                 IMBean.ObjectBean objectBean = new IMBean.ObjectBean();
@@ -758,7 +760,7 @@ public class ChatFragment extends BaseAppFragment {
                 objectBean.setUserIcon(userIcon);
                 objectBean.setRoomName(roomName);
                 objectBean.setType(MESSAGE_TYPE2);
-                objectBean.setMessage(s);
+                objectBean.setMessage(urlHead + s);
                 objectBean.setUserName(userName);
                 imBean.setObject(objectBean);
                 String json = MGson.newGson().toJson(imBean);

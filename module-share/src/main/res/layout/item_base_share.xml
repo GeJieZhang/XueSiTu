@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="10dp"
+
+        app:cardElevation="0dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:orientation="vertical">
+
+            <!--通用头部-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.lib.fastkit.views.circle_image.niv.NiceImageView
+                    android:id="@+id/iv_head"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="16dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/test1"
+                    app:is_circle="true" />
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    style="@style/text_style11"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:text="答疑同学"
+                    android:textColor="@color/base_title"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/iv_lock"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@mipmap/icon_lock" />
+
+                <TextView
+                    android:id="@+id/tv_subject"
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="top"
+                    android:background="@mipmap/push_bg"
+                    android:gravity="center"
+                    android:text="高中数学"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="normal" />
+
+
+            </LinearLayout>
+
+
+            <!--问答内容   -->
+            <LinearLayout
+                android:id="@+id/lin_content_ask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.lib.fastkit.views.circle_image.niv.NiceImageView
+                    android:id="@+id/iv_image1"
+                    android:layout_width="62dp"
+                    android:layout_height="40dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/test1"
+                    app:corner_radius="10dp" />
+
+                <com.lib.fastkit.views.circle_image.niv.NiceImageView
+                    android:id="@+id/iv_image2"
+                    android:layout_width="62dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="8dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/test1"
+                    app:corner_radius="10dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"></View>
+
+
+                <TextView
+                    android:id="@+id/tv_money"
+                    style="@style/text_style5"
+                    android:layout_width="wrap_content"
+                    android:text="8" />
+
+                <TextView
+                    style="@style/text_style5"
+                    android:text="兔币"
+                    android:textSize="14sp" />
+
+                <TextView
+                    style="@style/text_style5"
+
+                    android:text="答题费"
+                    android:textColor="@color/base_gray"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+
+            <!--内容-->
+            <TextView
+                android:id="@+id/tv_content_text1"
+                style="@style/text_style11"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
+                android:maxLines="2"
+                android:singleLine="false"
+                android:text="王宗明正在《高考英语考点分析》上课，重点讲解得很清晰，大家一起来关注他吧!"
+                android:textColor="@color/base_title"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+
+            <!--小内容-->
+            <TextView
+                android:id="@+id/tv_content_text2"
+                style="@style/text_style11"
+                android:layout_marginBottom="16dp"
+                android:maxLines="2"
+                android:singleLine="false"
+                android:text="每节课中总有几个调皮得学生，不认真听讲"
+                android:textColor="@color/base_gray"
+                android:textSize="14sp"
+                android:textStyle="normal" />
+
+
+            <!--新闻内容区-->
+
+            <LinearLayout
+                android:id="@+id/lin_news"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <com.lib.fastkit.views.circle_image.niv.NiceImageView
+
+                    android:id="@+id/iv_newImage"
+                    android:layout_width="123dp"
+                    android:layout_height="70dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/test1"
+                    app:corner_radius="10dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_news_content"
+                        style="@style/text_style11"
+                        android:layout_weight="1"
+                        android:maxLines="2"
+                        android:singleLine="false"
+                        android:text="王宗明正在《高考英语考点分析》上课，重点讲解得很清晰，大家一起来关注他吧!"
+                        android:textColor="@color/base_title"
+                        android:textSize="16sp"
+                        android:textStyle="normal" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_tip"
+                            style="@style/text_style11"
+                            android:maxLines="1"
+                            android:singleLine="false"
+                            android:text="#兔讯#"
+                            android:textColor="@color/base_money"
+                            android:textSize="12sp"
+                            android:textStyle="normal" />
+
+
+                        <TextView
+                            android:id="@+id/tv_time"
+                            style="@style/text_style11"
+                            android:layout_marginLeft="16dp"
+                            android:maxLines="1"
+                            android:singleLine="false"
+                            android:text="2019.07.30"
+                            android:textColor="@color/base_gray"
+                            android:textSize="12sp"
+                            android:textStyle="normal" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <!--底部公用区-->
+            <View
+                style="@style/line_dotted"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="4dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+
+                    <LinearLayout
+                        android:id="@+id/lin_zan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/iv_zan"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@mipmap/icon_love_default" />
+
+                        <TextView
+                            android:id="@+id/tv_zan"
+                            style="@style/text_style5"
+
+                            android:layout_marginLeft="8dp"
+
+                            android:text="227"
+                            android:textColor="@color/base_gray"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/lin_comments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/iv_comments"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@mipmap/icon_mesage" />
+
+                        <TextView
+                            android:id="@+id/tv_comments"
+                            style="@style/text_style5"
+                            android:layout_marginLeft="8dp"
+                            android:text="227"
+                            android:textColor="@color/base_gray"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

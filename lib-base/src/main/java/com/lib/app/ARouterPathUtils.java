@@ -88,4 +88,11 @@ public class ARouterPathUtils {
     public static final String YouXuan_FengXiangFragment = "/youxuan/FengXiangFragment";
     public static final String YouXuan_JianKeFragment = "/youxuan/JianKeFragment";
     public static final String YouXuan_YouXuanFragment = "/youxuan/YouXuanFragment";
+
+    //==============================================================================================
+    //=================================================================================Share====
+    //==============================================================================================
+    public static final String Share_ShareFragment = "/share/ShareFragment";
+
+
 }

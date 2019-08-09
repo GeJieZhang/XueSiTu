@@ -35,6 +35,7 @@ import com.lib.ui.activity.BaseAppActivity;
 import com.lib.utls.bugly.BuglyUtil;
 import com.lib.utls.pop.PushPopupUtils;
 import com.live.activity.MainRoomActivity;
+import com.share.fragment.ShareFragment;
 import com.user.bean.BaseBean;
 import com.user.fragment.PersonalFragment;
 import com.xuesitu.R;
@@ -144,7 +145,7 @@ public class MainActivity extends BaseAppActivity {
         fragments.add(FragmentUtils.getSiXueFragment());
         fragments.add(FragmentUtils.getDayiFragment());
         fragments.add(FragmentUtils.getJianKeFragment());
-        fragments.add(FragmentUtils.getFengXiangFragment());
+        fragments.add(FragmentUtils.getShareFragemnt());
 
 
         initPersonalFragment();

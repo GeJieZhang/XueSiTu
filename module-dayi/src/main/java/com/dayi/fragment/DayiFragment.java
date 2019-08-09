@@ -132,8 +132,6 @@ public class DayiFragment extends BaseAppFragment {
                         if (result.getCode() == CodeUtil.CODE_200) {
 
 
-
-
                             /**
                              * 视频
                              */
@@ -195,7 +193,7 @@ public class DayiFragment extends BaseAppFragment {
                             stateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
 
 
-                        }else {
+                        } else {
                             stateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
                         }
 
@@ -247,6 +245,16 @@ public class DayiFragment extends BaseAppFragment {
         myBanner.setMyBannerViewListener(new MyBannerView.MyBannerViewListener() {
             @Override
             public void onBannerClick(int positon) {
+
+                ARouter.getInstance().build(ARouterPathUtils.Live_MainRoomActivity)
+                        .withString("roomToken", "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:fT7BJlMqOHm_hR5b-JVArZR-n3I=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoib3RvXzIiLCJ1c2VySWQiOiIxMzk4MDAwNDU4MCIsImV4cGlyZUF0IjoxNTY1NTc0NjkzLCJwZXJtaXNzaW9uIjoiYWRtaW4ifQ==")
+                        .withString("teacherPhone", "13980004580")
+                        .withString("roomName", "oto_2")
+                        .withString("userPhone", "13980004580")
+                        .withString("uuid", "1bc3f1ab8a834c0781d72f0165779bb3")
+                        .withString("whitetoken", "WHITEcGFydG5lcl9pZD11QjFvMVhqUjNZa2RxaFpxMWNHTjlNbktBcGNudEtSRWFzNGwmc2lnPWFhODQ4MTdhZGZiYjE3ZWQ4YzE5YmNhOGYyOTFkNmE0ZTUyMWNmMjQ6YWRtaW5JZD0yNzEmcm9vbUlkPTFiYzNmMWFiOGE4MzRjMDc4MWQ3MmYwMTY1Nzc5YmIzJnRlYW1JZD0zOTYmcm9sZT1yb29tJmV4cGlyZV90aW1lPTE1OTY4NzI0NDMmYWs9dUIxbzFYalIzWWtkcWhacTFjR045TW5LQXBjbnRLUkVhczRsJmNyZWF0ZV90aW1lPTE1NjUzMTU0OTEmbm9uY2U9MTU2NTMxNTQ5MDg5NzAw")
+                        .navigation();
+
 
             }
         });
