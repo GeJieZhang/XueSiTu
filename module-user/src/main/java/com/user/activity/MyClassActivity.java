@@ -161,7 +161,9 @@ public class MyClassActivity extends BaseAppActivity {
 
                     @Override
                     public void onError(String e) {
-                        stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
+                        if (stateView!=null){
+                            stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
+                        }
                     }
                 });
 

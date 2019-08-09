@@ -17,6 +17,7 @@ import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.fastkit.views.spring_refresh.container.DefaultFooter;
 import com.lib.fastkit.views.spring_refresh.container.DefaultHeader;
 import com.lib.fastkit.views.spring_refresh.widget.SpringView;
+import com.lib.framework.component.interceptor.GroupUtils;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.ui.adapter.BaseAdapter;
@@ -112,7 +113,9 @@ public class MessageActivity extends BaseAppActivity {
 
                     @Override
                     public void onError(String e) {
-                        stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
+                        if (stateView != null) {
+                            stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
+                        }
                     }
                 });
 

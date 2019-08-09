@@ -397,7 +397,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
         unbinder.unbind();
         ActivityCollector.getInstance().finishActivity(this);
-        //HttpUtils.cancel();
+        HttpUtils.cancel();
 
 
     }

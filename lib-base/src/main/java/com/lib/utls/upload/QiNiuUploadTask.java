@@ -105,7 +105,7 @@ public class QiNiuUploadTask extends AsyncTask<String, Integer, String> {
                         String path = (String) jsonObject.get("key");
 
 
-                        if (path != null) {
+                        if (path != null && !path.equals("null")) {
                             if (fileUploadListener != null) {
 
                                 fileUploadListener.onSuccess(path);

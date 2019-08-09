@@ -103,7 +103,9 @@ public class TeacherAnswerQuestionDetailActivity extends BaseAppActivity {
                     public void onError(String e) {
 
 
-                        stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
+                        if (stateView!=null){
+                            stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
+                        }
                     }
                 });
 

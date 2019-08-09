@@ -95,11 +95,20 @@ public abstract class HttpNormalCallBack<T> implements EngineCallBack {
 
     @Override
     public void onError(Exception e) {
-        //统一异常处理类
-        responseErrorListener.handleResponseError(context, e);
 
-        LogUtil.e(e.getMessage());
-        onError(e.getMessage());
+        try {
+            //统一异常处理类
+            responseErrorListener.handleResponseError(context, e);
+
+            LogUtil.e(e.getMessage());
+
+            onError(e.getMessage());
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+
+        }
+
 
         //Toast.makeText(context, "请求超时", Toast.LENGTH_SHORT).show();
 

@@ -30,10 +30,12 @@ import com.lib.fastkit.utils.animation_deal.AnimationUtil;
 import com.lib.fastkit.utils.fragment_deal.FragmentCustomUtils;
 import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.fastkit.views.viewpager.my.MyViewPager;
+import com.lib.framework.component.interceptor.GroupUtils;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.utls.bugly.BuglyUtil;
 import com.lib.utls.pop.PushPopupUtils;
+import com.lib.view.navigationbar.xuesitu.HomeNavigationBar;
 import com.live.activity.MainRoomActivity;
 import com.share.fragment.ShareFragment;
 import com.user.bean.BaseBean;
@@ -83,6 +85,9 @@ public class MainActivity extends BaseAppActivity {
     ImageView ivCenter;
     @BindView(R.id.lin_personal)
     LinearLayout linPersonal;
+
+    @BindView(R.id.home_bar)
+    HomeNavigationBar homeBar;
 
     private boolean PersonalFragmentIsShow = false;
     private DemandAdapter mDemandAdapter;
@@ -147,7 +152,7 @@ public class MainActivity extends BaseAppActivity {
         fragments.add(FragmentUtils.getJianKeFragment());
         fragments.add(FragmentUtils.getShareFragemnt());
 
-
+        homeBar.setViewType(HomeNavigationBar.YOU_XUAN);
         initPersonalFragment();
 
 
@@ -197,26 +202,33 @@ public class MainActivity extends BaseAppActivity {
                 mViewPager.setCurrentItem(0);
 
                 initSelected(0);
+
+
+                homeBar.setViewType(HomeNavigationBar.YOU_XUAN);
                 break;
             case R.id.lin_sixue:
                 mViewPager.setCurrentItem(1);
                 initSelected(1);
+
+                homeBar.setViewType(HomeNavigationBar.YOU_WEN_DA);
                 break;
             case R.id.iv_center:
                 mViewPager.setCurrentItem(2);
                 initSelected(2);
+
+                homeBar.setViewType(HomeNavigationBar.YOU_TU_ZI);
                 break;
             case R.id.lin_jianke:
                 mViewPager.setCurrentItem(3);
                 initSelected(3);
-
+                homeBar.setViewType(HomeNavigationBar.YOU_JIAN_KE);
 
                 break;
             case R.id.lin_fengxiang:
                 mViewPager.setCurrentItem(4);
                 initSelected(4);
 
-
+                homeBar.setViewType(HomeNavigationBar.YOU_FENG_XIANG);
                 break;
 
         }
@@ -417,6 +429,26 @@ public class MainActivity extends BaseAppActivity {
                     setMenu();
 
                 }
+
+                break;
+            }
+
+            case 2: {
+                //打开消息列表
+
+                String token = SharedPreferenceManager.getInstance(this).getUserCache().getUserToken();
+
+
+                if (token.equals("")) {
+
+                    ARouter.getInstance().build(ARouterPathUtils.User_LoginActivity).navigation();
+
+                } else {
+
+                    ARouter.getInstance().build(ARouterPathUtils.User_MessageActivity).navigation();
+
+                }
+
 
                 break;
             }
