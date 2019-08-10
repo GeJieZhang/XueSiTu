@@ -129,7 +129,7 @@ public class WhiteBoardUtils {
         whiteSdk.joinRoom(new RoomParams(uuid, roomToken), new AbstractRoomCallbacks() {
             @Override
             public void onPhaseChanged(RoomPhase phase) {
-                showLog(phase.name());
+                showLog("onPhaseChanged:" + phase.name());
 
 
             }
@@ -137,7 +137,11 @@ public class WhiteBoardUtils {
             @Override
             public void onRoomStateChanged(RoomState modifyState) {
 
-                showLog(gson.toJson(modifyState));
+                showLog("onRoomStateChanged:" + gson.toJson(modifyState));
+
+                if (listener != null) {
+                    listener.onRoomStateChange();
+                }
 
             }
         }, new Promise<Room>() {
@@ -207,6 +211,8 @@ public class WhiteBoardUtils {
     public interface WhiteBoardListener {
 
         void onJoinRoomSucess(Room room);
+
+        void onRoomStateChange();
 
     }
 

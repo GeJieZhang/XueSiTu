@@ -111,35 +111,38 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     @Autowired(name = "whitetoken")
     String whitetoken;
 
-//    @Autowired(name = "name")
-//    String hx_username;
 
-
+    //身份表示(1老师 0学生)
     private String identity = "";
     private String userToken = "";
 
 
+    //显示大屏直播画面的View
     private QNSurfaceView localSurfaceView;
 
+    //直播引擎
     private static QNRTCEngine mEngine;
+    //本地的视频流
     private QNTrackInfo localVideoTrack;
+    //本地的音频流
     private QNTrackInfo localAudioTrack;
-    //正在播放的Track
+    //正在播放的流(包含视频流和音频流)
     private MyTrackInfo playingTrack;
-
-
-    private FrameLayout f_p;//父布局
+    //直播画面父布局
+    private FrameLayout f_p;
+    //白板父布局
     private FrameLayout f_whiteboard;
 
-
+    //Map用于保存进入直播间用户的信息(每进一个用户需要添加一次，反之移除)
     public static MyHashMap<String, MyTrackInfo> trackInfoMap = new MyHashMap<>();
 
     //控制页面的状态管理
     public static RoomControlBean roomControlBean;
 
+    //白板页面状态管理
     public static WhiteBoradBean whiteBoradBean;
 
-    //聊天室长连接
+    //聊天室长连接(公司服务器)用于聊天使用
     public static IMSocketUtils imSocketUtils;
     //横屏聊天按钮控制
     private ImageView iv_chat_control;
@@ -153,15 +156,20 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        /**
+         * 初始换页面配置
+         */
         QMUIStatusBarHelper.setStatusBarDarkMode(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         StatusBarUtil.statusBarTintColor(this, getResources().getColor(R.color.black));
-
         screenOrientation = screenVertical;
         setContentView(R.layout.activity_main_room_vertical);
         ARouter.getInstance().inject(this);
 
-
+        /**
+         * 初始化页面数据
+         */
         identity = SharedPreferenceManager.getInstance(this).getUserCache().getUserIdentity();
         userToken = SharedPreferenceManager.getInstance(this).getUserCache().getUserToken();
         userIcon = SharedPreferenceManager.getInstance(this).getUserCache().getUserHeadUrl();
@@ -174,11 +182,13 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
             roomControlBean.setDefault_camera(false);
             roomControlBean.setDefault_voice(false);
         }
-
-
         whiteBoradBean = new WhiteBoradBean();
 
 
+        /**
+         * 通过横竖屏来获取不同的控件
+         * 横竖屏是两套页面
+         */
         findView();
 
 
@@ -220,7 +230,11 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     }
 
 
-    //---------------------------------------------------------------------------------Fragment
+    /**
+     * ==============================================================================================
+     * ==========================================================================Fragment
+     * =============================================================================================
+     */
 
     //视频菜单
     public static ListVideoFragment listVideoFragment;
@@ -280,16 +294,30 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
 
     /**
-     * 更新直播列表
+     * ==============================================================================================
+     * ==========================================================================MainRoomActivity
+     * =============================================================================================
      */
-    private void updateVideoFragment() {
 
-
-        if (listVideoFragment != null) {
-            listVideoFragment.setTrackInfo(trackInfoMap.getOrderedValues());
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mEngine != null) {
+            mEngine.leaveRoom();
+            mEngine.destroy();
+            mEngine = null;
         }
 
+        //清空控制页面数据
+        roomControlBean = null;
 
+        //HXChatUtils.signOut();
+        //HXChatUtils.leaveChatRoom();
+
+        imSocketUtils.closeSocket();
+
+
+        LogUtil.e("onDestroy");
     }
 
 
@@ -339,7 +367,267 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
     }
 
+    //--------------------------------------------------------------屏幕切换控制
 
+    //默认为竖屏
+    public static int screenOrientation = screenVertical;
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        screenOrientation = newConfig.orientation;
+
+        LogUtil.e(screenOrientation + "");
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+            fullscreen(true);
+            Toast.makeText(getApplicationContext(), "横屏", Toast.LENGTH_SHORT).show();
+
+            setContentView(R.layout.activity_main_room_horizontal);
+            findView();
+
+            removeFragment();
+            initFragment();
+
+
+            //mEngine.setRenderWindow(localVideoTrack, localSurfaceView);
+
+
+        } else {
+            Toast.makeText(getApplicationContext(), "竖屏", Toast.LENGTH_SHORT).show();
+            fullscreen(false);
+
+            setContentView(R.layout.activity_main_room_vertical);
+            findView();
+
+            removeFragment();
+            initFragment();
+            //mEngine.setRenderWindow(localVideoTrack, localSurfaceView);
+
+
+        }
+
+
+    }
+    //--------------------------------------------------------------点击事件
+
+    @Override
+    public void onClick(View v) {
+
+        int i = v.getId();
+
+        if (i == R.id.iv_chat_control) {
+
+            if (lin_chat.getVisibility() == View.VISIBLE) {
+                lin_chat.setVisibility(View.GONE);
+
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) iv_chat_control.getLayoutParams();
+                params.leftMargin = DisplayUtil.dip2px(this, 16);
+                iv_chat_control.setLayoutParams(params);
+                iv_chat_control.setImageResource(R.mipmap.icon_right);
+
+                if (listVideoFragment != null) {
+                    listVideoFragment.hideVideoList(true);
+                }
+            } else {
+
+                lin_chat.setVisibility(View.VISIBLE);
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) iv_chat_control.getLayoutParams();
+                params.leftMargin = DisplayUtil.dip2px(this, -16);
+                iv_chat_control.setLayoutParams(params);
+
+                iv_chat_control.setImageResource(R.mipmap.icon_left);
+
+                if (listVideoFragment != null) {
+                    listVideoFragment.hideVideoList(false);
+                }
+            }
+
+
+        }
+
+    }
+
+
+    //-----------------------------------------------------------------------------------图片选择回调
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PhotoUtil.MESSAGE_IMAGE:
+                    // 图片、视频、音频选择结果回调
+                    List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+
+                    LocalMedia media = selectList.get(0);
+                    // 例如 LocalMedia 里面返回三种path
+                    // 1.media.getPath(); 为原图path
+                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true  注意：音视频除外
+                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
+                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
+
+                    if (media.isCompressed()) {
+
+                        String compressPath = media.getCompressPath();
+
+                        showToast("选择成功");
+
+
+                        MainRoomActivity.chatFragment.sendImageMessage(compressPath);
+
+
+                    }
+
+                    break;
+
+                case PhotoUtil.WHITE_BORAD_IMAGE:
+
+                    // 图片、视频、音频选择结果回调
+                    List<LocalMedia> boardSelectList = PictureSelector.obtainMultipleResult(data);
+
+                    LocalMedia boardMedia = boardSelectList.get(0);
+                    // 例如 LocalMedia 里面返回三种path
+                    // 1.media.getPath(); 为原图path
+                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true  注意：音视频除外
+                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
+                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
+
+                    if (boardMedia.isCompressed()) {
+
+                        String compressPath = boardMedia.getCompressPath();
+
+                        if (whiteBoardFragment != null) {
+                            whiteBoardFragment.upLoadImage(compressPath);
+                        }
+
+
+                    }
+
+
+                    break;
+
+            }
+
+
+        }
+    }
+
+    /**
+     *==============================================================================================
+     * ==========================================================================直播相关
+     * =============================================================================================
+     */
+    /**
+     * 离开房间
+     */
+    private void liveRoom() {
+
+
+        NormalDialog.getInstance()
+                .setContent("确认要退出直播间么？")
+                .setWidth(DisplayUtil.dip2px(this, 300))
+                .setSureListener(new NormalDialog.SurelListener() {
+                    @Override
+                    public void onSure() {
+
+                        String consume_class = "";
+
+                        if (identity.equals("1")) {
+                            consume_class = "0";
+                        } else {
+
+                        }
+
+                        HttpUtils.with(MainRoomActivity.this)
+                                .addParam("requestType", "LIVE_DROPOTU_ROOM")
+                                .addParam("room_name", roomName)
+                                .addParam("consume_class", consume_class)
+                                .addParam("token", userToken)
+                                .execute(new HttpDialogCallBack<CloseRoomBean>() {
+                                    @Override
+                                    public void onSuccess(CloseRoomBean result) {
+
+                                        if (result.getCode() == CodeUtil.CODE_200) {
+                                            finish();
+                                        } else {
+                                            showToast(result.getMsg());
+                                        }
+
+
+                                    }
+
+                                    @Override
+                                    public void onError(String e) {
+
+                                    }
+                                });
+
+
+                    }
+                })
+                .show(getSupportFragmentManager());
+
+    }
+
+
+    /**
+     * 学生申请麦克风成功
+     */
+    public void requestVoiceSuccess() {
+
+
+        mEngine.publishTracks(Arrays.asList(localAudioTrack));
+
+        QNTrackInfo video = trackInfoMap.get(userPhone).getVideoTrack();
+
+        MyTrackInfo myTrackInfo = new MyTrackInfo(userPhone, video, localAudioTrack);
+        trackInfoMap.put(userPhone, myTrackInfo);
+        updateVideoFragment();
+    }
+
+
+    /**
+     * 学生申请摄像头成功
+     */
+    public void requestCameraSuccess() {
+
+        mEngine.publishTracks(Arrays.asList(localVideoTrack));
+        QNTrackInfo audio = trackInfoMap.get(userPhone).getAudioTrack();
+        MyTrackInfo myTrackInfo = new MyTrackInfo(userPhone, localVideoTrack, audio);
+        trackInfoMap.put(userPhone, myTrackInfo);
+        updateVideoFragment();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+
+
+        liveRoom();
+
+
+    }
+
+    /**
+     * 更新直播列表
+     */
+    private void updateVideoFragment() {
+
+
+        if (listVideoFragment != null) {
+            listVideoFragment.setTrackInfo(trackInfoMap.getOrderedValues());
+        }
+
+
+    }
+
+    /**
+     * 获取直播引擎
+     *
+     * @return
+     */
     public static QNRTCEngine getEngine() {
 
         return mEngine;
@@ -408,9 +696,6 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         beautySetting.setEnable(true);
         mEngine.setBeauty(beautySetting);
     }
-
-
-    //--------------------------------------------------------------直播间回调
 
 
     /**
@@ -610,10 +895,9 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         }
     }
 
-
-    //--------------------------------------------------------------视频列表回调
-
-
+    /**
+     * 视频列表回调
+     */
     private ListVideoFragment.ListVideoFragmentListener listVideoFragmentListener = new ListVideoFragment.ListVideoFragmentListener() {
 
         @Override
@@ -671,6 +955,16 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
     };
 
+
+    /**
+     *==============================================================================================
+     * ==========================================================================白板
+     * =============================================================================================
+     */
+
+    /**
+     * 初始化白板状态
+     */
     private void initWhiteBoradStae() {
         if (f_whiteboard.getVisibility() == View.VISIBLE) {
 
@@ -702,8 +996,162 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     }
 
 
-    //--------------------------------------------------------------ChatFragment
+    private WhiteBroadView whiteBroadView;
 
+
+    private WhiteBoardUtils whiteBoardUtils;
+
+
+    private static Room whiteBoardRoom;
+    final String SCENE_DIR = "/dir";
+    private int pageIndex = 1;//记录当前页面位置
+    private int maxSize = 1;//当前页面的总大小
+
+    private int FIRST_INIT = 1;//首次初始化
+    private int SECOND_INIT = 2;//首次初始化
+
+    /**
+     * 初始化白板
+     */
+    private void initWhiteBorad(final int type) {
+
+        whiteBroadView = new WhiteBroadView(this);
+        whiteBoardUtils = WhiteBoardUtils.getInstance().joinToRoom(this, whiteBroadView, uuid, whitetoken);
+
+        whiteBoardUtils.setWhiteBoardListener(new WhiteBoardUtils.WhiteBoardListener() {
+            @Override
+            public void onJoinRoomSucess(Room room) {
+                if (whiteBoardFragment != null) {
+                    whiteBoardRoom = room;
+                    whiteBoardFragment.setRoom(room);
+
+                    getScenesSize();
+                    showLog("room回调");
+
+                    if (type == SECOND_INIT) {
+                        initWhiteBoradStae();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onRoomStateChange() {
+
+                ///getScenesSize();
+
+            }
+        });
+    }
+
+    /**
+     * 获取白板房间
+     *
+     * @return
+     */
+    public static Room getwhiteBoardRoom() {
+
+
+        return whiteBoardRoom;
+    }
+
+
+    /**
+     * 白板监听
+     */
+    private WhiteBoardFragment.WhiteBoardFragmentListener whiteBoardFragmentListener = new WhiteBoardFragment.WhiteBoardFragmentListener() {
+        @Override
+        public void onWihteBoradFont() {
+
+            if (pageIndex > 0) {
+                pageIndex--;
+                whiteBoardRoom.setScenePath(SCENE_DIR + "/" + sceneList.get(pageIndex).getName());
+
+            } else {
+                showToast("没有更多了");
+            }
+
+            if (whiteBoardFragment != null) {
+                whiteBoardFragment.updatePage((pageIndex + 1) + "/" + maxSize);
+            }
+
+
+            showLog("当前页码:" + pageIndex);
+
+
+        }
+
+        @Override
+        public void onWihteBoradNext() {
+
+            if (pageIndex < maxSize - 1) {
+                pageIndex++;
+                whiteBoardRoom.setScenePath(SCENE_DIR + "/" + sceneList.get(pageIndex).getName());
+            } else {
+                showToast("没有更多了");
+            }
+            if (whiteBoardFragment != null) {
+                whiteBoardFragment.updatePage((pageIndex + 1) + "/" + maxSize);
+            }
+            showLog("当前页码:" + pageIndex);
+        }
+
+        @Override
+        public void onWihteBoradScreenChange() {
+            //在横竖平切换的时候刷新一下白板的数量显示
+            getScenesSize();
+        }
+    };
+
+
+    private List<Scene> sceneList = new ArrayList<>();
+
+
+    /**
+     * 获取当前白板数量
+     */
+    public void getScenesSize() {
+
+        if (whiteBoardRoom != null) {
+
+
+            whiteBoardRoom.getSceneState(new Promise<SceneState>() {
+                @Override
+                public void then(SceneState sceneState) {
+                    maxSize = sceneState.getScenes().length;
+                    pageIndex = sceneState.getIndex();
+
+                    sceneList.clear();
+                    for (Scene scene : sceneState.getScenes()) {
+                        sceneList.add(scene);
+                    }
+
+                    if (whiteBoardFragment != null) {
+                        whiteBoardFragment.updatePage((pageIndex + 1) + "/" + maxSize);
+                    }
+                    showLog("白板总数量:" + maxSize);
+
+                }
+
+                @Override
+                public void catchEx(SDKError sdkError) {
+
+                }
+            });
+
+        }
+    }
+
+
+    /**
+     *==============================================================================================
+     * ==========================================================================聊天
+     * =============================================================================================
+     */
+
+    /**
+     * 聊天回调
+     */
     private ChatFragment.ChatFragmentListener chatFragmentListener = new ChatFragment.ChatFragmentListener() {
         @Override
         public void onRequestVoiceSuccess() {
@@ -851,9 +1299,16 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
             roomControlFragment.isOpenCameraUI(true);
         }
     };
+    /**
+     *==============================================================================================
+     * ==========================================================================控制页面
+     * =============================================================================================
+     */
 
 
-    //--------------------------------------------------------------控制页回调
+    /**
+     * 控制页回调
+     */
     private RoomControlFragment.RoomControlFragmentListener roomControlFragmentListener = new RoomControlFragment.RoomControlFragmentListener() {
 
 
@@ -998,18 +1453,23 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
         @Override
         public void onWihteBoradAdd() {
 
-            showLog("MaxSize:" + maxSize);
+
             maxSize++;
 
+
+            Scene scene = new Scene("page" + maxSize);
             whiteBoardRoom.putScenes(SCENE_DIR, new Scene[]{
-                    new Scene("page" + maxSize)}, maxSize - 1);
+                    scene}, maxSize - 1);
+
+
+            showLog("添加画板:" + maxSize + "画板索引:" + (maxSize - 1));
+
             whiteBoardRoom.setScenePath(SCENE_DIR + "/page" + maxSize);
 
-            //  maxSize++;
+            showLog("画板路径:" + SCENE_DIR + "/page" + maxSize);
 
-            //showLog("白板的数量1:" + maxSize);
 
-            getScenesSize();
+             getScenesSize();
         }
 
         @Override
@@ -1024,399 +1484,6 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
 
     };
-
-
-    //--------------------------------------------------------------屏幕切换控制
-
-    //默认为竖屏
-    public static int screenOrientation = screenVertical;
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        screenOrientation = newConfig.orientation;
-
-        LogUtil.e(screenOrientation + "");
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-
-            fullscreen(true);
-            Toast.makeText(getApplicationContext(), "横屏", Toast.LENGTH_SHORT).show();
-
-            setContentView(R.layout.activity_main_room_horizontal);
-            findView();
-
-            removeFragment();
-            initFragment();
-
-
-            //mEngine.setRenderWindow(localVideoTrack, localSurfaceView);
-
-
-        } else {
-            Toast.makeText(getApplicationContext(), "竖屏", Toast.LENGTH_SHORT).show();
-            fullscreen(false);
-
-            setContentView(R.layout.activity_main_room_vertical);
-            findView();
-
-            removeFragment();
-            initFragment();
-            //mEngine.setRenderWindow(localVideoTrack, localSurfaceView);
-
-
-        }
-
-
-    }
-    //--------------------------------------------------------------点击事件
-
-    @Override
-    public void onClick(View v) {
-
-        int i = v.getId();
-
-        if (i == R.id.iv_chat_control) {
-
-            if (lin_chat.getVisibility() == View.VISIBLE) {
-                lin_chat.setVisibility(View.GONE);
-
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) iv_chat_control.getLayoutParams();
-                params.leftMargin = DisplayUtil.dip2px(this, 16);
-                iv_chat_control.setLayoutParams(params);
-                iv_chat_control.setImageResource(R.mipmap.icon_right);
-
-                if (listVideoFragment != null) {
-                    listVideoFragment.hideVideoList(true);
-                }
-            } else {
-
-                lin_chat.setVisibility(View.VISIBLE);
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) iv_chat_control.getLayoutParams();
-                params.leftMargin = DisplayUtil.dip2px(this, -16);
-                iv_chat_control.setLayoutParams(params);
-
-                iv_chat_control.setImageResource(R.mipmap.icon_left);
-
-                if (listVideoFragment != null) {
-                    listVideoFragment.hideVideoList(false);
-                }
-            }
-
-
-        }
-
-    }
-
-
-    //-----------------------------------------------------------------------------------图片选择回调
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case PhotoUtil.MESSAGE_IMAGE:
-                    // 图片、视频、音频选择结果回调
-                    List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
-
-                    LocalMedia media = selectList.get(0);
-                    // 例如 LocalMedia 里面返回三种path
-                    // 1.media.getPath(); 为原图path
-                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true  注意：音视频除外
-                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
-                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
-
-                    if (media.isCompressed()) {
-
-                        String compressPath = media.getCompressPath();
-
-                        showToast("选择成功");
-
-
-                        MainRoomActivity.chatFragment.sendImageMessage(compressPath);
-
-
-                    }
-
-                    break;
-
-                case PhotoUtil.WHITE_BORAD_IMAGE:
-
-                    // 图片、视频、音频选择结果回调
-                    List<LocalMedia> boardSelectList = PictureSelector.obtainMultipleResult(data);
-
-                    LocalMedia boardMedia = boardSelectList.get(0);
-                    // 例如 LocalMedia 里面返回三种path
-                    // 1.media.getPath(); 为原图path
-                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true  注意：音视频除外
-                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
-                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
-
-                    if (boardMedia.isCompressed()) {
-
-                        String compressPath = boardMedia.getCompressPath();
-
-                        if (whiteBoardFragment != null) {
-                            whiteBoardFragment.upLoadImage(compressPath);
-                        }
-
-
-                    }
-
-
-                    break;
-
-            }
-
-
-        }
-    }
-
-
-    //-----------------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------白板相关
-    //------------------------------------------------------------------------------------------
-
-
-    private WhiteBroadView whiteBroadView;
-
-
-    private WhiteBoardUtils whiteBoardUtils;
-
-
-    private static Room whiteBoardRoom;
-    final String SCENE_DIR = "/dir";
-    private int pageIndex = 1;//记录当前页面位置
-    private int maxSize = 1;//当前页面的总大小
-
-    private int FIRST_INIT = 1;//首次初始化
-    private int SECOND_INIT = 2;//首次初始化
-
-    /**
-     * 初始化白板
-     */
-    private void initWhiteBorad(final int type) {
-
-        whiteBroadView = new WhiteBroadView(this);
-        whiteBoardUtils = WhiteBoardUtils.getInstance().joinToRoom(this, whiteBroadView, uuid, whitetoken);
-
-        whiteBoardUtils.setWhiteBoardListener(new WhiteBoardUtils.WhiteBoardListener() {
-            @Override
-            public void onJoinRoomSucess(Room room) {
-                if (whiteBoardFragment != null) {
-                    whiteBoardRoom = room;
-                    whiteBoardFragment.setRoom(room);
-
-                    getScenesSize();
-                    showLog("room回调");
-
-                    if (type == SECOND_INIT) {
-                        initWhiteBoradStae();
-                    }
-
-                }
-            }
-        });
-    }
-
-    /**
-     * 获取白板房间
-     *
-     * @return
-     */
-    public static Room getwhiteBoardRoom() {
-
-
-        return whiteBoardRoom;
-    }
-
-
-    private WhiteBoardFragment.WhiteBoardFragmentListener whiteBoardFragmentListener = new WhiteBoardFragment.WhiteBoardFragmentListener() {
-        @Override
-        public void onWihteBoradFont() {
-
-            if (pageIndex > 0) {
-                pageIndex--;
-                whiteBoardRoom.setScenePath(SCENE_DIR + "/" + sceneList.get(pageIndex).getName());
-
-            } else {
-                showToast("没有更多了");
-            }
-
-            if (whiteBoardFragment != null) {
-                whiteBoardFragment.updatePage((pageIndex + 1) + "/" + maxSize);
-            }
-
-
-            showLog("当前页码:" + pageIndex);
-
-
-        }
-
-        @Override
-        public void onWihteBoradNext() {
-
-            if (pageIndex < maxSize - 1) {
-                pageIndex++;
-                whiteBoardRoom.setScenePath(SCENE_DIR + "/" + sceneList.get(pageIndex).getName());
-            } else {
-                showToast("没有更多了");
-            }
-            if (whiteBoardFragment != null) {
-                whiteBoardFragment.updatePage((pageIndex + 1) + "/" + maxSize);
-            }
-            showLog("当前页码:" + pageIndex);
-        }
-    };
-
-
-    private List<Scene> sceneList = new ArrayList<>();
-
-    public void getScenesSize() {
-        whiteBoardRoom.getSceneState(new Promise<SceneState>() {
-            @Override
-            public void then(SceneState sceneState) {
-                maxSize = sceneState.getScenes().length;
-                pageIndex = sceneState.getIndex();
-
-                sceneList.clear();
-                for (Scene scene : sceneState.getScenes()) {
-                    sceneList.add(scene);
-                }
-
-                if (whiteBoardFragment != null) {
-                    whiteBoardFragment.updatePage((pageIndex + 1) + "/" + maxSize);
-                }
-                showLog("白板总数量:" + maxSize);
-
-            }
-
-            @Override
-            public void catchEx(SDKError sdkError) {
-
-            }
-        });
-
-
-    }
-
-
-    //-----------------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------房间相关
-    //------------------------------------------------------------------------------------------
-
-
-    @Override
-    public void onBackPressed() {
-
-
-        liveRoom();
-
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mEngine != null) {
-            mEngine.leaveRoom();
-            mEngine.destroy();
-            mEngine = null;
-        }
-
-        //清空控制页面数据
-        roomControlBean = null;
-
-        //HXChatUtils.signOut();
-        //HXChatUtils.leaveChatRoom();
-
-        imSocketUtils.closeSocket();
-
-
-        LogUtil.e("onDestroy");
-    }
-
-    /**
-     * 离开房间
-     */
-    private void liveRoom() {
-
-
-        NormalDialog.getInstance()
-                .setContent("确认要退出直播间么？")
-                .setWidth(DisplayUtil.dip2px(this, 300))
-                .setSureListener(new NormalDialog.SurelListener() {
-                    @Override
-                    public void onSure() {
-
-                        String consume_class = "";
-
-                        if (identity.equals("1")) {
-                            consume_class = "0";
-                        } else {
-
-                        }
-
-                        HttpUtils.with(MainRoomActivity.this)
-                                .addParam("requestType", "LIVE_DROPOTU_ROOM")
-                                .addParam("room_name", roomName)
-                                .addParam("consume_class", consume_class)
-                                .addParam("token", userToken)
-                                .execute(new HttpDialogCallBack<CloseRoomBean>() {
-                                    @Override
-                                    public void onSuccess(CloseRoomBean result) {
-
-                                        if (result.getCode() == CodeUtil.CODE_200) {
-                                            finish();
-                                        } else {
-                                            showToast(result.getMsg());
-                                        }
-
-
-                                    }
-
-                                    @Override
-                                    public void onError(String e) {
-
-                                    }
-                                });
-
-
-                    }
-                })
-                .show(getSupportFragmentManager());
-
-    }
-
-
-    /**
-     * 学生申请麦克风成功
-     */
-    public void requestVoiceSuccess() {
-
-
-        mEngine.publishTracks(Arrays.asList(localAudioTrack));
-
-        QNTrackInfo video = trackInfoMap.get(userPhone).getVideoTrack();
-
-        MyTrackInfo myTrackInfo = new MyTrackInfo(userPhone, video, localAudioTrack);
-        trackInfoMap.put(userPhone, myTrackInfo);
-        updateVideoFragment();
-    }
-
-
-    /**
-     * 学生申请摄像头成功
-     */
-    public void requestCameraSuccess() {
-
-        mEngine.publishTracks(Arrays.asList(localVideoTrack));
-        QNTrackInfo audio = trackInfoMap.get(userPhone).getAudioTrack();
-        MyTrackInfo myTrackInfo = new MyTrackInfo(userPhone, localVideoTrack, audio);
-        trackInfoMap.put(userPhone, myTrackInfo);
-        updateVideoFragment();
-    }
 
 
 }

@@ -103,7 +103,9 @@ public class WhiteBoardFragment extends BaseAppFragment {
 
         refreshRoom();
 
-
+        if (listener != null) {
+            listener.onWihteBoradScreenChange();
+        }
     }
 
 
@@ -127,6 +129,8 @@ public class WhiteBoardFragment extends BaseAppFragment {
 
 
         refreshRoom();
+
+
     }
 
 
@@ -216,6 +220,9 @@ public class WhiteBoardFragment extends BaseAppFragment {
         void onWihteBoradFont();
 
         void onWihteBoradNext();
+
+
+        void onWihteBoradScreenChange();
     }
 
 

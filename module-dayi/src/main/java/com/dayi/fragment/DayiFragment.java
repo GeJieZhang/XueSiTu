@@ -204,7 +204,7 @@ public class DayiFragment extends BaseAppFragment {
                     public void onError(String e) {
                         springView.onFinishFreshAndLoad();
 
-                        if (stateView!=null){
+                        if (stateView != null) {
                             stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
                         }
                     }
