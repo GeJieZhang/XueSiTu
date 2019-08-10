@@ -12,6 +12,7 @@ import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.http.call_back.HttpNormalCallBack;
+import com.lib.utls.pop.SharePopupBottomUtils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -30,11 +31,16 @@ public class ShareUtils {
     private String TAG = "=======分享";
 
 
+    private SharePopupBottomUtils sharePopupBottomUtils;
+
     public ShareUtils(final Activity activity) {
 
         this.activity = activity;
 
         shareAction = new ShareAction(activity);
+        sharePopupBottomUtils = new SharePopupBottomUtils(activity);
+
+        sharePopupBottomUtils.setSharePopupBottomUtilsListener(sharePopupBottomUtilsListener);
         shareAction.setCallback(umShareListener);
 
 
@@ -151,6 +157,17 @@ public class ShareUtils {
 
             }
         });
+        return shareAction;
+
+    }
+
+
+    public ShareAction onPenCoustomShareBorad() {
+
+
+        sharePopupBottomUtils.showAnswerPopuPopu(activity.getWindow().getDecorView());
+
+
         return shareAction;
 
     }
@@ -290,5 +307,36 @@ public class ShareUtils {
 
     }
 
+    /**
+     * 监听分享布局中的,点击事件
+     */
+    private SharePopupBottomUtils.SharePopupBottomUtilsListener sharePopupBottomUtilsListener = new SharePopupBottomUtils.SharePopupBottomUtilsListener() {
+        @Override
+        public void onShareClick() {
+
+
+        }
+
+        @Override
+        public void onQQClick() {
+
+
+            shareQQ();
+        }
+
+        @Override
+        public void onWeiXinClick() {
+
+            shareWEIXIN();
+
+        }
+
+        @Override
+        public void onWeiBoClick() {
+
+            shareSINA();
+
+        }
+    };
 
 }

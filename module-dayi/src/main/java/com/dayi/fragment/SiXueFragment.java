@@ -104,7 +104,7 @@ public class SiXueFragment extends BaseAppFragment {
                     @Override
                     public void onError(String e) {
                         springView.onFinishFreshAndLoad();
-                        if (stateView!=null){
+                        if (stateView != null) {
                             stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
                         }
                     }
@@ -340,10 +340,11 @@ public class SiXueFragment extends BaseAppFragment {
                     String url = mData.get(position).getFile().get(0);
                     String question_id = mData.get(position).getQuestion_id() + "";
 
+
                     ShareUtils.getInstance(getActivity())
                             .setShareWebUrl("https://www.baidu.com/", "免费分享旁听", url, "分享后和可免费旁听")
                             .setShareId(question_id)
-                            .openShareALLBorad();
+                            .onPenCoustomShareBorad();
 
                 }
             });
