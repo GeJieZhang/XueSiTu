@@ -206,13 +206,13 @@ public class SetActivity extends BaseAppActivity {
 
         } else if (i == R.id.lin_update) {
 
-//
-//            if (BuglyUtil.isVersionUpdate()) {
-//                BuglyUtil.checkUpdateByClick();
-//            } else {
-//
-//                showToast("暂无更新");
-//            }
+
+            if (BuglyUtil.isVersionUpdate()) {
+                BuglyUtil.checkUpdateByClick();
+            } else {
+
+                showToast("暂无更新");
+            }
 
 
         } else if (i == R.id.lin_help) {

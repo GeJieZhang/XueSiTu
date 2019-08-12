@@ -188,6 +188,16 @@ public class ClassBean {
                 private String course_id;
                 private String course_name;
 
+                private String status;
+
+                public String getStatus() {
+                    return status;
+                }
+
+                public void setStatus(String status) {
+                    this.status = status;
+                }
+
                 public String getCourse_id() {
                     return course_id;
                 }

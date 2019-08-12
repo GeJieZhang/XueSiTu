@@ -23,7 +23,7 @@ android {
             }
         }
 
-        //QQ分享配置
+        //QQ分享配置(删除QQ分享会编译失败)
         manifestPlaceholders = [qqappid: "tencent1105126608"]
 
     }

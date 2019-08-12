@@ -93,7 +93,7 @@ public class MyApplication extends Application {
         //X5内核
         initX5();
 
-        //BuglyUtil.init(this);
+        BuglyUtil.init(this);
         //内存检测
         //initLeakCanary();
 

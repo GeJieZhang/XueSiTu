@@ -95,6 +95,7 @@ public class CmmtPopup extends BasePopup<CmmtPopup> {
 
     public CmmtPopup showSoftInput() {
         KeyboardUtils.toggleSoftInput(context);
+        et_message.requestFocus();
         return this;
     }
 

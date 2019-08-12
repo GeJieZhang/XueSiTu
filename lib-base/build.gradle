@@ -131,8 +131,8 @@ dependencies {
      * 日志统计
      * 应用更新
      */
-//    api 'com.tencent.bugly:crashreport_upgrade:latest.release'
-//    api 'com.tencent.bugly:nativecrashreport:latest.release'
+    api 'com.tencent.bugly:crashreport_upgrade:latest.release'
+    api 'com.tencent.bugly:nativecrashreport:latest.release'
     /**
      * 弹出成层
      */
@@ -177,8 +177,6 @@ dependencies {
     api 'com.umeng.umsdk:share-qq:6.9.6'
 
     api 'com.umeng.umsdk:share-sina:6.9.6'
-
-
 
 
 }

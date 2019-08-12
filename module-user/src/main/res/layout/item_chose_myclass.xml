@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tv_title"
+                style="@style/text_style8"
+                android:layout_marginTop="16sp"
+                android:text="小明同学的专属学习计划"
+                android:textStyle="bold" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:id="@+id/iv_state"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/icon_class_on1" />
+
+                <TextView
+                    android:id="@+id/tv_state"
+                    style="@style/text_style10"
+                    android:layout_marginLeft="8dp"
+                    android:text="正在开课"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_sure"
+            style="@style/button1"
+            android:layout_width="100dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="8dp"
+            android:height="40dp"
+            android:background="@drawable/bg_part_circle1"
+            android:text="去上课"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <View
+        style="@style/line_dotted"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="16dp"></View>
+</LinearLayout>

@@ -95,19 +95,23 @@ import static com.live.utils.config.LiveConfig.DEFAULT_RESOLUTION;
 
 @Route(path = ARouterPathUtils.Live_MainRoomActivity)
 public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEventListener, View.OnClickListener {
+    //房间Token
     @Autowired(name = "roomToken")
     String roomToken;
-
+    //当前房间的老师
     @Autowired(name = "teacherPhone")
     String teacherPhone;
+    //房间名称
     @Autowired(name = "roomName")
     String roomName;
-
+    //当前用户的手机号
     @Autowired(name = "userPhone")
     String userPhone;
 
+    //白板UUID
     @Autowired(name = "uuid")
     String uuid;
+    //白板Token
     @Autowired(name = "whitetoken")
     String whitetoken;
 
@@ -522,6 +526,9 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     /**
      * 离开房间
      */
+    //老师每次下课扣除1个课时
+    String consume_class = "1";
+
     private void liveRoom() {
 
 
@@ -532,43 +539,46 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
                     @Override
                     public void onSure() {
 
-                        String consume_class = "";
 
-                        if (identity.equals("1")) {
-                            consume_class = "0";
-                        } else {
-
-                        }
-
-                        HttpUtils.with(MainRoomActivity.this)
-                                .addParam("requestType", "LIVE_DROPOTU_ROOM")
-                                .addParam("room_name", roomName)
-                                .addParam("consume_class", consume_class)
-                                .addParam("token", userToken)
-                                .execute(new HttpDialogCallBack<CloseRoomBean>() {
-                                    @Override
-                                    public void onSuccess(CloseRoomBean result) {
-
-                                        if (result.getCode() == CodeUtil.CODE_200) {
-                                            finish();
-                                        } else {
-                                            showToast(result.getMsg());
-                                        }
-
-
-                                    }
-
-                                    @Override
-                                    public void onError(String e) {
-
-                                    }
-                                });
+                        requestLiveRoom(consume_class);
 
 
                     }
                 })
                 .show(getSupportFragmentManager());
 
+    }
+
+
+    /**
+     * 请求离开房间
+     *
+     * @param consume_class
+     */
+    private void requestLiveRoom(String consume_class) {
+        HttpUtils.with(MainRoomActivity.this)
+                .addParam("requestType", "LIVE_DROPOTU_ROOM")
+                .addParam("room_name", roomName)
+                .addParam("consume_class", consume_class)
+                .addParam("token", userToken)
+                .execute(new HttpDialogCallBack<CloseRoomBean>() {
+                    @Override
+                    public void onSuccess(CloseRoomBean result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+                            finish();
+                        } else {
+                            showToast(result.getMsg());
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
     }
 
 
@@ -658,6 +668,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
 
         mEngine = QNRTCEngine.createEngine(getApplicationContext(), setting, this);
+
 
 
         localVideoTrack = mEngine.createTrackInfoBuilder()
@@ -1469,7 +1480,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
             showLog("画板路径:" + SCENE_DIR + "/page" + maxSize);
 
 
-             getScenesSize();
+            getScenesSize();
         }
 
         @Override
@@ -1479,6 +1490,12 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
                 chatFragment.requestOverClass();
 
             }
+
+        }
+
+        @Override
+        public void onQualityClick(int i) {
+
 
         }
 

@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -137,7 +138,10 @@ public class RoomControlFragment extends BaseAppFragment {
     }
 
 
-    @OnClick({R2.id.iv_quality, R2.id.iv_quit, R2.id.iv_share, R2.id.iv_pen, R2.id.iv_ppt, R2.id.iv_list, R2.id.iv_class, R2.id.iv_chat, R2.id.iv_voice, R2.id.iv_camera, R2.id.iv_rotate, R2.id.iv_menu})
+    @OnClick({R2.id.iv_quality, R2.id.iv_quit, R2.id.iv_share
+            , R2.id.iv_pen, R2.id.iv_ppt, R2.id.iv_list, R2.id.iv_class
+            , R2.id.iv_chat, R2.id.iv_voice, R2.id.iv_camera
+            , R2.id.iv_rotate, R2.id.iv_menu})
     public void onViewClicked(final View view) {
         int i = view.getId();
         if (i == R.id.iv_quit) {
@@ -311,7 +315,14 @@ public class RoomControlFragment extends BaseAppFragment {
                     public void initViews(View view, EasyPopup basePopup) {
                         View arrowView = view.findViewById(R.id.v_arrow);
                         arrowView.setBackground(new TriangleDrawable(TriangleDrawable.BOTTOM, Color.parseColor("#ffffff")));
+
+
+                        initQualityView(view);
+
+
                     }
+
+
                 })
                 .setFocusAndOutsideEnable(true)
                 .apply();
@@ -324,6 +335,50 @@ public class RoomControlFragment extends BaseAppFragment {
         qualityPopup.showAtAnchorView(view, YGravity.ABOVE, XGravity.ALIGN_RIGHT, offsetX, offsetY);
     }
 
+
+    private FrameLayout f_quality1, f_quality2, f_quality3;
+
+    private void initQualityView(View view) {
+
+
+        f_quality1 = view.findViewById(R.id.f_quality1);
+        f_quality2 = view.findViewById(R.id.f_quality2);
+        f_quality3 = view.findViewById(R.id.f_quality3);
+
+        f_quality1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (listener != null) {
+                    listener.onCameraClick(1);
+                    qualityPopup.dismiss();
+                }
+
+            }
+        });
+
+        f_quality2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onCameraClick(2);
+                    qualityPopup.dismiss();
+                }
+            }
+        });
+
+        f_quality3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onCameraClick(3);
+                    qualityPopup.dismiss();
+                }
+            }
+        });
+
+
+    }
 
     //--------------------------------------------------------------------------------分享
     private EasyPopup sharePopu;
@@ -947,7 +1002,7 @@ public class RoomControlFragment extends BaseAppFragment {
 
     private void initCmmtPop() {
         mCmmtPopup = CmmtPopup.create(getActivity())
-
+                .setWidth(WindowManager.LayoutParams.FILL_PARENT)
                 .setOnOkClickListener(new CmmtPopup.MyOkClickListener() {
                     @Override
                     public void onClick(View v, String content) {
@@ -1012,6 +1067,9 @@ public class RoomControlFragment extends BaseAppFragment {
         void onWihteBoradAdd();
 
         void onTeacherCloseClass();
+
+
+        void onQualityClick(int i);
     }
 
 

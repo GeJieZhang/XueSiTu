@@ -31,6 +31,7 @@ import com.user.R;
 import com.user.R2;
 import com.user.bean.ClassBean;
 import com.user.bean.ToLiveBean;
+import com.user.utils.pop.ChoseClassPopupUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +87,13 @@ public class MyClassActivity extends BaseAppActivity {
         userPhone = SharedPreferenceManager.getInstance(this).getUserCache().getUserPhone();
         initTitle();
         homeAdapter = new HomeAdapter(this, mData);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false) {
+
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
         recyclerView.setAdapter(homeAdapter);
         springView.setHeader(new DefaultHeader(this));
         springView.setFooter(new DefaultFooter(this));
@@ -161,7 +168,7 @@ public class MyClassActivity extends BaseAppActivity {
 
                     @Override
                     public void onError(String e) {
-                        if (stateView!=null){
+                        if (stateView != null) {
                             stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
                         }
                     }
@@ -204,7 +211,7 @@ public class MyClassActivity extends BaseAppActivity {
 
             TextView tv_state = holder.getView(R.id.tv_state);
             ImageView iv_sate = holder.getView(R.id.iv_state);
-            Button btn_go_class = holder.getView(R.id.btn_go_class);
+            final Button btn_go_class = holder.getView(R.id.btn_go_class);
             if (identity.equals("1")) {
 
                 //老师
@@ -216,7 +223,7 @@ public class MyClassActivity extends BaseAppActivity {
                 btn_go_class.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        goToClass(mData, position);
+                        goToClass(mData, position, mData.get(position).getId() + "");
                     }
                 });
 
@@ -263,7 +270,28 @@ public class MyClassActivity extends BaseAppActivity {
                         if (mData.get(position).getPay_status() == PAY_STATE_Y) {
 
 
-                            goToClass(mData, position);
+                            if (mData.size() <= 0) {
+                                return;
+                            }
+
+                            if (mData.size() == 1) {
+
+                                //如果只有一个子课程那么直接进入
+
+                                goToClass(mData, position, mData.get(position).getLive_room().get(0).getCourse_id());
+
+                            } else {
+                                //如果有多个那么就弹出一个窗口出来
+                                ChoseClassPopupUtils choseClassPopupUtils = new ChoseClassPopupUtils(MyClassActivity.this);
+                                choseClassPopupUtils.showAnswerPopuPopu(btn_go_class);
+                                choseClassPopupUtils.updateData(mData.get(position).getLive_room());
+                                choseClassPopupUtils.setChoseClassPopupUtilsListener(new ChoseClassPopupUtils.ChoseClassPopupUtilsListener() {
+                                    @Override
+                                    public void onClickId(String classId) {
+                                        goToClass(mData, position, classId);
+                                    }
+                                });
+                            }
 
 
                         } else {
@@ -294,30 +322,16 @@ public class MyClassActivity extends BaseAppActivity {
         }
     }
 
-    private void goToClass(final List<ClassBean.ObjBean.RowsBean> mData, final int position) {
+    private void goToClass(final List<ClassBean.ObjBean.RowsBean> mData, final int position, final String course_id) {
 
 
         PermissionUtil.getInstance(MyClassActivity.this).externalZhiBo(new PermissionUtil.RequestPermission() {
             @Override
             public void onRequestPermissionSuccess() {
-                String course_id = "";
 
 
-                if (identity.equals("1")) {
-                    course_id = mData.get(position).getId() + "";
-                } else {
-
-                    if (mData.get(position).getLive_room().size() > 0) {
-                        course_id = mData.get(position).getLive_room().get(0).getCourse_id();
-                    } else {
-                        return;
-                    }
-
-                }
-
+                //type:0晚陪课，1一对一，2班级课，3体验课
                 //支付了去上课
-
-                final String finalRoomId = course_id;
                 HttpUtils.with(MyClassActivity.this)
                         .addParam("requestType", "TO_CLASS")
                         .addParam("course_type", mData.get(position).getType())
