@@ -64,6 +64,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private String className = "com.lib.ui.activity.kit.BaseActivity";
 
+
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

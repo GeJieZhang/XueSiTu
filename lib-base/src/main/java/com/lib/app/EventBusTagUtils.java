@@ -34,5 +34,9 @@ public class EventBusTagUtils {
      */
     public static final String MyApplication = "MyApplication";
 
+    /**
+     * 去分享圈了解更多
+     */
+    public static final String MyClassDetailActivity = "MyClassDetailActivity";
 
 }

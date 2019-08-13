@@ -122,6 +122,7 @@ public class IMSocketUtils {
             }
 
             handler.postDelayed(runnable, 3000);
+
             if (listener != null) {
                 listener.onClosed();
             }

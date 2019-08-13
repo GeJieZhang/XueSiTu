@@ -17,6 +17,16 @@ public class RoomControlBean {
     private boolean default_menu = true;
     private boolean default_board = true;
     private boolean default_class = true;
+    //画面质量1标清，2高清，3超清
+    private int videoQuality = 1;
+
+    public int getVideoQuality() {
+        return videoQuality;
+    }
+
+    public void setVideoQuality(int videoQuality) {
+        this.videoQuality = videoQuality;
+    }
 
     public String getRoomId() {
         return roomId;
@@ -34,7 +44,6 @@ public class RoomControlBean {
     public void setDefault_board(boolean default_board) {
         this.default_board = default_board;
     }
-
 
 
     public boolean isDefault_voice() {

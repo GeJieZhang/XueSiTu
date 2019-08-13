@@ -647,43 +647,28 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
     /**
      * 初始化直播
      */
+
+    private QNRTCSetting setting;
+
     private void initEngine() {
-        SharedPreferences preferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
-        int videoWidth = preferences.getInt(LiveConfig.WIDTH, DEFAULT_RESOLUTION[1][0]);
-        int videoHeight = preferences.getInt(LiveConfig.HEIGHT, DEFAULT_RESOLUTION[1][1]);
-        int fps = preferences.getInt(LiveConfig.FPS, DEFAULT_FPS[1]);
-        boolean isHwCodec = preferences.getInt(LiveConfig.CODEC_MODE, LiveConfig.HW) == LiveConfig.HW;
-        int videoBitrate = preferences.getInt(LiveConfig.BITRATE, DEFAULT_BITRATE[1]);
-        boolean isMaintainRes = preferences.getBoolean(LiveConfig.MAINTAIN_RES, false);
 
-
-        QNVideoFormat format = new QNVideoFormat(videoWidth, videoHeight, fps);
-        QNRTCSetting setting = new QNRTCSetting();
-        setting.setCameraID(QNRTCSetting.CAMERA_FACING_ID.FRONT)//配置默认摄像头 ID
-                .setHWCodecEnabled(isHwCodec)//是否开启硬编码
-                .setMaintainResolution(isMaintainRes)//设置是否固定分辨率
-                .setVideoBitrate(videoBitrate)
-                .setVideoEncodeFormat(format)//配置视频的编码格式
-                .setVideoPreviewFormat(format);//配置预览的编码格式
+        setQuality();
 
 
         mEngine = QNRTCEngine.createEngine(getApplicationContext(), setting, this);
-
 
 
         localVideoTrack = mEngine.createTrackInfoBuilder()
                 .setSourceType(QNSourceType.VIDEO_CAMERA)
                 .setMaster(true)
                 .create();
+
+
         localAudioTrack = mEngine.createTrackInfoBuilder()
                 .setSourceType(QNSourceType.AUDIO)
                 .setBitrate(64 * 1000)// 设置音频码率
                 .setMaster(true)
                 .create();
-
-//        playingTrack.setUserId();
-//        playingScreenVideoTrack = localVideoTrack;
-//        playingScreenAudioTrack=localAudioTrack;
 
 
         MyTrackInfo myTrackInfo = new MyTrackInfo(userPhone, null, null);
@@ -700,12 +685,66 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
 
     /**
+     * 设置画面质量
+     */
+    private void setQuality() {
+        //是否开启硬编码
+        boolean isHwCodec = false;
+        //设置是否固定分辨率
+        boolean isMaintainRes = false;
+        int videoWidth = DEFAULT_RESOLUTION[1][0];
+        int videoHeight = DEFAULT_RESOLUTION[1][1];
+        int fps = DEFAULT_FPS[1];
+        int videoBitrate = DEFAULT_BITRATE[1];
+
+
+        QNVideoFormat format = new QNVideoFormat(videoWidth, videoHeight, fps);
+        setting = new QNRTCSetting();
+        setting.setCameraID(QNRTCSetting.CAMERA_FACING_ID.FRONT)//配置默认摄像头 ID
+                .setHWCodecEnabled(isHwCodec)//是否开启硬编码
+                .setMaintainResolution(isMaintainRes)//设置是否固定分辨率
+                .setVideoBitrate(videoBitrate)//毕特率
+                .setVideoEncodeFormat(format)//配置视频的编码格式
+                .setVideoPreviewFormat(format);//配置预览的编码格式
+        showLog("视频清晰度配置:" + videoWidth + "-" + videoHeight + "-" + fps + "-" + videoBitrate);
+
+
+    }
+
+
+    private void setTrackQuality(int type) {
+        int videoWidth = DEFAULT_RESOLUTION[type][0];
+        int videoHeight = DEFAULT_RESOLUTION[type][1];
+        int fps = DEFAULT_FPS[type];
+        QNVideoFormat format = new QNVideoFormat(videoWidth, videoHeight, fps);
+
+
+        localVideoTrack = mEngine.createTrackInfoBuilder()
+                .setSourceType(QNSourceType.VIDEO_CAMERA)
+                .setMaster(true)
+                .setVideoPreviewFormat(format)// 配置预览格式
+                .setVideoEncodeFormat(format)// 配置编码格式
+                .create();
+    }
+
+
+    /**
      * 美颜
      */
     private void initBeauty() {
+
+        /**
+         *
+         * bl
+         * whiten 美白
+         * redden 色彩饱和度(红色)
+         *
+         *
+         */
         QNBeautySetting beautySetting = new QNBeautySetting(0.5f, 0.5f, 0.5f);
         beautySetting.setEnable(true);
         mEngine.setBeauty(beautySetting);
+
     }
 
 
@@ -1229,6 +1268,10 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
             updateVideoFragment();
 
+            if (roomControlFragment != null) {
+                roomControlFragment.updateUserInfo();
+            }
+
         }
 
         @Override
@@ -1495,6 +1538,9 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
         @Override
         public void onQualityClick(int i) {
+
+
+            setTrackQuality(i);
 
 
         }

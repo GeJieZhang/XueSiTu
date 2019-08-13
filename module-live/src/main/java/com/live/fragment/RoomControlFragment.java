@@ -79,6 +79,9 @@ public class RoomControlFragment extends BaseAppFragment {
     ImageView ivQuality;
     @BindView(R2.id.f_quality)
     FrameLayout fQuality;
+    @BindView(R2.id.tv_quality)
+    TextView tv_quality;
+
     private String identity = "";
     private String token = "";
 
@@ -130,6 +133,37 @@ public class RoomControlFragment extends BaseAppFragment {
             //学生隐藏
             ivClass.setVisibility(View.GONE);
         }
+
+        int quality = roomControlBean.getVideoQuality();
+
+        switch (quality) {
+
+            case 1: {
+
+                tv_quality.setText("标清");
+
+
+                break;
+            }
+            case 2: {
+
+                tv_quality.setText("高清");
+
+
+                break;
+            }
+            case 3: {
+
+                tv_quality.setText("超清");
+
+
+                break;
+            }
+
+
+        }
+
+
     }
 
     @Override
@@ -350,7 +384,8 @@ public class RoomControlFragment extends BaseAppFragment {
             public void onClick(View v) {
 
                 if (listener != null) {
-                    listener.onCameraClick(1);
+                    listener.onQualityClick(1);
+                    tv_quality.setText("标清");
                     qualityPopup.dismiss();
                 }
 
@@ -361,7 +396,8 @@ public class RoomControlFragment extends BaseAppFragment {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onCameraClick(2);
+                    listener.onQualityClick(2);
+                    tv_quality.setText("高清");
                     qualityPopup.dismiss();
                 }
             }
@@ -371,7 +407,8 @@ public class RoomControlFragment extends BaseAppFragment {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onCameraClick(3);
+                    listener.onQualityClick(3);
+                    tv_quality.setText("超清");
                     qualityPopup.dismiss();
                 }
             }

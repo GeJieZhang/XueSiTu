@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/text_style8"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="小明同学的专属学习计划" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_class_num"
+                style="@style/text_style8"
+                android:layout_width="150dp"
+                android:text="总课时数:50"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_price"
+                style="@style/text_style8"
+                android:layout_weight="1"
+                android:text="课时单价:100兔币"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_discount"
+                style="@style/text_style8"
+                android:layout_width="150dp"
+                android:text="折扣数:0.8"
+                android:textSize="14sp" />
+
+            <TextView
+                style="@style/text_style8"
+                android:layout_weight="1"
+                android:text=""
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_time"
+            style="@style/text_style8"
+            android:layout_marginTop="8dp"
+            android:text="课程时间:"
+            android:textSize="14sp" />
+
+        <View
+            style="@style/line_dotted"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="16dp"></View>
+    </LinearLayout>
+</LinearLayout>

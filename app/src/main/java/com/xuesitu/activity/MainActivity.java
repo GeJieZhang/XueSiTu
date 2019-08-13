@@ -493,10 +493,34 @@ public class MainActivity extends BaseAppActivity {
 
                 //Token失效
                 SharedPreferenceManager.getInstance(this).getUserCache().setUserToken("");
-                ARouter.getInstance().build(ARouterPathUtils.User_LoginActivity).navigation();
+
+                showToast("Token失效请重新登录!");
 
 
-                //showToast("Token失效请重新登录!");
+                break;
+            }
+
+        }
+
+
+    }
+
+    /**
+     * 去分享圈了解更多
+     *
+     * @param event
+     */
+    @Subscriber(tag = EventBusTagUtils.MyClassDetailActivity)
+    public void fromMyClassDetailActivity(Event event) {
+
+        switch (event.getEventCode()) {
+
+            case 1: {
+
+
+                mViewPager.setCurrentItem(4);
+                initSelected(4);
+                homeBar.setViewType(HomeNavigationBar.YOU_FENG_XIANG);
 
 
                 break;
