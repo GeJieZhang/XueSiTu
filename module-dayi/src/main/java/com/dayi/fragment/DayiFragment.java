@@ -15,9 +15,11 @@ import com.bumptech.glide.Glide;
 import com.dayi.R;
 import com.dayi.R2;
 import com.dayi.bean.DayiBean;
+import com.dayi.bean.ToLiveBeanDaYi;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
 import com.lib.bean.CustomData;
+import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.fastkit.views.load_state_view.MultiStateView;
@@ -27,6 +29,7 @@ import com.lib.fastkit.views.spring_refresh.container.DefaultHeader;
 import com.lib.fastkit.views.spring_refresh.widget.SpringView;
 import com.lib.framework.component.interceptor.GroupUtils;
 import com.lib.html.HtmlPathUtils;
+import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.fragment.BaseAppFragment;
 import com.lib.utls.glide.GlideConfig;
@@ -213,6 +216,12 @@ public class DayiFragment extends BaseAppFragment {
 
     }
 
+
+    /**
+     * 公开课
+     *
+     * @param getPublic_class_list
+     */
     private void initPublicClass(List<DayiBean.ObjBean.PublicClassListBean> getPublic_class_list) {
         linVideo.removeAllViews();
         for (DayiBean.ObjBean.PublicClassListBean publicClassListBean : getPublic_class_list) {
@@ -233,7 +242,13 @@ public class DayiFragment extends BaseAppFragment {
 
     }
 
-    private void initPublicClassBanner(List<DayiBean.ObjBean.PublicClassCarouselBean> getPublic_class_carousel) {
+
+    /**
+     * 公开课轮播
+     *
+     * @param getPublic_class_carousel
+     */
+    private void initPublicClassBanner(final List<DayiBean.ObjBean.PublicClassCarouselBean> getPublic_class_carousel) {
         mListClass.clear();
         for (DayiBean.ObjBean.PublicClassCarouselBean publicClassCarouselBean : getPublic_class_carousel) {
             CustomData customData = new CustomData(publicClassCarouselBean.getCover_url(), publicClassCarouselBean.getCover_url(), "", false);
@@ -248,15 +263,66 @@ public class DayiFragment extends BaseAppFragment {
             @Override
             public void onBannerClick(int positon) {
 
-                ARouter.getInstance().build(ARouterPathUtils.Live_MainRoomActivity)
-                        .withString("roomToken", "3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:fT7BJlMqOHm_hR5b-JVArZR-n3I=:eyJhcHBJZCI6ImU5Yzd1d3RjdCIsInJvb21OYW1lIjoib3RvXzIiLCJ1c2VySWQiOiIxMzk4MDAwNDU4MCIsImV4cGlyZUF0IjoxNTY1NTc0NjkzLCJwZXJtaXNzaW9uIjoiYWRtaW4ifQ==")
-                        .withString("teacherPhone", "13980004580")
-                        .withString("roomName", "oto_2")
-                        .withString("userPhone", "13980004580")
-                        .withString("uuid", "1bc3f1ab8a834c0781d72f0165779bb3")
-                        .withString("whitetoken", "WHITEcGFydG5lcl9pZD11QjFvMVhqUjNZa2RxaFpxMWNHTjlNbktBcGNudEtSRWFzNGwmc2lnPWFhODQ4MTdhZGZiYjE3ZWQ4YzE5YmNhOGYyOTFkNmE0ZTUyMWNmMjQ6YWRtaW5JZD0yNzEmcm9vbUlkPTFiYzNmMWFiOGE4MzRjMDc4MWQ3MmYwMTY1Nzc5YmIzJnRlYW1JZD0zOTYmcm9sZT1yb29tJmV4cGlyZV90aW1lPTE1OTY4NzI0NDMmYWs9dUIxbzFYalIzWWtkcWhacTFjR045TW5LQXBjbnRLUkVhczRsJmNyZWF0ZV90aW1lPTE1NjUzMTU0OTEmbm9uY2U9MTU2NTMxNTQ5MDg5NzAw")
-                        .navigation();
+                goToClass(getPublic_class_carousel.get(positon).getCourse_type() + "", getPublic_class_carousel.get(positon).getCourse_id() + "");
 
+
+            }
+        });
+
+    }
+
+
+    private void goToClass(final String course_type, final String course_id) {
+
+
+        PermissionUtil.getInstance(getActivity()).externalZhiBo(new PermissionUtil.RequestPermission() {
+            @Override
+            public void onRequestPermissionSuccess() {
+
+
+                //type:0晚陪课，1一对一，2班级课，3体验课
+                //支付了去上课
+                HttpUtils.with(getContext())
+                        .addParam("requestType", "TO_CLASS")
+                        .addParam("course_type", course_type)
+                        .addParam("course_id", course_id)
+                        .addParam("token", SharedPreferenceManager.getInstance(getContext()).getUserCache().getUserToken())
+                        .execute(new HttpDialogCallBack<ToLiveBeanDaYi>() {
+                            @Override
+                            public void onSuccess(final ToLiveBeanDaYi result) {
+
+                                if (result.getCode() == CodeUtil.CODE_200) {
+
+
+                                    String roomToken = result.getObj().getRoomtoken();
+                                    String teacherPhone = result.getObj().getPhoen();
+                                    ARouter.getInstance().build(ARouterPathUtils.Live_MainRoomActivity)
+                                            .withString("roomToken", roomToken)
+                                            .withString("teacherPhone", teacherPhone)
+                                            .withString("roomName", result.getObj().getRoomname())
+                                            .withString("userPhone", SharedPreferenceManager.getInstance(getContext()).getUserCache().getUserPhone())
+                                            .withString("uuid", result.getObj().getUuid())
+                                            .withString("whitetoken", result.getObj().getWhitetoken())
+                                            .navigation();
+
+
+                                } else {
+                                    showToast(result.getMsg());
+                                }
+
+                            }
+
+                            @Override
+                            public void onError(String e) {
+
+                            }
+                        });
+
+
+            }
+
+            @Override
+            public void onRequestPermissionFailure() {
 
             }
         });
@@ -366,10 +432,7 @@ public class DayiFragment extends BaseAppFragment {
         root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = publicClassListBean.getCover_url();
-                ARouter.getInstance().build(ARouterPathUtils.Dayi_DayiNormalDetailWebActivity)
-                        .withString("urlPath", url)
-                        .navigation();
+                goToClass(publicClassListBean.getCourse_type() + "", publicClassListBean.getCourse_id() + "");
             }
         });
 

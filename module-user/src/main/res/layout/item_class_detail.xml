@@ -9,7 +9,8 @@
         style="@style/text_style8"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        android:text="小明同学的专属学习计划" />
+        android:text="小明同学的专属学习计划"
+        android:textStyle="bold" />
 
 
     <LinearLayout

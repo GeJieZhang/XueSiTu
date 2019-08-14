@@ -1,7 +1,8 @@
 package com.user.activity;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,6 +52,9 @@ public class MyClassDetailActivity extends BaseAppActivity {
     @BindView(R2.id.btn_share)
     Button btnShare;
 
+    @BindView(R2.id.btn_pay)
+    Button btnPay;
+
     @BindView(R2.id.rv)
     RecyclerView rv;
 
@@ -70,7 +74,7 @@ public class MyClassDetailActivity extends BaseAppActivity {
     }
 
     private HomeAdapter homeAdapter;
-    private List<ClassDetailBean.ObjBean> list = new ArrayList<>();
+    private List<ClassDetailBean.ObjBean.CourseListBean> list = new ArrayList<>();
 
     private void initView() {
         homeAdapter = new HomeAdapter(this, list);
@@ -85,6 +89,8 @@ public class MyClassDetailActivity extends BaseAppActivity {
         rv.setAdapter(homeAdapter);
     }
 
+    private ClassDetailBean classDetailBean;
+
     private void initData() {
         HttpUtils.with(this)
                 .addParam("requestType", "ORDER_QUERY_DETAIL")
@@ -96,9 +102,16 @@ public class MyClassDetailActivity extends BaseAppActivity {
                     public void onSuccess(ClassDetailBean result) {
 
                         if (result.getCode() == CodeUtil.CODE_200) {
+                            classDetailBean = result;
                             list.clear();
-                            list.addAll(result.getObj());
+                            list.addAll(result.getObj().getCourse_list());
                             homeAdapter.notifyDataSetChanged();
+
+                            tvOrder.setText("订单号:" + result.getObj().getOrder_id());
+
+                            btnPay.setText("已付:" + result.getObj().getTotal_price() + "兔币");
+
+
                         }
 
 
@@ -141,10 +154,26 @@ public class MyClassDetailActivity extends BaseAppActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R2.id.tv_order, R2.id.btn_share})
+    @OnClick({R2.id.btn_ttk, R2.id.tv_rule, R2.id.c_service, R2.id.c_news, R2.id.btn_share})
     public void onViewClicked(View view) {
         int i = view.getId();
-        if (i == R.id.tv_order) {
+        if (i == R.id.btn_ttk) {
+
+        } else if (i == R.id.tv_rule) {
+
+            ARouter.getInstance().build(ARouterPathUtils.User_UserNormalDetailWebActivity)
+                    .withString("urlPath", classDetailBean.getObj().getTk_protocol_link())
+                    .navigation();
+
+        } else if (i == R.id.c_service) {
+
+            requestCallPhone();
+
+
+        } else if (i == R.id.c_news) {
+            ARouter.getInstance().build(ARouterPathUtils.User_UserNormalDetailWebActivity)
+                    .withString("urlPath", classDetailBean.getObj().getArticle_list_link())
+                    .navigation();
         } else if (i == R.id.btn_share) {
             ActivityCollector.getInstance().jumpToStackBottomActivity("com.xuesitu.activity.MainActivity");
 
@@ -153,9 +182,32 @@ public class MyClassDetailActivity extends BaseAppActivity {
     }
 
 
-    private class HomeAdapter extends BaseAdapter<ClassDetailBean.ObjBean> {
+    /**
+     * 拨打电话
+     */
+    private void requestCallPhone() {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Uri data = Uri.parse("tel:" + classDetailBean.getObj().getService_hotline());
+        intent.setData(data);
+        startActivity(intent);
 
-        public HomeAdapter(Context context, List<ClassDetailBean.ObjBean> mData) {
+    }
+
+//    @OnClick({R2.id.tv_order, R2.id.btn_share})
+//    public void onViewClicked(View view) {
+//        int i = view.getId();
+//        if (i == R.id.tv_order) {
+//        } else if (i == R.id.btn_share) {
+//            ActivityCollector.getInstance().jumpToStackBottomActivity("com.xuesitu.activity.MainActivity");
+//
+//            EventBus.getDefault().post(new Event<String>(1, "Token失效！"), EventBusTagUtils.MyClassDetailActivity);
+//        }
+//    }
+
+
+    private class HomeAdapter extends BaseAdapter<ClassDetailBean.ObjBean.CourseListBean> {
+
+        public HomeAdapter(Context context, List<ClassDetailBean.ObjBean.CourseListBean> mData) {
             super(context, mData);
         }
 
@@ -165,17 +217,52 @@ public class MyClassDetailActivity extends BaseAppActivity {
         }
 
         @Override
-        protected void toBindViewHolder(ViewHolder holder, int position, List<ClassDetailBean.ObjBean> mData) {
+        protected void toBindViewHolder(ViewHolder holder, int position, List<ClassDetailBean.ObjBean.CourseListBean> mData) {
 
 
             holder.setText(R.id.tv_title, mData.get(position).getCourse_name());
 
-            holder.setText(R.id.tv_class_num, "课时总数:" + mData.get(position).getTotal_class());
+            TextView tv_class_num = holder.getView(R.id.tv_class_num);
+            TextView tv_price = holder.getView(R.id.tv_price);
+            TextView tv_discount = holder.getView(R.id.tv_discount);
+            TextView tv_time = holder.getView(R.id.tv_time);
+            tv_class_num.setVisibility(View.VISIBLE);
+            tv_price.setVisibility(View.VISIBLE);
+            tv_discount.setVisibility(View.VISIBLE);
+            tv_time.setVisibility(View.VISIBLE);
 
-            holder.setText(R.id.tv_price, "课时单价:" + mData.get(position).getTotal_price() + "兔币");
+            String totalClass = mData.get(position).getTotal_class() + "";
 
-            holder.setText(R.id.tv_discount, "折扣数:" + mData.get(position).getDiscount());
-            holder.setText(R.id.tv_time, "课程时间:" + mData.get(position).getClass_time());
+            String price = mData.get(position).getPrice() + "";
+
+            String discount = mData.get(position).getDiscount() + "";
+
+            String classTime = mData.get(position).getClass_time() + "";
+
+            if (totalClass.equals("")) {
+                tv_class_num.setVisibility(View.GONE);
+            }
+
+            if (price.equals("")) {
+                tv_price.setVisibility(View.GONE);
+            }
+
+            if (discount.equals("")) {
+                tv_discount.setVisibility(View.GONE);
+            }
+
+            if (tv_time.equals("")) {
+                tv_time.setVisibility(View.GONE);
+            }
+
+
+            tv_class_num.setText("课时总数:" + totalClass);
+
+            tv_price.setText("课时单价:" + price + "兔币");
+
+            tv_discount.setText("折扣数:" + discount);
+
+            tv_time.setText("课程时间:" + classTime);
 
         }
     }

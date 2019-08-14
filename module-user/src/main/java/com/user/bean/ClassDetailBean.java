@@ -7,15 +7,15 @@ public class ClassDetailBean {
 
     /**
      * code : 200
-     * obj : [{"course_name":"三年级数学","order_id":"","total_class":100,"price":20,"discount":"0.8","gift":"","pay_status":"","total_price":1600,"class_time":"2019-06-26 09:00:00 - 10:00:00"}]
+     * obj : {"service_hotline":"400-6534-789","pay_status":1,"total_price":1200,"article_list_link":"http://192.168.0.10:88/article/article_list.html?sc=","course_list":[{"course_name":"一年级语文精品提升班","total_class":120,"price":20,"discount":"0.5","class_time":"2019-07-20 08:00:00 - 09:00:00"}],"order_id":"","tk_protocol_link":"http://192.168.0.10:88/agreement.html?mark=tk_protocol"}
      * msg : 请求成功
      * seccess : true
      */
 
     private int code;
+    private ObjBean obj;
     private String msg;
     private boolean seccess;
-    private List<ObjBean> obj;
 
     public int getCode() {
         return code;
@@ -23,6 +23,14 @@ public class ClassDetailBean {
 
     public void setCode(int code) {
         this.code = code;
+    }
+
+    public ObjBean getObj() {
+        return obj;
+    }
+
+    public void setObj(ObjBean obj) {
+        this.obj = obj;
     }
 
     public String getMsg() {
@@ -41,43 +49,55 @@ public class ClassDetailBean {
         this.seccess = seccess;
     }
 
-    public List<ObjBean> getObj() {
-        return obj;
-    }
-
-    public void setObj(List<ObjBean> obj) {
-        this.obj = obj;
-    }
-
     public static class ObjBean {
         /**
-         * course_name : 三年级数学
+         * service_hotline : 400-6534-789
+         * pay_status : 1
+         * total_price : 1200.0
+         * article_list_link : http://192.168.0.10:88/article/article_list.html?sc=
+         * course_list : [{"course_name":"一年级语文精品提升班","total_class":120,"price":20,"discount":"0.5","class_time":"2019-07-20 08:00:00 - 09:00:00"}]
          * order_id :
-         * total_class : 100
-         * price : 20
-         * discount : 0.8
-         * gift :
-         * pay_status :
-         * total_price : 1600
-         * class_time : 2019-06-26 09:00:00 - 10:00:00
+         * tk_protocol_link : http://192.168.0.10:88/agreement.html?mark=tk_protocol
          */
 
-        private String course_name;
+        private String service_hotline;
+        private int pay_status;
+        private double total_price;
+        private String article_list_link;
         private String order_id;
-        private int total_class;
-        private int price;
-        private String discount;
-        private String gift;
-        private String pay_status;
-        private int total_price;
-        private String class_time;
+        private String tk_protocol_link;
+        private List<CourseListBean> course_list;
 
-        public String getCourse_name() {
-            return course_name;
+        public String getService_hotline() {
+            return service_hotline;
         }
 
-        public void setCourse_name(String course_name) {
-            this.course_name = course_name;
+        public void setService_hotline(String service_hotline) {
+            this.service_hotline = service_hotline;
+        }
+
+        public int getPay_status() {
+            return pay_status;
+        }
+
+        public void setPay_status(int pay_status) {
+            this.pay_status = pay_status;
+        }
+
+        public double getTotal_price() {
+            return total_price;
+        }
+
+        public void setTotal_price(double total_price) {
+            this.total_price = total_price;
+        }
+
+        public String getArticle_list_link() {
+            return article_list_link;
+        }
+
+        public void setArticle_list_link(String article_list_link) {
+            this.article_list_link = article_list_link;
         }
 
         public String getOrder_id() {
@@ -88,60 +108,76 @@ public class ClassDetailBean {
             this.order_id = order_id;
         }
 
-        public int getTotal_class() {
-            return total_class;
+        public String getTk_protocol_link() {
+            return tk_protocol_link;
         }
 
-        public void setTotal_class(int total_class) {
-            this.total_class = total_class;
+        public void setTk_protocol_link(String tk_protocol_link) {
+            this.tk_protocol_link = tk_protocol_link;
         }
 
-        public int getPrice() {
-            return price;
+        public List<CourseListBean> getCourse_list() {
+            return course_list;
         }
 
-        public void setPrice(int price) {
-            this.price = price;
+        public void setCourse_list(List<CourseListBean> course_list) {
+            this.course_list = course_list;
         }
 
-        public String getDiscount() {
-            return discount;
-        }
+        public static class CourseListBean {
+            /**
+             * course_name : 一年级语文精品提升班
+             * total_class : 120
+             * price : 20.0
+             * discount : 0.5
+             * class_time : 2019-07-20 08:00:00 - 09:00:00
+             */
 
-        public void setDiscount(String discount) {
-            this.discount = discount;
-        }
+            private String course_name;
+            private int total_class;
+            private double price;
+            private String discount;
+            private String class_time;
 
-        public String getGift() {
-            return gift;
-        }
+            public String getCourse_name() {
+                return course_name;
+            }
 
-        public void setGift(String gift) {
-            this.gift = gift;
-        }
+            public void setCourse_name(String course_name) {
+                this.course_name = course_name;
+            }
 
-        public String getPay_status() {
-            return pay_status;
-        }
+            public int getTotal_class() {
+                return total_class;
+            }
 
-        public void setPay_status(String pay_status) {
-            this.pay_status = pay_status;
-        }
+            public void setTotal_class(int total_class) {
+                this.total_class = total_class;
+            }
 
-        public int getTotal_price() {
-            return total_price;
-        }
+            public double getPrice() {
+                return price;
+            }
 
-        public void setTotal_price(int total_price) {
-            this.total_price = total_price;
-        }
+            public void setPrice(double price) {
+                this.price = price;
+            }
 
-        public String getClass_time() {
-            return class_time;
-        }
+            public String getDiscount() {
+                return discount;
+            }
 
-        public void setClass_time(String class_time) {
-            this.class_time = class_time;
+            public void setDiscount(String discount) {
+                this.discount = discount;
+            }
+
+            public String getClass_time() {
+                return class_time;
+            }
+
+            public void setClass_time(String class_time) {
+                this.class_time = class_time;
+            }
         }
     }
 }

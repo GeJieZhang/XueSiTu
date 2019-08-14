@@ -53,6 +53,8 @@ public class ARouterPathUtils {
 
     public static final String User_MessageDetailActivity = "/user/MessageDetailActivity";
 
+    public static final String User_UserNormalDetailWebActivity = "/user/UserNormalDetailWebActivity";
+
     //==============================================================================================
     //======================================================================================live====
     //==============================================================================================

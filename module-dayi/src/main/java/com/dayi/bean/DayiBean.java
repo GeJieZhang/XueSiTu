@@ -251,6 +251,25 @@ public class DayiBean {
             private String cover_url;
             private String title;
 
+            private int course_id;
+            private int course_type;
+
+            public int getCourse_id() {
+                return course_id;
+            }
+
+            public void setCourse_id(int course_id) {
+                this.course_id = course_id;
+            }
+
+            public int getCourse_type() {
+                return course_type;
+            }
+
+            public void setCourse_type(int course_type) {
+                this.course_type = course_type;
+            }
+
             public String getCover_url() {
                 return cover_url;
             }
@@ -276,7 +295,25 @@ public class DayiBean {
 
             private String cover_url;
             private String title;
+            private int course_id;
 
+            public int getCourse_id() {
+                return course_id;
+            }
+
+            public void setCourse_id(int course_id) {
+                this.course_id = course_id;
+            }
+
+            public int getCourse_type() {
+                return course_type;
+            }
+
+            public void setCourse_type(int course_type) {
+                this.course_type = course_type;
+            }
+
+            private int course_type;
             public String getCover_url() {
                 return cover_url;
             }

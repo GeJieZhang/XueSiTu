@@ -66,7 +66,7 @@ public class HomeNavigationBar extends FrameLayout {
         iv_message.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new Event<>(1, "打开消息列表"), EventBusTagUtils.HomeNavigationBar);
+                EventBus.getDefault().post(new Event<>(2, "打开消息列表"), EventBusTagUtils.HomeNavigationBar);
             }
         });
 

@@ -96,55 +96,13 @@ public class ActivityCollector {
     public void jumpToStackBottomActivity(String packageName) {
 
 
-//        for (int i = 0, size = activityStack.size(); i < size; i++) {
-//            if (null != activityStack.get(i) && !activityStack.get(i).getClass().getName().equals(packageName)) {
-//                activityStack.get(i).finish();
-//
-//            }
-//        }
-
-
-//        for (Activity activity : activityStack) {
-//
-//
-//            if (null != activity) {
-//
-//                if (!activity.getClass().getName().equals(packageName)) {
-//                    activity.finish();
-//                    activityStack.remove(activity);
-//                } else {
-//                    //break;
-//                }
-//
-//            }
-//
-//        }
-
-//        Iterator<Activity> iterator = activityStack.iterator();
-//        while (iterator.hasNext()) {
-//            Activity activity = iterator.next();
-//            if (null != activity) {
-//
-//                if (!activity.getClass().getName().equals(packageName)) {
-//                    activity.finish();
-//                    iterator.remove();
-//                } else {
-//                    break;
-//                }
-//
-//            }
-//        }
-
-
         for (Iterator<Activity> ite = activityStack.iterator(); ite.hasNext(); ) {
             Activity activity = ite.next();
             if (null != activity) {
 
                 if (!activity.getClass().getName().equals(packageName)) {
                     activity.finish();
-                    //ite.remove();
-                } else {
-                    break;
+
                 }
 
             }

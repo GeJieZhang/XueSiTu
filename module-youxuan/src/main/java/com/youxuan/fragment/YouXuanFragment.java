@@ -157,7 +157,7 @@ public class YouXuanFragment extends BaseAppFragment {
 
                     @Override
                     public void onError(String e) {
-                        if (stateView!=null){
+                        if (stateView != null) {
                             stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
                         }
                     }
@@ -208,9 +208,6 @@ public class YouXuanFragment extends BaseAppFragment {
         }
 
         initBannerView();
-
-
-
 
 
     }
@@ -265,7 +262,7 @@ public class YouXuanFragment extends BaseAppFragment {
     }
 
     private void initBannerView() {
-        myBanner.setupdateData(mList,MyBannerView.TYPE_CIRCLE);
+        myBanner.setupdateData(mList, MyBannerView.TYPE_CIRCLE);
 
         myBanner.setMyBannerViewListener(new MyBannerView.MyBannerViewListener() {
             @Override
@@ -275,8 +272,6 @@ public class YouXuanFragment extends BaseAppFragment {
         });
 
     }
-
-
 
 
     @Override
@@ -289,7 +284,7 @@ public class YouXuanFragment extends BaseAppFragment {
     private List<YouXuanBean.ObjBean.OtoCourseBean> otoList = new ArrayList<>();
 
 
-    @OnClick({R2.id.iv_more1, R2.id.iv_more2, R2.id.iv_more3})
+    @OnClick({R2.id.iv_more1, R2.id.iv_more2, R2.id.iv_more3, R2.id.tv_more})
     public void onViewClicked(View view) {
         int i = view.getId();
         if (i == R.id.iv_more1) {
@@ -319,7 +314,16 @@ public class YouXuanFragment extends BaseAppFragment {
                         .navigation();
 
             }
+        } else if (i == R.id.tv_more) {
+            if (youXuanBeans != null) {
+                String url = youXuanBeans.getObj().getLink().getOtm_more_course();
+                ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+                        .withString("urlPath", url)
+                        .navigation();
+
+            }
         }
+
     }
 
     class HomeAdapter extends BaseAdapter<YouXuanBean.ObjBean.OtoCourseBean> {
@@ -572,8 +576,6 @@ public class YouXuanFragment extends BaseAppFragment {
         }
 
     }
-
-
 
 
     private Handler handler = new Handler();
