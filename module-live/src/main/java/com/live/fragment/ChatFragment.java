@@ -33,6 +33,7 @@ import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.ui.fragment.BaseAppFragment;
 import com.lib.utls.glide.GlideConfig;
+import com.lib.utls.pop.SmallZoomImagePopupUtils;
 import com.lib.utls.upload.QiNiuUploadTask;
 import com.lib.utls.upload.initerface.FileUploadListener;
 import com.live.R;
@@ -381,12 +382,12 @@ public class ChatFragment extends BaseAppFragment {
         protected void toBindViewHolder(final ViewHolder holder, int position, List<IMBean> mData) {
 
 
-            ImageView iv_image = holder.getView(R.id.iv_image);
+            final ImageView iv_image = holder.getView(R.id.iv_image);
 
             ImageView iv_head = holder.getView(R.id.iv_head);
 
 
-            IMBean.ObjectBean objectBean = mData.get(position).getObject();
+            final IMBean.ObjectBean objectBean = mData.get(position).getObject();
             int messageType = objectBean.getType();
             if (messageType == MESSAGE_TYPE1) {
                 //纯文本
@@ -437,6 +438,21 @@ public class ChatFragment extends BaseAppFragment {
 //                    String mapValue = entry.getValue();
 //
 //                }
+
+
+                iv_image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if (objectBean.getMessage() != null && !objectBean.getMessage().equals("")) {
+                            SmallZoomImagePopupUtils smallZoomImagePopupUtils = new SmallZoomImagePopupUtils(getContext());
+
+                            smallZoomImagePopupUtils.setZoomImage(objectBean.getMessage());
+                            smallZoomImagePopupUtils.showAnswerPopuPopu(iv_image);
+                        }
+
+                    }
+                });
 
 
             }

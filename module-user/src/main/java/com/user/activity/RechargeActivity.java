@@ -18,6 +18,7 @@ import com.lib.ui.adapter.BaseAdapter;
 import com.lib.view.navigationbar.NomalNavigationBar;
 import com.user.R;
 import com.user.R2;
+import com.user.utils.pop.WriteMoneyNumUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,6 +114,9 @@ public class RechargeActivity extends BaseAppActivity {
         ButterKnife.bind(this);
     }
 
+    //手动输入的充值金额
+    private int moneyWrite = 0;
+
     public class HomeAdapter extends BaseAdapter<Integer> {
 
         public HomeAdapter(Context context, List<Integer> mData) {
@@ -129,7 +133,10 @@ public class RechargeActivity extends BaseAppActivity {
 
             final View view = holder.getView(R.id.v_bg);
             final TextView textView = holder.getView(R.id.tv_tb);
-            holder.getView(R.id.btn_song).setVisibility(View.VISIBLE);
+
+            final Button btn_song = holder.getView(R.id.btn_song);
+
+
             textViewList.add(textView);
             viewList.add(view);
             holder.getView(R.id.lin_content).setOnClickListener(new View.OnClickListener() {
@@ -140,6 +147,17 @@ public class RechargeActivity extends BaseAppActivity {
                     view.setBackgroundResource(R.drawable.bg_part_circle4_select);
                     textView.setTextColor(getResources().getColor(R.color.white));
 
+                    WriteMoneyNumUtils writeMoneyNumUtils = new WriteMoneyNumUtils(RechargeActivity.this);
+                    writeMoneyNumUtils.setWriteMoneyNumUtilsListener(new WriteMoneyNumUtils.WriteMoneyNumUtilsListener() {
+                        @Override
+                        public void onMumberSure(int num) {
+                            moneyWrite = num;
+                            textView.setText(num + "兔币");
+                        }
+                    });
+                    writeMoneyNumUtils.showAnswerPopuPopu(view);
+                    writeMoneyNumUtils.setEt_num(moneyWrite);
+
                 }
 
 
@@ -148,9 +166,11 @@ public class RechargeActivity extends BaseAppActivity {
             if (position == mData.size() - 1) {
 
 
-                holder.getView(R.id.btn_song).setVisibility(View.INVISIBLE);
-
+                btn_song.setVisibility(View.INVISIBLE);
                 textView.setText("手动输入");
+            } else {
+                btn_song.setVisibility(View.VISIBLE);
+                btn_song.setText("送100兔币");
             }
 
         }

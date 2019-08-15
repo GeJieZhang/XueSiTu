@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -54,6 +55,9 @@ public class LoginActivity extends BaseAppActivity {
     @BindView(R2.id.checkBox)
     CheckBox checkBox;
 
+    @BindView(R2.id.iv_delete)
+    ImageView ivDelete;
+
     @Override
     protected void onCreateView() {
 
@@ -88,7 +92,7 @@ public class LoginActivity extends BaseAppActivity {
     };
 
 
-    @OnClick({R2.id.btn_code, R2.id.btn_login, R2.id.tv_xieyi})
+    @OnClick({R2.id.btn_code, R2.id.btn_login, R2.id.tv_xieyi, R2.id.iv_delete})
     public void onViewClicked(View view) {
         int i = view.getId();
         if (i == R.id.btn_code) {
@@ -109,6 +113,8 @@ public class LoginActivity extends BaseAppActivity {
             //ARouter.getInstance().build(ARouterPathUtils.User_XieyiActivity).navigation();
             showXieYi();
 
+        } else if (i == R.id.iv_delete) {
+            etphone.setText("");
         }
     }
 
@@ -349,7 +355,6 @@ public class LoginActivity extends BaseAppActivity {
 
 
     }
-
 
 
 }

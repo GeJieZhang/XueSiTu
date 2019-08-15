@@ -26,6 +26,8 @@ import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.ui.adapter.BaseAdapter;
+import com.lib.utls.live.ToClassUtils;
+import com.lib.utls.pop.LiveCheckMoneyPopupUtils;
 import com.lib.view.navigationbar.NomalNavigationBar;
 import com.user.R;
 import com.user.R2;
@@ -223,7 +225,9 @@ public class MyClassActivity extends BaseAppActivity {
                 btn_go_class.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        goToClass(mData, position, mData.get(position).getId() + "");
+
+
+                        ToClassUtils.getInstance(MyClassActivity.this).goToClass(mData.get(position).getType() + "", mData.get(position).getId() + "");
                     }
                 });
 
@@ -278,8 +282,8 @@ public class MyClassActivity extends BaseAppActivity {
 
                                 //如果只有一个子课程那么直接进入
 
-                                goToClass(mData, position, mData.get(position).getLive_room().get(0).getCourse_id());
-
+                                //goToClass(mData, position, mData.get(position).getLive_room().get(0).getCourse_id());
+                                ToClassUtils.getInstance(MyClassActivity.this).goToClass(mData.get(position).getType() + "", mData.get(position).getLive_room().get(0).getCourse_id());
                             } else {
                                 //如果有多个那么就弹出一个窗口出来
                                 ChoseClassPopupUtils choseClassPopupUtils = new ChoseClassPopupUtils(MyClassActivity.this);
@@ -288,7 +292,12 @@ public class MyClassActivity extends BaseAppActivity {
                                 choseClassPopupUtils.setChoseClassPopupUtilsListener(new ChoseClassPopupUtils.ChoseClassPopupUtilsListener() {
                                     @Override
                                     public void onClickId(String classId) {
-                                        goToClass(mData, position, classId);
+
+
+                                        // goToClass(mData, position, classId);
+
+
+                                        ToClassUtils.getInstance(MyClassActivity.this).goToClass(mData.get(position).getType() + "", classId);
                                     }
                                 });
                             }
@@ -322,63 +331,66 @@ public class MyClassActivity extends BaseAppActivity {
         }
     }
 
-    private void goToClass(final List<ClassBean.ObjBean.RowsBean> mData, final int position, final String course_id) {
-
-
-        PermissionUtil.getInstance(MyClassActivity.this).externalZhiBo(new PermissionUtil.RequestPermission() {
-            @Override
-            public void onRequestPermissionSuccess() {
-
-
-                //type:0晚陪课，1一对一，2班级课，3体验课
-                //支付了去上课
-                HttpUtils.with(MyClassActivity.this)
-                        .addParam("requestType", "TO_CLASS")
-                        .addParam("course_type", mData.get(position).getType())
-                        .addParam("course_id", course_id)
-                        .addParam("token", token)
-                        .execute(new HttpDialogCallBack<ToLiveBean>() {
-                            @Override
-                            public void onSuccess(final ToLiveBean result) {
-
-                                if (result.getCode() == CodeUtil.CODE_200) {
-
-
-                                    String roomToken = result.getObj().getRoomtoken();
-                                    String teacherPhone = result.getObj().getPhoen();
-                                    ARouter.getInstance().build(ARouterPathUtils.Live_MainRoomActivity)
-                                            .withString("roomToken", roomToken)
-                                            .withString("teacherPhone", teacherPhone)
-                                            .withString("roomName", result.getObj().getRoomname())
-                                            .withString("userPhone", userPhone)
-                                            .withString("uuid", result.getObj().getUuid())
-                                            .withString("whitetoken", result.getObj().getWhitetoken())
-
-                                            .navigation();
-
-
-                                } else {
-                                    showToast(result.getMsg());
-                                }
-
-                            }
-
-                            @Override
-                            public void onError(String e) {
-
-                            }
-                        });
-
-
-            }
-
-            @Override
-            public void onRequestPermissionFailure() {
-
-            }
-        });
-
-    }
+//    private void goToClass(final List<ClassBean.ObjBean.RowsBean> mData, final int position, final String course_id) {
+//
+//
+//        PermissionUtil.getInstance(MyClassActivity.this).externalZhiBo(new PermissionUtil.RequestPermission() {
+//            @Override
+//            public void onRequestPermissionSuccess() {
+//
+//
+//                //type:0晚陪课，1一对一，2班级课，3体验课
+//                //支付了去上课
+//                HttpUtils.with(MyClassActivity.this)
+//                        .addParam("requestType", "TO_CLASS")
+//                        .addParam("course_type", mData.get(position).getType())
+//                        .addParam("course_id", course_id)
+//                        .addParam("token", token)
+//                        .execute(new HttpDialogCallBack<ToLiveBean>() {
+//                            @Override
+//                            public void onSuccess(final ToLiveBean result) {
+//
+//                                if (result.getCode() == CodeUtil.CODE_200) {
+//
+//
+//
+//
+//
+//                                    String roomToken = result.getObj().getRoomtoken();
+//                                    String teacherPhone = result.getObj().getPhoen();
+//                                    ARouter.getInstance().build(ARouterPathUtils.Live_MainRoomActivity)
+//                                            .withString("roomToken", roomToken)
+//                                            .withString("teacherPhone", teacherPhone)
+//                                            .withString("roomName", result.getObj().getRoomname())
+//                                            .withString("userPhone", userPhone)
+//                                            .withString("uuid", result.getObj().getUuid())
+//                                            .withString("whitetoken", result.getObj().getWhitetoken())
+//
+//                                            .navigation();
+//
+//
+//                                } else {
+//                                    showToast(result.getMsg());
+//                                }
+//
+//                            }
+//
+//                            @Override
+//                            public void onError(String e) {
+//
+//                            }
+//                        });
+//
+//
+//            }
+//
+//            @Override
+//            public void onRequestPermissionFailure() {
+//
+//            }
+//        });
+//
+//    }
 
 
 }

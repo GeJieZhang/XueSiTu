@@ -63,6 +63,7 @@
                         android:textSize="16sp" />
 
                     <ImageView
+                        android:id="@+id/iv_delete"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:background="@mipmap/icon_delete"

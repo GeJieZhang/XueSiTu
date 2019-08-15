@@ -35,6 +35,20 @@ public class RegexUtils {
     }
 
 
+    public static boolean check10Num(Context context, String num) {
+
+        if (num.equals("")) {
+            Toast.makeText(context, "兔币数不能为空!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        String regex = "^[+-]?(\\d){1,}0$";
+
+
+        return Pattern.matches(regex, num);
+    }
+
+
     public static boolean checkPassWord(String password) {
 
         String regex = "^(?![^a-zA-Z]+$)(?!\\D+$)[a-zA-Z0-9]{6}$";

@@ -46,7 +46,7 @@ public class LiveCheckMoneyPopupUtils {
     private void initPopuPopu() {
         popu = EasyPopup.create()
                 .setContext(context)
-                .setContentView(R.layout.popup_push)
+                .setContentView(R.layout.popup_live_money)
                 .setWidth(WindowManager.LayoutParams.FILL_PARENT)
                 .setHeight(WindowManager.LayoutParams.FILL_PARENT)
                 .setOnViewListener(new EasyPopup.OnViewListener() {
@@ -84,6 +84,13 @@ public class LiveCheckMoneyPopupUtils {
         tv_rule = view.findViewById(R.id.tv_rule);
         btn_cancel = view.findViewById(R.id.btn_cancel);
         btn_sure = view.findViewById(R.id.btn_sure);
+
+        tv_recharge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build(ARouterPathUtils.User_RechargeActivity).navigation();
+            }
+        });
 
         iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,9 +138,13 @@ public class LiveCheckMoneyPopupUtils {
 
     public void dismiss() {
 
-        popu.dismiss();
-        stopTimer();
 
+        if (popu != null) {
+
+
+            popu.dismiss();
+            stopTimer();
+        }
 
     }
 
@@ -177,10 +188,16 @@ public class LiveCheckMoneyPopupUtils {
 
     private void updateTimerUI() {
 
-        String string = TimeUtils.converLongTimeToStr(recordTotalTime);
-        tv_time.setText(string + "s");
 
-        LogUtil.e(string);
+        if (recordTotalTime <= 0) {
+            dismiss();
+
+
+        } else {
+            String string = TimeUtils.converLongTimeToStr(recordTotalTime);
+            tv_time.setText(string + "s");
+            LogUtil.e(string);
+        }
 
 
     }

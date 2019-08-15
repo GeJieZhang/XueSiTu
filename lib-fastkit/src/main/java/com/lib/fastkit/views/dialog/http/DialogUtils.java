@@ -16,18 +16,31 @@ public class DialogUtils {
     }
 
     public void showNormalDialog(Context context, String str) {
-        tipDialog = new QMUITipDialog.Builder(context)
-                .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
-                .setTipWord(str)
-                .create(true);
-        tipDialog.show();
+
+        try {
+            tipDialog = new QMUITipDialog.Builder(context)
+                    .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
+                    .setTipWord(str)
+                    .create(true);
+            tipDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
 
     public void dismiss() {
 
-        tipDialog.dismiss();
-        HttpUtils.cancel();
+
+        try {
+            tipDialog.dismiss();
+            HttpUtils.cancel();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
 
