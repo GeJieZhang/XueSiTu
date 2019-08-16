@@ -34,7 +34,7 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="16dp"
                         android:text="订单号xst2019051056789"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"

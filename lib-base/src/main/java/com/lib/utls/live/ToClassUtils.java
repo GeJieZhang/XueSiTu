@@ -73,7 +73,15 @@ public class ToClassUtils {
                                     if (identity.equals("1")) {
                                         toClass(result);
                                     } else {
-                                        toClassPop(result);
+
+
+                                        if (course_type.equals("0")) {
+                                            //只有晚陪课有
+                                            toClassPop(result);
+                                        } else {
+                                            toClass(result);
+                                        }
+
                                     }
 
 
@@ -115,7 +123,12 @@ public class ToClassUtils {
             }
         });
 
-        liveCheckMoneyPopupUtils.showAnswerPopuPopu(activity.getWindow().getDecorView());
+        String rule = "计费方式:每" + result.getObj().getInfo().getLive_billing_time()
+                + "分钟消费" + result.getObj().getInfo().getLive_billing() + "兔币";
+
+        String money = "当前兔币:" + result.getObj().getInfo().getAccount();
+
+        liveCheckMoneyPopupUtils.showAnswerPopuPopu(activity.getWindow().getDecorView(), rule, money);
     }
 
     private void toClass(ToLiveBeanBase result) {

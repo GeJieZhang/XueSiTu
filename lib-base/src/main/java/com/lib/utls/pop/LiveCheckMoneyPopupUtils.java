@@ -149,7 +149,11 @@ public class LiveCheckMoneyPopupUtils {
     }
 
 
-    public void showAnswerPopuPopu(View view) {
+    public void showAnswerPopuPopu(View view,String rule,String money) {
+
+        tv_rule.setText(rule);
+
+        tv_money.setText(money);
 
 
         popu.showAtLocation(view, Gravity.CENTER, 0, 0);

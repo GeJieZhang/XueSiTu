@@ -274,17 +274,20 @@ public class MyClassActivity extends BaseAppActivity {
                         if (mData.get(position).getPay_status() == PAY_STATE_Y) {
 
 
-                            if (mData.size() <= 0) {
+                            if (mData.get(position).getLive_room().size() <= 0) {
                                 return;
                             }
 
-                            if (mData.size() == 1) {
+                            if (mData.get(position).getLive_room().size() == 1) {
 
                                 //如果只有一个子课程那么直接进入
 
                                 //goToClass(mData, position, mData.get(position).getLive_room().get(0).getCourse_id());
                                 ToClassUtils.getInstance(MyClassActivity.this).goToClass(mData.get(position).getType() + "", mData.get(position).getLive_room().get(0).getCourse_id());
-                            } else {
+                            }
+
+
+                            if (mData.get(position).getLive_room().size() > 1) {
                                 //如果有多个那么就弹出一个窗口出来
                                 ChoseClassPopupUtils choseClassPopupUtils = new ChoseClassPopupUtils(MyClassActivity.this);
                                 choseClassPopupUtils.showAnswerPopuPopu(btn_go_class);
