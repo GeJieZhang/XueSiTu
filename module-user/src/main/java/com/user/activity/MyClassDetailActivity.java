@@ -28,6 +28,7 @@ import com.lib.view.navigationbar.NomalNavigationBar;
 import com.user.R;
 import com.user.R2;
 import com.user.bean.ClassDetailBean;
+import com.user.utils.pop.ChoseDropTypePopupUtils;
 
 import org.simple.eventbus.EventBus;
 
@@ -54,6 +55,9 @@ public class MyClassDetailActivity extends BaseAppActivity {
 
     @BindView(R2.id.btn_pay)
     Button btnPay;
+
+    @BindView(R2.id.btn_ttk)
+    Button btnTtk;
 
     @BindView(R2.id.rv)
     RecyclerView rv;
@@ -87,6 +91,8 @@ public class MyClassDetailActivity extends BaseAppActivity {
         });
 
         rv.setAdapter(homeAdapter);
+
+
     }
 
     private ClassDetailBean classDetailBean;
@@ -111,6 +117,12 @@ public class MyClassDetailActivity extends BaseAppActivity {
 
                             btnPay.setText("已付:" + result.getObj().getTotal_price() + "兔币");
 
+                            //btnTtk.setOnClickListe;
+
+                            btnTtk.setVisibility(View.GONE);
+                            if (result.getObj().getOrder_type() == 1 | result.getObj().getOrder_type() == 2) {
+                                btnTtk.setVisibility(View.VISIBLE);
+                            }
 
                         }
 
@@ -136,14 +148,18 @@ public class MyClassDetailActivity extends BaseAppActivity {
         NomalNavigationBar navigationBar = new
                 NomalNavigationBar.Builder(this)
                 .setTitle("课程详情")
-                .setRightIcon(R.mipmap.nav_share)
-                .setRightClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showToast("点击分享");
-                    }
-                })
+
                 .builder();
+
+
+//                .setRightIcon(R.mipmap.nav_share)
+//                .setRightClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        showToast("点击分享");
+//                    }
+//                })
+
 
     }
 
@@ -158,7 +174,8 @@ public class MyClassDetailActivity extends BaseAppActivity {
     public void onViewClicked(View view) {
         int i = view.getId();
         if (i == R.id.btn_ttk) {
-
+            ChoseDropTypePopupUtils choseDropTypePopupUtils = new ChoseDropTypePopupUtils(MyClassDetailActivity.this);
+            choseDropTypePopupUtils.showAnswerPopuPopu(btnTtk, classDetailBean.getObj().getOrder_id(), classDetailBean.getObj().getOrder_type() + "");
         } else if (i == R.id.tv_rule) {
 
             ARouter.getInstance().build(ARouterPathUtils.User_UserNormalDetailWebActivity)

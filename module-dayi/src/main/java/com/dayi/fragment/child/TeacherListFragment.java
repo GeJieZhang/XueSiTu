@@ -70,6 +70,13 @@ public class TeacherListFragment extends BaseAppFragment {
 
             }
         });
+
+        linPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //用于蒙板下层点击事件
+            }
+        });
     }
 
     private class HomeAdapter extends BaseAdapter<QuestionDetail.ObjBean.ReplyUserListBean> {
