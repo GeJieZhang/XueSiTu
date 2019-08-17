@@ -1198,7 +1198,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
      * ==========================================================================聊天
      * =============================================================================================
      */
-
+    public static List<IMBean> messageList = new ArrayList<>();
     /**
      * 聊天回调
      */

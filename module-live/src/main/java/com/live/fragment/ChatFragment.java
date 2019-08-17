@@ -60,7 +60,7 @@ public class ChatFragment extends BaseAppFragment {
     @BindView(R2.id.rv_chat)
     RecyclerView rvChat;
     private ChatAdapter chatAdapter;
-    private List<IMBean> messageList = new ArrayList<>();
+
     private LinearLayoutManager linearLayoutManager;
     private IMBean imBean;
 
@@ -117,7 +117,7 @@ public class ChatFragment extends BaseAppFragment {
         userIcon = SharedPreferenceManager.getInstance(getActivity()).getUserCache().getUserHeadUrl();
 
         userPhone = SharedPreferenceManager.getInstance(getActivity()).getUserCache().getUserPhone();
-        chatAdapter = new ChatAdapter(getContext(), messageList);
+        chatAdapter = new ChatAdapter(getContext(), MainRoomActivity.messageList);
         gson = new Gson();
         linearLayoutManager = new LinearLayoutManager(getContext());
         //linearLayoutManager.setStackFromEnd(true);
@@ -210,7 +210,7 @@ public class ChatFragment extends BaseAppFragment {
                 //发送接收消息
 
 
-                messageList.add(imBean);
+                MainRoomActivity.messageList.add(imBean);
                 notifyAdapter();
 
 
@@ -471,7 +471,7 @@ public class ChatFragment extends BaseAppFragment {
              */
             LinearLayout linearLayout = holder.getView(R.id.lin_item);
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) linearLayout.getLayoutParams();
-            if (position > 0 && position == messageList.size() - 1)
+            if (position > 0 && position == MainRoomActivity.messageList.size() - 1)
 
             {
 
@@ -522,7 +522,7 @@ public class ChatFragment extends BaseAppFragment {
         objectBean.setMessage(compressPath);
         objectBean.setUserName(userName);
         imBean.setObject(objectBean);
-        messageList.add(imBean);
+        MainRoomActivity.messageList.add(imBean);
 
 
         uploadMap.put(compressPath, new TextView(getActivity()));
