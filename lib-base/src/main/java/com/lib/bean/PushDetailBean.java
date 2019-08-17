@@ -35,10 +35,43 @@ public class PushDetailBean {
          * grade_name : 四年级
          */
 
+
+        //老师接受到课程
         private String subject_name;
         private int expected_value;
         private int question_id;
         private String grade_name;
+
+
+        //直播中当兔币不足时使用的字段
+
+        private int live_billing_time;
+        private int live_billing;
+        private int account;
+
+        public int getLive_billing_time() {
+            return live_billing_time;
+        }
+
+        public void setLive_billing_time(int live_billing_time) {
+            this.live_billing_time = live_billing_time;
+        }
+
+        public int getLive_billing() {
+            return live_billing;
+        }
+
+        public void setLive_billing(int live_billing) {
+            this.live_billing = live_billing;
+        }
+
+        public int getAccount() {
+            return account;
+        }
+
+        public void setAccount(int account) {
+            this.account = account;
+        }
 
         public String getSubject_name() {
             return subject_name;

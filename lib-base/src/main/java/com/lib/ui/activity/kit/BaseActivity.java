@@ -30,6 +30,7 @@ import com.lib.fastkit.ui.base.control.ActivityCollector;
 import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.status_bar.QMUI.QMUIStatusBarHelper;
 import com.lib.fastkit.views.button_deal.click.ClickUtils;
+import com.lib.utls.pop.LiveCheckMoneyPopupUtils;
 import com.lib.utls.pop.PushPopupUtils;
 import com.umeng.message.PushAgent;
 import com.umeng.socialize.UMShareAPI;
@@ -63,8 +64,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     private Unbinder unbinder;
 
     private String className = "com.lib.ui.activity.kit.BaseActivity";
-
-
 
 
     @Override
@@ -434,7 +433,44 @@ public abstract class BaseActivity extends AppCompatActivity {
 
                 break;
             }
+            case 2: {
 
+
+                if (className.equals(stackTopActivity.getClass().getName())) {
+                    PushDetailBean pushDetailBean = (PushDetailBean) event.getData();
+                    String rule = "计费方式:每" + pushDetailBean.getObj().getLive_billing_time()
+                            + "分钟消费" + pushDetailBean.getObj().getLive_billing() + "兔币";
+                    String money = "当前兔币:" + pushDetailBean.getObj().getAccount();
+
+                    String content = "兔币不足即将退出直播间，请前往充值页面";
+
+
+                    LiveCheckMoneyPopupUtils liveCheckMoneyPopupUtils = new LiveCheckMoneyPopupUtils(this);
+                    liveCheckMoneyPopupUtils.setLiveCheckMoneyPopupUtilsListener(new LiveCheckMoneyPopupUtils.LiveCheckMoneyPopupUtilsListener() {
+                        @Override
+                        public void onCancle() {
+
+                            //取消就退出直播间通过EventBus进行处理
+                            EventBus.getDefault().post(new Event<>(1, ""), EventBusTagUtils.BaseActivity);
+                        }
+
+                        @Override
+                        public void onSure() {
+
+                            //确认进入
+
+                            EventBus.getDefault().post(new Event<>(2, ""), EventBusTagUtils.BaseActivity);
+
+                        }
+                    });
+                    liveCheckMoneyPopupUtils.setContent(content);
+                    liveCheckMoneyPopupUtils.showAnswerPopuPopu(this.getWindow().getDecorView(), rule, money);
+
+
+                }
+
+                break;
+            }
         }
 
 

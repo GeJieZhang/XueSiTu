@@ -114,7 +114,7 @@ public class ToClassUtils {
         liveCheckMoneyPopupUtils.setLiveCheckMoneyPopupUtilsListener(new LiveCheckMoneyPopupUtils.LiveCheckMoneyPopupUtilsListener() {
             @Override
             public void onCancle() {
-                liveCheckMoneyPopupUtils.dismiss();
+
             }
 
             @Override

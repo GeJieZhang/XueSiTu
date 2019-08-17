@@ -185,6 +185,12 @@ public class MyApplication extends Application {
                         EventBus.getDefault().post(new Event<>(1, pushDetailBean), EventBusTagUtils.MyApplication);
 
 
+                    } else if (pushDetailBean.getType() == 2) {
+                        //答题类推送
+
+                        EventBus.getDefault().post(new Event<>(2, pushDetailBean), EventBusTagUtils.MyApplication);
+
+
                     }
                 } catch (Exception e) {
 

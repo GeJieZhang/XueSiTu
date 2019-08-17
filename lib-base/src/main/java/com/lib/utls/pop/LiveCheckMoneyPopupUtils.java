@@ -95,9 +95,7 @@ public class LiveCheckMoneyPopupUtils {
         iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null) {
-                    listener.onCancle();
-                }
+
 
                 dismiss();
             }
@@ -106,9 +104,7 @@ public class LiveCheckMoneyPopupUtils {
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null) {
-                    listener.onCancle();
-                }
+
 
                 dismiss();
             }
@@ -122,7 +118,7 @@ public class LiveCheckMoneyPopupUtils {
                     listener.onSure();
                 }
 
-                dismiss();
+                dismissStop();
 
             }
         });
@@ -131,25 +127,39 @@ public class LiveCheckMoneyPopupUtils {
     }
 
 
+    /**
+     * 单纯的停止定时器和隐藏
+     */
+    private void dismissStop() {
+        stopTimer();
+        popu.dismiss();
+    }
+
+
     private void showToast(String a) {
         Toast.makeText(context, a, Toast.LENGTH_SHORT).show();
     }
 
 
+    /**
+     * 走取消逻辑
+     * 将会退出直播间
+     */
     public void dismiss() {
-
 
         if (popu != null) {
 
+            if (listener != null) {
+                listener.onCancle();
+            }
+            dismissStop();
 
-            popu.dismiss();
-            stopTimer();
         }
 
     }
 
 
-    public void showAnswerPopuPopu(View view,String rule,String money) {
+    public void showAnswerPopuPopu(View view, String rule, String money) {
 
         tv_rule.setText(rule);
 
@@ -158,6 +168,18 @@ public class LiveCheckMoneyPopupUtils {
 
         popu.showAtLocation(view, Gravity.CENTER, 0, 0);
         startTimer();
+    }
+
+    /**
+     * 设置中间的文字内容
+     *
+     * @param content
+     */
+    public void setContent(String content) {
+
+        tv_content.setText(content);
+
+
     }
 
 

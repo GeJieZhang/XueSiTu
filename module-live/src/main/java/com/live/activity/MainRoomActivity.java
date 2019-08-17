@@ -34,6 +34,7 @@ import com.lib.app.CodeUtil;
 import com.lib.app.EventBusTagUtils;
 import com.lib.app.FragmentTag;
 import com.lib.bean.Event;
+import com.lib.bean.PushDetailBean;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.fragment_deal.FragmentCustomUtils;
@@ -47,6 +48,7 @@ import com.lib.fastkit.utils.time_deal.TimeUtils;
 import com.lib.fastkit.views.dialog.normal.NormalDialog;
 import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.utls.picture_select.PhotoUtil;
+import com.lib.utls.pop.LiveCheckMoneyPopupUtils;
 import com.live.R;
 import com.live.bean.CloseRoomBean;
 import com.live.bean.control.IMBean;
@@ -81,6 +83,7 @@ import com.qiniu.droid.rtc.QNVideoFormat;
 import com.qiniu.droid.rtc.model.QNAudioDevice;
 
 import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1194,7 +1197,7 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
 
     /**
-     *==============================================================================================
+     * ==============================================================================================
      * ==========================================================================聊天
      * =============================================================================================
      */
@@ -1547,6 +1550,55 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
 
     };
+
+    /**
+     * ==============================================================================================
+     * ==========================================================================EventBus
+     * =============================================================================================
+     */
+
+    @Subscriber(tag = EventBusTagUtils.BaseActivity)
+    public void fromBaseActivity(Event event) {
+
+        switch (event.getEventCode()) {
+
+            case 1: {
+
+
+                //去充值
+
+                ARouter.getInstance().build(ARouterPathUtils.User_RechargeActivity).navigation();
+                //去充值前需要手动调用退出直播间
+                mEngine.leaveRoom();
+                showLog("进入充值页面,退出直播间");
+
+                break;
+            }
+
+            case 2: {
+
+
+                finish();
+
+
+                break;
+            }
+
+
+            case 3: {
+                //充值完成后重新进入直播间
+                mEngine.joinRoom(roomToken);
+
+                showLog("充值完成重新进入直播间");
+
+                break;
+            }
+
+
+        }
+
+
+    }
 
 
 }

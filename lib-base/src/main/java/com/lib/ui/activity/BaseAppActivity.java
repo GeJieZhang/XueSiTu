@@ -26,8 +26,6 @@ public abstract class BaseAppActivity extends BaseActivity {
         super.onDestroy();
 
 
-
-
     }
 
 //    @Override

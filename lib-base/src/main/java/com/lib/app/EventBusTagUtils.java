@@ -38,5 +38,10 @@ public class EventBusTagUtils {
      * 去分享圈了解更多
      */
     public static final String MyClassDetailActivity = "MyClassDetailActivity";
+    /**
+     * 通知直播间
+     */
+    public static final String BaseActivity = "BaseActivity";
+
 
 }
