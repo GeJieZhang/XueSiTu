@@ -109,7 +109,7 @@
                     style="@style/text_style7"
                     android:layout_marginLeft="16dp"
                     android:layout_weight="1"
-                    android:text="微信支付" />
+                    android:text="支付宝支付" />
 
                 <ImageView
                     android:id="@+id/iv_zhifu"

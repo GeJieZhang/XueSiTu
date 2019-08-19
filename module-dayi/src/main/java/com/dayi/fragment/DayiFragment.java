@@ -34,6 +34,7 @@ import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.fragment.BaseAppFragment;
 import com.lib.utls.glide.GlideConfig;
 import com.lib.view.banner.MyBannerView;
+import com.lib.view.player.MyJzvdStd;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,8 +71,8 @@ public class DayiFragment extends BaseAppFragment {
     LinearLayout indicator;
     @BindView(R2.id.lin_video)
     LinearLayout linVideo;
-    @BindView(R2.id.iv_video)
-    ImageView ivVideo;
+    @BindView(R2.id.jz_player)
+    MyJzvdStd jz_player;
     @BindView(R2.id.springView)
     SpringView springView;
     @BindView(R2.id.state_view)
@@ -139,18 +140,11 @@ public class DayiFragment extends BaseAppFragment {
                              * 视频
                              */
 
-                            Glide.with(getContext())
-                                    .load(result.getObj().getQuestion_introduction())
-                                    .apply(GlideConfig.getRoundOptions(10))
-                                    .into(ivVideo);
+                            String videoUrl = result.getObj().getQuestion_introduction();
 
-                            ivVideo.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    JzvdStd.startFullscreenDirectly(getContext(), JzvdStd.class, result.getObj().getQuestion_introduction(), "");
-                                }
-                            });
-
+                            jz_player.setUp(videoUrl
+                                    , "");
+                            Glide.with(getActivity()).load(videoUrl).into(jz_player.thumbImageView);
 
                             /**
                              * 消息列表

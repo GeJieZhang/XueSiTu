@@ -15,7 +15,7 @@ public class ARouterPathUtils {
 
     public static final String App_LaunchActivity = "/app/LaunchActivity";
 
-
+    public static final String App_AboutActivity = "/app/AboutActivity";
     //----------------------------------------------------------------------------ARouterInterface
 
     public static final String APP_Interface_ISkillImpl = "/app/ISkillImpl";
@@ -54,6 +54,8 @@ public class ARouterPathUtils {
     public static final String User_MessageDetailActivity = "/user/MessageDetailActivity";
 
     public static final String User_UserNormalDetailWebActivity = "/user/UserNormalDetailWebActivity";
+
+    public static final String User_HelpActivity = "/user/HelpActivity";
 
     //==============================================================================================
     //======================================================================================live====

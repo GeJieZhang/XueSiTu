@@ -154,6 +154,13 @@ dependencies {
     api(name: 'alipaySdk-15.6.3-20190605142540', ext: 'aar')
 
     /**
+     * 微信支付
+     *
+     * 友盟分享中包含了微信支付所以不需要再次引用
+     */
+    //api 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+
+    /**
      * 视频播放器
      */
     api 'cn.jzvd:jiaozivideoplayer:7.0.5'
@@ -173,9 +180,9 @@ dependencies {
      * 友盟分享
      */
     api 'com.umeng.umsdk:share-core:6.9.6'
+    //其中包含了（分享，支付）
     api 'com.umeng.umsdk:share-wx:6.9.6'
     api 'com.umeng.umsdk:share-qq:6.9.6'
-
     api 'com.umeng.umsdk:share-sina:6.9.6'
 
 

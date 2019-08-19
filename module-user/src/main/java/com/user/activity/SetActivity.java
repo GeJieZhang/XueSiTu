@@ -216,7 +216,11 @@ public class SetActivity extends BaseAppActivity {
 
 
         } else if (i == R.id.lin_help) {
+            ARouter.getInstance().build(ARouterPathUtils.User_HelpActivity).navigation();
+
         } else if (i == R.id.lin_about) {
+
+            ARouter.getInstance().build(ARouterPathUtils.App_AboutActivity).navigation();
         } else if (i == R.id.lin_out) {
 
             NormalDialog.getInstance()

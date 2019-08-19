@@ -620,6 +620,22 @@ rx.internal.util.atomic.LinkedQueueNode consumerNode;
 -keep class com.ta.utdid2.** { *;}
 -keep class com.ut.device.** { *;}
 
+
+#--------------------------------------------------------------------------------------------------
+#微信
+-keep class com.tencent.mm.opensdk.** {
+    *;
+}
+
+-keep class com.tencent.wxop.** {
+    *;
+}
+
+-keep class com.tencent.mm.sdk.** {
+    *;
+}
+
+
 #--------------------------------------------------------------------------------------------------
 #白板
 

@@ -43,6 +43,11 @@
             android:configChanges="orientation|screenSize|keyboardHidden"></activity>
 
 
+        <!--about-->
+
+        <activity android:name=".activity.AboutActivity"></activity>
+
+
         <!--bugly-->
         <activity
             android:name="com.tencent.bugly.beta.ui.BetaActivity"
@@ -81,7 +86,7 @@
         <!--=================================================================================分享-->
 
 
-        <!--QQ配置-->
+        <!--分享QQ配置-->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
@@ -100,12 +105,14 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
 
-        <!--新浪配置-->
+        <!--分享新浪配置-->
         <activity
             android:name="com.umeng.socialize.media.WBShareCallBackActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+        <!--分享新浪配置-->
+
         <activity
             android:name="com.sina.weibo.sdk.web.WeiboSdkWebActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -113,6 +120,7 @@
             android:windowSoftInputMode="adjustResize">
 
         </activity>
+        <!--分享新浪配置-->
         <activity
             android:name="com.sina.weibo.sdk.share.WbShareTransActivity"
             android:launchMode="singleTask"
@@ -125,12 +133,21 @@
         </activity>
 
 
-        <!--微信配置-->
+        <!--微信分享配置-->
         <activity
             android:name="com.xuesitu.wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!--微信支付配置-->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
 
 
     </application>

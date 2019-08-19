@@ -30,7 +30,7 @@
                     <!--实时排行-->
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="190dp"
+                        android:layout_height="120dp"
                         android:layout_marginTop="16dp"
                         android:orientation="horizontal">
 
@@ -43,17 +43,21 @@
 
                             <com.lib.fastkit.views.progress.circle_progress.CircleProgress
                                 android:id="@+id/circle_progress_bar2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="160dp"
+                                android:layout_height="160dp"
                                 android:layout_gravity="center_horizontal"
-                                android:layout_marginTop="16dp"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="4dp"
+                                android:layout_marginTop="10dp"
+                                android:padding="4dp"
                                 app:antiAlias="true"
+
                                 app:arcColor1="#ffe000"
                                 app:arcColor2="#ff4663"
                                 app:arcColor3="#64ff1f"
-                                app:arcWidth="18dp"
+                                app:arcWidth="16dp"
                                 app:bgArcColor="#eae8e8"
-                                app:bgArcWidth="18dp"
+                                app:bgArcWidth="16dp"
                                 app:hint="累计可分享"
                                 app:hintSize="15sp"
                                 app:maxValue="10000"
@@ -66,22 +70,15 @@
                                 app:valueColor="#ff4663"
                                 app:valueSize="15sp" />
 
-                            <Button
-                                android:layout_width="120dp"
-                                android:layout_height="35dp"
-                                android:layout_gravity="center|bottom"
-                                android:background="@mipmap/rank_bg"
-                                android:text="实时排行"
-                                android:textColor="@color/white" />
-
 
                         </FrameLayout>
 
 
                         <android.support.v7.widget.CardView
-                            android:layout_width="120dp"
+                            android:layout_width="160dp"
                             android:layout_height="match_parent"
                             android:layout_marginBottom="8dp"
+                            android:layout_marginLeft="4dp"
                             android:layout_marginRight="16dp"
                             android:layout_marginTop="8dp"
                             app:cardCornerRadius="10dp"
@@ -91,18 +88,10 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">
 
-                                <ImageView
-                                    android:id="@+id/iv_video"
+                                <com.lib.view.player.MyJzvdStd
+                                    android:id="@+id/jz_player"
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:scaleType="centerCrop"
-                                    android:src="@mipmap/test1" />
-
-                                <ImageView
-                                    android:layout_width="40dp"
-                                    android:layout_height="40dp"
-                                    android:layout_gravity="center"
-                                    android:src="@mipmap/icon_play" />
+                                    android:layout_height="match_parent" />
 
                             </FrameLayout>
 
@@ -121,18 +110,26 @@
                     <!--列表-->
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginTop="16dp"
                         android:orientation="vertical">
 
+                        <Button
+                            android:layout_width="120dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center|bottom"
+                            android:layout_marginBottom="8dp"
+                            android:background="@mipmap/rank_bg"
+                            android:text="实时排行"
+                            android:textColor="@color/white" />
 
                         <LinearLayout
                             android:id="@+id/lin_message"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="120dp"
                             android:orientation="vertical">
 
                         </LinearLayout>
@@ -180,39 +177,75 @@
                         android:paddingBottom="24dp"
                         android:paddingTop="24dp">
 
-                        <Button
-                            android:id="@+id/btn_camera"
-                            android:layout_width="85dp"
-                            android:layout_height="55dp"
-                            android:background="@mipmap/icon_camera_2" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="15dp"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@mipmap/icon_arrow" />
+                            <Button
+                                android:id="@+id/btn_camera"
+                                android:layout_width="65dp"
+                                android:layout_height="55dp"
+                                android:background="@mipmap/icon_camera_3" />
 
-                        <Button
-                            android:id="@+id/btn_voice"
-                            android:layout_width="85dp"
-                            android:layout_height="55dp"
-                            android:background="@mipmap/icon_voice_2" />
+                            <TextView
+                                style="@style/text_style2"
+                                android:layout_marginTop="4dp"
+                                android:text="拍照"
+                                android:textSize="16sp"
+                                android:textStyle="normal"
 
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="15dp"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@mipmap/icon_arrow_2" />
+                                />
+                        </LinearLayout>
 
-                        <Button
-                            android:id="@+id/btn_write"
-                            android:layout_width="85dp"
-                            android:layout_height="55dp"
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                            android:background="@mipmap/icon_write_2" />
+                            <Button
+                                android:id="@+id/btn_voice"
+                                android:layout_width="65dp"
+                                android:layout_height="55dp"
+                                android:background="@mipmap/icon_voice_3" />
 
+                            <TextView
+                                style="@style/text_style2"
+                                android:layout_marginTop="4dp"
+                                android:text="语音"
+                                android:textSize="16sp"
+                                android:textStyle="normal"
+
+                                />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <Button
+                                android:id="@+id/btn_write"
+                                android:layout_width="65dp"
+                                android:layout_height="55dp"
+
+                                android:background="@mipmap/icon_write_3" />
+
+                            <TextView
+                                style="@style/text_style2"
+                                android:layout_marginTop="4dp"
+                                android:text="文字"
+                                android:textSize="16sp"
+                                android:textStyle="normal"
+
+                                />
+                        </LinearLayout>
 
                     </LinearLayout>
 

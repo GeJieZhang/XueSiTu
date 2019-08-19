@@ -211,6 +211,16 @@
         <item name="android:ellipsize">end</item>
         <item name="android:textColor">@color/base_title</item>
     </style>
+
+    <!--关于-->
+    <style name="text_style17">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:singleLine">false</item>
+
+        <item name="android:textColor">@color/base_title</item>
+    </style>
     //==============================================================================================
     //=============================================================================线条=======
     //==============================================================================================
@@ -265,7 +275,14 @@
         <item name="android:background">@drawable/circle_button_r10</item>
 
     </style>
+    <style name="button4">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/circle_button_blue_r10</item>
 
+    </style>
 
     //==============================================================================================
     //=============================================================================ImageView=========
@@ -277,6 +294,7 @@
         <item name="android:layout_width">10dp</item>
         <item name="android:layout_height">14dp</item>
         <item name="android:layout_marginLeft">16dp</item>
+
         <item name="android:src">@mipmap/nav_next</item>
 
     </style>

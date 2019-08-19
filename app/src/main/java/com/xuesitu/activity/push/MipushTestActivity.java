@@ -9,6 +9,10 @@ import com.xuesitu.R;
 
 import org.android.agoo.common.AgooConstants;
 
+
+/**
+ * 小米推送使用(请勿删除)
+ */
 public class MipushTestActivity extends UmengNotifyClickActivity {
 
     private static String TAG = "======推送";

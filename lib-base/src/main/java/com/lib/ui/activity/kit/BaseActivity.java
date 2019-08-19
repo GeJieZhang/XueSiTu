@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -13,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -144,6 +146,24 @@ public abstract class BaseActivity extends AppCompatActivity {
     //==============================================================================================
     //==========================================================================处理键盘点击隐藏====
     //==============================================================================================
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, AudioManager.FX_FOCUS_NAVIGATION_UP);
+                return true;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, AudioManager.FX_FOCUS_NAVIGATION_UP);
+                return true;
+
+
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 
     /**
      * 设置点击屏幕隐藏键盘

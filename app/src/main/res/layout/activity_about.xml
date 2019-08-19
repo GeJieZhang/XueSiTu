@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="48dp"
+            android:src="@mipmap/ic_new_logo" />
+
+
+        <TextView
+            style="@style/text_style17"
+            android:layout_marginTop="8dp"
+            android:text="学思兔在线教育" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/text_style17"
+            android:layout_marginTop="8dp"
+            android:lineSpacingExtra="10dp"
+            android:lineSpacingMultiplier="1.2"
+            android:padding="16dp"
+            android:text="@string/introduce" />
+
+        <TextView
+            style="@style/text_style17"
+            android:layout_marginLeft="8dp"
+            android:text="《学思兔用户协议》"
+            android:textColor="@color/base_blue" />
+
+        <TextView
+            style="@style/text_style17"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="《隐私条款》"
+            android:textColor="@color/base_blue" />
+    </LinearLayout>
+
+
+    <TextView
+        style="@style/text_style17"
+        android:layout_gravity="center_horizontal"
+
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="8dp"
+        android:text="成都学思网优科技有限公司"
+        android:textColor="@color/base_gray"
+        android:textSize="12sp" />
+</LinearLayout>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/base_gray_bg"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="24dp"
+
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/text_style17"
+            android:text="问题描述"
+            android:textSize="16sp" />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="0dp">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_cmmt"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_margin="8dp"
+                android:background="@null"
+                android:gravity="top|start"
+                android:hint="请详细描述你遇到的问题"
+                android:imeOptions="flagNoExtractUi"
+                android:maxEms="500"
+                android:padding="5dp"
+                android:text=""
+                android:textSize="14sp" />
+
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            style="@style/text_style17"
+            android:layout_marginTop="16dp"
+            android:text="上传问题截图"
+            android:textSize="16sp" />
+
+
+        <LinearLayout
+            android:id="@+id/lin_Image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:minHeight="80dp"
+            android:orientation="horizontal">
+
+            <com.user.view.MyAddImageView
+                android:id="@+id/add1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.user.view.MyAddImageView
+                android:id="@+id/add2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.user.view.MyAddImageView
+                android:id="@+id/add3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+
+        <TextView
+            style="@style/text_style17"
+            android:text="联系方式"
+            android:textSize="16sp" />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="0dp">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@null"
+                android:enabled="true"
+                android:hint="请留下你的手机号或者微信"
+                android:maxEms="20"
+                android:padding="5dp"
+                android:singleLine="true"
+                android:text=""
+                android:textSize="14sp" />
+
+        </android.support.v7.widget.CardView>
+
+
+        <Button
+            android:id="@+id/btn_sure"
+            style="@style/button4"
+            android:layout_width="160dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:text="提交" />
+    </LinearLayout>
+
+
+</LinearLayout>

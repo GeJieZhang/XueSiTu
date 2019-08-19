@@ -30,6 +30,8 @@ public class PhotoUtil {
 
     //回答问题
     public static final int ASK_IMAGE_ANSWER = 340;
+    //问题反馈
+    public static final int ASK_IMAGE_HELP = 341;
 
     /**
      * Code选择相册
