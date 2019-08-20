@@ -150,6 +150,22 @@ public class SharePopupBottomUtils implements View.OnClickListener {
 
     }
 
+    public void hideCircle(boolean isHideCircle) {
+        if (isHideCircle) {
+            lin_share.setVisibility(View.GONE);
+        } else {
+            lin_share.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+    public void dismmiss() {
+        if (popu != null) {
+            popu.dismiss();
+        }
+
+    }
+
 
     public interface SharePopupBottomUtilsListener {
         void onShareClick();

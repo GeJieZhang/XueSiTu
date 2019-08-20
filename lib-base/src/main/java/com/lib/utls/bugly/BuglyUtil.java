@@ -21,7 +21,6 @@ public class BuglyUtil {
         Beta.enableHotfix = false;
         Bugly.init(context, "ad11751b5d", true);
 
-
     }
 
     /**

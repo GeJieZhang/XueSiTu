@@ -110,7 +110,7 @@ public class SchoolFragment extends BaseAppFragment {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+                        ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                                 .withString("urlPath", carList.get(position).getCourse_link())
                                 .navigation();
                     }
@@ -154,7 +154,7 @@ public class SchoolFragment extends BaseAppFragment {
                     iv_head.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+                            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                                     .withString("urlPath", teacherInfoBeanList.get(finalI).getTeacher_link())
                                     .navigation();
                         }

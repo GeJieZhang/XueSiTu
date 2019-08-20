@@ -217,7 +217,7 @@ public class PersonalFragment extends BaseAppFragment {
 
         } else if (i == R.id.lin_teacher) {
             //学生-我的老师
-            ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                     .withString("urlPath", HtmlPathUtils.S_MyTeacher)
                     .navigation();
 
@@ -226,13 +226,13 @@ public class PersonalFragment extends BaseAppFragment {
             //学生-学习历程
 
 
-            ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                     .withString("urlPath", HtmlPathUtils.S_Ourse)
                     .navigation();
         } else if (i == R.id.lin_sign) {
             //学生-签到有礼
 
-            ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                     .withString("urlPath", HtmlPathUtils.S_Sign_In)
                     .navigation();
 
@@ -252,7 +252,7 @@ public class PersonalFragment extends BaseAppFragment {
 
             if (identity.equals("1")) {
                 //老师-提现
-                ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+                ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                         .withString("urlPath", HtmlPathUtils.T_Withdrawal)
                         .navigation();
             } else {
@@ -270,14 +270,14 @@ public class PersonalFragment extends BaseAppFragment {
 
         } else if (i == R.id.lin_teacher_assistants) {
             //老师-教辅
-            ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                     .withString("urlPath", HtmlPathUtils.T_Assistant)
                     .navigation();
 
 
         } else if (i == R.id.lin_teacher_video) {
             //老师-录播课
-            ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                     .withString("urlPath", HtmlPathUtils.T_Video)
                     .navigation();
 

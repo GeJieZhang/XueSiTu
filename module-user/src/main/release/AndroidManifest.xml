@@ -23,7 +23,6 @@
         <activity android:name=".activity.RecordsActivity"></activity>
         <activity android:name=".activity.MessageDetailActivity"></activity>
 
-        <activity android:name=".activity.web.UserNormalDetailWebActivity"></activity>
 
         <activity android:name=".activity.HelpActivity"></activity>
     </application>

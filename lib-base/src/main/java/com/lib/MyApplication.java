@@ -186,7 +186,7 @@ public class MyApplication extends Application {
 
 
                     } else if (pushDetailBean.getType() == 2) {
-                        //答题类推送
+                        //直播间欠费推送
 
                         EventBus.getDefault().post(new Event<>(2, pushDetailBean), EventBusTagUtils.MyApplication);
 

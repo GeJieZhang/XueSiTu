@@ -188,7 +188,7 @@ public class MyClassActivity extends BaseAppActivity {
     @OnClick(R2.id.lin_other)
     public void onViewClicked() {
 
-        ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+        ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                 .withString("urlPath", HtmlPathUtils.S_Class_Resouce)
                 .navigation();
 
@@ -310,7 +310,7 @@ public class MyClassActivity extends BaseAppActivity {
                             //没有支付跳转网页支付
 
 
-                            ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+                            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                                     .withString("urlPath", mData.get(position).getPay_url())
                                     .navigation();
 

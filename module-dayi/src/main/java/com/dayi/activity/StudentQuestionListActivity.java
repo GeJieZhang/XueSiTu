@@ -78,7 +78,7 @@ public class StudentQuestionListActivity extends BaseAppActivity {
         int i = view.getId();
         if (i == R.id.tv_link) {
 
-            ARouter.getInstance().build(ARouterPathUtils.Dayi_DayiNormalDetailWebActivity)
+            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                     .withString("urlPath", link)
                     .navigation();
 

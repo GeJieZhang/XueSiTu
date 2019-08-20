@@ -266,7 +266,7 @@ public class TeacherAnswerDetailActivity extends BaseAppActivity {
             @Override
             public void onClick(View v) {
 
-                ARouter.getInstance().build(ARouterPathUtils.Dayi_DayiNormalDetailWebActivity)
+                ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
 
                         .withString("urlPath", result.getObj().getTeacher_link())
 

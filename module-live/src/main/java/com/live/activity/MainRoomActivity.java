@@ -660,13 +660,13 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
 
         mEngine = QNRTCEngine.createEngine(getApplicationContext(), setting, this);
 
-
+        //视频流
         localVideoTrack = mEngine.createTrackInfoBuilder()
                 .setSourceType(QNSourceType.VIDEO_CAMERA)
                 .setMaster(true)
                 .create();
 
-
+        //音频流
         localAudioTrack = mEngine.createTrackInfoBuilder()
                 .setSourceType(QNSourceType.AUDIO)
                 .setBitrate(64 * 1000)// 设置音频码率

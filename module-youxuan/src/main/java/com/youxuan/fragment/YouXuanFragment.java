@@ -292,38 +292,36 @@ public class YouXuanFragment extends BaseAppFragment {
             if (youXuanBeans != null) {
                 String url = youXuanBeans.getObj().getLink().getEc_click_page();
 
-                ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
-                        .withString("urlPath", url)
-                        .navigation();
+                gotoWebView(url);
             }
 
         } else if (i == R.id.iv_more2) {
             if (youXuanBeans != null) {
                 String url = youXuanBeans.getObj().getLink().getOto_click_page();
-                ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
-                        .withString("urlPath", url)
-                        .navigation();
+                gotoWebView(url);
 
             }
 
         } else if (i == R.id.iv_more3) {
             if (youXuanBeans != null) {
                 String url = youXuanBeans.getObj().getLink().getOtm_more_course();
-                ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
-                        .withString("urlPath", url)
-                        .navigation();
+                gotoWebView(url);
 
             }
         } else if (i == R.id.tv_more) {
             if (youXuanBeans != null) {
                 String url = youXuanBeans.getObj().getLink().getOtm_more_course();
-                ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
-                        .withString("urlPath", url)
-                        .navigation();
+                gotoWebView(url);
 
             }
         }
 
+    }
+
+    private void gotoWebView(String url) {
+        ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
+                .withString("urlPath", url)
+                .navigation();
     }
 
     class HomeAdapter extends BaseAdapter<YouXuanBean.ObjBean.OtoCourseBean> {
@@ -348,10 +346,10 @@ public class YouXuanFragment extends BaseAppFragment {
                 @Override
                 public void onClick(View v) {
 
+                    String url=mData.get(position).getLink_detail();
+
                     //跳转一对一详情
-                    ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
-                            .withString("urlPath", mData.get(position).getLink_detail())
-                            .navigation();
+                    gotoWebView(url);
 
                 }
             });
@@ -360,11 +358,9 @@ public class YouXuanFragment extends BaseAppFragment {
             holder.getView(R.id.btn_oto).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    String url=mData.get(position).getLink_evaluation();
 
-
-                    ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
-                            .withString("urlPath", mData.get(position).getLink_evaluation())
-                            .navigation();
+                    gotoWebView(url);
 
                 }
             });
@@ -411,9 +407,11 @@ public class YouXuanFragment extends BaseAppFragment {
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
-                            .withString("urlPath", mData.get(position).getLink())
-                            .navigation();
+
+                    String url=mData.get(position).getLink();
+                    gotoWebView(url);
+
+                    
                 }
             });
 

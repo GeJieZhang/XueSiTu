@@ -4,10 +4,10 @@ public class ShareBean {
 
 
     /**
-     * code : 442
-     * obj : {}
-     * msg : 每天只能分享奖励一次旁听
-     * seccess : false
+     * code : 200
+     * obj : {"link":"","title":"学思兔APP下载"}
+     * msg : 第三方分享成功
+     * seccess : true
      */
 
     private int code;
@@ -48,5 +48,28 @@ public class ShareBean {
     }
 
     public static class ObjBean {
+        /**
+         * link :
+         * title : 学思兔APP下载
+         */
+
+        private String link;
+        private String title;
+
+        public String getLink() {
+            return link;
+        }
+
+        public void setLink(String link) {
+            this.link = link;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
     }
 }

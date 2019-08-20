@@ -339,7 +339,7 @@ public class DayiFragment extends BaseAppFragment {
             public void onBannerClick(int positon) {
 
                 String url = getFamous_teacher_list.get(positon).getTeacher_link();
-                ARouter.getInstance().build(ARouterPathUtils.Dayi_DayiNormalDetailWebActivity)
+                ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                         .withString("urlPath", url)
                         .navigation();
             }
@@ -455,7 +455,7 @@ public class DayiFragment extends BaseAppFragment {
             @Override
             public void onClick(View v) {
 
-                ARouter.getInstance().build(ARouterPathUtils.Dayi_DayiNormalDetailWebActivity)
+                ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                         .withString("urlPath", articleListBean.getArtic_link())
                         .navigation();
 
@@ -483,7 +483,7 @@ public class DayiFragment extends BaseAppFragment {
             @Override
             public void onClick(View v) {
 
-                ARouter.getInstance().build(ARouterPathUtils.Dayi_DayiNormalDetailWebActivity)
+                ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                         .withString("urlPath", tuxun.getArtic_link())
                         .navigation();
 
@@ -544,27 +544,27 @@ public class DayiFragment extends BaseAppFragment {
         } else if (i == R.id.btn_write) {
             goAskQuestion();
         } else if (i == R.id.btn_fun) {
-            ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                     .withString("urlPath", HtmlPathUtils.APP_Fun_Topic)
                     .navigation();
 
         } else if (i == R.id.btn_difficult) {
-            ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                     .withString("urlPath", HtmlPathUtils.APP_Difficult_Topic)
                     .navigation();
         } else if (i == R.id.btn_paper) {
-            ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                     .withString("urlPath", HtmlPathUtils.APP_Paper_Topic)
                     .navigation();
         } else if (i == R.id.btn_analysis) {
         } else if (i == R.id.btn_mistake) {
 
-            ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                     .withString("urlPath", HtmlPathUtils.APP_Mistake_Topic)
                     .navigation();
         } else if (i == R.id.lin_search) {
 
-            ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                     .withString("urlPath", HtmlPathUtils.APP_Article_Search)
                     .navigation();
         }

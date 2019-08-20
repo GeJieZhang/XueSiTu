@@ -30,6 +30,6 @@
 
         <activity android:name=".activity.PrivateAskActivity"></activity>
 
-        <activity android:name=".activity.web.DayiNormalDetailWebActivity"></activity>
+
     </application>
 </manifest>

@@ -174,12 +174,12 @@ public class AskQuestionFindActivity extends BaseAppActivity {
                 public void onClick(View v) {
                     if (position == 0) {
 
-                        ARouter.getInstance().build(ARouterPathUtils.Dayi_DayiNormalDetailWebActivity)
+                        ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                                 .withString("urlPath", urlPath)
                                 .navigation();
                     } else {
 
-                        ARouter.getInstance().build(ARouterPathUtils.Dayi_DayiNormalDetailWebActivity)
+                        ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                                 .withString("urlPath", urlPath)
                                 .navigation();
                     }

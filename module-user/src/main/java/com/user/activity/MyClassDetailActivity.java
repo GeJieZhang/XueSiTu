@@ -178,7 +178,7 @@ public class MyClassDetailActivity extends BaseAppActivity {
             choseDropTypePopupUtils.showAnswerPopuPopu(btnTtk, classDetailBean.getObj().getOrder_id(), classDetailBean.getObj().getOrder_type() + "");
         } else if (i == R.id.tv_rule) {
 
-            ARouter.getInstance().build(ARouterPathUtils.User_UserNormalDetailWebActivity)
+            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                     .withString("urlPath", classDetailBean.getObj().getTk_protocol_link())
                     .navigation();
 
@@ -188,7 +188,7 @@ public class MyClassDetailActivity extends BaseAppActivity {
 
 
         } else if (i == R.id.c_news) {
-            ARouter.getInstance().build(ARouterPathUtils.User_UserNormalDetailWebActivity)
+            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                     .withString("urlPath", classDetailBean.getObj().getArticle_list_link())
                     .navigation();
         } else if (i == R.id.btn_share) {

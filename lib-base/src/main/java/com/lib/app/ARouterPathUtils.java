@@ -16,6 +16,9 @@ public class ARouterPathUtils {
     public static final String App_LaunchActivity = "/app/LaunchActivity";
 
     public static final String App_AboutActivity = "/app/AboutActivity";
+
+
+    public static final String App_NormalDetailWebActivity = "/app/NormalDetailWebActivity";
     //----------------------------------------------------------------------------ARouterInterface
 
     public static final String APP_Interface_ISkillImpl = "/app/ISkillImpl";
@@ -26,7 +29,7 @@ public class ARouterPathUtils {
     //==============================================================================================
     public static final String YouXuan_SchoolFragment = "/youxuan/SchoolFragment";
 
-    public static final String YouXuan_NormalDetailWebActivity = "/youxuan/NormalDetailWebActivity";
+
     //==============================================================================================
     //======================================================================================User====
     //==============================================================================================
@@ -53,7 +56,6 @@ public class ARouterPathUtils {
 
     public static final String User_MessageDetailActivity = "/user/MessageDetailActivity";
 
-    public static final String User_UserNormalDetailWebActivity = "/user/UserNormalDetailWebActivity";
 
     public static final String User_HelpActivity = "/user/HelpActivity";
 
@@ -70,7 +72,7 @@ public class ARouterPathUtils {
     //==============================================================================================
 
 
-    public static final String Dayi_DayiNormalDetailWebActivity = "/dayi/DayiNormalDetailWebActivity";
+
     public static final String Dayi_PrivateAskActivity = "/dayi/PrivateAskActivity";
     public static final String Dayi_StudentQuestionListActivity = "/dayi/StudentQuestionListActivity";
     public static final String Dayi_TeacherQuestionListActivity = "/dayi/TeacherQuestionListActivity";

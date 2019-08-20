@@ -135,7 +135,7 @@ public class TeacherWorkbenchActivity extends BaseAppActivity {
                         }
                         case 4: {
                             //老师-教辅
-                            ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+                            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                                     .withString("urlPath", HtmlPathUtils.T_Assistant)
                                     .navigation();
 
@@ -144,7 +144,7 @@ public class TeacherWorkbenchActivity extends BaseAppActivity {
                         case 5: {
 
                             //老师-录播课
-                            ARouter.getInstance().build(ARouterPathUtils.YouXuan_NormalDetailWebActivity)
+                            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
                                     .withString("urlPath", HtmlPathUtils.T_Video)
                                     .navigation();
                             break;

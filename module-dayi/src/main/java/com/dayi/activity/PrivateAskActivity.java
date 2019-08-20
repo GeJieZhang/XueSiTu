@@ -109,7 +109,7 @@ public class PrivateAskActivity extends BaseAppActivity {
 
                     @Override
                     public void onError(String e) {
-                        if (stateView!=null){
+                        if (stateView != null) {
                             stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
                         }
                     }
@@ -288,8 +288,6 @@ public class PrivateAskActivity extends BaseAppActivity {
                     String question_id = mData.get(position).getQuestion_id() + "";
 
                     ShareUtils.getInstance(PrivateAskActivity.this)
-                            .setShareWebUrl("https://www.baidu.com/", "免费分享旁听", url, "分享后和可免费旁听")
-                            .setShareId(question_id)
                             .openShareALLBorad();
 
                 }

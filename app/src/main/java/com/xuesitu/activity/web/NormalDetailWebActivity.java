@@ -1,4 +1,4 @@
-package com.user.activity.web;
+package com.xuesitu.activity.web;
 
 
 import android.graphics.Bitmap;
@@ -8,17 +8,17 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.lib.app.ARouterPathUtils;
 import com.lib.ui.activity.web.base.BaseBusinessWebActivity;
+import com.lib.utls.share.ShareUtils;
 import com.lib.view.navigationbar.NomalNavigationBar;
 import com.tencent.smtt.sdk.WebView;
-import com.user.R;
-
+import com.youxuan.R;
 
 /**
  * 陪伴课
  */
 
-@Route(path = ARouterPathUtils.User_UserNormalDetailWebActivity)
-public class UserNormalDetailWebActivity extends BaseBusinessWebActivity {
+@Route(path = ARouterPathUtils.App_NormalDetailWebActivity)
+public class NormalDetailWebActivity extends BaseBusinessWebActivity {
 
 
     private TextView title;
@@ -26,6 +26,13 @@ public class UserNormalDetailWebActivity extends BaseBusinessWebActivity {
     private String urlPath;
 
     private WebView webView;
+
+    private String htmlShare[] = {"curriculum_accompany.html"
+            , "curriculum_many.html"
+            , "article_content.html"
+            , "assistant/assistant_message.html"
+            , "videocourse/videocourse_message.html"
+    };
 
     @Override
     protected void onCreateView(WebView webView) {
@@ -59,19 +66,18 @@ public class UserNormalDetailWebActivity extends BaseBusinessWebActivity {
                 .setTitle("")
                 .setRightIcon(R.mipmap.nav_share)
                 .setLeftText("关闭")
-
                 .setLeftTextClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        finish();
+                        toShare();
 
                     }
                 })
                 .setRightClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        finish();
+                        //finish();
                     }
                 })
                 .setLeftClickListener(new View.OnClickListener() {
@@ -96,9 +102,43 @@ public class UserNormalDetailWebActivity extends BaseBusinessWebActivity {
     }
 
 
+    private boolean isShareCircle = false;
+
+    private void toShare() {
+
+        String url = webView.getUrl();
+
+        for (String s : htmlShare) {
+
+            if (url.contains(s)) {
+                isShareCircle = true;
+            }
+
+        }
+
+
+        if (isShareCircle) {
+
+            ShareUtils.getInstance(this)
+                    .setShareParams(ShareUtils.BUSINESS_TYPE_EMPTY, url)
+                    .hideCircle(false)
+                    .onPenCoustomShareBorad();
+
+        } else {
+
+            ShareUtils.getInstance(this)
+                    .setShareParams(ShareUtils.BUSINESS_TYPE_EMPTY, url)
+                    .hideCircle(true)
+                    .onPenCoustomShareBorad();
+        }
+
+
+    }
+
+
     @Override
     protected int getWebLayoutId() {
-        return R.layout.activity_user_web_detail;
+        return R.layout.activity_company_class;
     }
 
     @Override

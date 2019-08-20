@@ -37,6 +37,7 @@ import com.lib.ui.fragment.BaseAppFragment;
 import com.lib.utls.glide.GlideConfig;
 import com.lib.utls.share.ShareUtils;
 import com.lib.view.player.MyJzvdStd;
+import com.luck.picture.lib.tools.ScreenUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -337,13 +338,10 @@ public class SiXueFragment extends BaseAppFragment {
             holder.getView(R.id.lin_share).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String url = mData.get(position).getFile().get(0);
                     String question_id = mData.get(position).getQuestion_id() + "";
 
-
                     ShareUtils.getInstance(getActivity())
-                            .setShareWebUrl("https://www.baidu.com/", "免费分享旁听", url, "分享后和可免费旁听")
-                            .setShareId(question_id)
+                            .setShareParams(ShareUtils.BUSINESS_TYPE5, question_id)
                             .onPenCoustomShareBorad();
 
                 }

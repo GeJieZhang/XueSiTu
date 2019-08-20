@@ -11,6 +11,7 @@ import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.log.LogUtil;
 import com.lib.fastkit.utils.permission.custom.PermissionUtil;
+import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.utls.pop.SharePopupBottomUtils;
 import com.umeng.socialize.ShareAction;
@@ -29,6 +30,53 @@ public class ShareUtils {
     private Activity activity;
 
     private String TAG = "=======分享";
+
+
+    /**
+     * ----------------------------------------业务类型
+     */
+
+    public static final int BUSINESS_TYPE_EMPTY = 000;
+    //晚间陪伴课
+    public static final int BUSINESS_TYPE0 = 0;
+    //1对1课程
+    public static final int BUSINESS_TYPE1 = 1;
+    //1对多课程
+    public static final int BUSINESS_TYPE2 = 2;
+
+    //1对1体验课
+    public static final int BUSINESS_TYPE3 = 3;
+
+    //公开课
+    public static final int BUSINESS_TYPE4 = 4;
+    //问题
+    public static final int BUSINESS_TYPE5 = 5;
+    //文章
+    public static final int BUSINESS_TYPE6 = 6;
+
+    //老师主页
+    public static final int BUSINESS_TYPE7 = 7;
+    //话题
+    public static final int BUSINESS_TYPE8 = 8;
+    //app分享
+    public static final int BUSINESS_TYPE9 = 9;
+
+    /**
+     * ----------------------------------------分享类型
+     */
+
+    //分享到分享圈
+    private static final int SHARE_TYPE0 = 0;
+    //分享到第三方
+    private static final int SHARE_TYPE1 = 1;
+
+
+    //业务ID(如果是h5就传连接，如果是原生就传id)
+    private String business_obj = "0";
+    //业务类型
+    private int business_type = BUSINESS_TYPE0;
+
+    private int share_type = SHARE_TYPE0;
 
 
     private SharePopupBottomUtils sharePopupBottomUtils;
@@ -85,13 +133,21 @@ public class ShareUtils {
      * @param description
      * @return
      */
-    public ShareUtils setShareWebUrl(String url, String title, String imageUrl, String description) {
+    public ShareUtils setShareWebImageUrl(String url, String title, String imageUrl, String description) {
 
         UMWeb umWeb = new UMWeb(url);
         UMImage umImage = new UMImage(activity, imageUrl);
         umWeb.setTitle(title);//标题
         umWeb.setThumb(umImage);  //缩略图
         umWeb.setDescription(description);//描述
+        shareAction.withMedia(umWeb);
+        return this;
+    }
+
+    public ShareUtils setShareWebUrl(String url, String title) {
+
+        UMWeb umWeb = new UMWeb(url);
+        umWeb.setTitle(title);//标题
         shareAction.withMedia(umWeb);
         return this;
     }
@@ -163,7 +219,7 @@ public class ShareUtils {
 
 
     public ShareAction onPenCoustomShareBorad() {
-
+        sharePopupBottomUtils.hideCircle(isHideCircle);
 
         sharePopupBottomUtils.showAnswerPopuPopu(activity.getWindow().getDecorView());
 
@@ -243,7 +299,7 @@ public class ShareUtils {
 
             showLog("分享开始");
 
-            requestShareSuccess();
+
         }
 
         @Override
@@ -265,19 +321,59 @@ public class ShareUtils {
         }
     };
 
+
     private void requestShareSuccess() {
-
-
         HttpUtils.with(activity)
-                .addParam("requestType", "QUESTION_SHARE_VISIT")
+                .addParam("requestType", "SHARE_USER_SHARE")
                 .addParam("token", SharedPreferenceManager.getInstance(activity).getUserCache().getUserToken())
-                .addParam("question_id", shareId)
-                .execute(new HttpNormalCallBack<ShareBean>() {
+                .addParam("business_obj", business_obj)
+                .addParam("share_type", share_type)
+                .addParam("business_type", business_type)
+                .execute(new HttpDialogCallBack<ShareBean>() {
                     @Override
                     public void onSuccess(ShareBean result) {
 
 
-                        Toast.makeText(activity, result.getMsg(), Toast.LENGTH_SHORT).show();
+                        if (result.getCode() != CodeUtil.CODE_200) {
+                            Toast.makeText(activity, result.getMsg(), Toast.LENGTH_SHORT).show();
+
+                            return;
+                        }
+
+
+                        switch (ACTION_TYPE) {
+                            case CIRCLE: {
+
+
+                                Toast.makeText(activity, result.getMsg(), Toast.LENGTH_SHORT).show();
+
+                                break;
+                            }
+                            case QQ: {
+
+                                setShareWebUrl(result.getObj().getLink(), result.getObj().getTitle());
+
+                                shareQQ();
+
+                                break;
+                            }
+
+                            case WEIXIN: {
+                                setShareWebUrl(result.getObj().getLink(), result.getObj().getTitle());
+
+                                shareWEIXIN();
+
+                                break;
+                            }
+
+                            case SINA: {
+                                setShareWebUrl(result.getObj().getLink(), result.getObj().getTitle());
+
+                                shareSINA();
+
+                                break;
+                            }
+                        }
 
                     }
 
@@ -291,21 +387,18 @@ public class ShareUtils {
     }
 
 
-    private String shareId = "";
-
-    public ShareUtils setShareId(String id) {
-
-        this.shareId = id;
-
-        return this;
-
-    }
-
-
     private void showLog(String str) {
         Log.e(TAG, str);
 
     }
+
+
+    private static final String CIRCLE = "circle";
+    private static final String QQ = "QQ";
+    private static final String WEIXIN = "WeiXin";
+    private static final String SINA = "sina";
+
+    private String ACTION_TYPE = "circle";
 
     /**
      * 监听分享布局中的,点击事件
@@ -313,30 +406,74 @@ public class ShareUtils {
     private SharePopupBottomUtils.SharePopupBottomUtilsListener sharePopupBottomUtilsListener = new SharePopupBottomUtils.SharePopupBottomUtilsListener() {
         @Override
         public void onShareClick() {
+            ACTION_TYPE = CIRCLE;
+            share_type = SHARE_TYPE0;
+
+            requestShareSuccess();
+
+            sharePopupBottomUtils.dismmiss();
 
 
         }
 
         @Override
         public void onQQClick() {
-
-
-            shareQQ();
+            ACTION_TYPE = QQ;
+            share_type = SHARE_TYPE1;
+            requestShareSuccess();
+            sharePopupBottomUtils.dismmiss();
         }
 
         @Override
         public void onWeiXinClick() {
-
-            shareWEIXIN();
-
+            ACTION_TYPE = WEIXIN;
+            share_type = SHARE_TYPE1;
+            requestShareSuccess();
+            sharePopupBottomUtils.dismmiss();
         }
 
         @Override
         public void onWeiBoClick() {
-
-            shareSINA();
-
+            ACTION_TYPE = SINA;
+            share_type = SHARE_TYPE1;
+            requestShareSuccess();
+            sharePopupBottomUtils.dismmiss();
         }
     };
+
+    //----------------------------------------------------------------------------------（类型）（业务id）
+
+
+    /**
+     * 业务参数
+     *
+     * @param business_obj
+     * @return
+     */
+    public ShareUtils setShareParams(int business_type, String business_obj) {
+
+        this.business_obj = business_obj;
+        this.business_type = business_type;
+
+
+        return this;
+    }
+
+
+    /**
+     * 是否隐藏分享圈
+     *
+     * @param b
+     * @return
+     */
+
+    private boolean isHideCircle = false;
+
+    public ShareUtils hideCircle(boolean b) {
+        this.isHideCircle = b;
+
+        return this;
+
+    }
 
 }
