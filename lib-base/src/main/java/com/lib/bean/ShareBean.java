@@ -56,6 +56,25 @@ public class ShareBean {
         private String link;
         private String title;
 
+        private String cover;
+        private String description;
+
+        public String getCover() {
+            return cover;
+        }
+
+        public void setCover(String cover) {
+            this.cover = cover;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
         public String getLink() {
             return link;
         }

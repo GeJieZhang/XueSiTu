@@ -272,6 +272,29 @@ public class ShareUtils {
     }
 
     /**
+     * 分享QQ空间
+     */
+    public ShareAction shareQZONE() {
+
+        PermissionUtil.getInstance(activity).externalStorage(new PermissionUtil.RequestPermission() {
+            @Override
+            public void onRequestPermissionSuccess() {
+                shareAction.setPlatform(SHARE_MEDIA.QZONE).share();
+
+            }
+
+            @Override
+            public void onRequestPermissionFailure() {
+
+            }
+        });
+
+        return shareAction;
+
+
+    }
+
+    /**
      * 分享微信
      */
     public void shareWEIXIN() {
@@ -292,6 +315,26 @@ public class ShareUtils {
 
     }
 
+    /**
+     * 分享微信朋友圈
+     */
+    public void shareWEIXIN_CIRCLE() {
+
+        PermissionUtil.getInstance(activity).externalStorage(new PermissionUtil.RequestPermission() {
+            @Override
+            public void onRequestPermissionSuccess() {
+                shareAction.setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE).share();
+
+            }
+
+            @Override
+            public void onRequestPermissionFailure() {
+
+            }
+        });
+
+
+    }
 
     private UMShareListener umShareListener = new UMShareListener() {
         @Override
@@ -351,7 +394,7 @@ public class ShareUtils {
                             }
                             case QQ: {
 
-                                setShareWebUrl(result.getObj().getLink(), result.getObj().getTitle());
+                                setShareContent(result);
 
                                 shareQQ();
 
@@ -359,16 +402,19 @@ public class ShareUtils {
                             }
 
                             case WEIXIN: {
-                                setShareWebUrl(result.getObj().getLink(), result.getObj().getTitle());
-
+                                setShareContent(result);
                                 shareWEIXIN();
 
                                 break;
                             }
+                            case WEIXINCIRCLE: {
+                                setShareContent(result);
+                                shareWEIXIN_CIRCLE();
 
+                                break;
+                            }
                             case SINA: {
-                                setShareWebUrl(result.getObj().getLink(), result.getObj().getTitle());
-
+                                setShareContent(result);
                                 shareSINA();
 
                                 break;
@@ -386,6 +432,14 @@ public class ShareUtils {
 
     }
 
+    private void setShareContent(ShareBean result) {
+        setShareWebImageUrl(result.getObj().getLink()
+                , result.getObj().getTitle()
+                , result.getObj().getCover()
+                , result.getObj().getDescription()
+        );
+    }
+
 
     private void showLog(String str) {
         Log.e(TAG, str);
@@ -396,6 +450,7 @@ public class ShareUtils {
     private static final String CIRCLE = "circle";
     private static final String QQ = "QQ";
     private static final String WEIXIN = "WeiXin";
+    private static final String WEIXINCIRCLE = "WeiXinCircle";
     private static final String SINA = "sina";
 
     private String ACTION_TYPE = "circle";
@@ -427,6 +482,14 @@ public class ShareUtils {
         @Override
         public void onWeiXinClick() {
             ACTION_TYPE = WEIXIN;
+            share_type = SHARE_TYPE1;
+            requestShareSuccess();
+            sharePopupBottomUtils.dismmiss();
+        }
+
+        @Override
+        public void onWeiXinCircleClick() {
+            ACTION_TYPE = WEIXINCIRCLE;
             share_type = SHARE_TYPE1;
             requestShareSuccess();
             sharePopupBottomUtils.dismmiss();

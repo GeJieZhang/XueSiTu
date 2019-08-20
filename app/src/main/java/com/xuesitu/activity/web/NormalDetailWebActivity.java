@@ -2,6 +2,7 @@ package com.xuesitu.activity.web;
 
 
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -70,14 +71,14 @@ public class NormalDetailWebActivity extends BaseBusinessWebActivity {
                     @Override
                     public void onClick(View v) {
 
-                        toShare();
+                        finish();
 
                     }
                 })
                 .setRightClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //finish();
+                        toShare();
                     }
                 })
                 .setLeftClickListener(new View.OnClickListener() {
@@ -107,6 +108,8 @@ public class NormalDetailWebActivity extends BaseBusinessWebActivity {
     private void toShare() {
 
         String url = webView.getUrl();
+
+        showLog("分享连接检测" + url);
 
         for (String s : htmlShare) {
 

@@ -65,7 +65,7 @@ public class SharePopupBottomUtils implements View.OnClickListener {
     }
 
 
-    private LinearLayout lin_share, lin_QQ, lin_weiXin, lin_weiBo;
+    private LinearLayout lin_share, lin_QQ, lin_weiXin, lin_weiBo, lin_weiXin_circle;
 
     private Button btn_cancel;
 
@@ -76,6 +76,7 @@ public class SharePopupBottomUtils implements View.OnClickListener {
         lin_share = view.findViewById(R.id.lin_share);
         lin_QQ = view.findViewById(R.id.lin_QQ);
         lin_weiXin = view.findViewById(R.id.lin_weiXin);
+        lin_weiXin_circle = view.findViewById(R.id.lin_weiXin_circle);
         lin_weiBo = view.findViewById(R.id.lin_weiBo);
         btn_cancel = view.findViewById(R.id.btn_cancel);
         v_bg = view.findViewById(R.id.v_bg);
@@ -84,6 +85,7 @@ public class SharePopupBottomUtils implements View.OnClickListener {
         lin_share.setOnClickListener(this);
         lin_QQ.setOnClickListener(this);
         lin_weiXin.setOnClickListener(this);
+        lin_weiXin_circle.setOnClickListener(this);
         lin_weiBo.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
     }
@@ -127,6 +129,10 @@ public class SharePopupBottomUtils implements View.OnClickListener {
                 listener.onWeiXinClick();
             }
 
+        } else if (i == R.id.lin_weiXin_circle) {
+            if (listener != null) {
+                listener.onWeiXinCircleClick();
+            }
         } else if (i == R.id.lin_weiBo) {
             if (listener != null) {
                 listener.onWeiBoClick();
@@ -173,6 +179,8 @@ public class SharePopupBottomUtils implements View.OnClickListener {
         void onQQClick();
 
         void onWeiXinClick();
+
+        void onWeiXinCircleClick();
 
         void onWeiBoClick();
     }
