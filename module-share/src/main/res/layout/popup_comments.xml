@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#80000000"
@@ -10,7 +11,7 @@
         android:id="@+id/v_back"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="5">
+        android:layout_weight="3">
 
     </View>
 
@@ -44,7 +45,7 @@
                 style="@style/text_style5"
                 android:layout_marginLeft="8dp"
                 android:layout_weight="1"
-                android:text="1.2k"
+                android:text=""
                 android:textColor="@color/base_gray"
                 android:textSize="14sp" />
 
@@ -62,20 +63,31 @@
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
-            <com.lib.fastkit.views.spring_refresh.widget.SpringView
-                android:id="@+id/springView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <com.lib.fastkit.views.load_state_view.MultiStateView
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv"
+                android:id="@+id/state_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:emptyView="@layout/m_empty_view"
+                app:errorView="@layout/m_error_view"
+                app:loadingView="@layout/m_loading_view"
+                app:networkErrorView="@layout/m_net_error_view"
+                app:viewState="content">
+
+                <com.lib.fastkit.views.spring_refresh.widget.SpringView
+                    android:id="@+id/springView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                </android.support.v7.widget.RecyclerView>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-            </com.lib.fastkit.views.spring_refresh.widget.SpringView>
+                    </android.support.v7.widget.RecyclerView>
 
+                </com.lib.fastkit.views.spring_refresh.widget.SpringView>
+            </com.lib.fastkit.views.load_state_view.MultiStateView>
 
         </RelativeLayout>
 

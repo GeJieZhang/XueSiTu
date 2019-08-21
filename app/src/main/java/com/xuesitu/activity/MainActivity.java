@@ -97,8 +97,9 @@ public class MainActivity extends BaseAppActivity {
 
     @Override
     protected void onCreateView() {
-        pushPopupUtils = new PushPopupUtils(this);
 
+
+        pushPopupUtils = new PushPopupUtils(this);
         initData();
         initView();
 

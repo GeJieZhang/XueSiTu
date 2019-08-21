@@ -803,3 +803,4 @@ rx.internal.util.atomic.LinkedQueueNode consumerNode;
 -keep public class com.live.bean.**{*;}
 -keep public class com.dayi.bean.**{*;}
 
+-keep public class com.share.bean.**{*;}

@@ -26,12 +26,14 @@ public class CoustomShareView extends LinearLayout implements View.OnClickListen
 
     //中间显示问答
     public static final int TYPE_ASK = 0;
-    //中间显示纯文本
+    //分享老师
     public static final int TYPE_CONTENT_1 = 1;
+    //话题
     public static final int TYPE_CONTENT_2 = 2;
+    //课程
     public static final int TYPE_CONTENT_3 = 3;
 
-    //中间显示新闻
+    //新闻
     public static final int TYPE_NEWS = 4;
 
     //加载得根布局
@@ -39,6 +41,8 @@ public class CoustomShareView extends LinearLayout implements View.OnClickListen
 
     private Context context;
 
+
+    private LinearLayout lin_parent;
 
     /**
      * 头部
@@ -118,7 +122,18 @@ public class CoustomShareView extends LinearLayout implements View.OnClickListen
 
         root = LayoutInflater.from(context).inflate(R.layout.item_base_share, this);
 
+        lin_parent = root.findViewById(R.id.lin_parent);
+        lin_parent.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                if (listener != null) {
+                    listener.onItemClick();
+
+                }
+
+            }
+        });
         /**
          * 头部
          *
@@ -189,7 +204,7 @@ public class CoustomShareView extends LinearLayout implements View.OnClickListen
 
         switch (type) {
             case TYPE_ASK: {
-
+                //问答
                 tv_subject.setVisibility(GONE);
                 tv_content_text1.setVisibility(GONE);
                 tv_content_text2.setVisibility(GONE);
@@ -199,19 +214,17 @@ public class CoustomShareView extends LinearLayout implements View.OnClickListen
                 break;
             }
             case TYPE_CONTENT_1: {
-                //只显示一个内容
+                //分享老师
                 lin_content_ask.setVisibility(GONE);
                 iv_lock.setVisibility(GONE);
                 tv_subject.setVisibility(GONE);
-
                 tv_content_text2.setVisibility(GONE);
-
                 lin_news.setVisibility(GONE);
 
                 break;
             }
             case TYPE_CONTENT_2: {
-                //显示两个内容
+                //话题
                 lin_content_ask.setVisibility(GONE);
                 iv_lock.setVisibility(GONE);
                 tv_subject.setVisibility(GONE);
@@ -221,7 +234,12 @@ public class CoustomShareView extends LinearLayout implements View.OnClickListen
             }
             case TYPE_CONTENT_3: {
 
-
+                //课程
+                lin_content_ask.setVisibility(GONE);
+                iv_lock.setVisibility(GONE);
+                tv_subject.setVisibility(VISIBLE);
+                tv_content_text2.setVisibility(GONE);
+                lin_news.setVisibility(GONE);
                 break;
             }
             case TYPE_NEWS: {
@@ -249,7 +267,7 @@ public class CoustomShareView extends LinearLayout implements View.OnClickListen
 
         Glide.with(context)
                 .load(url)
-                .apply(GlideConfig.getCircleOptions())
+                .apply(GlideConfig.getRectangleOptions())
                 .into(iv_head);
 
     }
@@ -271,7 +289,7 @@ public class CoustomShareView extends LinearLayout implements View.OnClickListen
      *
      * @param b
      */
-    private void setIv_lock_Open(boolean b) {
+    public void setIv_lock_Open(boolean b) {
 
         if (b) {
 
@@ -288,7 +306,7 @@ public class CoustomShareView extends LinearLayout implements View.OnClickListen
      *
      * @param str
      */
-    private void setTv_subject(String str) {
+    public void setTv_subject(String str) {
 
         tv_subject.setText(str);
 
@@ -297,27 +315,27 @@ public class CoustomShareView extends LinearLayout implements View.OnClickListen
     /**
      * 设置问答的第一张图片
      */
-    private void setIv_image1(String url) {
+    public void setIv_image1(String url) {
         Glide.with(context)
                 .load(url)
-                .apply(GlideConfig.getCircleOptions())
+                .apply(GlideConfig.getRectangleOptions())
                 .into(iv_image1);
     }
 
     /**
      * 设置问答的第二张图片
      */
-    private void setIv_image2(String url) {
+    public void setIv_image2(String url) {
         Glide.with(context)
                 .load(url)
-                .apply(GlideConfig.getCircleOptions())
+                .apply(GlideConfig.getRectangleOptions())
                 .into(iv_image2);
     }
 
     /**
      * 设置兔币
      */
-    private void setTv_money(String money) {
+    public void setTv_money(String money) {
         tv_money.setText(money);
 
 
@@ -328,7 +346,7 @@ public class CoustomShareView extends LinearLayout implements View.OnClickListen
      *
      * @param str
      */
-    private void setTv_content_text1(String str) {
+    public void setTv_content_text1(String str) {
 
         tv_content_text1.setText(str);
 
@@ -339,7 +357,7 @@ public class CoustomShareView extends LinearLayout implements View.OnClickListen
      *
      * @param str
      */
-    private void setTv_content_text2(String str) {
+    public void setTv_content_text2(String str) {
 
         tv_content_text2.setText(str);
 
@@ -350,10 +368,10 @@ public class CoustomShareView extends LinearLayout implements View.OnClickListen
      *
      * @param url
      */
-    private void setIv_newImage(String url) {
+    public void setIv_newImage(String url) {
         Glide.with(context)
                 .load(url)
-                .apply(GlideConfig.getCircleOptions())
+                .apply(GlideConfig.getRectangleOptions())
                 .into(iv_newImage);
     }
 
@@ -363,7 +381,7 @@ public class CoustomShareView extends LinearLayout implements View.OnClickListen
      *
      * @param str
      */
-    private void setTv_news_content(String str) {
+    public void setTv_news_content(String str) {
 
         tv_news_content.setText(str);
 
@@ -375,7 +393,7 @@ public class CoustomShareView extends LinearLayout implements View.OnClickListen
      *
      * @param b
      */
-    private void setTv_tip_Show(boolean b) {
+    public void setTv_tip_Show(boolean b) {
 
         if (b) {
 
@@ -388,12 +406,17 @@ public class CoustomShareView extends LinearLayout implements View.OnClickListen
     }
 
 
+    public void setTv_Time(String str) {
+
+        tv_time.setText(str);
+    }
+
     /**
      * 设置赞的数量
      *
      * @param str
      */
-    private void setTv_zan(String str) {
+    public void setTv_zan(String str) {
 
         tv_zan.setText(str);
 
@@ -405,7 +428,7 @@ public class CoustomShareView extends LinearLayout implements View.OnClickListen
      *
      * @param str
      */
-    private void setTv_comments(String str) {
+    public void setTv_comments(String str) {
 
         tv_comments.setText(str);
 
@@ -417,7 +440,7 @@ public class CoustomShareView extends LinearLayout implements View.OnClickListen
      *
      * @param b
      */
-    private void setIv_zan_Show(boolean b) {
+    public void setIv_zan_Show(boolean b) {
 
         if (b) {
             iv_zan.setImageResource(R.mipmap.icon_love_selected);
@@ -434,6 +457,11 @@ public class CoustomShareView extends LinearLayout implements View.OnClickListen
 
         int i = v.getId();
         if (i == R.id.lin_zan) {
+
+            if (listener != null) {
+                listener.onZanClick();
+
+            }
         } else if (i == R.id.lin_comments) {
             if (listener != null) {
                 listener.onCommentsClick();
@@ -454,6 +482,11 @@ public class CoustomShareView extends LinearLayout implements View.OnClickListen
     public interface CoustomShareViewListener {
 
         void onCommentsClick();
+
+
+        void onZanClick();
+
+        void onItemClick();
 
     }
 
