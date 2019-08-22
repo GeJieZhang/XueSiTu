@@ -1517,13 +1517,10 @@ public class MainRoomActivity extends BaseRoomActivity implements QNRTCEngineEve
             Scene scene = new Scene("page" + maxSize);
             whiteBoardRoom.putScenes(SCENE_DIR, new Scene[]{
                     scene}, maxSize - 1);
-
-
-            showLog("添加画板:" + maxSize + "画板索引:" + (maxSize - 1));
-
+            showLog("添加画板索引:" + (maxSize - 1));
             whiteBoardRoom.setScenePath(SCENE_DIR + "/page" + maxSize);
 
-            showLog("画板路径:" + SCENE_DIR + "/page" + maxSize);
+            showLog("添加画板路径:" + SCENE_DIR + "/page" + maxSize);
 
 
             getScenesSize();

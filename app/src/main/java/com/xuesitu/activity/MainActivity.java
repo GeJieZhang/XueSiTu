@@ -43,6 +43,7 @@ import com.user.fragment.PersonalFragment;
 import com.xuesitu.R;
 import com.xuesitu.bean.CheckTokenBean;
 import com.xuesitu.bean.QiNiuBean;
+import com.youxuan.fragment.LiveTestFragment;
 
 import org.simple.eventbus.Subscriber;
 
@@ -151,6 +152,7 @@ public class MainActivity extends BaseAppActivity {
         fragments.add(FragmentUtils.getSiXueFragment());
         fragments.add(FragmentUtils.getDayiFragment());
         fragments.add(FragmentUtils.getJianKeFragment());
+
         fragments.add(FragmentUtils.getShareFragemnt());
 
         homeBar.setViewType(HomeNavigationBar.YOU_XUAN);

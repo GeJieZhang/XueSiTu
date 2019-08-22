@@ -10,7 +10,9 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alipay.sdk.app.PayTask;
+import com.lib.app.ARouterPathUtils;
 import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.utls.pay.bean.PayResult;
 import com.lib.utls.pay.tool.OrderInfoUtil2_0;
@@ -42,13 +44,19 @@ public class ZhiFuBaoPayUtils {
             PayResult payResult = new PayResult((Map<String, String>) msg.obj);
             switch (payResult.getResultStatus()) {
                 case "9000":
-                    Toast.makeText(context, "支付成功", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "支付成功", Toast.LENGTH_SHORT).show();
+                    ARouter.getInstance().build(ARouterPathUtils.User_PayStateActivity)
+                            .withInt("state", 1)
+                            .navigation();
                     break;
                 case "8000":
                     Toast.makeText(context, "正在处理中", Toast.LENGTH_SHORT).show();
                     break;
                 case "4000":
-                    Toast.makeText(context, "订单支付失败", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "订单支付失败", Toast.LENGTH_SHORT).show();
+                    ARouter.getInstance().build(ARouterPathUtils.User_PayStateActivity)
+                            .withInt("state", 0)
+                            .navigation();
                     break;
                 case "5000":
                     Toast.makeText(context, "重复请求", Toast.LENGTH_SHORT).show();
@@ -63,7 +71,10 @@ public class ZhiFuBaoPayUtils {
                     Toast.makeText(context, "正在处理中", Toast.LENGTH_SHORT).show();
                     break;
                 default:
-                    Toast.makeText(context, "支付失败", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "支付失败", Toast.LENGTH_SHORT).show();
+                    ARouter.getInstance().build(ARouterPathUtils.User_PayStateActivity)
+                            .withInt("state", 0)
+                            .navigation();
                     break;
             }
         }

@@ -103,7 +103,7 @@ public class WriteMoneyNumUtils {
      *
      * @param num
      */
-    public void setEt_num(int num) {
+    public void setEt_num(double num) {
 
 
         if (et_num != null) {

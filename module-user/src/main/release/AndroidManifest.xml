@@ -25,5 +25,6 @@
 
 
         <activity android:name=".activity.HelpActivity"></activity>
+        <activity android:name=".activity.PayStateActivity"></activity>
     </application>
 </manifest>

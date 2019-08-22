@@ -46,4 +46,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="分享测试" />
+
+    <Button
+        android:id="@+id/btn_token7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="微信支付" />
 </LinearLayout>

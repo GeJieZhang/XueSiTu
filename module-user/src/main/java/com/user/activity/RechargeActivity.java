@@ -11,13 +11,25 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alipay.sdk.app.EnvUtils;
 import com.lib.app.ARouterPathUtils;
+import com.lib.app.CodeUtil;
+import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
+import com.lib.fastkit.http.ok.HttpUtils;
+import com.lib.fastkit.views.load_state_view.MultiStateView;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
+import com.lib.http.call_back.HttpDialogCallBack;
+import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.ui.adapter.BaseAdapter;
+import com.lib.utls.pay.WXPayUtils;
+import com.lib.utls.pay.ZhiFuBaoPayUtils;
 import com.lib.view.navigationbar.NomalNavigationBar;
 import com.user.R;
 import com.user.R2;
+import com.user.bean.OrderList;
+import com.user.bean.PayWeiXinBean;
+import com.user.bean.PayZhiFuBaoBean;
 import com.user.utils.pop.WriteMoneyNumUtils;
 
 import java.util.ArrayList;
@@ -41,15 +53,26 @@ public class RechargeActivity extends BaseAppActivity {
     ImageView ivWei;
     @BindView(R2.id.iv_zhifu)
     ImageView ivZhifu;
+    @BindView(R2.id.state_view)
+    MultiStateView stateView;
+    @BindView(R2.id.tv_money)
+    TextView tvMoney;
 
-
-    private int tubi[] = {100, 200, 500, 1000, 2000, 0};
-
-    List<Integer> mData = new ArrayList<>();
+    List<OrderList.ObjBean.RechargeRecommendListBean> mData = new ArrayList<>();
     private HomeAdapter homeAdapter;
 
     @Override
     protected void onCreateView() {
+
+        stateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+        stateView.setMultiStateViewLisener(new MultiStateView.MultiStateViewLisener() {
+            @Override
+            public void onTryAgain() {
+                initData();
+            }
+        });
+        //沙箱环境
+        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
         initTitle();
         initData();
 
@@ -59,23 +82,14 @@ public class RechargeActivity extends BaseAppActivity {
     }
 
     private void initData() {
-        mData.clear();
-        for (int i : tubi) {
-            mData.add(i);
-        }
+        requestOrderList();
     }
 
     protected void initTitle() {
         NomalNavigationBar navigationBar = new
                 NomalNavigationBar.Builder(this)
                 .setTitle("充值")
-                .setRightIcon(R.mipmap.nav_share)
-                .setRightClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showToast("点击分享");
-                    }
-                })
+
                 .builder();
 
         // navigationBar.getRightTextView()
@@ -87,19 +101,35 @@ public class RechargeActivity extends BaseAppActivity {
     }
 
 
+    //0微信，1支付宝
+    private int PAY_TYPE = 0;
+
     @OnClick({R2.id.lin_wei, R2.id.lin_zhifu, R2.id.btn_recharge})
     public void onViewClicked(View view) {
         int i = view.getId();
         if (i == R.id.lin_wei) {
             ivWei.setImageResource(R.mipmap.icon_choose);
-
             ivZhifu.setImageResource(R.mipmap.icon_default);
-
+            PAY_TYPE = 0;
         } else if (i == R.id.lin_zhifu) {
             ivWei.setImageResource(R.mipmap.icon_default);
 
             ivZhifu.setImageResource(R.mipmap.icon_choose);
+            PAY_TYPE = 1;
         } else if (i == R.id.btn_recharge) {
+
+            if (recharge_id == 0) {
+                showToast("请选择充值兔币数!");
+                return;
+            }
+
+            if (PAY_TYPE == 0) {
+                requestOrderByWeiXin(recharge_id + "");
+            }
+
+            if (PAY_TYPE == 1) {
+                requestOrderByZhiFuBao(recharge_id + "");
+            }
 
         }
     }
@@ -114,12 +144,12 @@ public class RechargeActivity extends BaseAppActivity {
         ButterKnife.bind(this);
     }
 
-    //手动输入的充值金额
-    private int moneyWrite = 0;
 
-    public class HomeAdapter extends BaseAdapter<Integer> {
+    private int recharge_id = 0;
 
-        public HomeAdapter(Context context, List<Integer> mData) {
+    public class HomeAdapter extends BaseAdapter<OrderList.ObjBean.RechargeRecommendListBean> {
+
+        public HomeAdapter(Context context, List<OrderList.ObjBean.RechargeRecommendListBean> mData) {
             super(context, mData);
         }
 
@@ -129,13 +159,21 @@ public class RechargeActivity extends BaseAppActivity {
         }
 
         @Override
-        protected void toBindViewHolder(ViewHolder holder, int position, List<Integer> mData) {
+        protected void toBindViewHolder(ViewHolder holder, final int position, final List<OrderList.ObjBean.RechargeRecommendListBean> mData) {
 
             final View view = holder.getView(R.id.v_bg);
             final TextView textView = holder.getView(R.id.tv_tb);
-
             final Button btn_song = holder.getView(R.id.btn_song);
 
+            textView.setText(mData.get(position).getRecharge_amount() + "兔币");
+
+            btn_song.setText("送" + mData.get(position).getGift_amount() + "兔币");
+
+            if (mData.get(position).getIs_gift() == 1) {
+                btn_song.setVisibility(View.VISIBLE);
+            } else {
+                btn_song.setVisibility(View.INVISIBLE);
+            }
 
             textViewList.add(textView);
             viewList.add(view);
@@ -146,32 +184,13 @@ public class RechargeActivity extends BaseAppActivity {
                     initViewBg();
                     view.setBackgroundResource(R.drawable.bg_part_circle4_select);
                     textView.setTextColor(getResources().getColor(R.color.white));
-
-                    WriteMoneyNumUtils writeMoneyNumUtils = new WriteMoneyNumUtils(RechargeActivity.this);
-                    writeMoneyNumUtils.setWriteMoneyNumUtilsListener(new WriteMoneyNumUtils.WriteMoneyNumUtilsListener() {
-                        @Override
-                        public void onMumberSure(int num) {
-                            moneyWrite = num;
-                            textView.setText(num + "兔币");
-                        }
-                    });
-                    writeMoneyNumUtils.showAnswerPopuPopu(view);
-                    writeMoneyNumUtils.setEt_num(moneyWrite);
+                    recharge_id = mData.get(position).getRecharge_id();
 
                 }
 
 
             });
 
-            if (position == mData.size() - 1) {
-
-
-                btn_song.setVisibility(View.INVISIBLE);
-                textView.setText("手动输入");
-            } else {
-                btn_song.setVisibility(View.VISIBLE);
-                btn_song.setText("送100兔币");
-            }
 
         }
     }
@@ -191,5 +210,104 @@ public class RechargeActivity extends BaseAppActivity {
 
         }
     }
+
+
+    /**
+     * 微信充值
+     *
+     * @param
+     */
+    private void requestOrderByWeiXin(String recharge_id) {
+        HttpUtils.with(this)
+                .addParam("requestType", "WXPAY")
+                .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
+                .addParam("recharge_id", recharge_id)
+                .execute(new HttpDialogCallBack<PayWeiXinBean>() {
+                    @Override
+                    public void onSuccess(PayWeiXinBean result) {
+
+                        new WXPayUtils.WXPayBuilder()
+                                .setAppId(result.getObj().getAppid())
+                                .setPartnerId(result.getObj().getPartnerid())
+                                .setPrepayId(result.getObj().getPrepayid())
+                                .setPackageValue(result.getObj().getPackageX())
+                                .setNonceStr(result.getObj().getNoncestr())
+                                .setTimeStamp(result.getObj().getTimestamp())
+                                .setSign(result.getObj().getSign())
+                                .build()
+                                .toWXPayNotSign(RechargeActivity.this);
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
+    }
+
+
+    /**
+     * 支付宝充值
+     *
+     * @param
+     */
+    private void requestOrderByZhiFuBao(String recharge_id) {
+        HttpUtils.with(this)
+                .addParam("requestType", "ALIPAY")
+                .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
+                .addParam("recharge_id", recharge_id)
+                .execute(new HttpDialogCallBack<PayZhiFuBaoBean>() {
+                    @Override
+                    public void onSuccess(PayZhiFuBaoBean result) {
+
+                        new ZhiFuBaoPayUtils().toALiPayService(RechargeActivity.this, result.getObj().getBody());
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
+    }
+
+
+    /**
+     * 充值列表
+     *
+     * @param
+     */
+    private void requestOrderList() {
+        HttpUtils.with(this)
+                .addParam("requestType", "RECHARGE_RECOMMEND_LIST")
+                .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
+
+                .execute(new HttpNormalCallBack<OrderList>() {
+                    @Override
+                    public void onSuccess(OrderList result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+                            tvMoney.setText(result.getObj().getAccount() + "兔币");
+                            mData.clear();
+
+                            mData.addAll(result.getObj().getRecharge_recommend_list());
+                            homeAdapter.notifyDataSetChanged();
+                            stateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+
+                        } else {
+                            stateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+                        stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
+                    }
+                });
+    }
+
 
 }

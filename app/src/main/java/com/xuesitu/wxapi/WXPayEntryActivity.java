@@ -7,6 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.google.gson.Gson;
+import com.lib.app.ARouterPathUtils;
+import com.lib.fastkit.utils.log.LogUtil;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -26,7 +30,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        api = WXAPIFactory.createWXAPI(this, "你的APPID");
+        api = WXAPIFactory.createWXAPI(this, "wx2747c1e8b040c4d1");
         api.handleIntent(getIntent(), this);
     }
 
@@ -41,19 +45,20 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     public void onResp(BaseResp resp) {
 
+        LogUtil.e("onResp:" + new Gson().toJson(resp));
 
-//		if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
-//			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//			builder.setTitle(R.string.app_tip);
-//			builder.setMessage(getString(R.string.pay_result_callback_msg, String.valueOf(resp.errCode)));
-//		builder.show();
-//		}
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
             if (resp.errCode == 0) {
-                Toast.makeText(this, "支付成功", Toast.LENGTH_LONG).show();
+
+
+                ARouter.getInstance().build(ARouterPathUtils.User_PayStateActivity)
+                        .withInt("state", 1)
+                        .navigation();
             } else {
-                Log.e("java", "onResp: " + resp.errCode);
-                Toast.makeText(this, "支付失败", Toast.LENGTH_LONG).show();
+
+                ARouter.getInstance().build(ARouterPathUtils.User_PayStateActivity)
+                        .withInt("state", 0)
+                        .navigation();
             }
             finish();
         }
@@ -61,6 +66,6 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
     @Override
     public void onReq(BaseReq baseReq) {
-
+        LogUtil.e("onReq:" + new Gson().toJson(baseReq));
     }
 }

@@ -10,6 +10,7 @@ import com.alipay.sdk.app.EnvUtils;
 import com.lib.app.ARouterPathUtils;
 import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.ui.fragment.BaseAppFragment;
+import com.lib.utls.pay.WXPayUtils;
 import com.lib.utls.pay.ZhiFuBaoPayUtils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
@@ -47,7 +48,7 @@ public class LiveTestFragment extends BaseAppFragment {
 
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
-        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
+
 
     }
 
@@ -57,7 +58,10 @@ public class LiveTestFragment extends BaseAppFragment {
     }
 
 
-    @OnClick({R2.id.btn_token1, R2.id.btn_token2, R2.id.btn_token3, R2.id.btn_token4, R2.id.btn_token5, R2.id.btn_token6})
+    @OnClick({R2.id.btn_token1, R2.id.btn_token2, R2.id.btn_token3
+            , R2.id.btn_token4, R2.id.btn_token5, R2.id.btn_token6
+            , R2.id.btn_token7
+    })
     public void onViewClicked(View view) {
         int i = view.getId();
         if (i == R.id.btn_token1) {
@@ -145,6 +149,19 @@ public class LiveTestFragment extends BaseAppFragment {
         } else if (i == R.id.btn_token6) {
             new ShareAction(getActivity()).withText("hello").setDisplayList(SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.WEIXIN)
                     .setCallback(umShareListener).open();
+        } else if (i == R.id.btn_token7) {
+
+
+            new WXPayUtils.WXPayBuilder()
+                    .setAppId("wx2747c1e8b040c4d1")
+                    .setPartnerId("1514611101")
+                    .setPrepayId("wx20190822142620397868")
+                    .setPackageValue("WXPay")
+                    .setNonceStr("f34789e34d7c42b0b88df0209066246a")
+                    .setTimeStamp("1566445967")
+                    .setSign("1AC1435A416CB3F4390A49B8E8BBBFEB")
+                    .build()
+                    .toWXPayNotSign(getContext());
         }
     }
 
