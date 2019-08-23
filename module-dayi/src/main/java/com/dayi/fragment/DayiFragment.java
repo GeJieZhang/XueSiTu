@@ -16,6 +16,7 @@ import com.dayi.R;
 import com.dayi.R2;
 import com.dayi.bean.DayiBean;
 import com.dayi.bean.ToLiveBeanDaYi;
+import com.dayi.view.MarkButton;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
 import com.lib.bean.CustomData;
@@ -28,7 +29,6 @@ import com.lib.fastkit.views.spring_refresh.container.DefaultFooter;
 import com.lib.fastkit.views.spring_refresh.container.DefaultHeader;
 import com.lib.fastkit.views.spring_refresh.widget.SpringView;
 import com.lib.framework.component.interceptor.GroupUtils;
-import com.lib.html.HtmlPathUtils;
 import com.lib.http.call_back.HttpDialogCallBack;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.fragment.BaseAppFragment;
@@ -41,7 +41,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.jzvd.JzvdStd;
 
 
 @Route(path = ARouterPathUtils.Dayi_DayiFragment)
@@ -77,6 +76,25 @@ public class DayiFragment extends BaseAppFragment {
     SpringView springView;
     @BindView(R2.id.state_view)
     MultiStateView stateView;
+
+    @BindView(R2.id.btn_fun)
+    MarkButton btnFun;
+    @BindView(R2.id.btn_difficult)
+    MarkButton btnDifficult;
+    @BindView(R2.id.btn_paper)
+    MarkButton btnPaper;
+    @BindView(R2.id.btn_analysis)
+    MarkButton btnAnalysis;
+    @BindView(R2.id.btn_mistake)
+    MarkButton btnMistake;
+    @BindView(R2.id.lin_more1)
+    LinearLayout linMore1;
+    @BindView(R2.id.lin_more2)
+    LinearLayout linMore2;
+    @BindView(R2.id.tv_share_money)
+    TextView tvShareMoney;
+
+
     private String video[] = {"《控制脾气》", "《保护自己》", "《学会思考》"};
 
 
@@ -102,7 +120,7 @@ public class DayiFragment extends BaseAppFragment {
 
     private void initView() {
 
-        circleProgressBar2.setValue(8000);
+
         springView.setHeader(new DefaultHeader(getActivity()));
         springView.setFooter(new DefaultFooter(getActivity()));
         springView.setEnableFooter(false);
@@ -125,6 +143,9 @@ public class DayiFragment extends BaseAppFragment {
 
     }
 
+
+    private DayiBean dayiBean;
+
     private void initData() {
 
         HttpUtils.with(getContext())
@@ -134,6 +155,14 @@ public class DayiFragment extends BaseAppFragment {
                     public void onSuccess(final DayiBean result) {
                         springView.onFinishFreshAndLoad();
                         if (result.getCode() == CodeUtil.CODE_200) {
+                            dayiBean = result;
+
+
+                            /**
+                             * 进度条
+                             */
+
+                            circleProgressBar2.setValue((int) result.getObj().getGrand_total());
 
 
                             /**
@@ -146,11 +175,23 @@ public class DayiFragment extends BaseAppFragment {
                                     , "");
                             Glide.with(getActivity()).load(videoUrl).into(jz_player.thumbImageView);
 
+
                             /**
                              * 消息列表
                              */
                             List<DayiBean.ObjBean.RecentQuestionBean> getRecent_question = result.getObj().getRecent_question();
                             initMessageList(getRecent_question);
+
+                            /**
+                             * 刷题兔币
+                             */
+
+
+                            btnFun.setValue(result.getObj().getAnswer_examination_reward());
+                            btnDifficult.setValue(result.getObj().getAnswer_difficulty_reward());
+                            btnPaper.setValue(result.getObj().getAnswer_interest_reward());
+                            btnAnalysis.setValue(result.getObj().getStudydiagnosis_content_reward());
+
 
                             /**
                              * 兔讯
@@ -166,6 +207,12 @@ public class DayiFragment extends BaseAppFragment {
                             List<DayiBean.ObjBean.ArticleListBean> getArticle_list = result.getObj().getArticle_list();
                             initArticle(getArticle_list);
 
+
+                            /**
+                             * 搜索兔币
+                             *
+                             */
+                            tvShareMoney.setText("分享兔讯可得" + result.getObj().getArticle_share_reward() + "兔币");
                             /**
                              * 名师专栏
                              */
@@ -533,7 +580,7 @@ public class DayiFragment extends BaseAppFragment {
 
     @OnClick({R2.id.btn_camera, R2.id.btn_voice, R2.id.btn_write, R2.id.btn_fun, R2.id.btn_difficult
             , R2.id.btn_paper, R2.id.btn_analysis, R2.id.btn_mistake
-            , R2.id.lin_search
+            , R2.id.lin_search, R2.id.btn_paihang, R2.id.lin_more1, R2.id.lin_more2
     })
     public void onViewClicked(View view) {
         int i = view.getId();
@@ -544,31 +591,54 @@ public class DayiFragment extends BaseAppFragment {
         } else if (i == R.id.btn_write) {
             goAskQuestion();
         } else if (i == R.id.btn_fun) {
+            //试卷模拟
             ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
-                    .withString("urlPath", HtmlPathUtils.APP_Fun_Topic)
+                    .withString("urlPath", dayiBean.getObj().getAnswer_examination_url())
                     .navigation();
 
         } else if (i == R.id.btn_difficult) {
+            //难点刷题
             ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
-                    .withString("urlPath", HtmlPathUtils.APP_Difficult_Topic)
+                    .withString("urlPath", dayiBean.getObj().getAnswer_difficulty_url())
                     .navigation();
         } else if (i == R.id.btn_paper) {
+            //趣味刷题
             ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
-                    .withString("urlPath", HtmlPathUtils.APP_Paper_Topic)
+                    .withString("urlPath", dayiBean.getObj().getAnswer_interest_url())
                     .navigation();
         } else if (i == R.id.btn_analysis) {
+            //学情诊断
+            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
+                    .withString("urlPath", dayiBean.getObj().getStudydiagnosis_content_url())
+                    .navigation();
+
         } else if (i == R.id.btn_mistake) {
+            //错题本
 
             ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
-                    .withString("urlPath", HtmlPathUtils.APP_Mistake_Topic)
+                    .withString("urlPath", dayiBean.getObj().getNotebook_difficulty_url())
                     .navigation();
         } else if (i == R.id.lin_search) {
 
             ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
-                    .withString("urlPath", HtmlPathUtils.APP_Article_Search)
+                    .withString("urlPath", dayiBean.getObj().getArticle_search_url())
+                    .navigation();
+        } else if (i == R.id.btn_paihang) {
+            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
+                    .withString("urlPath", dayiBean.getObj().getRanking_url())
+                    .navigation();
+        } else if (i == R.id.lin_more1) {
+            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
+                    .withString("urlPath", dayiBean.getObj().getArticle_list_url())
+                    .navigation();
+        } else if (i == R.id.lin_more2) {
+            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
+                    .withString("urlPath", dayiBean.getObj().getOpen_course_list_url())
                     .navigation();
         }
 
 
     }
+
+
 }

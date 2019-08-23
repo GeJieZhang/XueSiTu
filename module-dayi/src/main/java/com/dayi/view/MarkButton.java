@@ -87,4 +87,10 @@ public class MarkButton extends FrameLayout {
         }
 
     }
+
+    public void setValue(int value) {
+        tv_tubi.setText(value + "兔币");
+    }
+
+
 }
