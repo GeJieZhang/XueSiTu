@@ -32,7 +32,16 @@ public class HomeNavigationBar extends FrameLayout {
     public static final int YOU_TU_ZI = 2;
 
     public static final int YOU_JIAN_KE = 3;
+
     public static final int YOU_FENG_XIANG = 4;
+
+
+    /**
+     * 有新消息的3种状态
+     */
+    public static final int YOU_XUAN_MSG = 5;
+    public static final int YOU_TU_ZI_MSG = 6;
+    public static final int YOU_FENG_XIANG_MSG = 7;
 
     public HomeNavigationBar(@NonNull Context context) {
         this(context, null);
@@ -86,6 +95,12 @@ public class HomeNavigationBar extends FrameLayout {
 
                 break;
             }
+            case YOU_XUAN_MSG: {
+
+                tv_title.setText("优选");
+
+                break;
+            }
 
             case YOU_WEN_DA: {
 
@@ -94,6 +109,13 @@ public class HomeNavigationBar extends FrameLayout {
                 break;
             }
             case YOU_TU_ZI: {
+                iv_logo.setVisibility(VISIBLE);
+                tv_title.setText("在线作业答疑");
+
+                break;
+            }
+
+            case YOU_TU_ZI_MSG: {
                 iv_logo.setVisibility(VISIBLE);
                 tv_title.setText("在线作业答疑");
 
@@ -113,7 +135,13 @@ public class HomeNavigationBar extends FrameLayout {
 
                 break;
             }
-
+            case YOU_FENG_XIANG_MSG: {
+                iv_message.setVisibility(VISIBLE);
+                iv_personal.setVisibility(GONE);
+                tv_title.setText("纷享");
+                iv_message.setImageResource(R.mipmap.icon_news_new);
+                break;
+            }
         }
 
     }

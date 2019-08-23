@@ -16,34 +16,30 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.lib.MyApplication;
+import com.google.gson.Gson;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
 import com.lib.app.EventBusTagUtils;
 import com.lib.app.FragmentTag;
 import com.lib.app.FragmentUtils;
 import com.lib.bean.Event;
-import com.lib.bean.PushDetailBean;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.animation_deal.AnimationUtil;
 import com.lib.fastkit.utils.fragment_deal.FragmentCustomUtils;
 import com.lib.fastkit.utils.permission.custom.PermissionUtil;
 import com.lib.fastkit.views.viewpager.my.MyViewPager;
-import com.lib.framework.component.interceptor.GroupUtils;
 import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.utls.bugly.BuglyUtil;
 import com.lib.utls.pop.PushPopupUtils;
 import com.lib.view.navigationbar.xuesitu.HomeNavigationBar;
-import com.live.activity.MainRoomActivity;
-import com.share.fragment.ShareFragment;
 import com.user.bean.BaseBean;
 import com.user.fragment.PersonalFragment;
 import com.xuesitu.R;
 import com.xuesitu.bean.CheckTokenBean;
-import com.xuesitu.bean.QiNiuBean;
-import com.youxuan.fragment.LiveTestFragment;
+import com.xuesitu.bean.MsgStateBean;
+import com.lib.bean.ConfigBean;
 
 import org.simple.eventbus.Subscriber;
 
@@ -117,11 +113,14 @@ public class MainActivity extends BaseAppActivity {
             }
         });
 
-        requestQiniuToken();
+        requestConfig();
         requestCheckToken();
 
 
         bindYoumengTokenByUser();
+
+        //更新检测
+        BuglyUtil.checkUpdate();
 
 
     }
@@ -198,6 +197,8 @@ public class MainActivity extends BaseAppActivity {
     }
 
 
+    private int homeBarType = HomeNavigationBar.YOU_XUAN;
+
     @OnClick({R.id.lin_youxuan, R.id.lin_sixue, R.id.lin_jianke, R.id.lin_fengxiang, R.id.iv_center})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -207,31 +208,50 @@ public class MainActivity extends BaseAppActivity {
                 initSelected(0);
 
 
-                homeBar.setViewType(HomeNavigationBar.YOU_XUAN);
+                if (isHaveNewMessage) {
+                    homeBar.setViewType(HomeNavigationBar.YOU_XUAN_MSG);
+                } else {
+                    homeBar.setViewType(HomeNavigationBar.YOU_XUAN);
+                }
+
+                homeBarType = HomeNavigationBar.YOU_XUAN;
                 break;
             case R.id.lin_sixue:
                 mViewPager.setCurrentItem(1);
                 initSelected(1);
 
                 homeBar.setViewType(HomeNavigationBar.YOU_WEN_DA);
+                homeBarType = HomeNavigationBar.YOU_WEN_DA;
                 break;
             case R.id.iv_center:
                 mViewPager.setCurrentItem(2);
                 initSelected(2);
 
-                homeBar.setViewType(HomeNavigationBar.YOU_TU_ZI);
+                if (isHaveNewMessage) {
+                    homeBar.setViewType(HomeNavigationBar.YOU_TU_ZI_MSG);
+                } else {
+                    homeBar.setViewType(HomeNavigationBar.YOU_TU_ZI);
+                }
+                homeBarType = HomeNavigationBar.YOU_TU_ZI;
+
+
                 break;
             case R.id.lin_jianke:
                 mViewPager.setCurrentItem(3);
                 initSelected(3);
                 homeBar.setViewType(HomeNavigationBar.YOU_JIAN_KE);
-
+                homeBarType = HomeNavigationBar.YOU_JIAN_KE;
                 break;
             case R.id.lin_fengxiang:
                 mViewPager.setCurrentItem(4);
                 initSelected(4);
+                if (isHaveNewMessage) {
+                    homeBar.setViewType(HomeNavigationBar.YOU_FENG_XIANG_MSG);
+                } else {
+                    homeBar.setViewType(HomeNavigationBar.YOU_FENG_XIANG);
+                }
 
-                homeBar.setViewType(HomeNavigationBar.YOU_FENG_XIANG);
+                homeBarType = HomeNavigationBar.YOU_FENG_XIANG;
                 break;
 
         }
@@ -244,12 +264,90 @@ public class MainActivity extends BaseAppActivity {
 
 
         menuHide();
-
+        getMessageState();
 
     }
 
-    private void initSelected(int position) {
 
+    private boolean isHaveNewMessage = false;
+
+
+    public void getMessageState() {
+
+        HttpUtils.with(this)
+                .addParam("requestType", "NEWS_UNREAD_STATUS")
+                .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
+                .execute(new HttpNormalCallBack<MsgStateBean>() {
+                    @Override
+                    public void onSuccess(MsgStateBean result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+                            SharedPreferenceManager.getInstance(MainActivity.this).getUserCache().setMessageState(result.getObj().getUnread_status());
+                            if (result.getObj().getUnread_status() == 1) {
+                                //有未读消息
+
+
+                                isHaveNewMessage = true;
+                                initHomeBarMsg();
+
+
+                            } else {
+                                //没有未读消息
+                                isHaveNewMessage = false;
+                                initHomeBarMsg();
+                            }
+
+
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
+
+    }
+
+    private void initHomeBarMsg() {
+        switch (homeBarType) {
+            case HomeNavigationBar.YOU_XUAN: {
+
+                if (isHaveNewMessage) {
+                    homeBar.setViewType(HomeNavigationBar.YOU_XUAN_MSG);
+                } else {
+                    homeBar.setViewType(HomeNavigationBar.YOU_XUAN);
+                }
+
+                break;
+            }
+            case HomeNavigationBar.YOU_TU_ZI: {
+
+
+                if (isHaveNewMessage) {
+                    homeBar.setViewType(HomeNavigationBar.YOU_TU_ZI_MSG);
+                } else {
+                    homeBar.setViewType(HomeNavigationBar.YOU_TU_ZI);
+                }
+                break;
+            }
+            case HomeNavigationBar.YOU_FENG_XIANG: {
+
+
+                if (isHaveNewMessage) {
+                    homeBar.setViewType(HomeNavigationBar.YOU_FENG_XIANG_MSG);
+                } else {
+                    homeBar.setViewType(HomeNavigationBar.YOU_FENG_XIANG);
+                }
+                break;
+            }
+        }
+    }
+
+    private void initSelected(int position) {
+        getMessageState();
         initBottomImage();
 
         switch (position) {
@@ -616,20 +714,21 @@ public class MainActivity extends BaseAppActivity {
         }
     }
 
-    private void requestQiniuToken() {
+    private void requestConfig() {
 
 
         HttpUtils.with(this)
                 .post()
-                .addParam("requestType", "QUERY_QNTOKEN")
-                .execute(new HttpNormalCallBack<QiNiuBean>() {
+                .addParam("requestType", "CONFIG")
+                .execute(new HttpNormalCallBack<ConfigBean>() {
                     @Override
-                    public void onSuccess(QiNiuBean result) {
+                    public void onSuccess(ConfigBean result) {
 
                         if (result.getCode() == CodeUtil.CODE_200) {
                             SharedPreferenceManager.getInstance(MainActivity.this).getUserCache().setQiNiuToken(result.getObj().getToken());
-
                             SharedPreferenceManager.getInstance(MainActivity.this).getUserCache().setQiNiuUrl(result.getObj().getBaseurl());
+                            SharedPreferenceManager.getInstance(MainActivity.this).getUserCache().setConfigJson(new Gson().toJson(result));
+
                         }
 
 

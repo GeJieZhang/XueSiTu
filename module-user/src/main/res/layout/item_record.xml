@@ -22,6 +22,7 @@
 
             <TextView
 
+                android:id="@+id/tv_title"
                 style="@style/text_style11"
                 android:layout_weight="1"
                 android:text="购买智two.1对一"
@@ -30,7 +31,7 @@
 
 
             <TextView
-
+                android:id="@+id/tv_money"
                 style="@style/text_style11"
                 android:text="-1200兔币"
                 android:textColor="@color/base_title"
@@ -39,12 +40,11 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tv_time"
             style="@style/text_style11"
-
             android:layout_marginTop="8dp"
             android:text="2019-7-8"
             android:textColor="@color/base_gray"
-
             android:textSize="12sp" />
     </LinearLayout>
 

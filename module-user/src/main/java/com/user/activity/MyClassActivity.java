@@ -7,12 +7,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.google.gson.Gson;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
+import com.lib.bean.ConfigBean;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.permission.custom.PermissionUtil;
@@ -50,6 +53,8 @@ public class MyClassActivity extends BaseAppActivity {
     SpringView springView;
     @BindView(R2.id.state_view)
     MultiStateView stateView;
+    @BindView(R2.id.lin_class)
+    LinearLayout linClass;
 
     private List<ClassBean.ObjBean.RowsBean> mData = new ArrayList<>();
 
@@ -74,9 +79,13 @@ public class MyClassActivity extends BaseAppActivity {
     private int CLASS_TYPE2 = 2;//1对多
     private int CLASS_TYPE3 = 3;//1对1体验课
 
+
+    private ConfigBean configBean;
+
     @Override
     protected void onCreateView() {
-
+        String json = SharedPreferenceManager.getInstance(this).getUserCache().getConfigJson();
+        configBean = new Gson().fromJson(json, ConfigBean.class);
         stateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
         stateView.setMultiStateViewLisener(new MultiStateView.MultiStateViewLisener() {
             @Override
@@ -87,6 +96,13 @@ public class MyClassActivity extends BaseAppActivity {
         token = SharedPreferenceManager.getInstance(this).getUserCache().getUserToken();
         identity = SharedPreferenceManager.getInstance(this).getUserCache().getUserIdentity();
         userPhone = SharedPreferenceManager.getInstance(this).getUserCache().getUserPhone();
+
+        if (identity.equals("1")) {
+            linClass.setVisibility(View.GONE);
+        } else {
+            linClass.setVisibility(View.VISIBLE);
+        }
+
         initTitle();
         homeAdapter = new HomeAdapter(this, mData);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false) {
@@ -189,7 +205,7 @@ public class MyClassActivity extends BaseAppActivity {
     public void onViewClicked() {
 
         ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
-                .withString("urlPath", HtmlPathUtils.S_Class_Resouce)
+                .withString("urlPath", configBean.getObj().getStu_videocourse_url())
                 .navigation();
 
     }

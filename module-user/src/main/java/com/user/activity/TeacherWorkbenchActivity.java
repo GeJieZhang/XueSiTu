@@ -11,7 +11,10 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.google.gson.Gson;
 import com.lib.app.ARouterPathUtils;
+import com.lib.bean.ConfigBean;
+import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
 import com.lib.html.HtmlPathUtils;
 import com.lib.ui.activity.BaseAppActivity;
@@ -19,6 +22,7 @@ import com.lib.ui.adapter.BaseAdapter;
 import com.lib.view.navigationbar.NomalNavigationBar;
 import com.user.R;
 import com.user.R2;
+import com.user.utils.pop.TeacherWriteQustionPopupUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +43,12 @@ public class TeacherWorkbenchActivity extends BaseAppActivity {
 
     private List<String> list = new ArrayList<>();
 
+    private ConfigBean configBean;
+
     @Override
     protected void onCreateView() {
-
+        String json = SharedPreferenceManager.getInstance(this).getUserCache().getConfigJson();
+        configBean = new Gson().fromJson(json, ConfigBean.class);
         initTitle();
         initView();
     }
@@ -98,7 +105,7 @@ public class TeacherWorkbenchActivity extends BaseAppActivity {
         @Override
         protected void toBindViewHolder(ViewHolder holder, final int position, List<String> mData) {
 
-            ImageView iv_image = holder.getView(R.id.iv_image);
+            final ImageView iv_image = holder.getView(R.id.iv_image);
             TextView tv_text = holder.getView(R.id.tv_text);
             iv_image.setImageResource(icon[position]);
             tv_text.setText(mData.get(position));
@@ -117,7 +124,10 @@ public class TeacherWorkbenchActivity extends BaseAppActivity {
                             break;
                         }
                         case 1: {
-
+                            //编题
+                            TeacherWriteQustionPopupUtils teacherWriteQustionPopupUtils = new TeacherWriteQustionPopupUtils(TeacherWorkbenchActivity.this);
+                            teacherWriteQustionPopupUtils.setUrl(configBean.getObj().getTeacher_main_url());
+                            teacherWriteQustionPopupUtils.showAnswerPopuPopu(iv_image);
 
                             break;
                         }
@@ -129,14 +139,16 @@ public class TeacherWorkbenchActivity extends BaseAppActivity {
                             break;
                         }
                         case 3: {
-
-
+                            //我的学生
+                            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
+                                    .withString("urlPath", configBean.getObj().getStudent_list_url())
+                                    .navigation();
                             break;
                         }
                         case 4: {
                             //老师-教辅
                             ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
-                                    .withString("urlPath", HtmlPathUtils.T_Assistant)
+                                    .withString("urlPath", configBean.getObj().getStu_assisiant_url())
                                     .navigation();
 
                             break;
@@ -145,7 +157,7 @@ public class TeacherWorkbenchActivity extends BaseAppActivity {
 
                             //老师-录播课
                             ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
-                                    .withString("urlPath", HtmlPathUtils.T_Video)
+                                    .withString("urlPath", configBean.getObj().getStu_videocourse_url())
                                     .navigation();
                             break;
                         }

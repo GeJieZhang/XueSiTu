@@ -46,12 +46,13 @@ public class TeacherQuestionListActivity extends BaseAppActivity {
 
     @BindView(R2.id.state_view)
     MultiStateView stateView;
+    @BindView(R2.id.springView)
+    SpringView springView;
     @BindView(R2.id.rv1)
     RecyclerView rv1;
     @BindView(R2.id.rv2)
     RecyclerView rv2;
-    @BindView(R2.id.springView)
-    SpringView springView;
+
     private HomeAdapter1 homeAdapter1;
     private HomeAdapter2 homeAdapter2;
 

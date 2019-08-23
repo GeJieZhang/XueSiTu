@@ -9,9 +9,11 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.lib.app.ARouterPathUtils;
 import com.lib.app.CodeUtil;
 import com.lib.app.EventBusTagUtils;
+import com.lib.bean.ConfigBean;
 import com.lib.bean.Event;
 import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
 import com.lib.fastkit.db.shared_prefrences.interfaces.UserCacheInterface;
@@ -23,6 +25,7 @@ import com.lib.utls.glide.GlideConfig;
 import com.user.R;
 import com.user.R2;
 import com.user.bean.PersonInfoBean;
+import com.user.utils.pop.TeacherWriteQustionPopupUtils;
 
 import org.simple.eventbus.EventBus;
 
@@ -43,6 +46,9 @@ public class PersonalFragment extends BaseAppFragment {
 
     @BindView(R2.id.iv_name)
     ImageView ivName;
+    @BindView(R2.id.iv_msg)
+    ImageView ivMsg;
+
     @BindView(R2.id.btn_recharge)
     Button btnRecharge;
     @BindView(R2.id.lin_userInfo)
@@ -78,8 +84,14 @@ public class PersonalFragment extends BaseAppFragment {
     @BindView(R2.id.lin_transparent)
     LinearLayout linTransparent;
 
+    private int messageState = 0;
+
+    private ConfigBean configBean;
+
     @Override
     protected void onCreateView(View view, Bundle savedInstanceState) {
+
+        initConfig();
 
 
         initView();
@@ -87,8 +99,53 @@ public class PersonalFragment extends BaseAppFragment {
 
     }
 
+    private void initConfig() {
+        messageState = SharedPreferenceManager.getInstance(getContext()).getUserCache().getMessageState();
+        String json = SharedPreferenceManager.getInstance(getContext()).getUserCache().getConfigJson();
+        configBean = new Gson().fromJson(json, ConfigBean.class);
+        if (configBean == null) {
+
+            requestConfig();
+
+        }
+    }
+
+    private void requestConfig() {
+
+
+        HttpUtils.with(getContext())
+                .post()
+                .addParam("requestType", "CONFIG")
+                .execute(new HttpNormalCallBack<ConfigBean>() {
+                    @Override
+                    public void onSuccess(ConfigBean result) {
+
+                        if (result.getCode() == CodeUtil.CODE_200) {
+                            SharedPreferenceManager.getInstance(getContext()).getUserCache().setQiNiuToken(result.getObj().getToken());
+                            SharedPreferenceManager.getInstance(getContext()).getUserCache().setQiNiuUrl(result.getObj().getBaseurl());
+                            SharedPreferenceManager.getInstance(getContext()).getUserCache().setConfigJson(new Gson().toJson(result));
+
+
+                            initConfig();
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+
+                    }
+                });
+    }
 
     private void initView() {
+
+        if (messageState == 1) {
+            ivMsg.setImageResource(R.mipmap.icon_news_new);
+        } else {
+            ivMsg.setImageResource(R.mipmap.icon_news_default);
+        }
 
 
     }
@@ -185,6 +242,7 @@ public class PersonalFragment extends BaseAppFragment {
     @OnClick({R2.id.lin_transparent, R2.id.iv_setting, R2.id.iv_name, R2.id.lin_class, R2.id.lin_question, R2.id.lin_evaluation, R2.id.lin_teacher, R2.id.lin_study, R2.id.lin_sign, R2.id.btn_recharge
             , R2.id.lin_userInfo, R2.id.lin_teacher_class, R2.id.lin_teacher_question, R2.id.iv_work_desk
             , R2.id.iv_msg, R2.id.tv_money, R2.id.lin_teacher_assistants, R2.id.lin_teacher_video
+            , R2.id.lin_teacher_write, R2.id.lin_teacher_student
     })
     public void onViewClicked(View view) {
         int i = view.getId();
@@ -218,7 +276,7 @@ public class PersonalFragment extends BaseAppFragment {
         } else if (i == R.id.lin_teacher) {
             //学生-我的老师
             ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
-                    .withString("urlPath", HtmlPathUtils.S_MyTeacher)
+                    .withString("urlPath", configBean.getObj().getTeacher_list_url())
                     .navigation();
 
         } else if (i == R.id.lin_study) {
@@ -227,13 +285,13 @@ public class PersonalFragment extends BaseAppFragment {
 
 
             ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
-                    .withString("urlPath", HtmlPathUtils.S_Ourse)
+                    .withString("urlPath", configBean.getObj().getLearning_process_url())
                     .navigation();
         } else if (i == R.id.lin_sign) {
             //学生-签到有礼
 
             ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
-                    .withString("urlPath", HtmlPathUtils.S_Sign_In)
+                    .withString("urlPath", configBean.getObj().getSign_in_url())
                     .navigation();
 
         } else if (i == R.id.lin_userInfo) {
@@ -253,7 +311,7 @@ public class PersonalFragment extends BaseAppFragment {
             if (identity.equals("1")) {
                 //老师-提现
                 ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
-                        .withString("urlPath", HtmlPathUtils.T_Withdrawal)
+                        .withString("urlPath", configBean.getObj().getCash_withdrawal_url())
                         .navigation();
             } else {
                 //学生-充值
@@ -271,14 +329,14 @@ public class PersonalFragment extends BaseAppFragment {
         } else if (i == R.id.lin_teacher_assistants) {
             //老师-教辅
             ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
-                    .withString("urlPath", HtmlPathUtils.T_Assistant)
+                    .withString("urlPath", configBean.getObj().getTeaching_assistant_url())
                     .navigation();
 
 
         } else if (i == R.id.lin_teacher_video) {
             //老师-录播课
             ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
-                    .withString("urlPath", HtmlPathUtils.T_Video)
+                    .withString("urlPath", configBean.getObj().getTeaching_videocourse_url())
                     .navigation();
 
 
@@ -296,8 +354,18 @@ public class PersonalFragment extends BaseAppFragment {
             //老师-工作台
             ARouter.getInstance().build(ARouterPathUtils.User_TeacherWorkbenchActivity).navigation();
 
-        }
+        } else if (i == R.id.lin_teacher_write) {
 
+            //老师-编题
+            TeacherWriteQustionPopupUtils teacherWriteQustionPopupUtils = new TeacherWriteQustionPopupUtils(getActivity());
+            teacherWriteQustionPopupUtils.setUrl(configBean.getObj().getTeacher_main_url());
+            teacherWriteQustionPopupUtils.showAnswerPopuPopu(view);
+
+        } else if (i == R.id.lin_teacher_student) {
+            ARouter.getInstance().build(ARouterPathUtils.App_NormalDetailWebActivity)
+                    .withString("urlPath", configBean.getObj().getStudent_list_url())
+                    .navigation();
+        }
 
     }
 

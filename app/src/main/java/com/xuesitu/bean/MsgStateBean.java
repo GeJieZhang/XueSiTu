@@ -1,11 +1,11 @@
 package com.xuesitu.bean;
 
-public class QiNiuBean {
+public class MsgStateBean {
 
 
     /**
      * code : 200
-     * obj : {"baseurl":"http://pu00k0ssj.bkt.clouddn.com/","token":"3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:IHtTOnhA4PwmqOLHY-DOR32SjH0=:eyJzY29wZSI6Inh1ZXNpdHVfdjIiLCJkZWFkbGluZSI6MTU2MzM2MjI3Nn0="}
+     * obj : {"unread_count":0,"unread_status":0}
      * msg : 请求成功
      * seccess : true
      */
@@ -49,27 +49,27 @@ public class QiNiuBean {
 
     public static class ObjBean {
         /**
-         * baseurl : http://pu00k0ssj.bkt.clouddn.com/
-         * token : 3MREyUAjTV-fOSdRtNpsO3DbNMQVnSdbEyhoNp9q:IHtTOnhA4PwmqOLHY-DOR32SjH0=:eyJzY29wZSI6Inh1ZXNpdHVfdjIiLCJkZWFkbGluZSI6MTU2MzM2MjI3Nn0=
+         * unread_count : 0
+         * unread_status : 0
          */
 
-        private String baseurl;
-        private String token;
+        private int unread_count;
+        private int unread_status;
 
-        public String getBaseurl() {
-            return baseurl;
+        public int getUnread_count() {
+            return unread_count;
         }
 
-        public void setBaseurl(String baseurl) {
-            this.baseurl = baseurl;
+        public void setUnread_count(int unread_count) {
+            this.unread_count = unread_count;
         }
 
-        public String getToken() {
-            return token;
+        public int getUnread_status() {
+            return unread_status;
         }
 
-        public void setToken(String token) {
-            this.token = token;
+        public void setUnread_status(int unread_status) {
+            this.unread_status = unread_status;
         }
     }
 }

@@ -56,4 +56,12 @@ public interface UserCacheInterface extends BaseCacheInterface {
     void setUserMoney(String money);
 
     String getUserMoney();
+
+    void setMessageState(int msgState);
+
+    int getMessageState();
+
+    void setConfigJson(String josn);
+
+    String getConfigJson();
 }

@@ -10,14 +10,23 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.lib.app.ARouterPathUtils;
+import com.lib.app.CodeUtil;
+import com.lib.fastkit.db.shared_prefrences.SharedPreferenceManager;
+import com.lib.fastkit.http.ok.HttpUtils;
 import com.lib.fastkit.utils.time_deal.TimeUtils;
+import com.lib.fastkit.views.load_state_view.MultiStateView;
 import com.lib.fastkit.views.recyclerview.zhanghongyang.base.ViewHolder;
+import com.lib.fastkit.views.spring_refresh.container.DefaultFooter;
+import com.lib.fastkit.views.spring_refresh.container.DefaultHeader;
+import com.lib.fastkit.views.spring_refresh.widget.SpringView;
+import com.lib.http.call_back.HttpNormalCallBack;
 import com.lib.ui.activity.BaseAppActivity;
 import com.lib.ui.adapter.BaseAdapter;
 import com.lib.view.navigationbar.NomalNavigationBar;
 import com.user.R;
 import com.user.R2;
 import com.user.TimeChosePopUtils;
+import com.user.bean.RecordsBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,20 +44,26 @@ public class RecordsActivity extends BaseAppActivity {
     RecyclerView rv;
     @BindView(R2.id.tv_time)
     TextView tvTime;
-
+    @BindView(R2.id.state_view)
+    MultiStateView stateView;
+    @BindView(R2.id.springView)
+    SpringView springView;
 
     private HomeAdapter homeAdapter;
-    private List<String> list = new ArrayList<>();
+    private List<RecordsBean.ObjBean.RowsBean> list = new ArrayList<>();
+
+    private int page = 0;
 
     @Override
     protected void onCreateView() {
         initTitle();
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-
-
+        stateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+        stateView.setMultiStateViewLisener(new MultiStateView.MultiStateViewLisener() {
+            @Override
+            public void onTryAgain() {
+                initData();
+            }
+        });
         homeAdapter = new HomeAdapter(this, list);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(homeAdapter);
@@ -56,6 +71,70 @@ public class RecordsActivity extends BaseAppActivity {
         initTimePicker();
 
         tvTime.setText(TimeUtils.getNowString(TimeUtils.FORMAT_4));
+        springView.setHeader(new DefaultHeader(this));
+        springView.setFooter(new DefaultFooter(this));
+
+        springView.setListener(new SpringView.OnFreshListener() {
+            @Override
+            public void onRefresh() {
+                page = 0;
+                initData();
+
+
+            }
+
+            @Override
+            public void onLoadmore() {
+
+                page++;
+                initData();
+
+            }
+        });
+        initData();
+    }
+
+    private void initData() {
+
+
+        String time = tvTime.getText().toString().trim();
+
+        HttpUtils.with(this)
+                .addParam("requestType", "ACCOUNT_EXPENSES_RECORD")
+                .addParam("token", SharedPreferenceManager.getInstance(this).getUserCache().getUserToken())
+                .addParam("page", page)
+                .addParam("limit", 10)
+                .addParam("des_date", time)
+                .execute(new HttpNormalCallBack<RecordsBean>() {
+                    @Override
+                    public void onSuccess(RecordsBean result) {
+
+                        springView.onFinishFreshAndLoad();
+                        if (result.getCode() == CodeUtil.CODE_200) {
+
+                            if (page == 0) {
+                                list.clear();
+                            }
+
+                            list.addAll(result.getObj().getRows());
+
+                            homeAdapter.notifyDataSetChanged();
+
+
+                            stateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+
+                        } else {
+                            stateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onError(String e) {
+                        stateView.setViewState(MultiStateView.VIEW_STATE_NETWORK_ERROR);
+                    }
+                });
 
     }
 
@@ -63,7 +142,15 @@ public class RecordsActivity extends BaseAppActivity {
 
     private void initTimePicker() {
         timeChosePopUtils = new TimeChosePopUtils(this, true, true, false, false, false, false);
+        timeChosePopUtils.setTimeChosePopUtilsListener(new TimeChosePopUtils.TimeChosePopUtilsListener() {
+            @Override
+            public void onTimeChosed(String str) {
+                tvTime.setText(str);
+                page = 0;
+                initData();
 
+            }
+        });
     }
 
     protected void initTitle() {
@@ -91,9 +178,9 @@ public class RecordsActivity extends BaseAppActivity {
     }
 
 
-    private class HomeAdapter extends BaseAdapter<String> {
+    private class HomeAdapter extends BaseAdapter<RecordsBean.ObjBean.RowsBean> {
 
-        public HomeAdapter(Context context, List<String> mData) {
+        public HomeAdapter(Context context, List<RecordsBean.ObjBean.RowsBean> mData) {
             super(context, mData);
         }
 
@@ -103,8 +190,23 @@ public class RecordsActivity extends BaseAppActivity {
         }
 
         @Override
-        protected void toBindViewHolder(ViewHolder holder, int position, List<String> mData) {
+        protected void toBindViewHolder(ViewHolder holder, int position, List<RecordsBean.ObjBean.RowsBean> mData) {
 
+
+            TextView tv_money = holder.getView(R.id.tv_money);
+            holder.setText(R.id.tv_title, mData.get(position).getMsg());
+            holder.setText(R.id.tv_time, mData.get(position).getCreate_date());
+            holder.setText(R.id.tv_money, mData.get(position).getAmount() + "兔币");
+
+            if (mData.get(position).getPay_type() == 1) {
+                //收入
+                tv_money.setTextColor(getResources().getColor(R.color.base_blue));
+
+            } else {
+                //消费
+                tv_money.setTextColor(getResources().getColor(R.color.base_money));
+
+            }
         }
     }
 

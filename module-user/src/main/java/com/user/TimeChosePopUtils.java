@@ -98,7 +98,7 @@ public class TimeChosePopUtils {
 
     private TimeChosePopUtilsListener listener;
 
-    private void setTimeChosePopUtilsListener(TimeChosePopUtilsListener timeChosePopUtilsListener) {
+    public void setTimeChosePopUtilsListener(TimeChosePopUtilsListener timeChosePopUtilsListener) {
 
 
         this.listener = timeChosePopUtilsListener;

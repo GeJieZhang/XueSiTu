@@ -26,7 +26,10 @@ public class UserCacheImpl extends SharedPreferenceModel implements UserCacheInt
     private static final String Key_Qi_Niu_Token = "QiNiuToken";
     private static final String Key_Qi_Niu_Url = "QiNiuUrl";
     private static final String Key_You_Meng_Token = "YouMengToken";
+    private static final String Key_Message_State = "Message_State";
 
+
+    private static final String Key_Config_Json = "Config_Json";
 
     public UserCacheImpl(Context context) {
         super(context, FILE_NAME, Context.MODE_PRIVATE);
@@ -137,5 +140,26 @@ public class UserCacheImpl extends SharedPreferenceModel implements UserCacheInt
     @Override
     public String getUserMoney() {
         return getString(Key_User_Money);
+    }
+
+    @Override
+    public void setMessageState(int msgState) {
+
+        put(Key_Message_State, msgState);
+    }
+
+    @Override
+    public int getMessageState() {
+        return getInt(Key_Message_State);
+    }
+
+    @Override
+    public void setConfigJson(String josn) {
+        put(Key_Config_Json, josn);
+    }
+
+    @Override
+    public String getConfigJson() {
+        return getString(Key_Config_Json);
     }
 }
